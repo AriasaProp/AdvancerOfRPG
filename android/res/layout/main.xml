@@ -7,4 +7,5 @@
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true" >
+
 </android.view.SurfaceView>

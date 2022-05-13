@@ -1,8 +1,8 @@
 package com.ariasaproject.advancerofrpg.graphics.g3d.loader;
 
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.assets.loaders.ModelLoader;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.graphics.VertexAttribute;

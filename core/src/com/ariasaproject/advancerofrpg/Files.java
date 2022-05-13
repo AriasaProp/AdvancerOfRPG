@@ -1,4 +1,4 @@
-package com.ariasaproject.advancerofrpg.files;
+package com.ariasaproject.advancerofrpg;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -22,9 +22,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
-
-import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.LifecycleListener;
 
 public abstract class Files implements LifecycleListener {
 	protected static final byte[] buffer = new byte[4096];

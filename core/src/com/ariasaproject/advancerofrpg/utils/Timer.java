@@ -1,9 +1,9 @@
 package com.ariasaproject.advancerofrpg.utils;
 
 import com.ariasaproject.advancerofrpg.Application;
+import com.ariasaproject.advancerofrpg.Files;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.LifecycleListener;
-import com.ariasaproject.advancerofrpg.files.Files;
 
 public class Timer {
 	// TimerThread access is synchronized using threadLock.

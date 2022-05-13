@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileType;
 import com.ariasaproject.advancerofrpg.audio.Audio;
 import com.ariasaproject.advancerofrpg.audio.AudioDevice;
 import com.ariasaproject.advancerofrpg.audio.AudioRecorder;
 import com.ariasaproject.advancerofrpg.audio.Music;
 import com.ariasaproject.advancerofrpg.audio.Sound;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
-import com.ariasaproject.advancerofrpg.files.Files.FileType;
 
 import android.annotation.TargetApi;
 import android.content.Context;

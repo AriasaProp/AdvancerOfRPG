@@ -1,7 +1,7 @@
 package com.ariasaproject.advancerofrpg.scenes2d.ui;
 
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;

@@ -1,7 +1,7 @@
 package com.ariasaproject.advancerofrpg.graphics.glutils;
 
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Cubemap;
 import com.ariasaproject.advancerofrpg.graphics.Cubemap.CubemapSide;
 import com.ariasaproject.advancerofrpg.graphics.CubemapData;

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 
 public class I18NBundle implements Disposable {
 	private static final String DEFAULT_ENCODING = "UTF-8";

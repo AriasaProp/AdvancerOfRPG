@@ -1,7 +1,7 @@
 package com.ariasaproject.advancerofrpg.scenes2d.ui;
 
+import com.ariasaproject.advancerofrpg.Files;
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.files.Files;
 import com.ariasaproject.advancerofrpg.scenes2d.Actor;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Value.Fixed;
 import com.ariasaproject.advancerofrpg.utils.Align;

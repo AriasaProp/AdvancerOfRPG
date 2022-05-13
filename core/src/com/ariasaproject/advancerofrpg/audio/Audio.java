@@ -1,6 +1,6 @@
 package com.ariasaproject.advancerofrpg.audio;
 
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 
 public interface Audio {
 	public AudioDevice newAudioDevice(int samplingRate, boolean isMono);

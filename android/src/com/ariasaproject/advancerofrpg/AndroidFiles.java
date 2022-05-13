@@ -2,8 +2,6 @@ package com.ariasaproject.advancerofrpg;
 
 import java.io.IOException;
 
-import com.ariasaproject.advancerofrpg.files.Files;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;

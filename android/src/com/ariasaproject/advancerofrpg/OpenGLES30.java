@@ -14,10 +14,12 @@ import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 import com.ariasaproject.advancerofrpg.utils.IntArray;
 
+import android.annotation.TargetApi;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
 
+@TargetApi(18)
 public class OpenGLES30 implements AndroidTGF {
 	// chace value for once only
 	float maxAnisotropicFilterLevel;
@@ -28,13 +30,13 @@ public class OpenGLES30 implements AndroidTGF {
 	boolean depthMask;
 	float depthRangeNear, depthRangeFar;
 	int blendSFactor, blendDFactor, depthFunc, cullFace;
-	//future for managed generate and delete texture
+	// future for managed generate and delete texture
 	Array<TextureData> textures = new Array<TextureData>();
 
 	public static final String TAG = "GLES 3.0";
 	private final String shaderHeader = "#version 300 es\n" + "#define LOW lowp\n" + "#define MED mediump\n"
-	+ "#ifdef GL_FRAGMENT_PRECISION_HIGH\n" + "#define HIGH highp\n" + "#else\n" + "#define HIGH mediump\n"
-	+ "#endif\n";
+			+ "#ifdef GL_FRAGMENT_PRECISION_HIGH\n" + "#define HIGH highp\n" + "#else\n" + "#define HIGH mediump\n"
+			+ "#endif\n";
 
 	@Override
 	public void glActiveTexture(int unit) {
@@ -81,13 +83,11 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glBlendEquation(int mode) {
-
 		GLES20.glBlendEquation(mode);
 	}
 
 	@Override
 	public void glBlendEquationSeparate(int modeRGB, int modeAlpha) {
-
 		GLES20.glBlendEquationSeparate(modeRGB, modeAlpha);
 	}
 
@@ -129,14 +129,14 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height,
-								 int border) {
+			int border) {
 
 		GLES20.glCopyTexImage2D(target, level, internalformat, x, y, width, height, border);
 	}
 
 	@Override
 	public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width,
-									int height) {
+			int height) {
 
 		GLES20.glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
 	}
@@ -602,7 +602,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format,
-							 int type, Buffer pixels) {
+			int type, Buffer pixels) {
 
 		GLES20.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 	}
@@ -633,7 +633,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
-								int type, Buffer pixels) {
+			int type, Buffer pixels) {
 
 		GLES20.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
 	}
@@ -904,7 +904,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border,
-							 int format, int type, java.nio.Buffer pixels) {
+			int format, int type, java.nio.Buffer pixels) {
 
 		if (pixels == null)
 			GLES30.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, 0);
@@ -914,60 +914,30 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border,
-							 int format, int type, int offset) {
+			int format, int type, int offset) {
 
 		GLES30.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, offset);
 	}
 
 	@Override
 	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height,
-								int depth, int format, int type, java.nio.Buffer pixels) {
+			int depth, int format, int type, java.nio.Buffer pixels) {
 
 		GLES30.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
 	}
 
 	@Override
 	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height,
-								int depth, int format, int type, int offset) {
+			int depth, int format, int type, int offset) {
 
 		GLES30.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, offset);
 	}
 
 	@Override
 	public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y,
-									int width, int height) {
+			int width, int height) {
 
 		GLES30.glCopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height);
-	}
-
-	@Override
-	public void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth,
-									   int border, int imageSize, java.nio.Buffer data) {
-
-		GLES30.glCompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, data);
-	}
-
-	@Override
-	public void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth,
-									   int border, int imageSize, int offset) {
-
-		GLES30.glCompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, offset);
-	}
-
-	@Override
-	public void glCompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width,
-										  int height, int depth, int format, int imageSize, java.nio.Buffer data) {
-
-		GLES30.glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format,
-										 imageSize, data);
-	}
-
-	@Override
-	public void glCompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width,
-										  int height, int depth, int format, int imageSize, int offset) {
-
-		GLES30.glCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format,
-										 imageSize, offset);
 	}
 
 	@Override
@@ -1140,7 +1110,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1,
-								  int dstY1, int mask, int filter) {
+			int dstY1, int mask, int filter) {
 
 		GLES30.glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 	}
@@ -1239,22 +1209,22 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetTransformFeedbackVarying(int program, int index, int bufsize, int[] length, int lengthOffset,
-											  int[] size, int sizeOffset, int[] type, int typeOffset, byte[] name, int nameOffset) {
+			int[] size, int sizeOffset, int[] type, int typeOffset, byte[] name, int nameOffset) {
 
 		GLES30.glGetTransformFeedbackVarying(program, index, bufsize, length, lengthOffset, size, sizeOffset, type,
-											 typeOffset, name, nameOffset);
+				typeOffset, name, nameOffset);
 	}
 
 	@Override
 	public String glGetTransformFeedbackVarying(int program, int index, int[] size, int sizeOffset, int[] type,
-												int typeOffset) {
+			int typeOffset) {
 
 		return GLES30.glGetTransformFeedbackVarying(program, index, size, sizeOffset, type, typeOffset);
 	}
 
 	@Override
 	public String glGetTransformFeedbackVarying(int program, int index, java.nio.IntBuffer size,
-												java.nio.IntBuffer type) {
+			java.nio.IntBuffer type) {
 
 		return GLES30.glGetTransformFeedbackVarying(program, index, size, type);
 	}
@@ -1471,7 +1441,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetUniformIndices(int program, String[] uniformNames, int[] uniformIndices,
-									int uniformIndicesOffset) {
+			int uniformIndicesOffset) {
 
 		GLES30.glGetUniformIndices(program, uniformNames, uniformIndices, uniformIndicesOffset);
 	}
@@ -1484,15 +1454,15 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetActiveUniformsiv(int program, int uniformCount, int[] uniformIndices, int uniformIndicesOffset,
-									  int pname, int[] params, int paramsOffset) {
+			int pname, int[] params, int paramsOffset) {
 
 		GLES30.glGetActiveUniformsiv(program, uniformCount, uniformIndices, uniformIndicesOffset, pname, params,
-									 paramsOffset);
+				paramsOffset);
 	}
 
 	@Override
 	public void glGetActiveUniformsiv(int program, int uniformCount, java.nio.IntBuffer uniformIndices, int pname,
-									  java.nio.IntBuffer params) {
+			java.nio.IntBuffer params) {
 
 		GLES30.glGetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params);
 	}
@@ -1517,15 +1487,15 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, int bufSize, int[] length,
-											int lengthOffset, byte[] uniformBlockName, int uniformBlockNameOffset) {
+			int lengthOffset, byte[] uniformBlockName, int uniformBlockNameOffset) {
 
 		GLES30.glGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, lengthOffset, uniformBlockName,
-										   uniformBlockNameOffset);
+				uniformBlockNameOffset);
 	}
 
 	@Override
 	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, java.nio.Buffer length,
-											java.nio.Buffer uniformBlockName) {
+			java.nio.Buffer uniformBlockName) {
 
 		GLES30.glGetActiveUniformBlockName(program, uniformBlockIndex, length, uniformBlockName);
 	}
@@ -1604,7 +1574,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetSynciv(long sync, int pname, int bufSize, int[] length, int lengthOffset, int[] values,
-							int valuesOffset) {
+			int valuesOffset) {
 
 		GLES30.glGetSynciv(sync, pname, bufSize, length, lengthOffset, values, valuesOffset);
 	}
@@ -1791,14 +1761,14 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetProgramBinary(int program, int bufSize, int[] length, int lengthOffset, int[] binaryFormat,
-								   int binaryFormatOffset, java.nio.Buffer binary) {
+			int binaryFormatOffset, java.nio.Buffer binary) {
 
 		GLES30.glGetProgramBinary(program, bufSize, length, lengthOffset, binaryFormat, binaryFormatOffset, binary);
 	}
 
 	@Override
 	public void glGetProgramBinary(int program, int bufSize, java.nio.IntBuffer length, java.nio.IntBuffer binaryFormat,
-								   java.nio.Buffer binary) {
+			java.nio.Buffer binary) {
 
 		GLES30.glGetProgramBinary(program, bufSize, length, binaryFormat, binary);
 	}
@@ -1829,14 +1799,14 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glInvalidateSubFramebuffer(int target, int numAttachments, int[] attachments, int offset, int x, int y,
-										   int width, int height) {
+			int width, int height) {
 
 		GLES30.glInvalidateSubFramebuffer(target, numAttachments, attachments, offset, x, y, width, height);
 	}
 
 	@Override
 	public void glInvalidateSubFramebuffer(int target, int numAttachments, java.nio.IntBuffer attachments, int x, int y,
-										   int width, int height) {
+			int width, int height) {
 
 		GLES30.glInvalidateSubFramebuffer(target, numAttachments, attachments, x, y, width, height);
 	}
@@ -1855,14 +1825,14 @@ public class OpenGLES30 implements AndroidTGF {
 
 	@Override
 	public void glGetInternalformativ(int target, int internalformat, int pname, int bufSize, int[] params,
-									  int offset) {
+			int offset) {
 
 		GLES30.glGetInternalformativ(target, internalformat, pname, bufSize, params, offset);
 	}
 
 	@Override
 	public void glGetInternalformativ(int target, int internalformat, int pname, int bufSize,
-									  java.nio.IntBuffer params) {
+			java.nio.IntBuffer params) {
 
 		GLES30.glGetInternalformativ(target, internalformat, pname, bufSize, params);
 	}
@@ -1913,6 +1883,7 @@ public class OpenGLES30 implements AndroidTGF {
 	public String glVersion() {
 		return GLES20.glGetString(GLES20.GL_VERSION);
 	}
+
 	@Override
 	public boolean limitGLESContext() {
 
@@ -2027,7 +1998,7 @@ public class OpenGLES30 implements AndroidTGF {
 
 	Array<int[]> meshes = new Array<int[]>();
 
-	//mesh id generated and binded Vao instead
+	// mesh id generated and binded Vao instead
 	@Override
 	public int[] genMesh(final int max_v_data, final boolean v_static, final int max_i_data, final boolean i_static) {
 		final int[] handlers = new int[3];
@@ -2047,14 +2018,14 @@ public class OpenGLES30 implements AndroidTGF {
 			// binding vertex
 			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, handlers[1]);
 			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, max_v_data, null,
-								v_static ? GLES20.GL_STATIC_DRAW : GLES20.GL_DYNAMIC_DRAW);
+					v_static ? GLES20.GL_STATIC_DRAW : GLES20.GL_DYNAMIC_DRAW);
 			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 			// binding indices
 			GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, handlers[2]);
 			GLES20.glBufferData(GLES20.GL_ELEMENT_ARRAY_BUFFER, max_i_data, null,
-								i_static ? GLES20.GL_STATIC_DRAW : GLES20.GL_DYNAMIC_DRAW);
+					i_static ? GLES20.GL_STATIC_DRAW : GLES20.GL_DYNAMIC_DRAW);
 			GLES20.glBindBuffer(GLES20.GL_ELEMENT_ARRAY_BUFFER, 0);
-			
+
 			meshes.add(handlers);
 		} catch (RuntimeException e) {
 			Arrays.fill(handlers, -1);
@@ -2119,7 +2090,7 @@ public class OpenGLES30 implements AndroidTGF {
 		final boolean enable = depthFunction != 0;
 		boolean changed = capabilitySwitch(enable, GLES20.GL_DEPTH_TEST);
 		if (enable && (depthFunc != depthFunction || this.depthRangeNear != depthRangeNear
-			|| this.depthRangeFar != depthRangeFar)) {
+				|| this.depthRangeFar != depthRangeFar)) {
 			if (depthFunc != depthFunction)
 				GLES20.glDepthFunc(depthFunc = depthFunction);
 			if (this.depthRangeNear != depthRangeNear || this.depthRangeFar != depthRangeFar)
@@ -2154,8 +2125,8 @@ public class OpenGLES30 implements AndroidTGF {
 		this.blendSFactor = GLES20.GL_ONE;
 		this.blendDFactor = GLES20.GL_ZERO;
 		this.cullFace = GLES20.GL_BACK;
-		//in future directly regenerate here to efficiently
-		
+		// in future directly regenerate here to efficiently
+
 		Texture.invalidateAllTextures();
 		Cubemap.invalidateAllCubemaps();
 		TextureArray.invalidateAllTextureArrays();

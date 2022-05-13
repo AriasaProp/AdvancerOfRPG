@@ -1,7 +1,7 @@
 package com.ariasaproject.advancerofrpg.graphics;
 
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.utils.Array;
 
 public class TextureArray extends GLTexture {

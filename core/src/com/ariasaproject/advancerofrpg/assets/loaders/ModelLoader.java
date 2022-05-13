@@ -2,10 +2,10 @@ package com.ariasaproject.advancerofrpg.assets.loaders;
 
 import java.util.Iterator;
 
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.g3d.Model;
 import com.ariasaproject.advancerofrpg.graphics.g3d.model.data.ModelData;

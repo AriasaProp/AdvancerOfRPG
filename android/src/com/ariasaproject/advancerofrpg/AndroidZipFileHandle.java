@@ -6,9 +6,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileType;
 import com.ariasaproject.advancerofrpg.ZipResourceFile.ZipEntryRO;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
-import com.ariasaproject.advancerofrpg.files.Files.FileType;
 
 import android.content.res.AssetFileDescriptor;
 

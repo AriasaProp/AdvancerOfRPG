@@ -1,6 +1,6 @@
 package com.ariasaproject.advancerofrpg.graphics.glutils;
 
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 

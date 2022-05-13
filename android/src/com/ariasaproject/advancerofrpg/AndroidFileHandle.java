@@ -10,8 +10,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
-import com.ariasaproject.advancerofrpg.files.Files.FileType;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileType;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -256,11 +256,6 @@ public class AndroidFileHandle extends FileHandle {
 		return super.file();
 	}
 
-	/**
-	 * @return an AssetFileDescriptor for this file or null if the file is not of
-	 *         type Internal
-	 * @throws IOException - thrown by AssetManager.openFd()
-	 */
 	public AssetFileDescriptor getAssetFileDescriptor() throws IOException {
 		return assets != null ? assets.openFd(path()) : null;
 	}

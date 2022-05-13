@@ -2,11 +2,11 @@ package com.ariasaproject.advancerofrpg.graphics;
 
 import com.ariasaproject.advancerofrpg.ApplicationListener;
 import com.ariasaproject.advancerofrpg.GraphFunc;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters.LoadedCallback;
 import com.ariasaproject.advancerofrpg.assets.loaders.TextureLoader.TextureParameter;
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.glutils.FileTextureData;
 import com.ariasaproject.advancerofrpg.graphics.glutils.PixmapTextureData;

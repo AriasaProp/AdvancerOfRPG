@@ -1,7 +1,6 @@
 package com.ariasaproject.advancerofrpg;
 
 import com.ariasaproject.advancerofrpg.audio.Audio;
-import com.ariasaproject.advancerofrpg.files.Files;
 import com.ariasaproject.advancerofrpg.graphics.Graphics;
 import com.ariasaproject.advancerofrpg.input.Clipboard;
 import com.ariasaproject.advancerofrpg.input.Input;

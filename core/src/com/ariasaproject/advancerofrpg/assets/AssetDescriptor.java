@@ -1,6 +1,6 @@
 package com.ariasaproject.advancerofrpg.assets;
 
-import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 
 public class AssetDescriptor<T extends Disposable> {

@@ -121,8 +121,6 @@ public interface TGF {
 	public static final int GL_SAMPLES = 0x80A9;
 	public static final int GL_SAMPLE_COVERAGE_VALUE = 0x80AA;
 	public static final int GL_SAMPLE_COVERAGE_INVERT = 0x80AB;
-	public static final int GL_NUM_COMPRESSED_TEXTURE_FORMATS = 0x86A2;
-	public static final int GL_COMPRESSED_TEXTURE_FORMATS = 0x86A3;
 	public static final int GL_DONT_CARE = 0x1100;
 	public static final int GL_FASTEST = 0x1101;
 	public static final int GL_NICEST = 0x1102;
@@ -571,16 +569,6 @@ public interface TGF {
 	public static final int GL_PROGRAM_BINARY_LENGTH = 0x8741;
 	public static final int GL_NUM_PROGRAM_BINARY_FORMATS = 0x87FE;
 	public static final int GL_PROGRAM_BINARY_FORMATS = 0x87FF;
-	public static final int GL_COMPRESSED_R11_EAC = 0x9270;
-	public static final int GL_COMPRESSED_SIGNED_R11_EAC = 0x9271;
-	public static final int GL_COMPRESSED_RG11_EAC = 0x9272;
-	public static final int GL_COMPRESSED_SIGNED_RG11_EAC = 0x9273;
-	public static final int GL_COMPRESSED_RGB8_ETC2 = 0x9274;
-	public static final int GL_COMPRESSED_SRGB8_ETC2 = 0x9275;
-	public static final int GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 0x9276;
-	public static final int GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 0x9277;
-	public static final int GL_COMPRESSED_RGBA8_ETC2_EAC = 0x9278;
-	public static final int GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC = 0x9279;
 	public static final int GL_TEXTURE_IMMUTABLE_FORMAT = 0x912F;
 	public static final int GL_MAX_ELEMENT_INDEX = 0x8D6B;
 	public static final int GL_NUM_SAMPLE_COUNTS = 0x9380;
@@ -623,11 +611,9 @@ public interface TGF {
 
 	public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha);
 
-	public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height,
-			int border);
+	public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border);
 
-	public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width,
-			int height);
+	public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height);
 
 	public void setCullFace(int mode);
 
@@ -773,8 +759,7 @@ public interface TGF {
 
 	public void glStencilOpSeparate(int face, int fail, int zfail, int zpass);
 
-	public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format,
-			int type, Buffer pixels);
+	public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels);
 
 	public void glTexParameterf(int target, int pname, float param);
 
@@ -784,8 +769,7 @@ public interface TGF {
 
 	public void glTexParameteriv(int target, int pname, IntBuffer params);
 
-	public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
-			int type, Buffer pixels);
+	public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels);
 
 	public void glUniform1f(int location, float x);
 
@@ -875,32 +859,15 @@ public interface TGF {
 
 	public void glDrawRangeElements(int mode, int start, int end, int count, int type, int offset);
 
-	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border,
-			int format, int type, java.nio.Buffer pixels);
+	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, java.nio.Buffer pixels);
 
-	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border,
-			int format, int type, int offset);
+	public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int offset);
 
-	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height,
-			int depth, int format, int type, java.nio.Buffer pixels);
+	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, java.nio.Buffer pixels);
 
-	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height,
-			int depth, int format, int type, int offset);
+	public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int offset);
 
-	public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y,
-			int width, int height);
-
-	public void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth,
-			int border, int imageSize, java.nio.Buffer data);
-
-	public void glCompressedTexImage3D(int target, int level, int internalformat, int width, int height, int depth,
-			int border, int imageSize, int offset);
-
-	public void glCompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width,
-			int height, int depth, int format, int imageSize, java.nio.Buffer data);
-
-	public void glCompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width,
-			int height, int depth, int format, int imageSize, int offset);
+	public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height);
 
 	public void glGenQueries(int n, int[] ids, int offset);
 
@@ -958,8 +925,7 @@ public interface TGF {
 
 	public void glUniformMatrix4x3fv(int location, int count, boolean transpose, java.nio.FloatBuffer value);
 
-	public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1,
-			int dstY1, int mask, int filter);
+	public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter);
 
 	public void glRenderbufferStorageMultisample(int target, int samples, int internalformat, int width, int height);
 
@@ -991,14 +957,11 @@ public interface TGF {
 
 	public void glTransformFeedbackVaryings(int program, String[] varyings, int bufferMode);
 
-	public void glGetTransformFeedbackVarying(int program, int index, int bufsize, int[] length, int lengthOffset,
-			int[] size, int sizeOffset, int[] type, int typeOffset, byte[] name, int nameOffset);
+	public void glGetTransformFeedbackVarying(int program, int index, int bufsize, int[] length, int lengthOffset, int[] size, int sizeOffset, int[] type, int typeOffset, byte[] name, int nameOffset);
 
-	public String glGetTransformFeedbackVarying(int program, int index, int[] size, int sizeOffset, int[] type,
-			int typeOffset);
+	public String glGetTransformFeedbackVarying(int program, int index, int[] size, int sizeOffset, int[] type, int typeOffset);
 
-	public String glGetTransformFeedbackVarying(int program, int index, java.nio.IntBuffer size,
-			java.nio.IntBuffer type);
+	public String glGetTransformFeedbackVarying(int program, int index, java.nio.IntBuffer size, java.nio.IntBuffer type);
 
 	public void glVertexAttribIPointer(int index, int size, int type, int stride, int offset);
 
@@ -1074,11 +1037,9 @@ public interface TGF {
 
 	public void glGetUniformIndices(int program, String[] uniformNames, java.nio.IntBuffer uniformIndices);
 
-	public void glGetActiveUniformsiv(int program, int uniformCount, int[] uniformIndices, int uniformIndicesOffset,
-			int pname, int[] params, int paramsOffset);
+	public void glGetActiveUniformsiv(int program, int uniformCount, int[] uniformIndices, int uniformIndicesOffset, int pname, int[] params, int paramsOffset);
 
-	public void glGetActiveUniformsiv(int program, int uniformCount, java.nio.IntBuffer uniformIndices, int pname,
-			java.nio.IntBuffer params);
+	public void glGetActiveUniformsiv(int program, int uniformCount, java.nio.IntBuffer uniformIndices, int pname, java.nio.IntBuffer params);
 
 	public int glGetUniformBlockIndex(int program, String uniformBlockName);
 
@@ -1086,11 +1047,9 @@ public interface TGF {
 
 	public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, java.nio.IntBuffer params);
 
-	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, int bufSize, int[] length,
-			int lengthOffset, byte[] uniformBlockName, int uniformBlockNameOffset);
+	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, int bufSize, int[] length, int lengthOffset, byte[] uniformBlockName, int uniformBlockNameOffset);
 
-	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, java.nio.Buffer length,
-			java.nio.Buffer uniformBlockName);
+	public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, java.nio.Buffer length, java.nio.Buffer uniformBlockName);
 
 	public String glGetActiveUniformBlockName(int program, int uniformBlockIndex);
 
@@ -1116,8 +1075,7 @@ public interface TGF {
 
 	public void glGetInteger64v(int pname, java.nio.LongBuffer params);
 
-	public void glGetSynciv(long sync, int pname, int bufSize, int[] length, int lengthOffset, int[] values,
-			int valuesOffset);
+	public void glGetSynciv(long sync, int pname, int bufSize, int[] length, int lengthOffset, int[] values, int valuesOffset);
 
 	public void glGetSynciv(long sync, int pname, int bufSize, java.nio.IntBuffer length, java.nio.IntBuffer values);
 
@@ -1179,11 +1137,9 @@ public interface TGF {
 
 	public void glResumeTransformFeedback();
 
-	public void glGetProgramBinary(int program, int bufSize, int[] length, int lengthOffset, int[] binaryFormat,
-			int binaryFormatOffset, java.nio.Buffer binary);
+	public void glGetProgramBinary(int program, int bufSize, int[] length, int lengthOffset, int[] binaryFormat, int binaryFormatOffset, java.nio.Buffer binary);
 
-	public void glGetProgramBinary(int program, int bufSize, java.nio.IntBuffer length, java.nio.IntBuffer binaryFormat,
-			java.nio.Buffer binary);
+	public void glGetProgramBinary(int program, int bufSize, java.nio.IntBuffer length, java.nio.IntBuffer binaryFormat, java.nio.Buffer binary);
 
 	public void glProgramBinary(int program, int binaryFormat, java.nio.Buffer binary, int length);
 
@@ -1193,11 +1149,9 @@ public interface TGF {
 
 	public void glInvalidateFramebuffer(int target, int numAttachments, java.nio.IntBuffer attachments);
 
-	public void glInvalidateSubFramebuffer(int target, int numAttachments, int[] attachments, int offset, int x, int y,
-			int width, int height);
+	public void glInvalidateSubFramebuffer(int target, int numAttachments, int[] attachments, int offset, int x, int y, int width, int height);
 
-	public void glInvalidateSubFramebuffer(int target, int numAttachments, java.nio.IntBuffer attachments, int x, int y,
-			int width, int height);
+	public void glInvalidateSubFramebuffer(int target, int numAttachments, java.nio.IntBuffer attachments, int x, int y, int width, int height);
 
 	public void glTexStorage2D(int target, int levels, int internalformat, int width, int height);
 
@@ -1205,8 +1159,7 @@ public interface TGF {
 
 	public void glGetInternalformativ(int target, int internalformat, int pname, int bufSize, int[] params, int offset);
 
-	public void glGetInternalformativ(int target, int internalformat, int pname, int bufSize,
-			java.nio.IntBuffer params);
+	public void glGetInternalformativ(int target, int internalformat, int pname, int bufSize, java.nio.IntBuffer params);
 
 	public boolean glIsFramebuffer(int handler);
 
@@ -1220,7 +1173,7 @@ public interface TGF {
 	public boolean supportsExtension(String extension);
 
 	public boolean supportsRenderer(String renderer);
-	
+
 	public String glVersion();
 
 	public boolean limitGLESContext();
@@ -1230,7 +1183,7 @@ public interface TGF {
 	public int getMaxTextureSize();
 
 	public int getMaxTextureUnit();
-	
+
 	public int[] compileShaderProgram(String source, String prefix) throws IllegalArgumentException;
 
 	public boolean validShaderProgram(final int[] handlers);
@@ -1238,7 +1191,7 @@ public interface TGF {
 	public void destroyShaderProgram(final int[] handlers);
 
 	public int[] genMesh(final int max_v_data, final boolean v_static, final int max_i_data, final boolean i_static);
-	
+
 	public boolean validMesh(final int[] handlers);
 
 	public void destroyMesh(final int[] outHandlers);
@@ -1252,7 +1205,7 @@ public interface TGF {
 	public boolean setBlending(final boolean enabled, final int sFactor, final int dFactor);
 
 	public void clear();
-	
+
 	public String getLog();
 
 }
