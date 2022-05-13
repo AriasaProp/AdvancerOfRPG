@@ -33,13 +33,13 @@ public class DepthShader implements Disposable {
 	private Mesh currentMesh;
 
 	private static String defaultShaderProgram = null;
-	//Global uniform locations
+	// Global uniform locations
 	private final int u_projViewTrans;
 	// Object uniforms locations
 	private final int u_worldTrans;
-	private final int u_bones;
+	// private final int u_bones;
 	// Material uniforms
-	private final int u_diffuseTexture;
+	// private final int u_diffuseTexture;
 	// another uniform
 	private final int numBones;
 	private final int weights;
@@ -48,7 +48,6 @@ public class DepthShader implements Disposable {
 	 */
 	protected final long attributesMask;
 	private final long vertexMask;
-	private Renderable renderable;
 
 	public DepthShader(final Renderable renderable) {
 		combinedAttributes.clear();
@@ -79,22 +78,26 @@ public class DepthShader implements Disposable {
 			prefix += "#define " + BlendingAttribute.Alias + "Flag\n";
 		if ((attributesMask & TextureAttribute.Diffuse) == TextureAttribute.Diffuse) {
 			prefix += "#define " + TextureAttribute.DiffuseAlias + "Flag\n";
-			prefix += "#define " + TextureAttribute.DiffuseAlias + "Coord texCoord0\n"; // FIXME implement UV mapping
+			prefix += "#define " + TextureAttribute.DiffuseAlias + "Coord texCoord0\n"; // FIXME
+																						// implement
+																						// UV
+																						// mapping
 		}
 		this.numBones = renderable.bones == null ? 0 : 12;
 		if (this.numBones > 0) {
 			prefix += "#define numBones " + this.numBones + "\n";
 		}
-		this.renderable = renderable;
 		this.program = new ShaderProgram(shaderProgram, prefix);
 
 		// Global Uniforms
 		u_projViewTrans = program.fetchUniformLocation("u_projViewTrans", true);
 		// Object uniforms
 		u_worldTrans = program.fetchUniformLocation("u_worldTrans", true);
-		u_diffuseTexture = register(Inputs.diffuseTexture, Setters.diffuseTexture);
-		u_bones = (this.numBones > 0) ? register(Inputs.bones, new Setters.Bones(numBones)) : -1;
-		
+		// u_diffuseTexture = register(Inputs.diffuseTexture,
+		// Setters.diffuseTexture);
+		// u_bones = (this.numBones > 0) ? register(Inputs.bones, new
+		// Setters.Bones(numBones)) : -1;
+
 		final int n = uniforms.size;
 		locations = new int[n];
 		for (int i = 0; i < n; i++) {
@@ -124,7 +127,6 @@ public class DepthShader implements Disposable {
 					this.attributes.put(attr.getKey(), location);
 			}
 		}
-		this.renderable = null;
 	}
 
 	public int compareTo(DepthShader other) {
@@ -265,7 +267,7 @@ public class DepthShader implements Disposable {
 	public final int loc(final int inputID) {
 		return (inputID >= 0 && inputID < locations.length) ? locations[inputID] : -1;
 	}
-	
+
 	public final boolean set(final int uniform, final GLTexture texture) {
 		if (locations[uniform] < 0)
 			return false;

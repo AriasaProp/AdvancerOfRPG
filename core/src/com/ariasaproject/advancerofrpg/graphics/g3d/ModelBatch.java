@@ -1,5 +1,7 @@
 package com.ariasaproject.advancerofrpg.graphics.g3d;
 
+import java.util.Comparator;
+
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.Camera;
 import com.ariasaproject.advancerofrpg.graphics.Color;
@@ -23,7 +25,6 @@ import com.ariasaproject.advancerofrpg.math.Vector3;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 import com.ariasaproject.advancerofrpg.utils.FlushablePool;
-import java.util.Comparator;
 
 public class ModelBatch implements Disposable {
 	// used for var

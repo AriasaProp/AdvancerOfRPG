@@ -2,7 +2,7 @@ package com.ariasaproject.advancerofrpg.graphics;
 
 import java.nio.ByteBuffer;
 
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 
 public class Pixmap implements Disposable {

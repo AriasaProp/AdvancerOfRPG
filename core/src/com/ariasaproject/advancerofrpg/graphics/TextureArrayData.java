@@ -1,8 +1,8 @@
 package com.ariasaproject.advancerofrpg.graphics;
 
-import com.ariasaproject.advancerofrpg.files.FileHandle;
-import com.ariasaproject.advancerofrpg.graphics.glutils.FileTextureArrayData;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
+import com.ariasaproject.advancerofrpg.graphics.glutils.FileTextureArrayData;
 
 
 public interface TextureArrayData {

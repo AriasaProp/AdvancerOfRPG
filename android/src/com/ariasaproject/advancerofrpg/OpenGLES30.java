@@ -1,8 +1,10 @@
 package com.ariasaproject.advancerofrpg;
 
-import android.opengl.GLES20;
-import android.opengl.GLES30;
-import android.util.Log;
+import java.nio.Buffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.Arrays;
+
 import com.ariasaproject.advancerofrpg.graphics.Cubemap;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.TextureArray;
@@ -11,10 +13,10 @@ import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 import com.ariasaproject.advancerofrpg.utils.IntArray;
-import java.nio.Buffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.Arrays;
+
+import android.opengl.GLES20;
+import android.opengl.GLES30;
+import android.util.Log;
 
 public class OpenGLES30 implements AndroidTGF {
 	// chace value for once only

@@ -8,7 +8,7 @@ import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
 import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
 import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.g3d.particles.ResourceData.AssetData;
 import com.ariasaproject.advancerofrpg.graphics.g3d.particles.batches.ParticleBatch;
 import com.ariasaproject.advancerofrpg.utils.Array;

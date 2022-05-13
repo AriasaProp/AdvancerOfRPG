@@ -1,7 +1,8 @@
 package com.ariasaproject.advancerofrpg;
 
-import com.ariasaproject.advancerofrpg.graphics.TGF;
 import java.io.Serializable;
+
+import com.ariasaproject.advancerofrpg.graphics.TGF;
 
 public class GraphFunc implements Serializable {
 	private static final long serialVersionUID = -6463386136171354152L;

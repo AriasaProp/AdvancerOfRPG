@@ -5,7 +5,7 @@ import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
 import com.ariasaproject.advancerofrpg.audio.Music;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.utils.Array;
 
 public class MusicLoader extends AsynchronousAssetLoader<Music, MusicLoader.MusicParameter> {

@@ -1,5 +1,6 @@
 package com.ariasaproject.advancerofrpg.screen;
 
+import com.ariasaproject.advancerofrpg.ApplicationListener;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.Camera;
 import com.ariasaproject.advancerofrpg.graphics.Color;
@@ -33,7 +34,6 @@ import com.ariasaproject.advancerofrpg.scenes2d.ui.ImageButton;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Touchpad;
 import com.ariasaproject.advancerofrpg.scenes2d.utils.ClickListener;
-import com.ariasaproject.advancerofrpg.ApplicationListener;
 
 public class GameView extends Scene {
 	Camera cam;

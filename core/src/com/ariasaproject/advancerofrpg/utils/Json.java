@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.utils.IntSet.IntSetIterator;
 import com.ariasaproject.advancerofrpg.utils.JsonValue.PrettyPrintSettings;
 import com.ariasaproject.advancerofrpg.utils.JsonWriter.OutputType;

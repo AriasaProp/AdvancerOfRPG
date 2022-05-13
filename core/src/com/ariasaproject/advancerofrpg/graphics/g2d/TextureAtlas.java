@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.Comparator;
 
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.files.Files.FileType;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.Texture;

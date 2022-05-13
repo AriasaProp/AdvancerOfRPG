@@ -6,7 +6,6 @@ import com.ariasaproject.advancerofrpg.graphics.Mesh;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.graphics.VertexAttribute;
 import com.ariasaproject.advancerofrpg.graphics.VertexAttributes.Usage;
-import com.ariasaproject.advancerofrpg.graphics.glutils.ShaderProgram;
 import com.ariasaproject.advancerofrpg.math.MathUtils;
 import com.ariasaproject.advancerofrpg.math.Matrix4;
 import com.ariasaproject.advancerofrpg.math.Vector2;

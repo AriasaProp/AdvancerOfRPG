@@ -3,7 +3,6 @@ package com.ariasaproject.advancerofrpg.graphics.glutils;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
-import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 
 public class GLOnlyTextureData implements TextureData {
 	int width = 0;

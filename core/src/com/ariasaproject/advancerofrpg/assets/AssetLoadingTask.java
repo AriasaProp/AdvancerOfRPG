@@ -1,14 +1,15 @@
 package com.ariasaproject.advancerofrpg.assets;
 
-import com.ariasaproject.advancerofrpg.assets.loaders.AssetLoader;
-import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
-import com.ariasaproject.advancerofrpg.assets.loaders.SynchronousAssetLoader;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
-import com.ariasaproject.advancerofrpg.utils.Array;
-import com.ariasaproject.advancerofrpg.utils.Disposable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import com.ariasaproject.advancerofrpg.assets.loaders.AssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.SynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.utils.Array;
+import com.ariasaproject.advancerofrpg.utils.Disposable;
 
 class AssetLoadingTask implements Callable<Void> {
 	final AssetDescriptor assetDesc;

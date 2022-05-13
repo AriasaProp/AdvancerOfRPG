@@ -1,5 +1,14 @@
 package com.ariasaproject.advancerofrpg;
 
+import com.ariasaproject.advancerofrpg.audio.Audio;
+import com.ariasaproject.advancerofrpg.files.Files;
+import com.ariasaproject.advancerofrpg.graphics.Graphics;
+import com.ariasaproject.advancerofrpg.input.Clipboard;
+import com.ariasaproject.advancerofrpg.input.Input;
+import com.ariasaproject.advancerofrpg.net.Net;
+import com.ariasaproject.advancerofrpg.utils.Array;
+import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -20,14 +29,6 @@ import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.Window;
 import android.view.WindowManager;
-import com.ariasaproject.advancerofrpg.audio.Audio;
-import com.ariasaproject.advancerofrpg.files.Files;
-import com.ariasaproject.advancerofrpg.graphics.Graphics;
-import com.ariasaproject.advancerofrpg.input.Clipboard;
-import com.ariasaproject.advancerofrpg.input.Input;
-import com.ariasaproject.advancerofrpg.net.Net;
-import com.ariasaproject.advancerofrpg.utils.Array;
-import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
 
 //AndroidApplication include graphics and Application
 public class AndroidApplication extends Activity implements Application, Runnable, Graphics, Callback {

@@ -2,7 +2,6 @@ package com.ariasaproject.advancerofrpg;
 
 import java.io.IOException;
 
-import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.audio.Music;
 
 import android.media.MediaPlayer;

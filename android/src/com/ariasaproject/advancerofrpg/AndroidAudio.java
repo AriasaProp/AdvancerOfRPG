@@ -10,7 +10,7 @@ import com.ariasaproject.advancerofrpg.audio.AudioDevice;
 import com.ariasaproject.advancerofrpg.audio.AudioRecorder;
 import com.ariasaproject.advancerofrpg.audio.Music;
 import com.ariasaproject.advancerofrpg.audio.Sound;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.files.Files.FileType;
 
 import android.annotation.TargetApi;

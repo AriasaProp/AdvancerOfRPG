@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.ariasaproject.advancerofrpg.graphics.Graphics;
 import com.ariasaproject.advancerofrpg.graphics.OrthographicCamera;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.graphics.g2d.Batch;
@@ -16,7 +17,6 @@ import com.ariasaproject.advancerofrpg.scenes2d.Stage;
 import com.ariasaproject.advancerofrpg.screen.Scene;
 import com.ariasaproject.advancerofrpg.screen.SplashScreen;
 import com.ariasaproject.advancerofrpg.utils.Viewport;
-import com.ariasaproject.advancerofrpg.graphics.Graphics;
 
 public class ApplicationListener {
 	public Stage stage;

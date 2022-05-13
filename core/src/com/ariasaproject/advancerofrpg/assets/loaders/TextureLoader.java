@@ -3,13 +3,13 @@ package com.ariasaproject.advancerofrpg.assets.loaders;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
-import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureWrap;
 import com.ariasaproject.advancerofrpg.graphics.glutils.FileTextureData;
+import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 import com.ariasaproject.advancerofrpg.utils.Array;
 
 public class TextureLoader extends AsynchronousAssetLoader<Texture, TextureLoader.TextureParameter> {

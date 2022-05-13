@@ -1,10 +1,10 @@
 package com.ariasaproject.advancerofrpg.graphics;
 
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
-import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData.TextureDataType;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureWrap;
+import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
+import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData.TextureDataType;
 import com.ariasaproject.advancerofrpg.math.MathUtils;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 

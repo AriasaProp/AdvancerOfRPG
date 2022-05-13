@@ -4,7 +4,7 @@ import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.assets.loaders.ModelLoader;
 import com.ariasaproject.advancerofrpg.assets.loaders.ModelLoader.ModelParameters;
-import com.ariasaproject.advancerofrpg.files.FileHandle;
+import com.ariasaproject.advancerofrpg.files.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.graphics.g3d.model.data.ModelData;
 import com.ariasaproject.advancerofrpg.utils.ObjectMap;
 import com.ariasaproject.advancerofrpg.utils.XmlReader;

@@ -1,5 +1,7 @@
 package com.ariasaproject.advancerofrpg.screen;
 
+import java.util.Locale;
+
 import com.ariasaproject.advancerofrpg.ApplicationListener;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
@@ -14,10 +16,8 @@ import com.ariasaproject.advancerofrpg.scenes2d.ui.ProgressBar;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Table;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Value;
-import com.ariasaproject.advancerofrpg.screen.Dashboard;
 import com.ariasaproject.advancerofrpg.utils.Align;
 import com.ariasaproject.advancerofrpg.utils.Pool;
-import java.util.Locale;
 
 public class SplashScreen extends Scene {
 	

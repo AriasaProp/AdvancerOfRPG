@@ -7,12 +7,12 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.model.NodeAnimation;
 import com.ariasaproject.advancerofrpg.graphics.g3d.model.NodeKeyframe;
 import com.ariasaproject.advancerofrpg.math.MathUtils;
 import com.ariasaproject.advancerofrpg.math.Quaternion;
+import com.ariasaproject.advancerofrpg.math.Transform;
 import com.ariasaproject.advancerofrpg.math.Vector3;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.ObjectMap;
 import com.ariasaproject.advancerofrpg.utils.ObjectMap.Entry;
 import com.ariasaproject.advancerofrpg.utils.Pool;
-import com.ariasaproject.advancerofrpg.math.Transform;
 
 public class AnimationController {
 	public AnimationDesc current;

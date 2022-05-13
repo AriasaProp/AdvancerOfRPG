@@ -2,7 +2,6 @@ package com.ariasaproject.advancerofrpg;
 
 import java.io.IOException;
 
-import com.ariasaproject.advancerofrpg.files.FileHandle;
 import com.ariasaproject.advancerofrpg.files.Files;
 
 import android.app.Activity;
@@ -10,7 +9,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
 
-public class AndroidFiles implements Files {
+public class AndroidFiles extends Files {
 	protected final String sdcard;
 	protected final String localpath;
 	protected final AssetManager assets;

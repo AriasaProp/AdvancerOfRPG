@@ -1,82 +1,16 @@
 package com.ariasaproject.advancerofrpg.utils;
 
-/**
- * This is a near duplicate of {@link TimSort}, modified for use with arrays of
- * objects that implement {@link Comparable}, instead of using explicit
- * comparators.
- * <p>
- * <p>
- * If you are using an optimizing VM, you may find that ComparableTimSort offers
- * no performance benefit over TimSort in conjunction with a comparator that
- * simply returns {@code ((Comparable)first).compareTo(Second)}. If this is the
- * case, you are better off deleting ComparableTimSort to eliminate the code
- * duplication. (See Arrays.java for details.)
- */
 class ComparableTimSort {
-	/**
-	 * This is the minimum sized sequence that will be merged. Shorter sequences
-	 * will be lengthened by calling binarySort. If the entire array is less than
-	 * this length, no merges will be performed.
-	 * <p>
-	 * This constant should be a power of two. It was 64 in Tim Peter's C
-	 * implementation, but 32 was empirically determined to work better in this
-	 * implementation. In the unlikely event that you set this constant to be a
-	 * number that's not a power of two, you'll need to change the
-	 * {@link #minRunLength} computation.
-	 * <p>
-	 * If you decrease this constant, you must change the stackLen computation in
-	 * the TimSort constructor, or you risk an ArrayOutOfBounds exception. See
-	 * listsort.txt for a discussion of the minimum stack length required as a
-	 * function of the length of the array being sorted and the minimum merge
-	 * sequence length.
-	 */
+
 	private static final int MIN_MERGE = 32;
-	/**
-	 * When we get into galloping mode, we stay there until both runs win less often
-	 * than MIN_GALLOP consecutive times.
-	 */
 	private static final int MIN_GALLOP = 7;
-	/**
-	 * Maximum initial size of tmp array, which is used for merging. The array can
-	 * grow to accommodate demand.
-	 * <p>
-	 * Unlike Tim's original C version, we do not allocate this much storage when
-	 * sorting smaller arrays. This change was required for performance.
-	 */
 	private static final int INITIAL_TMP_STORAGE_LENGTH = 256;
-	/**
-	 * Asserts have been placed in if-statements for performace. To enable them, set
-	 * this field to true and enable them in VM with a command line flag. If you
-	 * modify this class, please do test the asserts!
-	 */
-	private static final boolean DEBUG = false;
 	private final int[] runBase;
 	private final int[] runLen;
-	/**
-	 * The array being sorted.
-	 */
 	private Object[] a;
-	/**
-	 * This controls when we get *into* galloping mode. It is initialized to
-	 * MIN_GALLOP. The mergeLo and mergeHi methods nudge it higher for random data,
-	 * and lower for highly structured data.
-	 */
 	private int minGallop = MIN_GALLOP;
-	/**
-	 * Temp storage for merges.
-	 */
 	private Object[] tmp;
 	private int tmpCount;
-	/**
-	 * A stack of pending runs yet to be merged. Run i starts at address base[i] and
-	 * extends for len[i] elements. It's always true (so long as the indices are in
-	 * bounds) that:
-	 * <p>
-	 * runBase[i] + runLen[i] == runBase[i + 1]
-	 * <p>
-	 * so we could cut the storage for this, but it's a minor amount, and keeping
-	 * all the info explicit simplifies the code.
-	 */
 	private int stackSize = 0; // Number of pending runs on stack
 
 	ComparableTimSort() {
@@ -84,12 +18,6 @@ class ComparableTimSort {
 		runBase = new int[40];
 		runLen = new int[40];
 	}
-
-	/**
-	 * Creates a TimSort instance to maintain the state of an ongoing sort.
-	 *
-	 * @param a the array to be sorted
-	 */
 	private ComparableTimSort(Object[] a) {
 		this.a = a;
 		// Allocate temp storage (which may be increased later if necessary)
@@ -151,13 +79,13 @@ class ComparableTimSort {
 			nRemaining -= runLen;
 		} while (nRemaining != 0);
 		// Merge all remaining runs to complete sort
-		assert !DEBUG || lo == hi;
+		assert lo == hi;
 		ts.mergeForceCollapse();
-		assert !DEBUG || ts.stackSize == 1;
+		assert ts.stackSize == 1;
 	}
 
 	private static void binarySort(Object[] a, int lo, int hi, int start) {
-		assert !DEBUG || lo <= start && start <= hi;
+		assert lo <= start && start <= hi;
 		if (start == lo)
 			start++;
 		for (; start < hi; start++) {
@@ -165,7 +93,7 @@ class ComparableTimSort {
 			// Set left (and right) to the index where a[start] (pivot) belongs
 			int left = lo;
 			int right = start;
-			assert !DEBUG || left <= right;
+			assert left <= right;
 			/*
 			 * Invariants: pivot >= all in [lo, left). pivot < all in [right, start).
 			 */
@@ -176,7 +104,7 @@ class ComparableTimSort {
 				else
 					left = mid + 1;
 			}
-			assert !DEBUG || left == right;
+			assert left == right;
 
 			/*
 			 * The invariants still hold: pivot >= all in [lo, left) and pivot < all in
@@ -225,7 +153,7 @@ class ComparableTimSort {
 	 */
 	@SuppressWarnings("unchecked")
 	private static int countRunAndMakeAscending(Object[] a, int lo, int hi) {
-		assert !DEBUG || lo < hi;
+		assert lo < hi;
 		int runHi = lo + 1;
 		if (runHi == hi)
 			return 1;
@@ -275,7 +203,7 @@ class ComparableTimSort {
 	 * @return the length of the minimum run to be merged
 	 */
 	private static int minRunLength(int n) {
-		assert !DEBUG || n >= 0;
+		assert n >= 0;
 		int r = 0; // Becomes 1 if any 1 bits are shifted off
 		while (n >= MIN_MERGE) {
 			r |= (n & 1);
@@ -302,7 +230,7 @@ class ComparableTimSort {
 	 *         follow it.
 	 */
 	private static int gallopLeft(Comparable<Object> key, Object[] a, int base, int len, int hint) {
-		assert !DEBUG || len > 0 && hint >= 0 && hint < len;
+		assert len > 0 && hint >= 0 && hint < len;
 		int lastOfs = 0;
 		int ofs = 1;
 		if (key.compareTo(a[base + hint]) > 0) {
@@ -335,7 +263,7 @@ class ComparableTimSort {
 			lastOfs = hint - ofs;
 			ofs = hint - tmp;
 		}
-		assert !DEBUG || -1 <= lastOfs && lastOfs < ofs && ofs <= len;
+		assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
 
 		/*
 		 * Now a[base+lastOfs] < key <= a[base+ofs], so key belongs somewhere to the
@@ -350,7 +278,7 @@ class ComparableTimSort {
 			else
 				ofs = m; // key <= a[base + m]
 		}
-		assert !DEBUG || lastOfs == ofs; // so a[base + ofs - 1] < key <= a[base + ofs]
+		assert lastOfs == ofs; // so a[base + ofs - 1] < key <= a[base + ofs]
 		return ofs;
 	}
 
@@ -367,7 +295,7 @@ class ComparableTimSort {
 	 * @return the int k, 0 <= k <= n such that a[b + k - 1] <= key < a[b + k]
 	 */
 	private static int gallopRight(Comparable<Object> key, Object[] a, int base, int len, int hint) {
-		assert !DEBUG || len > 0 && hint >= 0 && hint < len;
+		assert len > 0 && hint >= 0 && hint < len;
 		int ofs = 1;
 		int lastOfs = 0;
 		if (key.compareTo(a[base + hint]) < 0) {
@@ -400,7 +328,7 @@ class ComparableTimSort {
 			lastOfs += hint;
 			ofs += hint;
 		}
-		assert !DEBUG || -1 <= lastOfs && lastOfs < ofs && ofs <= len;
+		assert -1 <= lastOfs && lastOfs < ofs && ofs <= len;
 
 		/*
 		 * Now a[b + lastOfs] <= key < a[b + ofs], so key belongs somewhere to the right
@@ -415,7 +343,7 @@ class ComparableTimSort {
 			else
 				lastOfs = m + 1; // a[b + m] <= key
 		}
-		assert !DEBUG || lastOfs == ofs; // so a[b + ofs - 1] <= key < a[b + ofs]
+		assert lastOfs == ofs; // so a[b + ofs - 1] <= key < a[b + ofs]
 		return ofs;
 	}
 
@@ -470,9 +398,9 @@ class ComparableTimSort {
 			nRemaining -= runLen;
 		} while (nRemaining != 0);
 		// Merge all remaining runs to complete sort
-		assert !DEBUG || lo == hi;
+		assert lo == hi;
 		mergeForceCollapse();
-		assert !DEBUG || stackSize == 1;
+		assert stackSize == 1;
 		this.a = null;
 		Object[] tmp = this.tmp;
 		for (int i = 0, n = tmpCount; i < n; i++)
@@ -538,15 +466,15 @@ class ComparableTimSort {
 	 */
 	@SuppressWarnings("unchecked")
 	private void mergeAt(int i) {
-		assert !DEBUG || stackSize >= 2;
-		assert !DEBUG || i >= 0;
-		assert !DEBUG || i == stackSize - 2 || i == stackSize - 3;
+		assert stackSize >= 2;
+		assert i >= 0;
+		assert i == stackSize - 2 || i == stackSize - 3;
 		int base1 = runBase[i];
 		int len1 = runLen[i];
 		int base2 = runBase[i + 1];
 		int len2 = runLen[i + 1];
-		assert !DEBUG || len1 > 0 && len2 > 0;
-		assert !DEBUG || base1 + len1 == base2;
+		assert len1 > 0 && len2 > 0;
+		assert base1 + len1 == base2;
 
 		/*
 		 * Record the length of the combined runs; if i is the 3rd-last run now, also
@@ -565,7 +493,7 @@ class ComparableTimSort {
 		 * be ignored (because they're already in place).
 		 */
 		int k = gallopRight((Comparable<Object>) a[base2], a, base1, len1, 0);
-		assert !DEBUG || k >= 0;
+		assert k >= 0;
 		base1 += k;
 		len1 -= k;
 		if (len1 == 0)
@@ -576,7 +504,7 @@ class ComparableTimSort {
 		 * can be ignored (because they're already in place).
 		 */
 		len2 = gallopLeft((Comparable<Object>) a[base1 + len1 - 1], a, base2, len2, len2 - 1);
-		assert !DEBUG || len2 >= 0;
+		assert len2 >= 0;
 		if (len2 == 0)
 			return;
 		// Merge remaining runs, using tmp array with min(len1, len2) elements
@@ -604,7 +532,7 @@ class ComparableTimSort {
 	 */
 	@SuppressWarnings("unchecked")
 	private void mergeLo(int base1, int len1, int base2, int len2) {
-		assert !DEBUG || len1 > 0 && len2 > 0 && base1 + len1 == base2;
+		assert len1 > 0 && len2 > 0 && base1 + len1 == base2;
 		// Copy first run into temp array
 		Object[] a = this.a; // For performance
 		Object[] tmp = ensureCapacity(len1);
@@ -633,7 +561,7 @@ class ComparableTimSort {
 			 * consistently.
 			 */
 			do {
-				assert !DEBUG || len1 > 1 && len2 > 0;
+				assert len1 > 1 && len2 > 0;
 				if (((Comparable) a[cursor2]).compareTo(tmp[cursor1]) < 0) {
 					a[dest++] = a[cursor2++];
 					count2++;
@@ -655,7 +583,7 @@ class ComparableTimSort {
 			 * winning consistently anymore.
 			 */
 			do {
-				assert !DEBUG || len1 > 1 && len2 > 0;
+				assert len1 > 1 && len2 > 0;
 				count1 = gallopRight((Comparable) a[cursor2], tmp, cursor1, len1, 0);
 				if (count1 != 0) {
 					System.arraycopy(tmp, cursor1, a, dest, count1);
@@ -688,14 +616,14 @@ class ComparableTimSort {
 		} // End of "outer" loop
 		this.minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 		if (len1 == 1) {
-			assert !DEBUG || len2 > 0;
+			assert len2 > 0;
 			System.arraycopy(a, cursor2, a, dest, len2);
 			a[dest + len2] = tmp[cursor1]; // Last elt of run 1 to end of merge
 		} else if (len1 == 0) {
 			throw new IllegalArgumentException("Comparison method violates its general contract!");
 		} else {
-			assert !DEBUG || len2 == 0;
-			assert !DEBUG || len1 > 1;
+			assert len2 == 0;
+			assert len1 > 1;
 			System.arraycopy(tmp, cursor1, a, dest, len1);
 		}
 	}
@@ -713,7 +641,7 @@ class ComparableTimSort {
 	 */
 	@SuppressWarnings("unchecked")
 	private void mergeHi(int base1, int len1, int base2, int len2) {
-		assert !DEBUG || len1 > 0 && len2 > 0 && base1 + len1 == base2;
+		assert len1 > 0 && len2 > 0 && base1 + len1 == base2;
 		// Copy second run into temp array
 		Object[] a = this.a; // For performance
 		Object[] tmp = ensureCapacity(len2);
@@ -744,7 +672,7 @@ class ComparableTimSort {
 			 * consistently.
 			 */
 			do {
-				assert !DEBUG || len1 > 0 && len2 > 1;
+				assert len1 > 0 && len2 > 1;
 				if (((Comparable) tmp[cursor2]).compareTo(a[cursor1]) < 0) {
 					a[dest--] = a[cursor1--];
 					count1++;
@@ -766,7 +694,7 @@ class ComparableTimSort {
 			 * winning consistently anymore.
 			 */
 			do {
-				assert !DEBUG || len1 > 0 && len2 > 1;
+				assert len1 > 0 && len2 > 1;
 				count1 = len1 - gallopRight((Comparable) tmp[cursor2], a, base1, len1, len1 - 1);
 				if (count1 != 0) {
 					dest -= count1;
@@ -799,7 +727,7 @@ class ComparableTimSort {
 		} // End of "outer" loop
 		this.minGallop = minGallop < 1 ? 1 : minGallop; // Write back to field
 		if (len2 == 1) {
-			assert !DEBUG || len1 > 0;
+			assert len1 > 0;
 			dest -= len1;
 			cursor1 -= len1;
 			System.arraycopy(a, cursor1 + 1, a, dest + 1, len1);
@@ -807,8 +735,8 @@ class ComparableTimSort {
 		} else if (len2 == 0) {
 			throw new IllegalArgumentException("Comparison method violates its general contract!");
 		} else {
-			assert !DEBUG || len1 == 0;
-			assert !DEBUG || len2 > 0;
+			assert len1 == 0;
+			assert len2 > 0;
 			System.arraycopy(tmp, 0, a, dest - (len2 - 1), len2);
 		}
 	}

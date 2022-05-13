@@ -3,6 +3,7 @@ package com.ariasaproject.advancerofrpg.graphics.g3d.particles;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.utils.Array;
+import com.ariasaproject.advancerofrpg.utils.Disposable;
 import com.ariasaproject.advancerofrpg.utils.IntArray;
 import com.ariasaproject.advancerofrpg.utils.Json;
 import com.ariasaproject.advancerofrpg.utils.JsonValue;
@@ -10,7 +11,6 @@ import com.ariasaproject.advancerofrpg.utils.ObjectMap;
 import com.ariasaproject.advancerofrpg.utils.ObjectMap.Entry;
 import com.ariasaproject.advancerofrpg.utils.reflect.ClassReflection;
 import com.ariasaproject.advancerofrpg.utils.reflect.ReflectionException;
-import com.ariasaproject.advancerofrpg.utils.Disposable;
 
 public class ResourceData<T extends Disposable> implements Json.Serializable {
 	public T resource;

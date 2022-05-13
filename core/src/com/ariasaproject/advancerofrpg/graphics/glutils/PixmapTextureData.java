@@ -2,7 +2,6 @@ package com.ariasaproject.advancerofrpg.graphics.glutils;
 
 import com.ariasaproject.advancerofrpg.graphics.Pixmap;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
-import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 
 public class PixmapTextureData implements TextureData {
 	final Pixmap pixmap;

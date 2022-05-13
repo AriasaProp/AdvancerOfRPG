@@ -10,16 +10,7 @@ import com.ariasaproject.advancerofrpg.utils.Null;
 import com.ariasaproject.advancerofrpg.utils.Pool;
 import com.ariasaproject.advancerofrpg.utils.Pools;
 
-/**
- * Static convenience methods for using pooled actions, intended for static
- * import.
- *
- * @author Nathan Sweet
- */
 public class Actions {
-	/**
-	 * Returns a new or pooled action of the specified type.
-	 */
 	static public <T extends Action> T action(Class<T> type) {
 		Pool<T> pool = Pools.get(type);
 		T action = pool.obtain();
@@ -231,16 +222,16 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the color at the time this action starts to the specified
-	 * color.
+	 * Transitions from the color at the time this action starts to the
+	 * specified color.
 	 */
 	static public ColorAction color(Color color, float duration) {
 		return color(color, duration, null);
 	}
 
 	/**
-	 * Transitions from the color at the time this action starts to the specified
-	 * color.
+	 * Transitions from the color at the time this action starts to the
+	 * specified color.
 	 */
 	static public ColorAction color(Color color, float duration, @Null Interpolation interpolation) {
 		ColorAction action = action(ColorAction.class);
@@ -258,16 +249,16 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to the specified
-	 * alpha.
+	 * Transitions from the alpha at the time this action starts to the
+	 * specified alpha.
 	 */
 	static public AlphaAction alpha(float a, float duration) {
 		return alpha(a, duration, null);
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to the specified
-	 * alpha.
+	 * Transitions from the alpha at the time this action starts to the
+	 * specified alpha.
 	 */
 	static public AlphaAction alpha(float a, float duration, @Null Interpolation interpolation) {
 		AlphaAction action = action(AlphaAction.class);
@@ -278,14 +269,16 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of 0.
+	 * Transitions from the alpha at the time this action starts to an alpha of
+	 * 0.
 	 */
 	static public AlphaAction fadeOut(float duration) {
 		return alpha(0, duration, null);
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of 0.
+	 * Transitions from the alpha at the time this action starts to an alpha of
+	 * 0.
 	 */
 	static public AlphaAction fadeOut(float duration, @Null Interpolation interpolation) {
 		AlphaAction action = action(AlphaAction.class);
@@ -296,14 +289,16 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of 1.
+	 * Transitions from the alpha at the time this action starts to an alpha of
+	 * 1.
 	 */
 	static public AlphaAction fadeIn(float duration) {
 		return alpha(1, duration, null);
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of 1.
+	 * Transitions from the alpha at the time this action starts to an alpha of
+	 * 1.
 	 */
 	static public AlphaAction fadeIn(float duration, @Null Interpolation interpolation) {
 		AlphaAction action = action(AlphaAction.class);
@@ -532,8 +527,10 @@ public class Actions {
 	/**
 	 * Sets the target of an action and returns the action.
 	 *
-	 * @param target the desired target of the action
-	 * @param action the action on which to set the target
+	 * @param target
+	 *            the desired target of the action
+	 * @param action
+	 *            the action on which to set the target
 	 * @return the action with its target set
 	 */
 	static public Action targeting(Actor target, Action action) {
