@@ -1,0 +1,7 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="MaimTheme" parent="BaseTheme">
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
+
+</resources>

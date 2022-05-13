@@ -1,0 +1,487 @@
+# depslib dependency file v1.0
+1650524924 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2broadphase.cpp
+	"b2BroadPhase.h"
+	<cstring>
+
+1650525001 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2broadphase.h
+	"../Common/b2Settings.h"
+	"b2Collision.h"
+	"b2DynamicTree.h"
+	<stdlib.h>
+
+1649781120 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2settings.h
+	<cassert>
+	<cmath>
+
+1650525175 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2collision.h
+	"../Common/b2Math.h"
+	<climits>
+
+1650525223 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2math.h
+	"b2Settings.h"
+	<cmath>
+	<cfloat>
+	<cstddef>
+	<float.h>
+
+1650525264 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2dynamictree.h
+	"b2Collision.h"
+	"../Common/b2GrowableStack.h"
+
+1650525292 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2growablestack.h
+	"b2Settings.h"
+	<cstring>
+
+1650525081 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2collidecircle.cpp
+	"b2Collision.h"
+	"Shapes/b2CircleShape.h"
+	"Shapes/b2PolygonShape.h"
+
+1650525242 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2circleshape.h
+	"b2Shape.h"
+
+1650525362 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2shape.h
+	"../../Common/b2BlockAllocator.h"
+	"../../Common/b2Math.h"
+	"../b2Collision.h"
+
+1650525510 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2blockallocator.h
+	"b2Settings.h"
+
+1650525547 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2polygonshape.h
+	"b2Shape.h"
+
+1650525478 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2collideedge.cpp
+	"b2Collision.h"
+	"Shapes/b2CircleShape.h"
+	"Shapes/b2EdgeShape.h"
+	"Shapes/b2PolygonShape.h"
+
+1650525588 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2edgeshape.h
+	"b2Shape.h"
+
+1650525629 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2collidepolygon.cpp
+	"b2Collision.h"
+	"Shapes/b2PolygonShape.h"
+
+1650525653 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2collision.cpp
+	"b2Collision.h"
+	"b2Distance.h"
+
+1650525792 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2distance.h
+	"../Common/b2Math.h"
+
+1650525763 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2distance.cpp
+	"b2Distance.h"
+	"Shapes/b2CircleShape.h"
+	"Shapes/b2EdgeShape.h"
+	"Shapes/b2ChainShape.h"
+	"Shapes/b2PolygonShape.h"
+
+1650525830 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2chainshape.h
+	"b2Shape.h"
+
+1650525846 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2dynamictree.cpp
+	"b2DynamicTree.h"
+	<cstring>
+	<cfloat>
+
+1650526061 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2chainshape.cpp
+	"b2ChainShape.h"
+	"b2EdgeShape.h"
+	<new>
+	<cstring>
+
+1650526114 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2circleshape.cpp
+	"b2CircleShape.h"
+	<new>
+
+1650526021 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2timeofimpact.cpp
+	"b2Collision.h"
+	"b2Distance.h"
+	"b2TimeOfImpact.h"
+	"Shapes/b2CircleShape.h"
+	"Shapes/b2PolygonShape.h"
+	"../Common/b2Timer.h"
+	<cstdio>
+
+1650526096 d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\b2timeofimpact.h
+	"../Common/b2Math.h"
+	"b2Distance.h"
+
+1650526132 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2timer.h
+	"b2Settings.h"
+
+1650526150 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2edgeshape.cpp
+	"b2EdgeShape.h"
+	<new>
+
+1650526176 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\collision\shapes\b2polygonshape.cpp
+	"b2PolygonShape.h"
+	<new>
+
+1650526200 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2blockallocator.cpp
+	"b2BlockAllocator.h"
+	<stdlib.h>
+	<climits>
+	<cstring>
+	<new>
+
+1650526216 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2draw.cpp
+	"b2Draw.h"
+
+1650526243 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2draw.h
+	"b2Math.h"
+
+1650526263 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2math.cpp
+	"b2Math.h"
+
+1650526280 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2settings.cpp
+	"b2Settings.h"
+	<stdio.h>
+	<stdarg.h>
+	<stdlib.h>
+
+1650526305 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2stackallocator.cpp
+	"b2StackAllocator.h"
+	"b2Math.h"
+
+1650526323 d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2stackallocator.h
+	"b2Settings.h"
+
+1650526349 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\common\b2timer.cpp
+	"b2Timer.h"
+	<windows.h>
+	<sys/time.h>
+
+1650526434 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2contactmanager.cpp
+	"b2ContactManager.h"
+	"b2Body.h"
+	"b2Fixture.h"
+	"b2WorldCallbacks.h"
+	"Contacts/b2Contact.h"
+
+1650526454 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2contactmanager.h
+	"../Collision/b2BroadPhase.h"
+
+1650526499 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2body.h
+	"../Common/b2Math.h"
+	"../Collision/Shapes/b2Shape.h"
+	<new>
+
+1650526543 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2fixture.h
+	"b2Body.h"
+	"../Collision/b2Collision.h"
+	"../Collision/Shapes/b2Shape.h"
+
+1650526636 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2worldcallbacks.h
+	"../Common/b2Settings.h"
+
+1650526787 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2contact.h
+	"../../Common/b2Math.h"
+	"../../Collision/b2Collision.h"
+	"../../Collision/Shapes/b2Shape.h"
+	"../b2Fixture.h"
+
+1650526396 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2body.cpp
+	"b2Body.h"
+	"b2Fixture.h"
+	"b2World.h"
+	"Contacts/b2Contact.h"
+	"Joints/b2Joint.h"
+
+1650526615 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2world.h
+	"../Common/b2Math.h"
+	"../Common/b2BlockAllocator.h"
+	"../Common/b2StackAllocator.h"
+	"b2ContactManager.h"
+	"b2WorldCallbacks.h"
+	"b2TimeStep.h"
+
+1650526700 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2timestep.h
+	"../Common/b2Math.h"
+
+1650526813 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2joint.h
+	"../../Common/b2Math.h"
+
+1650797927 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2fixture.cpp
+	"b2Fixture.h"
+	"Contacts/b2Contact.h"
+	"b2World.h"
+	"../Collision/Shapes/b2CircleShape.h"
+	"../Collision/Shapes/b2EdgeShape.h"
+	"../Collision/Shapes/b2PolygonShape.h"
+	"../Collision/Shapes/b2ChainShape.h"
+	"../Collision/b2BroadPhase.h"
+	"../Collision/b2Collision.h"
+	"../Common/b2BlockAllocator.h"
+
+1650798094 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2world.cpp
+	"b2World.h"
+	"b2Body.h"
+	"b2Fixture.h"
+	"b2Island.h"
+	"Joints/b2PulleyJoint.h"
+	"Contacts/b2Contact.h"
+	"Contacts/b2ContactSolver.h"
+	"../Collision/b2Collision.h"
+	"../Collision/b2BroadPhase.h"
+	"../Collision/Shapes/b2CircleShape.h"
+	"../Collision/Shapes/b2EdgeShape.h"
+	"../Collision/Shapes/b2ChainShape.h"
+	"../Collision/Shapes/b2PolygonShape.h"
+	"../Collision/b2TimeOfImpact.h"
+	"../Common/b2Draw.h"
+	"../Common/b2Timer.h"
+	<new>
+
+1650797986 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2island.h
+	"../Common/b2Math.h"
+	"b2Body.h"
+	"b2TimeStep.h"
+
+1650798176 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2pulleyjoint.h
+	"b2Joint.h"
+
+1650798151 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2contactsolver.h
+	"../../Common/b2Math.h"
+	"../../Collision/b2Collision.h"
+	"../b2TimeStep.h"
+
+1650798212 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2island.cpp
+	"../Collision/b2Distance.h"
+	"b2Island.h"
+	"b2Body.h"
+	"b2Fixture.h"
+	"b2World.h"
+	"Contacts/b2Contact.h"
+	"Contacts/b2ContactSolver.h"
+	"Joints/b2Joint.h"
+	"../Common/b2StackAllocator.h"
+	"../Common/b2Timer.h"
+
+1650798241 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\b2worldcallbacks.cpp
+	"b2WorldCallbacks.h"
+	"b2Fixture.h"
+
+1650798323 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2chainandcirclecontact.cpp
+	"b2ChainAndCircleContact.h"
+	"../../Common/b2BlockAllocator.h"
+	"../b2Fixture.h"
+	"../../Collision/Shapes/b2ChainShape.h"
+	"../../Collision/Shapes/b2EdgeShape.h"
+	<new>
+
+1650798341 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2chainandcirclecontact.h
+	"b2Contact.h"
+
+1650798428 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2chainandpolygoncontact.cpp
+	"b2ChainAndPolygonContact.h"
+	"../../Common/b2BlockAllocator.h"
+	"../b2Fixture.h"
+	"../../Collision/Shapes/b2ChainShape.h"
+	"../../Collision/Shapes/b2EdgeShape.h"
+	<new>
+
+1650798460 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2chainandpolygoncontact.h
+	"b2Contact.h"
+
+1650798542 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2circlecontact.cpp
+	"b2CircleContact.h"
+	"../b2Body.h"
+	"../b2Fixture.h"
+	"../b2WorldCallbacks.h"
+	"../../Common/b2BlockAllocator.h"
+	"../../Collision/b2TimeOfImpact.h"
+	<new>
+
+1650798560 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2circlecontact.h
+	"b2Contact.h"
+
+1650798703 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2contactsolver.cpp
+	"b2ContactSolver.h"
+	"b2Contact.h"
+	"../b2Body.h"
+	"../b2Fixture.h"
+	"../b2World.h"
+	"../../Common/b2StackAllocator.h"
+
+1650798774 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2edgeandcirclecontact.cpp
+	"b2EdgeAndCircleContact.h"
+	"../../Common/b2BlockAllocator.h"
+	"../b2Fixture.h"
+	<new>
+
+1650798788 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2edgeandcirclecontact.h
+	"b2Contact.h"
+
+1650798647 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2contact.cpp
+	"b2Contact.h"
+	"b2CircleContact.h"
+	"b2PolygonAndCircleContact.h"
+	"b2PolygonContact.h"
+	"b2EdgeAndCircleContact.h"
+	"b2EdgeAndPolygonContact.h"
+	"b2ChainAndCircleContact.h"
+	"b2ChainAndPolygonContact.h"
+	"b2ContactSolver.h"
+	"../../Collision/b2Collision.h"
+	"../../Collision/b2TimeOfImpact.h"
+	"../../Collision/Shapes/b2Shape.h"
+	"../../Common/b2BlockAllocator.h"
+	"../b2Body.h"
+	"../b2Fixture.h"
+	"../b2World.h"
+
+1650798717 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2polygonandcirclecontact.h
+	"b2Contact.h"
+
+1650798735 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2polygoncontact.h
+	"b2Contact.h"
+
+1650808428 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2edgeandpolygoncontact.h
+	"b2Contact.h"
+
+1650808474 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2edgeandpolygoncontact.cpp
+	"b2EdgeAndPolygonContact.h"
+	"../../Common/b2BlockAllocator.h"
+	"../../Dynamics/b2Fixture.h"
+	<new>
+
+1650808538 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2polygonandcirclecontact.cpp
+	"b2PolygonAndCircleContact.h"
+	"../../Common/b2BlockAllocator.h"
+	"../b2Fixture.h"
+	<new>
+
+1650808620 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\contacts\b2polygoncontact.cpp
+	"b2PolygonContact.h"
+	"../../Common/b2BlockAllocator.h"
+	"../../Collision/b2TimeOfImpact.h"
+	"../b2Body.h"
+	"../b2Fixture.h"
+	"../b2WorldCallbacks.h"
+	<new>
+
+1650808689 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2distancejoint.cpp
+	"b2DistanceJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650808751 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2distancejoint.h
+	"b2Joint.h"
+
+1650808734 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2frictionjoint.cpp
+	"b2FrictionJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650808770 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2frictionjoint.h
+	"b2Joint.h"
+
+1650808817 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2gearjoint.cpp
+	"b2GearJoint.h"
+	"b2RevoluteJoint.h"
+	"b2PrismaticJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650808836 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2gearjoint.h
+	"b2Joint.h"
+
+1650808855 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2revolutejoint.h
+	"b2Joint.h"
+
+1650808952 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2prismaticjoint.h
+	"b2Joint.h"
+
+1650809015 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2motorjoint.cpp
+	"b2MotorJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650809051 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2motorjoint.h
+	"b2Joint.h"
+
+1650808920 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2joint.cpp
+	"b2Joint.h"
+	"b2DistanceJoint.h"
+	"b2WheelJoint.h"
+	"b2MouseJoint.h"
+	"b2RevoluteJoint.h"
+	"b2PrismaticJoint.h"
+	"b2PulleyJoint.h"
+	"b2GearJoint.h"
+	"b2WeldJoint.h"
+	"b2FrictionJoint.h"
+	"b2RopeJoint.h"
+	"b2MotorJoint.h"
+	"../b2Body.h"
+	"../b2World.h"
+	"../../Common/b2BlockAllocator.h"
+	<new>
+
+1650808935 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2wheeljoint.h
+	"b2Joint.h"
+
+1650808967 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2mousejoint.h
+	"b2Joint.h"
+
+1650809069 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2weldjoint.h
+	"b2Joint.h"
+
+1650809084 d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2ropejoint.h
+	"b2Joint.h"
+
+1650809130 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2mousejoint.cpp
+	"b2MouseJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650809181 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2prismaticjoint.cpp
+	"b2PrismaticJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650809214 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2pulleyjoint.cpp
+	"b2PulleyJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650865130 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2revolutejoint.cpp
+	"b2RevoluteJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650865182 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2ropejoint.cpp
+	"b2RopeJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650865235 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2weldjoint.cpp
+	"b2WeldJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650865317 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\dynamics\joints\b2wheeljoint.cpp
+	"b2WheelJoint.h"
+	"../b2Body.h"
+	"../b2TimeStep.h"
+
+1650865309 source:d:\data ariasa\advancerofrpg\native-core\jni\box2d\rope\b2rope.cpp
+	"b2Rope.h"
+	"../Common/b2Draw.h"
+
+1650865337 d:\data ariasa\advancerofrpg\native-core\jni\box2d\rope\b2rope.h
+	"../Common/b2Math.h"
+
+1650944923 source:d:\dataariasa\advancerofrpg\native-core\jni\box2d\chainshape.cpp
+	"ChainShape.h"
+
+1650945602 d:\dataariasa\advancerofrpg\native-core\jni\box2d\chainshape.h
+
+1650945002 source:d:\dataariasa\advancerofrpg\native-core\jni\box2d\circleshape.cpp
+	"CircleShape.h"
+
+1650945600 d:\dataariasa\advancerofrpg\native-core\jni\box2d\circleshape.h
+
