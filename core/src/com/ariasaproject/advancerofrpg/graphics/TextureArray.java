@@ -62,8 +62,7 @@ public class TextureArray extends GLTexture {
 		this.data = data;
 		bind();
 		final TGF g = GraphFunc.tgf;
-		g.glTexImage3D(TGF.GL_TEXTURE_2D_ARRAY, 0, data.getFormat().InternalGLFormat, data.getWidth(),
-				data.getHeight(), data.getDepth(), 0, data.getFormat().GLFormat, data.getFormat().GLType, null);
+		g.glTexImage3D(TGF.GL_TEXTURE_2D_ARRAY, 0, data.getFormat().InternalGLFormat, data.getWidth(), data.getHeight(), data.getDepth(), 0, data.getFormat().GLFormat, data.getFormat().GLType, null);
 		if (!data.isPrepared())
 			data.prepare();
 		data.consumeTextureArrayData();

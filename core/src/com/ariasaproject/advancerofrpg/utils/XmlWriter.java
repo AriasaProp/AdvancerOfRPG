@@ -10,10 +10,7 @@ import java.io.Writer;
  * <pre>
  * StringWriter writer = new StringWriter();
  * XmlWriter xml = new XmlWriter(writer);
- * xml.element("meow").attribute("moo", "cow").element("child").attribute("moo", "cow").element("child")
- * 		.attribute("moo", "cow")
- * 		.text("XML is like violence. If it doesn't solve your problem, you're not using enough of it.").pop().pop()
- * 		.pop();
+ * xml.element("meow").attribute("moo", "cow").element("child").attribute("moo", "cow").element("child").attribute("moo", "cow").text("XML is like violence. If it doesn't solve your problem, you're not using enough of it.").pop().pop().pop();
  * System.out.println(writer);
  * </pre>
  *

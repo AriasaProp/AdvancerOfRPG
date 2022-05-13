@@ -151,7 +151,7 @@ public class VerticalGroup extends WidgetGroup {
 			n = -1;
 			incr = -1;
 		}
-		for (int r = 0; i != n; i += incr) {
+		for (; i != n; i += incr) {
 			Actor child = children.get(i);
 			float width, height;
 			Layout layout = null;

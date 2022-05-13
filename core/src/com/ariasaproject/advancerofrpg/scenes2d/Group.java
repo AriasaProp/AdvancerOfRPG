@@ -55,8 +55,7 @@ public class Group extends Actor implements Cullable {
 					if (!child.isVisible())
 						continue;
 					float cx = child.x, cy = child.y;
-					if (cx <= cullRight && cy <= cullTop && cx + child.width >= cullLeft
-							&& cy + child.height >= cullBottom)
+					if (cx <= cullRight && cy <= cullTop && cx + child.width >= cullLeft && cy + child.height >= cullBottom)
 						child.draw(batch, parentAlpha);
 				}
 			} else {
@@ -69,8 +68,7 @@ public class Group extends Actor implements Cullable {
 					if (!child.isVisible())
 						continue;
 					float cx = child.x, cy = child.y;
-					if (cx <= cullRight && cy <= cullTop && cx + child.width >= cullLeft
-							&& cy + child.height >= cullBottom) {
+					if (cx <= cullRight && cy <= cullTop && cx + child.width >= cullLeft && cy + child.height >= cullBottom) {
 						child.x = cx + offsetX;
 						child.y = cy + offsetY;
 						child.draw(batch, parentAlpha);

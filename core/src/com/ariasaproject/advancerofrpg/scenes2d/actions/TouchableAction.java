@@ -11,7 +11,7 @@ import com.ariasaproject.advancerofrpg.scenes2d.Touchable;
  */
 public class TouchableAction extends Action {
 	private Touchable touchable;
-	
+
 	@Override
 	public boolean act(float delta) {
 		target.setTouchable(touchable);

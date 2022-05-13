@@ -24,7 +24,9 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 
 public abstract class Files implements LifecycleListener {
-	protected static final byte[] buffer = new byte[4096];
+	protected static final byte[] byteBuffer = new byte[1024];
+	protected static final char[] charBuffer = new char[512];
+
 	public static enum FileType {
 		Internal, External, Absolute, Local;
 	}
@@ -46,7 +48,7 @@ public abstract class Files implements LifecycleListener {
 	public abstract String getLocalStoragePath();
 
 	public abstract boolean isLocalStorageAvailable();
-/*
+
 	public static String readFileAsString(String path, FileType type) {
 		InputStream input = null;
 		switch (type) {
@@ -60,33 +62,45 @@ public abstract class Files implements LifecycleListener {
 			throw new RuntimeException("Files static function currently no solutions!");
 		}
 		if (input == null)
-			return "";
+			throw new RuntimeException("input file has not found! in " + type.toString());
 		StringBuilder output = new StringBuilder();
-		;
 		try (InputStreamReader reader = new InputStreamReader(input)) {
-			char[] buffer = new char[256];
-			while (true) {
-				int length = reader.read(buffer);
-				if (length == -1)
-					break;
-				output.append(buffer, 0, length);
+			int length;
+			while ((length = reader.read(charBuffer)) != -1) {
+				output.append(charBuffer, 0, length);
 			}
 		} catch (IOException ex) {
-			throw new RuntimeException("Error reading layout file: " + this, ex);
-		} finally {
-			try {
-				reader.close();
-			} catch (Throwable ignore) {
-			}
+			throw new RuntimeException("Error reading " + type.toString() + " file: " + path, ex);
 		}
 		return output.toString();
-		return null;
 	}
 
-	public static String readInternalFileAsBytes(String internalPath) {
-		return null;
+	public static byte[] readFileAsBytes(String path, FileType type) {
+		InputStream input = null;
+		switch (type) {
+		case Internal:
+		case Local:
+			input = FileHandle.class.getResourceAsStream("/" + path.replace('\\', '/'));
+			break;
+		case External:
+		case Absolute:
+		default:
+			throw new RuntimeException("Files static function currently no solutions!");
+		}
+		if (input == null)
+			throw new RuntimeException("input file has not found! in " + type.toString());
+
+		try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+			int length;
+			while ((length = input.read(byteBuffer)) != -1) {
+				output.write(byteBuffer, 0, length);
+			}
+			return output.toByteArray();
+		} catch (IOException ex) {
+			throw new RuntimeException("Error reading " + type.toString() + " file: " + path, ex);
+		}
 	}
-*/
+
 	public static class FileHandle {
 		protected File file;
 		protected FileType type;
@@ -241,8 +255,8 @@ public abstract class Files implements LifecycleListener {
 			ByteArrayOutputStream baos = new OptimizedByteArrayOutputStream(estimateLength());
 			try {
 				int bytesRead;
-				while ((bytesRead = input.read(buffer)) != -1) {
-					baos.write(buffer, 0, bytesRead);
+				while ((bytesRead = input.read(byteBuffer)) != -1) {
+					baos.write(byteBuffer, 0, bytesRead);
 				}
 				return baos.toByteArray();
 			} catch (IOException ex) {
@@ -329,8 +343,8 @@ public abstract class Files implements LifecycleListener {
 			try {
 				output = write(append);
 				int bytesRead;
-				while ((bytesRead = input.read(buffer)) != -1) {
-					output.write(buffer, 0, bytesRead);
+				while ((bytesRead = input.read(byteBuffer)) != -1) {
+					output.write(byteBuffer, 0, bytesRead);
 				}
 			} catch (Exception ex) {
 				throw new RuntimeException("Error stream writing to file: " + file + " (" + type + ")", ex);

@@ -44,10 +44,10 @@ public class AnimationController {
 			return new AnimationDesc();
 		}
 	};
+
 	public AnimationController(final ModelInstance target) {
 		this.target = target;
 	}
-
 
 	final static <T> int getFirstKeyframeIndexAtTime(final Array<NodeKeyframe<T>> arr, final float time) {
 		final int lastIndex = arr.size - 1;
@@ -188,8 +188,7 @@ public class AnimationController {
 	/**
 	 * Apply two animations, blending the second onto to first using weight.
 	 */
-	protected void applyAnimations(final Animation anim1, final float time1, final Animation anim2, final float time2,
-								   final float weight) {
+	protected void applyAnimations(final Animation anim1, final float time1, final Animation anim2, final float time2, final float weight) {
 		if (anim2 == null || weight == 0.f)
 			applyAnimation(anim1, time1);
 		else if (anim1 == null || weight == 1.f)
@@ -210,8 +209,7 @@ public class AnimationController {
 		}
 	}
 
-	private AnimationDesc obtain(final Animation anim, float offset, float duration, int loopCount, float speed,
-								 final AnimationListener listener) {
+	private AnimationDesc obtain(final Animation anim, float offset, float duration, int loopCount, float speed, final AnimationListener listener) {
 		if (anim == null)
 			return null;
 		final AnimationDesc result = animationPool.obtain();
@@ -225,8 +223,7 @@ public class AnimationController {
 		return result;
 	}
 
-	private AnimationDesc obtain(final String id, float offset, float duration, int loopCount, float speed,
-								 final AnimationListener listener) {
+	private AnimationDesc obtain(final String id, float offset, float duration, int loopCount, float speed, final AnimationListener listener) {
 		if (id == null)
 			return null;
 		final Animation anim = target.getAnimation(id);
@@ -269,8 +266,7 @@ public class AnimationController {
 			return;
 		}
 		if (previous != null)
-			applyAnimations(previous.animation, previous.offset + previous.time, current.animation,
-							current.offset + current.time, transitionCurrentTime / transitionTargetTime);
+			applyAnimations(previous.animation, previous.offset + previous.time, current.animation, current.offset + current.time, transitionCurrentTime / transitionTargetTime);
 		else
 			applyAnimation(current.animation, current.offset + current.time);
 	}
@@ -377,16 +373,14 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc setAnimation(final String id, float offset, float duration, int loopCount, float speed,
-									  final AnimationListener listener) {
+	public AnimationDesc setAnimation(final String id, float offset, float duration, int loopCount, float speed, final AnimationListener listener) {
 		return setAnimation(obtain(id, offset, duration, loopCount, speed, listener));
 	}
 
 	/**
 	 * Set the active animation, replacing any current animation.
 	 */
-	protected AnimationDesc setAnimation(final Animation anim, float offset, float duration, int loopCount, float speed,
-										 final AnimationListener listener) {
+	protected AnimationDesc setAnimation(final Animation anim, float offset, float duration, int loopCount, float speed, final AnimationListener listener) {
 		return setAnimation(obtain(anim, offset, duration, loopCount, speed, listener));
 	}
 
@@ -456,8 +450,7 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc animate(final String id, int loopCount, final AnimationListener listener,
-								 float transitionTime) {
+	public AnimationDesc animate(final String id, int loopCount, final AnimationListener listener, float transitionTime) {
 		return animate(id, loopCount, 1.0f, listener, transitionTime);
 	}
 
@@ -483,8 +476,7 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc animate(final String id, int loopCount, float speed, final AnimationListener listener,
-								 float transitionTime) {
+	public AnimationDesc animate(final String id, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return animate(id, 0f, -1f, loopCount, speed, listener, transitionTime);
 	}
 
@@ -513,8 +505,7 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc animate(final String id, float offset, float duration, int loopCount, float speed,
-								 final AnimationListener listener, float transitionTime) {
+	public AnimationDesc animate(final String id, float offset, float duration, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return animate(obtain(id, offset, duration, loopCount, speed, listener), transitionTime);
 	}
 
@@ -522,8 +513,7 @@ public class AnimationController {
 	 * Changes the current animation by blending the new on top of the old during
 	 * the transition time.
 	 */
-	protected AnimationDesc animate(final Animation anim, float offset, float duration, int loopCount, float speed,
-									final AnimationListener listener, float transitionTime) {
+	protected AnimationDesc animate(final Animation anim, float offset, float duration, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return animate(obtain(anim, offset, duration, loopCount, speed, listener), transitionTime);
 	}
 
@@ -576,8 +566,7 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc queue(final String id, int loopCount, float speed, final AnimationListener listener,
-							   float transitionTime) {
+	public AnimationDesc queue(final String id, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return queue(id, 0f, -1f, loopCount, speed, listener, transitionTime);
 	}
 
@@ -607,8 +596,7 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc queue(final String id, float offset, float duration, int loopCount, float speed,
-							   final AnimationListener listener, float transitionTime) {
+	public AnimationDesc queue(final String id, float offset, float duration, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return queue(obtain(id, offset, duration, loopCount, speed, listener), transitionTime);
 	}
 
@@ -616,8 +604,7 @@ public class AnimationController {
 	 * Queue an animation to be applied when the current is finished. If current is
 	 * continuous it will be synced on next loop.
 	 */
-	protected AnimationDesc queue(final Animation anim, float offset, float duration, int loopCount, float speed,
-								  final AnimationListener listener, float transitionTime) {
+	protected AnimationDesc queue(final Animation anim, float offset, float duration, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return queue(obtain(anim, offset, duration, loopCount, speed, listener), transitionTime);
 	}
 
@@ -660,8 +647,7 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc action(final String id, int loopCount, float speed, final AnimationListener listener,
-								float transitionTime) {
+	public AnimationDesc action(final String id, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return action(id, 0, -1f, loopCount, speed, listener, transitionTime);
 	}
 
@@ -689,16 +675,14 @@ public class AnimationController {
 	 * @return The {@link AnimationDesc} which can be read to get the progress of
 	 *         the animation. Will be invalid when the animation is completed.
 	 */
-	public AnimationDesc action(final String id, float offset, float duration, int loopCount, float speed,
-								final AnimationListener listener, float transitionTime) {
+	public AnimationDesc action(final String id, float offset, float duration, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return action(obtain(id, offset, duration, loopCount, speed, listener), transitionTime);
 	}
 
 	/**
 	 * Apply an action animation on top of the current animation.
 	 */
-	protected AnimationDesc action(final Animation anim, float offset, float duration, int loopCount, float speed,
-								   final AnimationListener listener, float transitionTime) {
+	protected AnimationDesc action(final Animation anim, float offset, float duration, int loopCount, float speed, final AnimationListener listener, float transitionTime) {
 		return action(obtain(anim, offset, duration, loopCount, speed, listener), transitionTime);
 	}
 

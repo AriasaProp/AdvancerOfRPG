@@ -112,8 +112,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 		} else if (type.equals("LINE_STRIP")) {
 			return TGF.GL_LINE_STRIP;
 		} else {
-			throw new RuntimeException("Unknown primitive type '" + type
-					+ "', should be one of triangle, trianglestrip, line, linestrip, lineloop or point");
+			throw new RuntimeException("Unknown primitive type '" + type + "', should be one of triangle, trianglestrip, line, linestrip, lineloop or point");
 		}
 	}
 
@@ -141,8 +140,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 			} else if (attr.startsWith("BLENDWEIGHT")) {
 				vertexAttributes.add(VertexAttribute.BoneWeight(blendWeightCount++));
 			} else {
-				throw new RuntimeException("Unknown vertex attribute '" + attr
-						+ "', should be one of position, normal, uv, tangent or binormal");
+				throw new RuntimeException("Unknown vertex attribute '" + attr + "', should be one of position, normal, uv, tangent or binormal");
 			}
 		}
 		return vertexAttributes.toArray(VertexAttribute.class);
@@ -192,8 +190,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 						String fileName = texture.getString("filename", null);
 						if (fileName == null)
 							throw new RuntimeException("Texture needs filename.");
-						jsonTexture.fileName = materialDir
-								+ (materialDir.length() == 0 || materialDir.endsWith("/") ? "" : "/") + fileName;
+						jsonTexture.fileName = materialDir + (materialDir.length() == 0 || materialDir.endsWith("/") ? "" : "/") + fileName;
 						jsonTexture.uvTranslation = readVector2(texture.get("uvTranslation"), 0f, 0f);
 						jsonTexture.uvScaling = readVector2(texture.get("uvScaling"), 1f, 1f);
 						String textureType = texture.getString("type", null);
@@ -270,14 +267,11 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 		JsonValue translation = json.get("translation");
 		if (translation != null && translation.size != 3)
 			throw new RuntimeException("Node translation incomplete");
-		jsonNode.translation = translation == null ? null
-				: new Vector3(translation.getFloat(0), translation.getFloat(1), translation.getFloat(2));
+		jsonNode.translation = translation == null ? null : new Vector3(translation.getFloat(0), translation.getFloat(1), translation.getFloat(2));
 		JsonValue rotation = json.get("rotation");
 		if (rotation != null && rotation.size != 4)
 			throw new RuntimeException("Node rotation incomplete");
-		jsonNode.rotation = rotation == null ? null
-				: new Quaternion(rotation.getFloat(0), rotation.getFloat(1), rotation.getFloat(2),
-						rotation.getFloat(3));
+		jsonNode.rotation = rotation == null ? null : new Quaternion(rotation.getFloat(0), rotation.getFloat(1), rotation.getFloat(2), rotation.getFloat(3));
 		JsonValue scale = json.get("scale");
 		if (scale != null && scale.size != 3)
 			throw new RuntimeException("Node scale incomplete");
@@ -361,8 +355,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 								nodeAnim.translation = new Array<ModelNodeKeyframe<Vector3>>();
 							ModelNodeKeyframe<Vector3> tkf = new ModelNodeKeyframe<Vector3>();
 							tkf.keytime = keytime;
-							tkf.value = new Vector3(translation.getFloat(0), translation.getFloat(1),
-									translation.getFloat(2));
+							tkf.value = new Vector3(translation.getFloat(0), translation.getFloat(1), translation.getFloat(2));
 							nodeAnim.translation.add(tkf);
 						}
 						JsonValue rotation = keyframe.get("rotation");
@@ -371,8 +364,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 								nodeAnim.rotation = new Array<ModelNodeKeyframe<Quaternion>>();
 							ModelNodeKeyframe<Quaternion> rkf = new ModelNodeKeyframe<Quaternion>();
 							rkf.keytime = keytime;
-							rkf.value = new Quaternion(rotation.getFloat(0), rotation.getFloat(1), rotation.getFloat(2),
-									rotation.getFloat(3));
+							rkf.value = new Quaternion(rotation.getFloat(0), rotation.getFloat(1), rotation.getFloat(2), rotation.getFloat(3));
 							nodeAnim.rotation.add(rkf);
 						}
 						JsonValue scale = keyframe.get("scale");
@@ -396,8 +388,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 							kf.keytime = keyframe.getFloat("keytime", 0f) / 1000.f;
 							JsonValue translation = keyframe.get("value");
 							if (translation != null && translation.size >= 3)
-								kf.value = new Vector3(translation.getFloat(0), translation.getFloat(1),
-										translation.getFloat(2));
+								kf.value = new Vector3(translation.getFloat(0), translation.getFloat(1), translation.getFloat(2));
 						}
 					}
 					JsonValue rotationKF = node.get("rotation");
@@ -410,8 +401,7 @@ public class G3dModelLoader extends ModelLoader<ModelLoader.ModelParameters> {
 							kf.keytime = keyframe.getFloat("keytime", 0f) / 1000.f;
 							JsonValue rotation = keyframe.get("value");
 							if (rotation != null && rotation.size >= 4)
-								kf.value = new Quaternion(rotation.getFloat(0), rotation.getFloat(1),
-										rotation.getFloat(2), rotation.getFloat(3));
+								kf.value = new Quaternion(rotation.getFloat(0), rotation.getFloat(1), rotation.getFloat(2), rotation.getFloat(3));
 						}
 					}
 					JsonValue scalingKF = node.get("scaling");

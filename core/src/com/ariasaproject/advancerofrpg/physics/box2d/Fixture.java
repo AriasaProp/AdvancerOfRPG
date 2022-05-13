@@ -10,10 +10,13 @@ public class Fixture {
 	protected Object userData;
 	private final Filter filter = new Filter();
 	private boolean dirtyFilter = true;
+
 	static native void initialize();
+
 	static {
 		initialize();
 	}
+
 	protected Fixture(Body body, long addr) {
 		this.body = body;
 		this.addr = addr;
@@ -26,50 +29,59 @@ public class Fixture {
 		this.userData = null;
 		this.dirtyFilter = true;
 	}
+
 	public Type getType() {
 		int type = jniGetType();
 		switch (type) {
-			case 0:
-				return Type.Circle;
-			case 1:
-				return Type.Edge;
-			case 2:
-				return Type.Polygon;
-			case 3:
-				return Type.Chain;
-			default:
-				throw new RuntimeException("Unknown shape type!");
+		case 0:
+			return Type.Circle;
+		case 1:
+			return Type.Edge;
+		case 2:
+			return Type.Polygon;
+		case 3:
+			return Type.Chain;
+		default:
+			throw new RuntimeException("Unknown shape type!");
 		}
 	}
+
 	private native int jniGetType();
+
 	private final long[] shapeTmp = new long[2];
+
 	public Shape getShape() {
 		if (shape == null) {
 			jniGetShape(shapeTmp);
-			if (shapeTmp[0] == 0) throw new RuntimeException("Null shape address!");
-			switch ((int)shapeTmp[1]) {
-				case 0:
-					shape = new CircleShape(shapeTmp[0]);
-					break;
-				case 1:
-					shape = new EdgeShape(shapeTmp[0]);
-					break;
-				case 2:
-					shape = new PolygonShape(shapeTmp[0]);
-					break;
-				case 3:
-					shape = new ChainShape(shapeTmp[0]);
-					break;
-				default:
-					throw new RuntimeException("Unknown shape type!");
+			if (shapeTmp[0] == 0)
+				throw new RuntimeException("Null shape address!");
+			switch ((int) shapeTmp[1]) {
+			case 0:
+				shape = new CircleShape(shapeTmp[0]);
+				break;
+			case 1:
+				shape = new EdgeShape(shapeTmp[0]);
+				break;
+			case 2:
+				shape = new PolygonShape(shapeTmp[0]);
+				break;
+			case 3:
+				shape = new ChainShape(shapeTmp[0]);
+				break;
+			default:
+				throw new RuntimeException("Unknown shape type!");
 			}
 		}
 
 		return shape;
 	}
+
 	private native long jniGetShape(long[] tmp);
+
 	public native void setSensor(boolean sensor);
+
 	public native boolean isSensor();
+
 	public void setFilterData(Filter filter) {
 		jniSetFilterData(filter.categoryBits, filter.maskBits, filter.groupIndex);
 		this.filter.set(filter);
@@ -77,6 +89,7 @@ public class Fixture {
 	}
 
 	private native void jniSetFilterData(short categoryBits, short maskBits, short groupIndex);
+
 	private final short[] tmp = new short[3];
 
 	public Filter getFilterData() {
@@ -93,12 +106,15 @@ public class Fixture {
 	private native void jniGetFilterData(short[] filter);
 
 	public native void refilter();
+
 	public Body getBody() {
 		return body;
 	}
+
 	public boolean testPoint(Vector2 p) {
 		return testPoint(p.x, p.y);
 	}
+
 	public native boolean testPoint(float x, float y);
 
 // const b2Body* GetBody() const;
@@ -126,10 +142,15 @@ public class Fixture {
 // void GetMassData(b2MassData* massData) const;
 
 	public native void setDensity(float density);
-	public native float getDensity(); 
+
+	public native float getDensity();
+
 	public native float getFriction();
+
 	public native void setFriction(float friction);
+
 	public native float getRestitution();
+
 	public native void setRestitution(float restitution);
 // /// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 // /// If you need a more accurate AABB, compute it using the shape and
@@ -139,6 +160,7 @@ public class Fixture {
 	public void setUserData(Object userData) {
 		this.userData = userData;
 	}
+
 	public Object getUserData() {
 		return userData;
 	}

@@ -18,6 +18,7 @@ class ComparableTimSort {
 		runBase = new int[40];
 		runLen = new int[40];
 	}
+
 	private ComparableTimSort(Object[] a) {
 		this.a = a;
 		// Allocate temp storage (which may be increased later if necessary)

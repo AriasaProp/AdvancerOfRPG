@@ -140,8 +140,7 @@ public abstract class RegionInfluencer extends Influencer {
 		@Override
 		public void init() {
 			AspectTextureRegion region = regions.items[0];
-			for (int i = 0, c = controller.emitter.maxParticleCount
-					* regionChannel.strideSize; i < c; i += regionChannel.strideSize) {
+			for (int i = 0, c = controller.emitter.maxParticleCount * regionChannel.strideSize; i < c; i += regionChannel.strideSize) {
 				regionChannel.data[i + ParticleChannels.UOffset] = region.u;
 				regionChannel.data[i + ParticleChannels.VOffset] = region.v;
 				regionChannel.data[i + ParticleChannels.U2Offset] = region.u2;
@@ -178,8 +177,7 @@ public abstract class RegionInfluencer extends Influencer {
 
 		@Override
 		public void activateParticles(int startIndex, int count) {
-			for (int i = startIndex * regionChannel.strideSize, c = i
-					+ count * regionChannel.strideSize; i < c; i += regionChannel.strideSize) {
+			for (int i = startIndex * regionChannel.strideSize, c = i + count * regionChannel.strideSize; i < c; i += regionChannel.strideSize) {
 				AspectTextureRegion region = regions.random();
 				regionChannel.data[i + ParticleChannels.UOffset] = region.u;
 				regionChannel.data[i + ParticleChannels.VOffset] = region.v;
@@ -226,8 +224,7 @@ public abstract class RegionInfluencer extends Influencer {
 
 		@Override
 		public void update() {
-			for (int i = 0, l = ParticleChannels.LifePercentOffset, c = controller.particles.size
-					* regionChannel.strideSize; i < c; i += regionChannel.strideSize, l += lifeChannel.strideSize) {
+			for (int i = 0, l = ParticleChannels.LifePercentOffset, c = controller.particles.size * regionChannel.strideSize; i < c; i += regionChannel.strideSize, l += lifeChannel.strideSize) {
 				AspectTextureRegion region = regions.get((int) (lifeChannel.data[l] * (regions.size - 1)));
 				regionChannel.data[i + ParticleChannels.UOffset] = region.u;
 				regionChannel.data[i + ParticleChannels.VOffset] = region.v;

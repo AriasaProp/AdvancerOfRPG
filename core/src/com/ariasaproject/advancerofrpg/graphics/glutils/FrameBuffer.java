@@ -37,8 +37,7 @@ public class FrameBuffer extends GLFrameBuffer<Texture> {
 
 	@Override
 	protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec) {
-		GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0,
-				attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
+		GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
 		Texture result = new Texture(data);
 		result.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		result.setWrap(TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
@@ -52,7 +51,6 @@ public class FrameBuffer extends GLFrameBuffer<Texture> {
 
 	@Override
 	protected void attachFrameBufferColorTexture(Texture texture) {
-		GraphFunc.tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_COLOR_ATTACHMENT0, TGF.GL_TEXTURE_2D,
-				texture.getTextureObjectHandle(), 0);
+		GraphFunc.tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_COLOR_ATTACHMENT0, TGF.GL_TEXTURE_2D, texture.getTextureObjectHandle(), 0);
 	}
 }

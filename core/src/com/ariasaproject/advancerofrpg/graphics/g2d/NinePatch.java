@@ -83,8 +83,7 @@ public class NinePatch {
 			if (middleWidth > 0)
 				patches[BOTTOM_CENTER] = new TextureRegion(region, left, top + middleHeight, middleWidth, bottom);
 			if (right > 0)
-				patches[BOTTOM_RIGHT] = new TextureRegion(region, left + middleWidth, top + middleHeight, right,
-						bottom);
+				patches[BOTTOM_RIGHT] = new TextureRegion(region, left + middleWidth, top + middleHeight, right, bottom);
 		}
 		// If split only vertical, move splits from right to center.
 		if (left == 0 && middleWidth == 0) {
@@ -152,24 +151,16 @@ public class NinePatch {
 		if (patches == null || patches.length != 9)
 			throw new IllegalArgumentException("NinePatch needs nine TextureRegions");
 		load(patches);
-		if ((patches[TOP_LEFT] != null && patches[TOP_LEFT].getRegionWidth() != leftWidth)
-				|| (patches[MIDDLE_LEFT] != null && patches[MIDDLE_LEFT].getRegionWidth() != leftWidth)
-				|| (patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getRegionWidth() != leftWidth)) {
+		if ((patches[TOP_LEFT] != null && patches[TOP_LEFT].getRegionWidth() != leftWidth) || (patches[MIDDLE_LEFT] != null && patches[MIDDLE_LEFT].getRegionWidth() != leftWidth) || (patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getRegionWidth() != leftWidth)) {
 			throw new RuntimeException("Left side patches must have the same width");
 		}
-		if ((patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getRegionWidth() != rightWidth)
-				|| (patches[MIDDLE_RIGHT] != null && patches[MIDDLE_RIGHT].getRegionWidth() != rightWidth)
-				|| (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getRegionWidth() != rightWidth)) {
+		if ((patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getRegionWidth() != rightWidth) || (patches[MIDDLE_RIGHT] != null && patches[MIDDLE_RIGHT].getRegionWidth() != rightWidth) || (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getRegionWidth() != rightWidth)) {
 			throw new RuntimeException("Right side patches must have the same width");
 		}
-		if ((patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getRegionHeight() != bottomHeight)
-				|| (patches[BOTTOM_CENTER] != null && patches[BOTTOM_CENTER].getRegionHeight() != bottomHeight)
-				|| (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getRegionHeight() != bottomHeight)) {
+		if ((patches[BOTTOM_LEFT] != null && patches[BOTTOM_LEFT].getRegionHeight() != bottomHeight) || (patches[BOTTOM_CENTER] != null && patches[BOTTOM_CENTER].getRegionHeight() != bottomHeight) || (patches[BOTTOM_RIGHT] != null && patches[BOTTOM_RIGHT].getRegionHeight() != bottomHeight)) {
 			throw new RuntimeException("Bottom side patches must have the same height");
 		}
-		if ((patches[TOP_LEFT] != null && patches[TOP_LEFT].getRegionHeight() != topHeight)
-				|| (patches[TOP_CENTER] != null && patches[TOP_CENTER].getRegionHeight() != topHeight)
-				|| (patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getRegionHeight() != topHeight)) {
+		if ((patches[TOP_LEFT] != null && patches[TOP_LEFT].getRegionHeight() != topHeight) || (patches[TOP_CENTER] != null && patches[TOP_CENTER].getRegionHeight() != topHeight) || (patches[TOP_RIGHT] != null && patches[TOP_RIGHT].getRegionHeight() != topHeight)) {
 			throw new RuntimeException("Top side patches must have the same height");
 		}
 	}
@@ -359,8 +350,7 @@ public class NinePatch {
 		batch.draw(texture, vertices, 0, idx);
 	}
 
-	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height,
-			float scaleX, float scaleY, float rotation) {
+	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
 		prepareVertices(batch, x, y, width, height);
 		float worldOriginX = x + originX, worldOriginY = y + originY;
 		int n = this.idx;

@@ -176,9 +176,7 @@ public class SelectBox<T> extends Widget implements Disableable {
 		Drawable bg = style.background;
 		BitmapFont font = style.font;
 		if (bg != null) {
-			prefHeight = Math.max(
-					bg.getTopHeight() + bg.getBottomHeight() + font.getCapHeight() - font.getDescent() * 2,
-					bg.getMinHeight());
+			prefHeight = Math.max(bg.getTopHeight() + bg.getBottomHeight() + font.getCapHeight() - font.getDescent() * 2, bg.getMinHeight());
 		} else
 			prefHeight = font.getCapHeight() - font.getDescent() * 2;
 		Pool<GlyphLayout> layoutPool = Pools.get(GlyphLayout.class);
@@ -208,8 +206,7 @@ public class SelectBox<T> extends Widget implements Disableable {
 			if (bg != null)
 				listWidth = Math.max(listWidth + bg.getLeftWidth() + bg.getRightWidth(), bg.getMinWidth());
 			if (selectBoxList == null || !selectBoxList.disableY) {
-				listWidth += Math.max(style.scrollStyle.vScroll != null ? style.scrollStyle.vScroll.getMinWidth() : 0,
-						style.scrollStyle.vScrollKnob != null ? style.scrollStyle.vScrollKnob.getMinWidth() : 0);
+				listWidth += Math.max(style.scrollStyle.vScroll != null ? style.scrollStyle.vScroll.getMinWidth() : 0, style.scrollStyle.vScrollKnob != null ? style.scrollStyle.vScrollKnob.getMinWidth() : 0);
 			}
 			prefWidth = Math.max(prefWidth, listWidth);
 		}
@@ -508,8 +505,7 @@ public class SelectBox<T> extends Widget implements Disableable {
 			// Show the list above or below the select box, limited to a number of items and
 			// the available height in the stage.
 			float itemHeight = list.getItemHeight();
-			float height = itemHeight
-					* (maxListCount <= 0 ? selectBox.items.size : Math.min(maxListCount, selectBox.items.size));
+			float height = itemHeight * (maxListCount <= 0 ? selectBox.items.size : Math.min(maxListCount, selectBox.items.size));
 			Drawable scrollPaneBackground = getStyle().background;
 			if (scrollPaneBackground != null)
 				height += scrollPaneBackground.getTopHeight() + scrollPaneBackground.getBottomHeight();
@@ -538,8 +534,7 @@ public class SelectBox<T> extends Widget implements Disableable {
 				width += getScrollBarWidth();
 			setWidth(width);
 			validate();
-			scrollTo(0, list.getHeight() - selectBox.getSelectedIndex() * itemHeight - itemHeight / 2, 0, 0, true,
-					true);
+			scrollTo(0, list.getHeight() - selectBox.getSelectedIndex() * itemHeight - itemHeight / 2, 0, 0, true, true);
 			updateVisualScroll();
 			previousScrollFocus = null;
 			Actor actor = stage.getScrollFocus();
@@ -623,8 +618,7 @@ public class SelectBox<T> extends Widget implements Disableable {
 		public SelectBoxStyle() {
 		}
 
-		public SelectBoxStyle(BitmapFont font, Color fontColor, @Null Drawable background, ScrollPaneStyle scrollStyle,
-				ListStyle listStyle) {
+		public SelectBoxStyle(BitmapFont font, Color fontColor, @Null Drawable background, ScrollPaneStyle scrollStyle, ListStyle listStyle) {
 			this.font = font;
 			this.fontColor.set(fontColor);
 			this.background = background;

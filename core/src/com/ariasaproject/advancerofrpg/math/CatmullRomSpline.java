@@ -25,8 +25,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T calculate(final T out, final float t, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T calculate(final T out, final float t, final T[] points, final boolean continuous, final T tmp) {
 		final int n = continuous ? points.length : points.length - 3;
 		float u = t * n;
 		int i = (t >= 1f) ? (n - 1) : (int) u;
@@ -47,8 +46,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T calculate(final T out, final int i, final float u, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T calculate(final T out, final int i, final float u, final T[] points, final boolean continuous, final T tmp) {
 		final int n = points.length;
 		final float u2 = u * u;
 		final float u3 = u2 * u;
@@ -73,8 +71,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T derivative(final T out, final float t, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T derivative(final T out, final float t, final T[] points, final boolean continuous, final T tmp) {
 		final int n = continuous ? points.length : points.length - 3;
 		float u = t * n;
 		int i = (t >= 1f) ? (n - 1) : (int) u;
@@ -95,8 +92,7 @@ public class CatmullRomSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T derivative(final T out, final int i, final float u, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T derivative(final T out, final int i, final float u, final T[] points, final boolean continuous, final T tmp) {
 		/*
 		 * catmull'(u) = 0.5 *((-p0 + p2) + 2 * (2*p0 - 5*p1 + 4*p2 - p3) * u + 3 * (-p0
 		 * + 3*p1 - 3*p2 + p3) * u * u)

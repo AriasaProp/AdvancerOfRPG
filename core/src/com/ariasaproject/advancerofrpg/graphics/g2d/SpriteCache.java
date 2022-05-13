@@ -49,10 +49,7 @@ public class SpriteCache implements Disposable {
 		this.shader = shader;
 		if (useIndices && size > 8191)
 			throw new IllegalArgumentException("Can't have more than 8191 sprites per batch: " + size);
-		mesh = new Mesh(true, size * (useIndices ? 4 : 6), useIndices ? size * 6 : 0,
-						new VertexAttribute(Usage.Position, 2, "a_position"),
-						new VertexAttribute(Usage.ColorPacked, 4, "a_color"),
-						new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord0"));
+		mesh = new Mesh(true, size * (useIndices ? 4 : 6), useIndices ? size * 6 : 0, new VertexAttribute(Usage.Position, 2, "a_position"), new VertexAttribute(Usage.ColorPacked, 4, "a_color"), new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord0"));
 		mesh.setAutoBind(false);
 		if (useIndices) {
 			int length = size * 6;
@@ -68,8 +65,7 @@ public class SpriteCache implements Disposable {
 			}
 			mesh.setIndices(indices);
 		}
-		projectionMatrix.setToOrtho2D(0, 0, GraphFunc.app.getGraphics().getWidth(),
-				GraphFunc.app.getGraphics().getHeight());
+		projectionMatrix.setToOrtho2D(0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight());
 	}
 
 	public void setColor(float r, float g, float b, float a) {
@@ -81,10 +77,6 @@ public class SpriteCache implements Disposable {
 		return color;
 	}
 
-	/**
-	 * Sets the color used to tint images when they are added to the SpriteCache.
-	 * Default is {@link Color#WHITE}.
-	 */
 	public void setColor(Color tint) {
 		color.set(tint);
 		colorPacked = tint.toFloatBits();
@@ -94,37 +86,22 @@ public class SpriteCache implements Disposable {
 		return colorPacked;
 	}
 
-	/**
-	 * Sets the color of this sprite cache, expanding the alpha from 0-254 to 0-255.
-	 *
-	 * @see Color#toFloatBits()
-	 */
 	public void setPackedColor(float packedColor) {
 		Color.abgr8888ToColor(color, packedColor);
 		colorPacked = packedColor;
 	}
 
-	/**
-	 * Starts the definition of a new cache, allowing the add and
-	 * {@link #endCache()} methods to be called.
-	 */
 	public void beginCache() {
 		if (drawing)
 			throw new IllegalStateException("end must be called before beginCache");
 		if (currentCache != null)
 			throw new IllegalStateException("endCache must be called before begin.");
-		int verticesPerImage = mesh.getNumIndices() > 0 ? 4 : 6;
+		//int verticesPerImage = mesh.getNumIndices() > 0 ? 4 : 6;
 		currentCache = new Cache(caches.size, mesh.getVerticesBuffer().limit());
 		caches.add(currentCache);
 		mesh.getVerticesBuffer().compact();
 	}
 
-	/**
-	 * Starts the redefinition of an existing cache, allowing the add and
-	 * {@link #endCache()} methods to be called. If this is not the last cache
-	 * created, it cannot have more entries added to it than when it was first
-	 * created. To do that, use {@link #clear()} and then {@link #begin()}.
-	 */
 	public void beginCache(int cacheID) {
 		if (drawing)
 			throw new IllegalStateException("end must be called before beginCache");
@@ -140,10 +117,6 @@ public class SpriteCache implements Disposable {
 		mesh.getVerticesBuffer().position(currentCache.offset);
 	}
 
-	/**
-	 * Ends the definition of a cache, returning the cache ID to be used with
-	 * {@link #draw(int)}.
-	 */
 	public int endCache() {
 		if (currentCache == null)
 			throw new IllegalStateException("beginCache must be called before endCache.");
@@ -161,9 +134,7 @@ public class SpriteCache implements Disposable {
 		} else {
 			// Redefine existing cache.
 			if (cacheCount > cache.maxCount) {
-				throw new RuntimeException(
-						"If a cache is not the last created, it cannot be redefined with more entries than when it was first created: "
-								+ cacheCount + " (" + cache.maxCount + " max)");
+				throw new RuntimeException("If a cache is not the last created, it cannot be redefined with more entries than when it was first created: " + cacheCount + " (" + cache.maxCount + " max)");
 			}
 			cache.textureCount = textures.size;
 			if (cache.textures.length < cache.textureCount)
@@ -185,21 +156,11 @@ public class SpriteCache implements Disposable {
 		return cache.id;
 	}
 
-	/**
-	 * Invalidates all cache IDs and resets the SpriteCache so new caches can be
-	 * added.
-	 */
 	public void clear() {
 		caches.clear();
 		mesh.getVerticesBuffer().clear().flip();
 	}
 
-	/**
-	 * Adds the specified vertices to the cache. Each vertex should have 5 elements,
-	 * one for each of the attributes: x, y, color, u, and v. If indexed geometry is
-	 * used, each image should be specified as 4 vertices, otherwise each image
-	 * should be specified as 6 vertices.
-	 */
 	public void add(Texture texture, float[] vertices, int offset, int length) {
 		if (currentCache == null)
 			throw new IllegalStateException("beginCache must be called before add.");
@@ -214,9 +175,6 @@ public class SpriteCache implements Disposable {
 		mesh.getVerticesBuffer().put(vertices, offset, length);
 	}
 
-	/**
-	 * Adds the specified texture to the cache.
-	 */
 	public void add(Texture texture, float x, float y) {
 		final float fx2 = x + texture.getWidth();
 		final float fy2 = y + texture.getHeight();
@@ -262,11 +220,7 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified texture to the cache.
-	 */
-	public void add(Texture texture, float x, float y, int srcWidth, int srcHeight, float u, float v, float u2,
-			float v2, float color) {
+	public void add(Texture texture, float x, float y, int srcWidth, int srcHeight, float u, float v, float u2, float v2, float color) {
 		final float fx2 = x + srcWidth;
 		final float fy2 = y + srcHeight;
 		tempVertices[0] = x;
@@ -311,9 +265,6 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified texture to the cache.
-	 */
 	public void add(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {
 		float invTexWidth = 1.0f / texture.getWidth();
 		float invTexHeight = 1.0f / texture.getHeight();
@@ -365,11 +316,7 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified texture to the cache.
-	 */
-	public void add(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth,
-			int srcHeight, boolean flipX, boolean flipY) {
+	public void add(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {
 		float invTexWidth = 1.0f / texture.getWidth();
 		float invTexHeight = 1.0f / texture.getHeight();
 		float u = srcX * invTexWidth;
@@ -430,12 +377,7 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified texture to the cache.
-	 */
-	public void add(Texture texture, float x, float y, float originX, float originY, float width, float height,
-			float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX,
-			boolean flipY) {
+	public void add(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {
 		// bottom left and top right corner points relative to origin
 		final float worldOriginX = x + originX;
 		final float worldOriginY = y + originY;
@@ -555,16 +497,10 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified region to the cache.
-	 */
 	public void add(TextureRegion region, float x, float y) {
 		add(region, x, y, region.getRegionWidth(), region.getRegionHeight());
 	}
 
-	/**
-	 * Adds the specified region to the cache.
-	 */
 	public void add(TextureRegion region, float x, float y, float width, float height) {
 		final float fx2 = x + width;
 		final float fy2 = y + height;
@@ -614,11 +550,7 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified region to the cache.
-	 */
-	public void add(TextureRegion region, float x, float y, float originX, float originY, float width, float height,
-			float scaleX, float scaleY, float rotation) {
+	public void add(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
 		// bottom left and top right corner points relative to origin
 		final float worldOriginX = x + originX;
 		final float worldOriginY = y + originY;
@@ -726,9 +658,6 @@ public class SpriteCache implements Disposable {
 		}
 	}
 
-	/**
-	 * Adds the specified sprite to the cache.
-	 */
 	public void add(Sprite sprite) {
 		if (mesh.getNumIndices() > 0) {
 			add(sprite.getTexture(), sprite.getVertices(), 0, SPRITE_SIZE);
@@ -742,9 +671,6 @@ public class SpriteCache implements Disposable {
 		add(sprite.getTexture(), tempVertices, 0, 30);
 	}
 
-	/**
-	 * Prepares the OpenGL state for SpriteCache rendering.
-	 */
 	public void begin() {
 		if (drawing)
 			throw new IllegalStateException("end must be called before begin.");
@@ -760,9 +686,6 @@ public class SpriteCache implements Disposable {
 		drawing = true;
 	}
 
-	/**
-	 * Completes rendering for this SpriteCache.
-	 */
 	public void end() {
 		if (!drawing)
 			throw new IllegalStateException("begin must be called before end.");
@@ -771,9 +694,6 @@ public class SpriteCache implements Disposable {
 		mesh.unbind();
 	}
 
-	/**
-	 * Draws all the images defined for the specified cache ID.
-	 */
 	public void draw(int cacheID) {
 		if (!drawing)
 			throw new IllegalStateException("SpriteCache.begin must be called before draw.");
@@ -793,13 +713,6 @@ public class SpriteCache implements Disposable {
 		totalRenderCalls += textureCount;
 	}
 
-	/**
-	 * Draws a subset of images defined for the specified cache ID.
-	 *
-	 * @param offset The first image to render.
-	 * @param length The number of images from the first image (inclusive) to
-	 *               render.
-	 */
 	public void draw(int cacheID, int offset, int length) {
 		if (!drawing)
 			throw new IllegalStateException("SpriteCache.begin must be called before draw.");
@@ -824,9 +737,6 @@ public class SpriteCache implements Disposable {
 		totalRenderCalls += textureCount;
 	}
 
-	/**
-	 * Releases all resources held by this SpriteCache.
-	 */
 	@Override
 	public void dispose() {
 		mesh.dispose();

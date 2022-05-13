@@ -25,8 +25,7 @@ public class ParticleControllerFinalizerInfluencer extends Influencer {
 	public void init() {
 		controllerChannel = controller.particles.getChannel(ParticleChannels.ParticleController);
 		if (controllerChannel == null)
-			throw new RuntimeException(
-					"ParticleController channel not found, specify an influencer which will allocate it please.");
+			throw new RuntimeException("ParticleController channel not found, specify an influencer which will allocate it please.");
 		scaleChannel = controller.particles.getChannel(ParticleChannels.Scale);
 		rotationChannel = controller.particles.getChannel(ParticleChannels.Rotation3D);
 		hasScale = scaleChannel != null;
@@ -51,9 +50,7 @@ public class ParticleControllerFinalizerInfluencer extends Influencer {
 				qz = rotationChannel.data[rotationOffset + ParticleChannels.ZOffset];
 				qw = rotationChannel.data[rotationOffset + ParticleChannels.WOffset];
 			}
-			particleController.setTransform(positionChannel.data[positionOffset + ParticleChannels.XOffset],
-					positionChannel.data[positionOffset + ParticleChannels.YOffset],
-					positionChannel.data[positionOffset + ParticleChannels.ZOffset], qx, qy, qz, qw, scale);
+			particleController.setTransform(positionChannel.data[positionOffset + ParticleChannels.XOffset], positionChannel.data[positionOffset + ParticleChannels.YOffset], positionChannel.data[positionOffset + ParticleChannels.ZOffset], qx, qy, qz, qw, scale);
 			particleController.update();
 		}
 	}

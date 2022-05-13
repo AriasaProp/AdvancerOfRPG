@@ -86,8 +86,7 @@ public class MeshBuilder implements MeshPartBuilder {
 		return new VertexAttributes(attributes);
 	}
 
-	private final static void transformPosition(final float[] values, final int offset, final int size,
-			Matrix4 transform) {
+	private final static void transformPosition(final float[] values, final int offset, final int size, Matrix4 transform) {
 		if (size > 2) {
 			vTmp.set(values[offset], values[offset + 1], values[offset + 2]).mul(transform);
 			values[offset] = vTmp.x;
@@ -101,8 +100,7 @@ public class MeshBuilder implements MeshPartBuilder {
 			values[offset] = vTmp.set(values[offset], 0, 0).mul(transform).x;
 	}
 
-	private final static void transformNormal(final float[] values, final int offset, final int size,
-			Matrix3 transform) {
+	private final static void transformNormal(final float[] values, final int offset, final int size, Matrix3 transform) {
 		if (size > 2) {
 			vTmp.set(values[offset], values[offset + 1], values[offset + 2]).mul(transform).nor();
 			values[offset] = vTmp.x;
@@ -250,11 +248,9 @@ public class MeshBuilder implements MeshPartBuilder {
 		if (!attributes.equals(mesh.getVertexAttributes()))
 			throw new RuntimeException("Mesh attributes don't match");
 		if ((mesh.getMaxVertices() * stride) < vertices.size)
-			throw new RuntimeException("Mesh can't hold enough vertices: " + mesh.getMaxVertices() + " * " + stride
-					+ " < " + vertices.size);
+			throw new RuntimeException("Mesh can't hold enough vertices: " + mesh.getMaxVertices() + " * " + stride + " < " + vertices.size);
 		if (mesh.getMaxIndices() < indices.size)
-			throw new RuntimeException(
-					"Mesh can't hold enough indices: " + mesh.getMaxIndices() + " < " + indices.size);
+			throw new RuntimeException("Mesh can't hold enough indices: " + mesh.getMaxIndices() + " < " + indices.size);
 		mesh.setVertices(vertices.items, 0, vertices.size);
 		mesh.setIndices(indices.items, 0, indices.size);
 		for (MeshPart p : parts)
@@ -400,8 +396,7 @@ public class MeshBuilder implements MeshPartBuilder {
 		vOffset = v1;
 		uScale = u2 - u1;
 		vScale = v2 - v1;
-		hasUVTransform = !(MathUtils.isZero(u1) && MathUtils.isZero(v1) && MathUtils.isEqual(u2, 1f)
-				&& MathUtils.isEqual(v2, 1f));
+		hasUVTransform = !(MathUtils.isZero(u1) && MathUtils.isZero(v1) && MathUtils.isEqual(u2, 1f) && MathUtils.isEqual(v2, 1f));
 	}
 
 	@Override
@@ -567,8 +562,7 @@ public class MeshBuilder implements MeshPartBuilder {
 
 	@Override
 	public short vertex(final VertexInfo info) {
-		return vertex(info.hasPosition ? info.position : null, info.hasNormal ? info.normal : null,
-				info.hasColor ? info.color : null, info.hasUV ? info.uv : null);
+		return vertex(info.hasPosition ? info.position : null, info.hasNormal ? info.normal : null, info.hasColor ? info.color : null, info.hasUV ? info.uv : null);
 	}
 
 	@Override
@@ -612,8 +606,7 @@ public class MeshBuilder implements MeshPartBuilder {
 	}
 
 	@Override
-	public void index(short value1, short value2, short value3, short value4, short value5, short value6, short value7,
-			short value8) {
+	public void index(short value1, short value2, short value3, short value4, short value5, short value6, short value7, short value8) {
 		ensureIndices(8);
 		indices.add(value1);
 		indices.add(value2);
@@ -645,8 +638,7 @@ public class MeshBuilder implements MeshPartBuilder {
 
 	@Override
 	public void line(float x1, float y1, float z1, float x2, float y2, float z2) {
-		line(vertTmp1.set(null, null, null, null).setPos(x1, y1, z1),
-				vertTmp2.set(null, null, null, null).setPos(x2, y2, z2));
+		line(vertTmp1.set(null, null, null, null).setPos(x1, y1, z1), vertTmp2.set(null, null, null, null).setPos(x2, y2, z2));
 	}
 
 	@Override
@@ -672,8 +664,7 @@ public class MeshBuilder implements MeshPartBuilder {
 
 	@Override
 	public void triangle(Vector3 p1, Vector3 p2, Vector3 p3) {
-		triangle(vertTmp1.set(p1, null, null, null), vertTmp2.set(p2, null, null, null),
-				vertTmp3.set(p3, null, null, null));
+		triangle(vertTmp1.set(p1, null, null, null), vertTmp2.set(p2, null, null, null), vertTmp3.set(p3, null, null, null));
 	}
 
 	@Override
@@ -701,22 +692,12 @@ public class MeshBuilder implements MeshPartBuilder {
 
 	@Override
 	public void rect(Vector3 corner00, Vector3 corner10, Vector3 corner11, Vector3 corner01, Vector3 normal) {
-		rect(vertTmp1.set(corner00, normal, null, null).setUV(0f, 1f),
-				vertTmp2.set(corner10, normal, null, null).setUV(1f, 1f),
-				vertTmp3.set(corner11, normal, null, null).setUV(1f, 0f),
-				vertTmp4.set(corner01, normal, null, null).setUV(0f, 0f));
+		rect(vertTmp1.set(corner00, normal, null, null).setUV(0f, 1f), vertTmp2.set(corner10, normal, null, null).setUV(1f, 1f), vertTmp3.set(corner11, normal, null, null).setUV(1f, 0f), vertTmp4.set(corner01, normal, null, null).setUV(0f, 0f));
 	}
 
 	@Override
-	public void rect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11, float z11,
-			float x01, float y01, float z01, float normalX, float normalY, float normalZ) {
-		rect(vertTmp1.set(null, null, null, null).setPos(x00, y00, z00).setNor(normalX, normalY, normalZ).setUV(0f, 1f),
-				vertTmp2.set(null, null, null, null).setPos(x10, y10, z10).setNor(normalX, normalY, normalZ).setUV(1f,
-						1f),
-				vertTmp3.set(null, null, null, null).setPos(x11, y11, z11).setNor(normalX, normalY, normalZ).setUV(1f,
-						0f),
-				vertTmp4.set(null, null, null, null).setPos(x01, y01, z01).setNor(normalX, normalY, normalZ).setUV(0f,
-						0f));
+	public void rect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11, float z11, float x01, float y01, float z01, float normalX, float normalY, float normalZ) {
+		rect(vertTmp1.set(null, null, null, null).setPos(x00, y00, z00).setNor(normalX, normalY, normalZ).setUV(0f, 1f), vertTmp2.set(null, null, null, null).setPos(x10, y10, z10).setNor(normalX, normalY, normalZ).setUV(1f, 1f), vertTmp3.set(null, null, null, null).setPos(x11, y11, z11).setNor(normalX, normalY, normalZ).setUV(1f, 0f), vertTmp4.set(null, null, null, null).setPos(x01, y01, z01).setNor(normalX, normalY, normalZ).setUV(0f, 0f));
 	}
 
 	@Override

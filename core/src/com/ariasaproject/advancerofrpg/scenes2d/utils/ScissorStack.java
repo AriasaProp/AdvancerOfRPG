@@ -114,8 +114,7 @@ public class ScissorStack {
 	 *      Rectangle, Rectangle)
 	 */
 	public static void calculateScissors(Camera camera, Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
-		calculateScissors(camera, 0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight(),
-				batchTransform, area, scissor);
+		calculateScissors(camera, 0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight(), batchTransform, area, scissor);
 	}
 
 	/**
@@ -133,8 +132,7 @@ public class ScissorStack {
 	 *                       coordinates
 	 * @param scissor        the Rectangle to store the result in
 	 */
-	public static void calculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth,
-			float viewportHeight, Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
+	public static void calculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, Matrix4 batchTransform, Rectangle area, Rectangle scissor) {
 		tmp.set(area.x, area.y, 0);
 		tmp.mul(batchTransform);
 		camera.project(tmp, viewportX, viewportY, viewportWidth, viewportHeight);

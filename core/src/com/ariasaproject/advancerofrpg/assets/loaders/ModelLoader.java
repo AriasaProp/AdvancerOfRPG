@@ -81,8 +81,7 @@ public abstract class ModelLoader<P extends ModelLoader.ModelParameters> extends
 		synchronized (items) {
 			items.add(item);
 		}
-		TextureLoader.TextureParameter textureParameter = (parameters != null) ? parameters.textureParameter
-				: defaultParameters.textureParameter;
+		TextureLoader.TextureParameter textureParameter = (parameters != null) ? parameters.textureParameter : defaultParameters.textureParameter;
 		for (final ModelMaterial modelMaterial : data.materials) {
 			if (modelMaterial.textures != null) {
 				for (final ModelTexture modelTexture : modelMaterial.textures)

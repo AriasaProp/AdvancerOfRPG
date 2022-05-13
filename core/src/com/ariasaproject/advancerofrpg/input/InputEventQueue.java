@@ -19,7 +19,7 @@ public class InputEventQueue {
 	private final IntArray processingQueue = new IntArray();
 	private long currentEventTime;
 
-	public void drain (@Null InputProcessor processor) {
+	public void drain(@Null InputProcessor processor) {
 		synchronized (this) {
 			if (processor == null) {
 				queue.clear();
@@ -31,7 +31,7 @@ public class InputEventQueue {
 		int[] q = processingQueue.items;
 		for (int i = 0, n = processingQueue.size; i < n;) {
 			int type = q[i++];
-			currentEventTime = (long)q[i++] << 32 | q[i++] & 0xFFFFFFFFL;
+			currentEventTime = (long) q[i++] << 32 | q[i++] & 0xFFFFFFFFL;
 			switch (type) {
 			case SKIP:
 				i += q[i];
@@ -43,7 +43,7 @@ public class InputEventQueue {
 				processor.keyUp(q[i++]);
 				break;
 			case KEY_TYPED:
-				processor.keyTyped((char)q[i++]);
+				processor.keyTyped((char) q[i++]);
 				break;
 			case TOUCH_DOWN:
 				processor.touchDown(q[i++], q[i++], q[i++], q[i++]);
@@ -67,11 +67,12 @@ public class InputEventQueue {
 		processingQueue.clear();
 	}
 
-	private synchronized int next (int nextType, int i) {
+	private synchronized int next(int nextType, int i) {
 		int[] q = queue.items;
 		for (int n = queue.size; i < n;) {
 			int type = q[i];
-			if (type == nextType) return i;
+			if (type == nextType)
+				return i;
 			i += 3;
 			switch (type) {
 			case SKIP:
@@ -108,33 +109,33 @@ public class InputEventQueue {
 		return -1;
 	}
 
-	private void queueTime (long time) {
-		queue.add((int)(time >> 32));
-		queue.add((int)time);
+	private void queueTime(long time) {
+		queue.add((int) (time >> 32));
+		queue.add((int) time);
 	}
 
-	public synchronized boolean keyDown (int keycode, long time) {
+	public synchronized boolean keyDown(int keycode, long time) {
 		queue.add(KEY_DOWN);
 		queueTime(time);
 		queue.add(keycode);
 		return false;
 	}
 
-	public synchronized boolean keyUp (int keycode, long time) {
+	public synchronized boolean keyUp(int keycode, long time) {
 		queue.add(KEY_UP);
 		queueTime(time);
 		queue.add(keycode);
 		return false;
 	}
 
-	public synchronized boolean keyTyped (char character, long time) {
+	public synchronized boolean keyTyped(char character, long time) {
 		queue.add(KEY_TYPED);
 		queueTime(time);
 		queue.add(character);
 		return false;
 	}
 
-	public synchronized boolean touchDown (int screenX, int screenY, int pointer, int button, long time) {
+	public synchronized boolean touchDown(int screenX, int screenY, int pointer, int button, long time) {
 		queue.add(TOUCH_DOWN);
 		queueTime(time);
 		queue.add(screenX);
@@ -144,7 +145,7 @@ public class InputEventQueue {
 		return false;
 	}
 
-	public synchronized boolean touchUp (int screenX, int screenY, int pointer, int button, long time) {
+	public synchronized boolean touchUp(int screenX, int screenY, int pointer, int button, long time) {
 		queue.add(TOUCH_UP);
 		queueTime(time);
 		queue.add(screenX);
@@ -154,7 +155,7 @@ public class InputEventQueue {
 		return false;
 	}
 
-	public synchronized boolean touchDragged (int screenX, int screenY, int pointer, long time) {
+	public synchronized boolean touchDragged(int screenX, int screenY, int pointer, long time) {
 		// Skip any queued touch dragged events for the same pointer.
 		for (int i = next(TOUCH_DRAGGED, 0); i >= 0; i = next(TOUCH_DRAGGED, i + 6)) {
 			if (queue.get(i + 5) == pointer) {
@@ -170,7 +171,7 @@ public class InputEventQueue {
 		return false;
 	}
 
-	public synchronized boolean mouseMoved (int screenX, int screenY, long time) {
+	public synchronized boolean mouseMoved(int screenX, int screenY, long time) {
 		// Skip any queued mouse moved events.
 		for (int i = next(MOUSE_MOVED, 0); i >= 0; i = next(MOUSE_MOVED, i + 5)) {
 			queue.set(i, SKIP);
@@ -183,7 +184,7 @@ public class InputEventQueue {
 		return false;
 	}
 
-	public synchronized boolean scrolled (float amountX, float amountY, long time) {
+	public synchronized boolean scrolled(float amountX, float amountY, long time) {
 		queue.add(SCROLLED);
 		queueTime(time);
 		queue.add(NumberUtils.floatToIntBits(amountX));
@@ -191,7 +192,7 @@ public class InputEventQueue {
 		return false;
 	}
 
-	public long getCurrentEventTime () {
+	public long getCurrentEventTime() {
 		return currentEventTime;
 	}
 }

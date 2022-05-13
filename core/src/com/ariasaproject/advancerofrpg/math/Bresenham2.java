@@ -44,8 +44,7 @@ public class Bresenham2 {
 	 * @param output the output array, will be cleared in this method
 	 * @return the list of points on the line at integer coordinates
 	 */
-	public Array<IntegerVector2> line(int startX, int startY, int endX, int endY, Pool<IntegerVector2> pool,
-			Array<IntegerVector2> output) {
+	public Array<IntegerVector2> line(int startX, int startY, int endX, int endY, Pool<IntegerVector2> pool, Array<IntegerVector2> output) {
 		int w = endX - startX;
 		int h = endY - startY;
 		int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;

@@ -6,10 +6,7 @@ import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.Camera;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.GLTexture;
-import com.ariasaproject.advancerofrpg.graphics.Mesh;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
-import com.ariasaproject.advancerofrpg.graphics.VertexAttribute;
-import com.ariasaproject.advancerofrpg.graphics.VertexAttributes;
 import com.ariasaproject.advancerofrpg.graphics.g3d.environment.DirectionalLights;
 import com.ariasaproject.advancerofrpg.graphics.g3d.environment.DirectionalLights.DirectionalLight;
 import com.ariasaproject.advancerofrpg.graphics.g3d.environment.PointLights;
@@ -19,7 +16,6 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.environment.SpotLights.SpotL
 import com.ariasaproject.advancerofrpg.graphics.g3d.shaders.DepthShader;
 import com.ariasaproject.advancerofrpg.graphics.g3d.shaders.ModelShader;
 import com.ariasaproject.advancerofrpg.graphics.g3d.utils.TextureDescriptor;
-import com.ariasaproject.advancerofrpg.graphics.glutils.ShaderProgram;
 import com.ariasaproject.advancerofrpg.math.MathUtils;
 import com.ariasaproject.advancerofrpg.math.Vector3;
 import com.ariasaproject.advancerofrpg.utils.Array;
@@ -34,67 +30,9 @@ public class ModelBatch implements Disposable {
 	private final RenderablePool renderablesPool = new RenderablePool();
 	private final TextureBinder textureBinder = new TextureBinder();
 	private final Array<Renderable> renderables = new Array<Renderable>();
-	/*
-	 private final Mesh mPrev;
-	 private final ShaderProgram programPrev;
-	 */
-	private final Mesh skyboxesMesh;
+
 	public ModelBatch() {
-		/*
-		 mPrev = new Mesh(true, true, 4, 6,
-		 new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE),
-		 new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE));
-		 mPrev.setVertices(
-		 new float[] { -.15f, 0.35f, 0, 1, 0.15f, 0.35f, 1, 1, -0.15f, -0.35f, 0, 0, 0.15f, -0.35f, 1, 0 });
-		 mPrev.setIndices(new short[] { 2, 1, 0, 2, 3, 1 });
-		 programPrev = new ShaderProgram("\nuniform vec2 u_pivot;" + "\nin vec2 a_position;" + "\nin vec2 a_texCoord;"
-		 + "\nout vec2 v_texCoord;" + "\n" + "\nvoid main(){"
-		 + "\n    gl_Position = vec4(u_pivot + a_position, 1.0, 1.0);" + "\n    v_texCoord = a_texCoord;" + "\n}"
-		 + "\n<break>" + "\nout vec4 gl_FragColor;" + "\n" + "\nuniform sampler2DArray textures;"
-		 + "\nuniform int index;" + "\nin vec2 v_texCoord;" + "\n" + "\nvoid main(){"
-		 + "\n    gl_FragColor = vec4(texture(textures, vec3(v_texCoord, float(index))).r);" + "\n}" + "\n", "");
-		 */
-		skyboxesMesh = new Mesh(true, true, 120, 36,
-								new VertexAttribute(VertexAttributes.Usage.Position, 3, "a_position"),
-								new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoord"));
-		skyboxesMesh.setVertices(new float[]{
-									 1,1,1, 0,0,//x+
-									 1,1,-1, 1,0,//x+
-									 1,-1,1, 0,1,//x+
-									 1,-1,-1, 1,1,//x+
-									 -1,1,-1, 0,0,//x-
-									 -1,1,1, 1,0,//x-
-									 -1,-1,-1, 0,1,//x-
-									 -1,-1,1, 1,1,//x-
-									 -1,1,1, 0,0,//z+
-									 1,1,1, 1,0,//z+
-									 -1,-1,1, 0,1,//z+
-									 1,-1,1, 1,1,//z+
-									 1,1,-1, 0,0,//z-
-									 -1,1,-1, 1,0,//z-
-									 1,-1,-1, 0,1,//z-
-									 -1,-1,-1, 1,1,//z-
-									 -1,1,-1, 0,0,//y+
-									 1,1,-1, 1,0,//y+
-									 -1,1,1, 0,1,//y+
-									 1,1,1, 1,1,//y+
-									 -1,-1,1, 0,0,//y-
-									 1,-1,1, 1,0,//y-
-									 -1,-1,-1, 0,1,//y-
-									 1,-1,-1, 1,1,//y-
-								 });
-		skyboxesMesh.setIndices(new short[]{
-									2,1,0, 2,3,1,//x+
-									6,5,4, 6,7,5,//x-
-									10,9,8, 10,11,9,//z+
-									14,13,12, 14,15,13,//z-
-									18,17,16, 18,19,17,//y+
-									22,21,20, 22,23,21//y-
-								});
 	}
-
-    private final ShaderProgram skyboxes = new ShaderProgram(GraphFunc.app.getFiles().internal("shader/skybox.shaderprogram"));
-
 
 	public <T extends RenderableProvider> void render(final Camera camera, final T... renderableProviders) {
 		TGF g = GraphFunc.tgf;
@@ -105,8 +43,7 @@ public class ModelBatch implements Disposable {
 		g.setCullFace(TGF.GL_BACK);
 		g.capabilitySwitch(false, TGF.GL_BLEND);
 		g.capabilitySwitch(true, TGF.GL_DEPTH_TEST); // ignore pixel out of depth range
-		if (environment.isUseShadowMapping() && (environment.directionalLights.size() + environment.pointLights.size()
-			+ environment.spotLights.size() > 0)) {
+		if (environment.isUseShadowMapping() && (environment.directionalLights.size() + environment.pointLights.size() + environment.spotLights.size() > 0)) {
 			environment.prepare();
 			g.setDepthMask(true);
 			g.glDepthFunc(TGF.GL_LESS);
@@ -191,16 +128,6 @@ public class ModelBatch implements Disposable {
 		pos.set(camera.position);
 		renderables.sort(sorter);
 		g.glViewport(0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight());
-		{
-			skyboxes.bind();
-			final Vector3 sunDir = new Vector3(0, 1, 0);
-			if (environment.directionalLights.size() > 0) {
-				sunDir.set(environment.directionalLights.get(0).d);
-			}
-			skyboxes.setUniformf("u_sunDirection", sunDir);
-			//skyboxes.setUniformf("u_time", GraphFunc.app.getGraphics().getDeltaTime());
-			skyboxesMesh.render(skyboxes, TGF.GL_TRIANGLES);
-		}
 		ModelShader currentModelShader = null;
 		g.glDepthFunc(TGF.GL_LEQUAL);
 		for (Renderable renderable : renderables) {
@@ -231,18 +158,6 @@ public class ModelBatch implements Disposable {
 		// end rendering
 		renderablesPool.flush();
 		renderables.clear();
-		/*
-		 if (environment.pointLights.size() * 6 + environment.directionalLights.size() > 0) {
-		 programPrev.bind();
-		 programPrev.setUniformi("textures", textureBinder.bind(TGF.GL_TEXTURE_2D_ARRAY, environment.shadowMapArray));
-		 for (int i = 0; i < environment.pointLights.size() * 6 + environment.directionalLights.size(); i++) {
-		 programPrev.setUniform2fv("u_pivot",
-		 new float[] { -0.85f + (i % 3) * 0.302f, 0.65f - (Math.round(i / 3) * 0.702f) }, 0, 1);
-		 programPrev.setUniformi("index", i);
-		 mPrev.render(programPrev, TGF.GL_TRIANGLES);
-		 }
-		 }
-		 */
 	}
 
 	@Override
@@ -253,18 +168,13 @@ public class ModelBatch implements Disposable {
 		for (ModelShader shader : modelShaders)
 			shader.dispose();
 		modelShaders.clear();
-		skyboxes.dispose();
-		skyboxesMesh.dispose();
-		/*
-		 mPrev.dispose();
-		 programPrev.dispose();
-		 */
 	}
 
 	public static class Environment implements Disposable {
 		// State for shadowMapping
 		private boolean useShadowMapping = true;
-		private int shadow_quality = GraphFunc.tgf.getMaxTextureSize() >> 1;// from maximum texture divided by 2 each bit
+		private int shadow_quality = GraphFunc.tgf.getMaxTextureSize() >> 1;// from maximum texture divided by 2 each
+																			// bit
 
 		public DirectionalLights directionalLights = new DirectionalLights();
 		public PointLights pointLights = new PointLights();
@@ -330,8 +240,7 @@ public class ModelBatch implements Disposable {
 			if (!g.glIsTexture(shadowMapArray) || shadowMapArray < 0) {
 				shadowMapArray = g.glGenTexture();
 				g.glBindTexture(TGF.GL_TEXTURE_2D_ARRAY, shadowMapArray);
-				g.glTexImage3D(TGF.GL_TEXTURE_2D_ARRAY, 0, TGF.GL_DEPTH_COMPONENT32F, shadow_quality, shadow_quality,
-							   size, 0, TGF.GL_DEPTH_COMPONENT, TGF.GL_FLOAT, null);
+				g.glTexImage3D(TGF.GL_TEXTURE_2D_ARRAY, 0, TGF.GL_DEPTH_COMPONENT32F, shadow_quality, shadow_quality, size, 0, TGF.GL_DEPTH_COMPONENT, TGF.GL_FLOAT, null);
 				g.glTexParameteri(TGF.GL_TEXTURE_2D_ARRAY, TGF.GL_TEXTURE_WRAP_S, TGF.GL_CLAMP_TO_EDGE);
 				g.glTexParameteri(TGF.GL_TEXTURE_2D_ARRAY, TGF.GL_TEXTURE_WRAP_T, TGF.GL_CLAMP_TO_EDGE);
 				g.glTexParameteri(TGF.GL_TEXTURE_2D_ARRAY, TGF.GL_TEXTURE_WRAP_R, TGF.GL_CLAMP_TO_EDGE);
@@ -358,14 +267,17 @@ public class ModelBatch implements Disposable {
 		public int getTexHandler() {
 			return shadowMapArray;
 		}
+
 		public int addDirectionalLight(Color color, Vector3 dir) {
 			add(new DirectionalLight(color, dir));
 			return directionalLights.size() - 1;
 		}
+
 		public int addPointLight(Color color, Vector3 pos) {
 			add(new PointLight(color, pos));
 			return pointLights.size() - 1;
 		}
+
 		public int addSpotLight(Color c, Vector3 pos, Vector3 d, float n, float f, float cOA, float e) {
 			add(new SpotLight(c, pos, d, n, f, cOA, e));
 			return spotLights.size() - 1;

@@ -5,12 +5,15 @@ import com.ariasaproject.advancerofrpg.physics.box2d.Body;
 import com.ariasaproject.advancerofrpg.physics.box2d.JointDef;
 
 public class RevoluteJointDef extends JointDef {
-	public RevoluteJointDef () {
+	public RevoluteJointDef() {
 		type = JointType.RevoluteJoint;
 	}
 
-	/** Initialize the bodies, anchors, and reference angle using a world anchor point. */
-	public void initialize (Body bodyA, Body bodyB, Vector2 anchor) {
+	/**
+	 * Initialize the bodies, anchors, and reference angle using a world anchor
+	 * point.
+	 */
+	public void initialize(Body bodyA, Body bodyB, Vector2 anchor) {
 		this.bodyA = bodyA;
 		this.bodyB = bodyB;
 		localAnchorA.set(bodyA.getLocalPoint(anchor));
@@ -42,6 +45,9 @@ public class RevoluteJointDef extends JointDef {
 	/** The desired motor speed. Usually in radians per second. */
 	public float motorSpeed = 0;
 
-	/** The maximum motor torque used to achieve the desired motor speed. Usually in N-m. */
+	/**
+	 * The maximum motor torque used to achieve the desired motor speed. Usually in
+	 * N-m.
+	 */
 	public float maxMotorTorque = 0;
 }

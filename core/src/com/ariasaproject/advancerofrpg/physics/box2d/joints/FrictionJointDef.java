@@ -7,12 +7,15 @@ import com.ariasaproject.advancerofrpg.physics.box2d.JointDef;
 /** Friction joint definition. */
 public class FrictionJointDef extends JointDef {
 
-	public FrictionJointDef () {
+	public FrictionJointDef() {
 		type = JointType.FrictionJoint;
 	}
 
-	/** Initialize the bodies, anchors, axis, and reference angle using the world anchor and world axis. */
-	public void initialize (Body bodyA, Body bodyB, Vector2 anchor) {
+	/**
+	 * Initialize the bodies, anchors, axis, and reference angle using the world
+	 * anchor and world axis.
+	 */
+	public void initialize(Body bodyA, Body bodyB, Vector2 anchor) {
 		this.bodyA = bodyA;
 		this.bodyB = bodyB;
 		localAnchorA.set(bodyA.getLocalPoint(anchor));

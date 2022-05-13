@@ -93,8 +93,7 @@ public class Decal {
 	 * @return Created decal
 	 */
 	public static Decal newDecal(TextureRegion textureRegion) {
-		return newDecal(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), textureRegion,
-						DecalMaterial.NO_BLEND, DecalMaterial.NO_BLEND);
+		return newDecal(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), textureRegion, DecalMaterial.NO_BLEND, DecalMaterial.NO_BLEND);
 	}
 
 	/**
@@ -107,9 +106,7 @@ public class Decal {
 	 * @return Created decal
 	 */
 	public static Decal newDecal(TextureRegion textureRegion, boolean hasTransparency) {
-		return newDecal(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), textureRegion,
-						hasTransparency ? TGF.GL_SRC_ALPHA : DecalMaterial.NO_BLEND,
-						hasTransparency ? TGF.GL_ONE_MINUS_SRC_ALPHA : DecalMaterial.NO_BLEND);
+		return newDecal(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), textureRegion, hasTransparency ? TGF.GL_SRC_ALPHA : DecalMaterial.NO_BLEND, hasTransparency ? TGF.GL_ONE_MINUS_SRC_ALPHA : DecalMaterial.NO_BLEND);
 	}
 
 	/**
@@ -139,8 +136,7 @@ public class Decal {
 	 * @return Created decal
 	 */
 	public static Decal newDecal(float width, float height, TextureRegion textureRegion, boolean hasTransparency) {
-		return newDecal(width, height, textureRegion, hasTransparency ? TGF.GL_SRC_ALPHA : DecalMaterial.NO_BLEND,
-						hasTransparency ? TGF.GL_ONE_MINUS_SRC_ALPHA : DecalMaterial.NO_BLEND);
+		return newDecal(width, height, textureRegion, hasTransparency ? TGF.GL_SRC_ALPHA : DecalMaterial.NO_BLEND, hasTransparency ? TGF.GL_ONE_MINUS_SRC_ALPHA : DecalMaterial.NO_BLEND);
 	}
 
 	/**
@@ -154,8 +150,7 @@ public class Decal {
 	 * @param dstBlendFactor Destination blend used by glBlendFunc
 	 * @return Created decal
 	 */
-	public static Decal newDecal(float width, float height, TextureRegion textureRegion, int srcBlendFactor,
-								 int dstBlendFactor) {
+	public static Decal newDecal(float width, float height, TextureRegion textureRegion, int srcBlendFactor, int dstBlendFactor) {
 		Decal decal = new Decal();
 		decal.setTextureRegion(textureRegion);
 		decal.setBlending(srcBlendFactor, dstBlendFactor);
@@ -177,8 +172,7 @@ public class Decal {
 	 * @param material       Custom decal material
 	 * @return Created decal
 	 */
-	public static Decal newDecal(float width, float height, TextureRegion textureRegion, int srcBlendFactor,
-								 int dstBlendFactor, DecalMaterial material) {
+	public static Decal newDecal(float width, float height, TextureRegion textureRegion, int srcBlendFactor, int dstBlendFactor, DecalMaterial material) {
 		Decal decal = new Decal(material);
 		decal.setTextureRegion(textureRegion);
 		decal.setBlending(srcBlendFactor, dstBlendFactor);

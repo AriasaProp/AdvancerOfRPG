@@ -27,8 +27,7 @@ class AssetLoadingTask implements Callable<Void> {
 	int ticks = 0;
 	volatile boolean cancel = false;
 
-	public AssetLoadingTask(AssetContainer manager, AssetDescriptor assetDesc, AssetLoader loader,
-							ExecutorService threadPool) {
+	public AssetLoadingTask(AssetContainer manager, AssetDescriptor assetDesc, AssetLoader loader, ExecutorService threadPool) {
 		this.manager = manager;
 		this.assetDesc = assetDesc;
 		this.loader = loader;
@@ -44,8 +43,7 @@ class AssetLoadingTask implements Callable<Void> {
 	public Void call() throws Exception {
 		AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader) loader;
 		if (!dependenciesLoaded) {
-			dependencies = asyncLoader.getDependencies(assetDesc.fullPath, resolve(loader, assetDesc),
-					assetDesc.params);
+			dependencies = asyncLoader.getDependencies(assetDesc.fullPath, resolve(loader, assetDesc), assetDesc.params);
 			if (dependencies != null) {
 				removeDuplicates(dependencies);
 				manager.injectDependencies(assetDesc.fullPath, dependencies);
@@ -111,8 +109,7 @@ class AssetLoadingTask implements Callable<Void> {
 					}
 					dependenciesLoaded = true;
 					if (asyncDone) {
-						asset = asyncLoader.loadSync(manager, assetDesc.fullPath, resolve(loader, assetDesc),
-								assetDesc.params);
+						asset = asyncLoader.loadSync(manager, assetDesc.fullPath, resolve(loader, assetDesc), assetDesc.params);
 					}
 				}
 			}
@@ -121,16 +118,14 @@ class AssetLoadingTask implements Callable<Void> {
 				loadFuture = executor.submit(this);
 			} else {
 				if (asyncDone) {
-					asset = asyncLoader.loadSync(manager, assetDesc.fullPath, resolve(loader, assetDesc),
-							assetDesc.params);
+					asset = asyncLoader.loadSync(manager, assetDesc.fullPath, resolve(loader, assetDesc), assetDesc.params);
 				} else if (loadFuture.isDone()) {
 					try {
 						loadFuture.get();
 					} catch (Exception e) {
 						throw new RuntimeException("Couldn't load asset: " + assetDesc.fullPath, e);
 					}
-					asset = asyncLoader.loadSync(manager, assetDesc.fullPath, resolve(loader, assetDesc),
-							assetDesc.params);
+					asset = asyncLoader.loadSync(manager, assetDesc.fullPath, resolve(loader, assetDesc), assetDesc.params);
 				}
 			}
 		}

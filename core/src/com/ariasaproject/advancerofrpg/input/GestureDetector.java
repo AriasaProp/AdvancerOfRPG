@@ -57,8 +57,7 @@ public class GestureDetector extends InputAdapter {
 	 *                          for a fling event to be fired, see
 	 *                          {@link GestureListener#fling(float, float, int)}
 	 */
-	public GestureDetector(float halfTapSquareSize, float tapCountInterval, float longPressDuration,
-			float maxFlingDelay, GestureListener listener) {
+	public GestureDetector(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener) {
 		this(halfTapSquareSize, halfTapSquareSize, tapCountInterval, longPressDuration, maxFlingDelay, listener);
 	}
 
@@ -80,8 +79,7 @@ public class GestureDetector extends InputAdapter {
 	 *                               dragged for a fling event to be fired, see
 	 *                               {@link GestureListener#fling(float, float, int)}
 	 */
-	public GestureDetector(float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval,
-			float longPressDuration, float maxFlingDelay, GestureListener listener) {
+	public GestureDetector(float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener) {
 		if (listener == null)
 			throw new IllegalArgumentException("listener cannot be null.");
 		this.tapRectangleWidth = halfTapRectangleWidth;
@@ -188,9 +186,7 @@ public class GestureDetector extends InputAdapter {
 			return false;
 		if (inTapRectangle) {
 			// handle taps
-			if (lastTapButton != button || lastTapPointer != pointer
-					|| System.nanoTime() - lastTapTime > tapCountInterval
-					|| !isWithinTapRectangle(x, y, lastTapX, lastTapY))
+			if (lastTapButton != button || lastTapPointer != pointer || System.nanoTime() - lastTapTime > tapCountInterval || !isWithinTapRectangle(x, y, lastTapX, lastTapY))
 				tapCount = 0;
 			tapCount++;
 			lastTapTime = System.nanoTime();

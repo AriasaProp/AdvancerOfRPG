@@ -25,21 +25,27 @@ public class ModelInstance implements RenderableProvider {
 	public ModelInstance(final Model model) {
 		this(model, (String[]) null);
 	}
+
 	public ModelInstance(final Model model, final String nodeId, boolean mergeTransform) {
 		this(model, new Matrix4(), nodeId, false, false, mergeTransform);
 	}
+
 	public ModelInstance(final Model model, final Matrix4 transform, final String nodeId, boolean mergeTransform) {
 		this(model, transform, nodeId, false, false, mergeTransform);
 	}
+
 	public ModelInstance(final Model model, final String nodeId, boolean parentTransform, boolean mergeTransform) {
 		this(model, new Matrix4(), nodeId, true, parentTransform, mergeTransform);
 	}
+
 	public ModelInstance(final Model model, final Matrix4 transform, final String nodeId, boolean parentTransform, boolean mergeTransform) {
 		this(model, transform, nodeId, true, parentTransform, mergeTransform);
 	}
+
 	public ModelInstance(final Model model, final String nodeId, boolean recursive, boolean parentTransform, boolean mergeTransform) {
 		this(model, new Matrix4(), nodeId, recursive, parentTransform, mergeTransform);
 	}
+
 	public ModelInstance(final Model model, final Matrix4 transform, final String nodeId, boolean recursive, boolean parentTransform, boolean mergeTransform) {
 		this(model, transform, nodeId, recursive, parentTransform, mergeTransform, defaultShareKeyframes);
 	}
@@ -60,10 +66,11 @@ public class ModelInstance implements RenderableProvider {
 		copyAnimations(model.animations, shareKeyframes);
 		calculateTransforms();
 	}
+
 	public ModelInstance(final Model model, final String... rootNodeIds) {
 		this(model, new Matrix4(), rootNodeIds);
 	}
-	
+
 	public ModelInstance(final Model model, final Matrix4 transform, final String... rootNodeIds) {
 		this.model = model;
 		this.transform = transform;
@@ -74,14 +81,16 @@ public class ModelInstance implements RenderableProvider {
 		copyAnimations(model.animations, defaultShareKeyframes);
 		calculateTransforms();
 	}
+
 	public ModelInstance(final Model model, final Array<String> rootNodeIds) {
 		this(model, new Matrix4(), rootNodeIds);
 	}
+
 	public ModelInstance(final Model model, final Matrix4 transform, final Array<String> rootNodeIds) {
 		this(model, transform, rootNodeIds, defaultShareKeyframes);
 	}
-	public ModelInstance(final Model model, final Matrix4 transform, final Array<String> rootNodeIds,
-			boolean shareKeyframes) {
+
+	public ModelInstance(final Model model, final Matrix4 transform, final Array<String> rootNodeIds, boolean shareKeyframes) {
 		this.model = model;
 		this.transform = transform;
 		copyNodes(model.nodes, rootNodeIds);

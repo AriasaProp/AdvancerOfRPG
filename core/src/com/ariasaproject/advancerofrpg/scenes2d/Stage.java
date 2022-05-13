@@ -81,8 +81,7 @@ public class Stage extends InputAdapter implements Disposable {
 				continue;
 			}
 			// Update over actor for the pointer.
-			pointerOverActors[pointer] = fireEnterAndExit(overLast, pointerScreenX[pointer], pointerScreenY[pointer],
-					pointer);
+			pointerOverActors[pointer] = fireEnterAndExit(overLast, pointerScreenX[pointer], pointerScreenY[pointer], pointer);
 		}
 		root.act(delta);
 	}
@@ -358,8 +357,7 @@ public class Stage extends InputAdapter implements Disposable {
 		SnapshotArray<TouchFocus> touchFocuses = this.touchFocuses;
 		for (int i = touchFocuses.size - 1; i >= 0; i--) {
 			TouchFocus focus = touchFocuses.get(i);
-			if (focus.listener == listener && focus.listenerActor == listenerActor && focus.target == target
-					&& focus.pointer == pointer && focus.button == button) {
+			if (focus.listener == listener && focus.listenerActor == listenerActor && focus.target == target && focus.pointer == pointer && focus.button == button) {
 				touchFocuses.removeIndex(i);
 				Pools.free(focus);
 			}

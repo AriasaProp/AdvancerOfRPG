@@ -338,8 +338,7 @@ public class DelaunayTriangulator {
 			int p1 = trianglesArray[i - 2] * 2;
 			int p2 = trianglesArray[i - 1] * 2;
 			int p3 = trianglesArray[i] * 2;
-			GeometryUtils.triangleCentroid(points[p1], points[p1 + 1], points[p2], points[p2 + 1], points[p3],
-					points[p3 + 1], centroid);
+			GeometryUtils.triangleCentroid(points[p1], points[p1 + 1], points[p2], points[p2 + 1], points[p3], points[p3 + 1], centroid);
 			if (!Intersector.isPointInPolygon(hull, offset, count, centroid.x, centroid.y)) {
 				triangles.removeIndex(i);
 				triangles.removeIndex(i - 1);

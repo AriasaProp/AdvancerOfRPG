@@ -137,8 +137,7 @@ public class TextureAtlas implements Disposable {
 		for (Region region : data.regions) {
 			int width = region.width;
 			int height = region.height;
-			AtlasRegion atlasRegion = new AtlasRegion(pageToTexture.get(region.page), region.left, region.top,
-					region.rotate ? height : width, region.rotate ? width : height);
+			AtlasRegion atlasRegion = new AtlasRegion(pageToTexture.get(region.page), region.left, region.top, region.rotate ? height : width, region.rotate ? width : height);
 			atlasRegion.index = region.index;
 			atlasRegion.name = region.name;
 			atlasRegion.offsetX = region.offsetX;
@@ -428,11 +427,9 @@ public class TextureAtlas implements Disposable {
 						region.rotate = degrees == 90;
 						region.degrees = degrees;
 						if (readTuple(reader) == 4) { // split is optional
-							region.splits = new int[] { Integer.parseInt(tuple[0]), Integer.parseInt(tuple[1]),
-									Integer.parseInt(tuple[2]), Integer.parseInt(tuple[3]) };
+							region.splits = new int[] { Integer.parseInt(tuple[0]), Integer.parseInt(tuple[1]), Integer.parseInt(tuple[2]), Integer.parseInt(tuple[3]) };
 							if (readTuple(reader) == 4) { // pad is optional, but only present with splits
-								region.pads = new int[] { Integer.parseInt(tuple[0]), Integer.parseInt(tuple[1]),
-										Integer.parseInt(tuple[2]), Integer.parseInt(tuple[3]) };
+								region.pads = new int[] { Integer.parseInt(tuple[0]), Integer.parseInt(tuple[1]), Integer.parseInt(tuple[2]), Integer.parseInt(tuple[3]) };
 								readTuple(reader);
 							}
 						}
@@ -477,8 +474,7 @@ public class TextureAtlas implements Disposable {
 			public final TextureWrap vWrap;
 			public Texture texture;
 
-			public Page(FileHandle handle, float width, float height, boolean useMipMaps, Format format,
-					TextureFilter minFilter, TextureFilter magFilter, TextureWrap uWrap, TextureWrap vWrap) {
+			public Page(FileHandle handle, float width, float height, boolean useMipMaps, Format format, TextureFilter minFilter, TextureFilter magFilter, TextureWrap uWrap, TextureWrap vWrap) {
 				this.width = width;
 				this.height = height;
 				this.textureFile = handle;
@@ -699,8 +695,7 @@ public class TextureAtlas implements Disposable {
 			region.offsetY = originalOffsetY * heightRatio;
 			int packedWidth = region.rotate ? region.packedHeight : region.packedWidth;
 			int packedHeight = region.rotate ? region.packedWidth : region.packedHeight;
-			super.setBounds(x + region.offsetX, y + region.offsetY, packedWidth * widthRatio,
-					packedHeight * heightRatio);
+			super.setBounds(x + region.offsetX, y + region.offsetY, packedWidth * widthRatio, packedHeight * heightRatio);
 		}
 
 		@Override

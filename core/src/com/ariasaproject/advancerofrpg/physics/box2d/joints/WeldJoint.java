@@ -9,77 +9,77 @@ public class WeldJoint extends Joint {
 	private final Vector2 localAnchorA = new Vector2();
 	private final Vector2 localAnchorB = new Vector2();
 
-	public WeldJoint (World world, long addr) {
+	public WeldJoint(World world, long addr) {
 		super(world, addr);
 	}
 
-	public Vector2 getLocalAnchorA () {
+	public Vector2 getLocalAnchorA() {
 		jniGetLocalAnchorA(addr, tmp);
 		localAnchorA.set(tmp[0], tmp[1]);
 		return localAnchorA;
 	}
 
-	private native void jniGetLocalAnchorA (long addr, float[] anchor); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		anchor[0] = joint->GetLocalAnchorA().x;
-		anchor[1] = joint->GetLocalAnchorA().y;
-	*/
+	private native void jniGetLocalAnchorA(long addr, float[] anchor); /*
+																		 * b2WeldJoint* joint = (b2WeldJoint*)addr;
+																		 * anchor[0] = joint->GetLocalAnchorA().x;
+																		 * anchor[1] = joint->GetLocalAnchorA().y;
+																		 */
 
-	public Vector2 getLocalAnchorB () {
+	public Vector2 getLocalAnchorB() {
 		jniGetLocalAnchorB(addr, tmp);
 		localAnchorB.set(tmp[0], tmp[1]);
 		return localAnchorB;
 	}
 
-	private native void jniGetLocalAnchorB (long addr, float[] anchor); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		anchor[0] = joint->GetLocalAnchorB().x;
-		anchor[1] = joint->GetLocalAnchorB().y;
-	*/
-	
-	public float getReferenceAngle () {
+	private native void jniGetLocalAnchorB(long addr, float[] anchor); /*
+																		 * b2WeldJoint* joint = (b2WeldJoint*)addr;
+																		 * anchor[0] = joint->GetLocalAnchorB().x;
+																		 * anchor[1] = joint->GetLocalAnchorB().y;
+																		 */
+
+	public float getReferenceAngle() {
 		return jniGetReferenceAngle(addr);
 	}
 
-	private native float jniGetReferenceAngle (long addr); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		return joint->GetReferenceAngle();
-	*/
+	private native float jniGetReferenceAngle(long addr); /*
+															 * b2WeldJoint* joint = (b2WeldJoint*)addr; return
+															 * joint->GetReferenceAngle();
+															 */
 
-	public float getFrequency () {
+	public float getFrequency() {
 		return jniGetFrequency(addr);
 	}
 
-	private native float jniGetFrequency (long addr); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		return joint->GetFrequency();
-	*/
+	private native float jniGetFrequency(long addr); /*
+														 * b2WeldJoint* joint = (b2WeldJoint*)addr; return
+														 * joint->GetFrequency();
+														 */
 
-	public void setFrequency (float hz) {
+	public void setFrequency(float hz) {
 		jniSetFrequency(addr, hz);
 	}
 
-	private native void jniSetFrequency (long addr, float hz); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		joint->SetFrequency(hz);
-	*/
+	private native void jniSetFrequency(long addr, float hz); /*
+																 * b2WeldJoint* joint = (b2WeldJoint*)addr;
+																 * joint->SetFrequency(hz);
+																 */
 
-	public float getDampingRatio () {
+	public float getDampingRatio() {
 		return jniGetDampingRatio(addr);
 	}
 
-	private native float jniGetDampingRatio (long addr); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		return joint->GetDampingRatio();
-	*/
+	private native float jniGetDampingRatio(long addr); /*
+														 * b2WeldJoint* joint = (b2WeldJoint*)addr; return
+														 * joint->GetDampingRatio();
+														 */
 
-	public void setDampingRatio (float ratio) {
+	public void setDampingRatio(float ratio) {
 		jniSetDampingRatio(addr, ratio);
 	}
 
-	private native void jniSetDampingRatio (long addr, float ratio); /*
-		b2WeldJoint* joint = (b2WeldJoint*)addr;
-		joint->SetDampingRatio(ratio);
-	*/
+	private native void jniSetDampingRatio(long addr, float ratio); /*
+																	 * b2WeldJoint* joint = (b2WeldJoint*)addr;
+																	 * joint->SetDampingRatio(ratio);
+																	 */
 
 }

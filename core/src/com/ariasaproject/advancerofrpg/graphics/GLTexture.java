@@ -45,9 +45,9 @@ public abstract class GLTexture implements Disposable, Comparable<GLTexture> {
 		}
 		Pixmap pixmap = data.consumePixmap();
 		boolean disposePixmap = data.disposePixmap();
-		if (data.getFormat() != pixmap.getFormat()) {
-			Pixmap tmp = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), data.getFormat());
-			tmp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight());
+		if (data.getFormat() != pixmap.format) {
+			Pixmap tmp = new Pixmap(pixmap.width, pixmap.height, data.getFormat());
+			tmp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.width, pixmap.height);
 			if (data.disposePixmap()) {
 				pixmap.dispose();
 			}
@@ -57,13 +57,10 @@ public abstract class GLTexture implements Disposable, Comparable<GLTexture> {
 		TGF g = GraphFunc.tgf;
 		g.glPixelStorei(TGF.GL_UNPACK_ALIGNMENT, 1);
 		if (data.useMipMaps()) {
-			g.glTexImage2D(target, 0, pixmap.getFormat().InternalGLFormat, pixmap.getWidth(), pixmap.getHeight(), 0,
-					pixmap.getFormat().GLFormat, pixmap.getFormat().GLType, pixmap.getPixels());
+			g.glTexImage2D(target, 0, pixmap.format.InternalGLFormat, pixmap.width, pixmap.height, 0, pixmap.format.GLFormat, pixmap.format.GLType, pixmap.getPixels());
 			g.glGenerateMipmap(target);
 		} else {
-			GraphFunc.tgf.glTexImage2D(target, miplevel, pixmap.getFormat().InternalGLFormat, pixmap.getWidth(),
-					pixmap.getHeight(), 0, pixmap.getFormat().GLFormat, pixmap.getFormat().GLType,
-					pixmap.getPixels());
+			GraphFunc.tgf.glTexImage2D(target, miplevel, pixmap.format.InternalGLFormat, pixmap.width, pixmap.height, 0, pixmap.format.GLFormat, pixmap.format.GLType, pixmap.getPixels());
 		}
 		if (disposePixmap)
 			pixmap.dispose();

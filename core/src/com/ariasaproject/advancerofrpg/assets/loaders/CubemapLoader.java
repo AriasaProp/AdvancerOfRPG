@@ -9,7 +9,6 @@ import com.ariasaproject.advancerofrpg.graphics.CubemapData;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureWrap;
-import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 import com.ariasaproject.advancerofrpg.utils.Array;
 
 public class CubemapLoader extends AsynchronousAssetLoader<Cubemap, CubemapLoader.CubemapParameter> {
@@ -67,18 +66,8 @@ public class CubemapLoader extends AsynchronousAssetLoader<Cubemap, CubemapLoade
 	}
 
 	static public class CubemapParameter extends AssetLoaderParameters<Cubemap> {
-		/**
-		 * the format of the final Texture. Uses the source images format if null
-		 **/
 		public Format format = null;
-		/**
-		 * The texture to put the {@link TextureData} in, optional.
-		 **/
 		public Cubemap cubemap = null;
-		/**
-		 * CubemapData for textures created on the fly, optional. When set, all format
-		 * and genMipMaps are ignored
-		 */
 		public CubemapData cubemapData = null;
 		public TextureFilter minFilter = TextureFilter.Nearest;
 		public TextureFilter magFilter = TextureFilter.Nearest;

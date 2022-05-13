@@ -146,8 +146,7 @@ public final class ClassReflection {
 		try {
 			return new Constructor(c.getConstructor(parameterTypes));
 		} catch (SecurityException e) {
-			throw new ReflectionException(
-					"Security violation occurred while getting constructor for class: '" + c.getName() + "'.", e);
+			throw new ReflectionException("Security violation occurred while getting constructor for class: '" + c.getName() + "'.", e);
 		} catch (NoSuchMethodException e) {
 			throw new ReflectionException("Constructor not found for class: " + c.getName(), e);
 		}
@@ -196,8 +195,7 @@ public final class ClassReflection {
 		try {
 			return new Method(c.getMethod(name, parameterTypes));
 		} catch (SecurityException e) {
-			throw new ReflectionException(
-					"Security violation while getting method: " + name + ", for class: " + c.getName(), e);
+			throw new ReflectionException("Security violation while getting method: " + name + ", for class: " + c.getName(), e);
 		} catch (NoSuchMethodException e) {
 			throw new ReflectionException("Method not found: " + name + ", for class: " + c.getName(), e);
 		}
@@ -224,8 +222,7 @@ public final class ClassReflection {
 		try {
 			return new Method(c.getDeclaredMethod(name, parameterTypes));
 		} catch (SecurityException e) {
-			throw new ReflectionException(
-					"Security violation while getting method: " + name + ", for class: " + c.getName(), e);
+			throw new ReflectionException("Security violation while getting method: " + name + ", for class: " + c.getName(), e);
 		} catch (NoSuchMethodException e) {
 			throw new ReflectionException("Method not found: " + name + ", for class: " + c.getName(), e);
 		}
@@ -252,8 +249,7 @@ public final class ClassReflection {
 		try {
 			return new Field(c.getField(name));
 		} catch (SecurityException e) {
-			throw new ReflectionException(
-					"Security violation while getting field: " + name + ", for class: " + c.getName(), e);
+			throw new ReflectionException("Security violation while getting field: " + name + ", for class: " + c.getName(), e);
 		} catch (NoSuchFieldException e) {
 			throw new ReflectionException("Field not found: " + name + ", for class: " + c.getName(), e);
 		}
@@ -280,8 +276,7 @@ public final class ClassReflection {
 		try {
 			return new Field(c.getDeclaredField(name));
 		} catch (SecurityException e) {
-			throw new ReflectionException(
-					"Security violation while getting field: " + name + ", for class: " + c.getName(), e);
+			throw new ReflectionException("Security violation while getting field: " + name + ", for class: " + c.getName(), e);
 		} catch (NoSuchFieldException e) {
 			throw new ReflectionException("Field not found: " + name + ", for class: " + c.getName(), e);
 		}
@@ -290,8 +285,7 @@ public final class ClassReflection {
 	/**
 	 * Returns true if the supplied class includes an annotation of the given type.
 	 */
-	static public boolean isAnnotationPresent(Class c,
-			Class<? extends java.lang.annotation.Annotation> annotationType) {
+	static public boolean isAnnotationPresent(Class c, Class<? extends java.lang.annotation.Annotation> annotationType) {
 		return c.isAnnotationPresent(annotationType);
 	}
 
@@ -340,8 +334,7 @@ public final class ClassReflection {
 	 * null if this class doesn't have such an annotation. This is a convenience
 	 * function if the caller knows already which annotation type he's looking for.
 	 */
-	static public Annotation getDeclaredAnnotation(Class c,
-			Class<? extends java.lang.annotation.Annotation> annotationType) {
+	static public Annotation getDeclaredAnnotation(Class c, Class<? extends java.lang.annotation.Annotation> annotationType) {
 		java.lang.annotation.Annotation[] annotations = c.getDeclaredAnnotations();
 		for (java.lang.annotation.Annotation annotation : annotations) {
 			if (annotation.annotationType().equals(annotationType))

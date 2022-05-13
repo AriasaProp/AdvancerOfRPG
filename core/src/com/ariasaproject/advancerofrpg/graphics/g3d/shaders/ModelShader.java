@@ -2,6 +2,7 @@ package com.ariasaproject.advancerofrpg.graphics.g3d.shaders;
 
 import java.util.Arrays;
 
+import com.ariasaproject.advancerofrpg.Files;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.Camera;
 import com.ariasaproject.advancerofrpg.graphics.Color;
@@ -51,8 +52,7 @@ public class ModelShader implements Disposable {
 	private final int[] locations;
 	private Mesh currentMesh;
 
-	private static String defaultShaderProgram = null;
-
+	static final String defaultShaderProgram = Files.readFileAsString("shader/model.shaderprogram", Files.FileType.Internal);
 	public final int u_cameraPosition;
 	// Object uniforms
 	public final int u_normalMatrix;
@@ -128,9 +128,6 @@ public class ModelShader implements Disposable {
 		combinedAttributes.clear();
 		if (renderable.material != null)
 			combinedAttributes.set(renderable.material);
-		if (defaultShaderProgram == null)
-			defaultShaderProgram = GraphFunc.app.getFiles().internal("shader/model.shaderprogram").readString();
-
 		directionalLightsNum = environment.directionalLights.size();
 		dirLightTemp = new float[directionalLightsNum * 23];
 		cacheDirsTemp = new float[directionalLightsNum * 23];
@@ -245,9 +242,7 @@ public class ModelShader implements Disposable {
 		u_ambientTexture = register(Inputs.ambientTexture, Setters.ambientTexture);
 		u_ambientUVTransform = register(Inputs.ambientUVTransform, Setters.ambientUVTransform);
 		u_ambientCubemap = register(Inputs.ambientCube, new Setters.ACubemap(directionalLightsNum, pointLightsNum));
-		u_environmentCubemap = combinedAttributes.has(CubemapAttribute.EnvironmentMap)
-			? register(Inputs.environmentCubemap, Setters.environmentCubemap)
-			: -1;
+		u_environmentCubemap = combinedAttributes.has(CubemapAttribute.EnvironmentMap) ? register(Inputs.environmentCubemap, Setters.environmentCubemap) : -1;
 		locations = new int[uniforms.size];
 		for (int i = 0; i < uniforms.size; i++) {
 			final String input = uniforms.get(i);
@@ -444,8 +439,7 @@ public class ModelShader implements Disposable {
 
 			if (shadowMapping) {
 				if (environment.getTexHandler() >= 0)
-					program.setUniformi("u_shadowMaps",
-										textureBinder.bind(TGF.GL_TEXTURE_2D_ARRAY, environment.getTexHandler()));
+					program.setUniformi("u_shadowMaps", textureBinder.bind(TGF.GL_TEXTURE_2D_ARRAY, environment.getTexHandler()));
 			}
 		}
 	}
@@ -625,8 +619,7 @@ public class ModelShader implements Disposable {
 	public interface Setter {
 		boolean isGlobal(final ModelShader shader, final int inputID);
 
-		void set(final ModelShader shader, final int inputID, final Renderable renderable,
-				 final Attributes combinedAttributes);
+		void set(final ModelShader shader, final int inputID, final Renderable renderable, final Attributes combinedAttributes);
 	}
 
 	public abstract static class GlobalSetter implements Setter {
@@ -658,8 +651,7 @@ public class ModelShader implements Disposable {
 
 		@Override
 		public boolean validate(final ModelShader shader, final int inputID, final Renderable renderable) {
-			final long matFlags = (renderable != null && renderable.material != null) ? renderable.material.getMask()
-				: 0;
+			final long matFlags = (renderable != null && renderable.material != null) ? renderable.material.getMask() : 0;
 			return ((matFlags & materialMask) == materialMask);
 		}
 	}
@@ -676,16 +668,13 @@ public class ModelShader implements Disposable {
 		public final static Uniform diffuseUVTransform = new Uniform("u_diffuseUVTransform", TextureAttribute.Diffuse);
 		public final static Uniform specularColor = new Uniform("u_specularColor", ColorAttribute.Specular);
 		public final static Uniform specularTexture = new Uniform("u_specularTexture", TextureAttribute.Specular);
-		public final static Uniform specularUVTransform = new Uniform("u_specularUVTransform",
-																	  TextureAttribute.Specular);
+		public final static Uniform specularUVTransform = new Uniform("u_specularUVTransform", TextureAttribute.Specular);
 		public final static Uniform emissiveColor = new Uniform("u_emissiveColor", ColorAttribute.Emissive);
 		public final static Uniform emissiveTexture = new Uniform("u_emissiveTexture", TextureAttribute.Emissive);
-		public final static Uniform emissiveUVTransform = new Uniform("u_emissiveUVTransform",
-																	  TextureAttribute.Emissive);
+		public final static Uniform emissiveUVTransform = new Uniform("u_emissiveUVTransform", TextureAttribute.Emissive);
 		public final static Uniform reflectionColor = new Uniform("u_reflectionColor", ColorAttribute.Reflection);
 		public final static Uniform reflectionTexture = new Uniform("u_reflectionTexture", TextureAttribute.Reflection);
-		public final static Uniform reflectionUVTransform = new Uniform("u_reflectionUVTransform",
-																		TextureAttribute.Reflection);
+		public final static Uniform reflectionUVTransform = new Uniform("u_reflectionUVTransform", TextureAttribute.Reflection);
 		public final static Uniform normalTexture = new Uniform("u_normalTexture", TextureAttribute.Normal);
 		public final static Uniform normalUVTransform = new Uniform("u_normalUVTransform", TextureAttribute.Normal);
 		public final static Uniform ambientTexture = new Uniform("u_ambientTexture", TextureAttribute.Ambient);
@@ -699,8 +688,7 @@ public class ModelShader implements Disposable {
 		public final static Setter cameraPosition = new GlobalSetter() {
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				shader.set(inputID, shader.camera.position.x, shader.camera.position.y, shader.camera.position.z,
-						   1.1881f / (shader.camera.far * shader.camera.far));
+				shader.set(inputID, shader.camera.position.x, shader.camera.position.y, shader.camera.position.z, 1.1881f / (shader.camera.far * shader.camera.far));
 			}
 		};
 		public final static Setter normalMatrix = new LocalSetter() {
@@ -726,8 +714,7 @@ public class ModelShader implements Disposable {
 		public final static Setter diffuseTexture = new LocalSetter() {
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				final int unit = shader.textureBinder.bind(
-					((TextureAttribute) (combinedAttributes.get(TextureAttribute.Diffuse))).texture);
+				final int unit = shader.textureBinder.bind(((TextureAttribute) (combinedAttributes.get(TextureAttribute.Diffuse))).texture);
 				shader.set(inputID, unit);
 			}
 		};
@@ -747,8 +734,7 @@ public class ModelShader implements Disposable {
 		public final static Setter specularTexture = new LocalSetter() {
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				final int unit = shader.textureBinder.bind(
-					((TextureAttribute) (combinedAttributes.get(TextureAttribute.Specular))).texture);
+				final int unit = shader.textureBinder.bind(((TextureAttribute) (combinedAttributes.get(TextureAttribute.Specular))).texture);
 				shader.set(inputID, unit);
 			}
 		};
@@ -771,8 +757,7 @@ public class ModelShader implements Disposable {
 
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				final int unit = shader.textureBinder
-					.bind(combinedAttributes.<TextureAttribute>get(TextureAttribute.Emissive).texture);
+				final int unit = shader.textureBinder.bind(combinedAttributes.<TextureAttribute>get(TextureAttribute.Emissive).texture);
 				shader.set(inputID, unit);
 			}
 		};
@@ -795,8 +780,7 @@ public class ModelShader implements Disposable {
 
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				final int unit = shader.textureBinder
-					.bind(combinedAttributes.<TextureAttribute>get(TextureAttribute.Reflection).texture);
+				final int unit = shader.textureBinder.bind(combinedAttributes.<TextureAttribute>get(TextureAttribute.Reflection).texture);
 				shader.set(inputID, unit);
 			}
 		};
@@ -811,8 +795,7 @@ public class ModelShader implements Disposable {
 
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				final int unit = shader.textureBinder
-					.bind(combinedAttributes.<TextureAttribute>get(TextureAttribute.Normal).texture);
+				final int unit = shader.textureBinder.bind(combinedAttributes.<TextureAttribute>get(TextureAttribute.Normal).texture);
 				shader.set(inputID, unit);
 			}
 		};
@@ -827,8 +810,7 @@ public class ModelShader implements Disposable {
 		public final static Setter ambientTexture = new LocalSetter() {
 			@Override
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
-				final int unit = shader.textureBinder.bind(
-					((TextureAttribute) (combinedAttributes.get(TextureAttribute.Ambient))).texture);
+				final int unit = shader.textureBinder.bind(((TextureAttribute) (combinedAttributes.get(TextureAttribute.Ambient))).texture);
 				shader.set(inputID, unit);
 			}
 		};
@@ -864,9 +846,7 @@ public class ModelShader implements Disposable {
 			public void set(ModelShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
 				for (int i = 0; i < bones.length; i++) {
 					final int idx = i / 16;
-					bones[i] = (renderable.bones == null || idx >= renderable.bones.length
-						|| renderable.bones[idx] == null) ? idtMatrix.val[i % 16]
-						: renderable.bones[idx].val[i % 16];
+					bones[i] = (renderable.bones == null || idx >= renderable.bones.length || renderable.bones[idx] == null) ? idtMatrix.val[i % 16] : renderable.bones[idx].val[i % 16];
 				}
 				shader.program.setUniformMatrix4fv(shader.loc(inputID), bones, 0, numBones);
 			}
@@ -891,8 +871,7 @@ public class ModelShader implements Disposable {
 				else {
 					renderable.worldTransform.getTranslation(tmpV1);
 					if (combinedAttributes.has(ColorAttribute.AmbientLight))
-						cacheAmbientCubemap
-							.set((combinedAttributes.<ColorAttribute>get(ColorAttribute.AmbientLight)).color);
+						cacheAmbientCubemap.set((combinedAttributes.<ColorAttribute>get(ColorAttribute.AmbientLight)).color);
 					DirectionalLights dirLights = shader.environment.directionalLights;
 					for (int i = dirLightsOffset; i < dirLights.size(); i++) {
 						;

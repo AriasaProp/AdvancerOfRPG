@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 public final class Affine2 implements Serializable {
 	private static final long serialVersionUID = 1524569123485049187L;
-	public float m00 = 1, m01 = 0, m02 = 0,
-	m10 = 0, m11 = 1, m12 = 0;
+	public float m00 = 1, m01 = 0, m02 = 0, m10 = 0, m11 = 1, m12 = 0;
 	// constant: m21 = 0, m21 = 1, m22 = 1
 
 	public Affine2() {
@@ -22,7 +21,7 @@ public final class Affine2 implements Serializable {
 	public Affine2(Matrix4 other) {
 		set(other);
 	}
-	
+
 	public Affine2 idt() {
 		m00 = 1;
 		m01 = 0;

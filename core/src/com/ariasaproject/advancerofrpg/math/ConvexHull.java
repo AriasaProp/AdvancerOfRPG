@@ -254,8 +254,7 @@ public class ConvexHull {
 		}
 	}
 
-	private int quicksortPartitionWithIndices(final float[] values, int lower, int upper, boolean yDown,
-			short[] originalIndices) {
+	private int quicksortPartitionWithIndices(final float[] values, int lower, int upper, boolean yDown, short[] originalIndices) {
 		float x = values[lower];
 		float y = values[lower + 1];
 		int up = upper;

@@ -10,15 +10,11 @@ import com.ariasaproject.advancerofrpg.math.collision.BoundingBox;
 
 public class BoxShapeBuilder extends BaseShapeBuilder {
 	public static void build(MeshPartBuilder builder, BoundingBox box) {
-		build(builder, box.getCorner000(obtainV3()), box.getCorner010(obtainV3()), box.getCorner100(obtainV3()),
-				box.getCorner110(obtainV3()), box.getCorner001(obtainV3()), box.getCorner011(obtainV3()),
-				box.getCorner101(obtainV3()), box.getCorner111(obtainV3()));
+		build(builder, box.getCorner000(obtainV3()), box.getCorner010(obtainV3()), box.getCorner100(obtainV3()), box.getCorner110(obtainV3()), box.getCorner001(obtainV3()), box.getCorner011(obtainV3()), box.getCorner101(obtainV3()), box.getCorner111(obtainV3()));
 		freeAll();
 	}
 
-	public static void build(MeshPartBuilder builder, VertexInfo corner000, VertexInfo corner010, VertexInfo corner100,
-			VertexInfo corner110, VertexInfo corner001, VertexInfo corner011, VertexInfo corner101,
-			VertexInfo corner111) {
+	public static void build(MeshPartBuilder builder, VertexInfo corner000, VertexInfo corner010, VertexInfo corner100, VertexInfo corner110, VertexInfo corner001, VertexInfo corner011, VertexInfo corner101, VertexInfo corner111) {
 		builder.ensureVertices(8);
 		final short i000 = builder.vertex(corner000);
 		final short i100 = builder.vertex(corner100);
@@ -49,19 +45,13 @@ public class BoxShapeBuilder extends BaseShapeBuilder {
 		}
 	}
 
-	public static void build(MeshPartBuilder builder, Vector3 corner000, Vector3 corner010, Vector3 corner100,
-			Vector3 corner110, Vector3 corner001, Vector3 corner011, Vector3 corner101, Vector3 corner111) {
-		if ((builder.getAttributes().getMask()
-				& (Usage.Normal | Usage.BiNormal | Usage.Tangent | Usage.TextureCoordinates)) == 0) {
-			build(builder, vertTmp1.set(corner000, null, null, null), vertTmp2.set(corner010, null, null, null),
-					vertTmp3.set(corner100, null, null, null), vertTmp4.set(corner110, null, null, null),
-					vertTmp5.set(corner001, null, null, null), vertTmp6.set(corner011, null, null, null),
-					vertTmp7.set(corner101, null, null, null), vertTmp8.set(corner111, null, null, null));
+	public static void build(MeshPartBuilder builder, Vector3 corner000, Vector3 corner010, Vector3 corner100, Vector3 corner110, Vector3 corner001, Vector3 corner011, Vector3 corner101, Vector3 corner111) {
+		if ((builder.getAttributes().getMask() & (Usage.Normal | Usage.BiNormal | Usage.Tangent | Usage.TextureCoordinates)) == 0) {
+			build(builder, vertTmp1.set(corner000, null, null, null), vertTmp2.set(corner010, null, null, null), vertTmp3.set(corner100, null, null, null), vertTmp4.set(corner110, null, null, null), vertTmp5.set(corner001, null, null, null), vertTmp6.set(corner011, null, null, null), vertTmp7.set(corner101, null, null, null), vertTmp8.set(corner111, null, null, null));
 		} else {
 			builder.ensureVertices(24);
 			builder.ensureRectangleIndices(6);
-			Vector3 nor = tmpV1.set(corner000).lerp(corner110, 0.5f).sub(tmpV2.set(corner001).lerp(corner111, 0.5f))
-					.nor();
+			Vector3 nor = tmpV1.set(corner000).lerp(corner110, 0.5f).sub(tmpV2.set(corner001).lerp(corner111, 0.5f)).nor();
 			builder.rect(corner000, corner010, corner110, corner100, nor);
 			builder.rect(corner011, corner001, corner101, corner111, nor.scl(-1));
 			nor = tmpV1.set(corner000).lerp(corner101, 0.5f).sub(tmpV2.set(corner010).lerp(corner111, 0.5f)).nor();
@@ -74,11 +64,7 @@ public class BoxShapeBuilder extends BaseShapeBuilder {
 	}
 
 	public static void build(MeshPartBuilder builder, Matrix4 transform) {
-		build(builder, obtainV3().set(-0.5f, -0.5f, -0.5f).mul(transform),
-				obtainV3().set(-0.5f, 0.5f, -0.5f).mul(transform), obtainV3().set(0.5f, -0.5f, -0.5f).mul(transform),
-				obtainV3().set(0.5f, 0.5f, -0.5f).mul(transform), obtainV3().set(-0.5f, -0.5f, 0.5f).mul(transform),
-				obtainV3().set(-0.5f, 0.5f, 0.5f).mul(transform), obtainV3().set(0.5f, -0.5f, 0.5f).mul(transform),
-				obtainV3().set(0.5f, 0.5f, 0.5f).mul(transform));
+		build(builder, obtainV3().set(-0.5f, -0.5f, -0.5f).mul(transform), obtainV3().set(-0.5f, 0.5f, -0.5f).mul(transform), obtainV3().set(0.5f, -0.5f, -0.5f).mul(transform), obtainV3().set(0.5f, 0.5f, -0.5f).mul(transform), obtainV3().set(-0.5f, -0.5f, 0.5f).mul(transform), obtainV3().set(-0.5f, 0.5f, 0.5f).mul(transform), obtainV3().set(0.5f, -0.5f, 0.5f).mul(transform), obtainV3().set(0.5f, 0.5f, 0.5f).mul(transform));
 		freeAll();
 	}
 
@@ -86,17 +72,14 @@ public class BoxShapeBuilder extends BaseShapeBuilder {
 		build(builder, 0, 0, 0, width, height, depth);
 	}
 
-	public static void build(MeshPartBuilder builder, float x, float y, float z, float width, float height,
-			float depth) {
+	public static void build(MeshPartBuilder builder, float x, float y, float z, float width, float height, float depth) {
 		final float hw = width * 0.5f;
 		final float hh = height * 0.5f;
 		final float hd = depth * 0.5f;
 		final float x0 = x - hw, y0 = y - hh, z0 = z - hd, x1 = x + hw, y1 = y + hh, z1 = z + hd;
 		build(builder, //
-				obtainV3().set(x0, y0, z0), obtainV3().set(x0, y1, z0), obtainV3().set(x1, y0, z0),
-				obtainV3().set(x1, y1, z0), //
-				obtainV3().set(x0, y0, z1), obtainV3().set(x0, y1, z1), obtainV3().set(x1, y0, z1),
-				obtainV3().set(x1, y1, z1));
+				obtainV3().set(x0, y0, z0), obtainV3().set(x0, y1, z0), obtainV3().set(x1, y0, z0), obtainV3().set(x1, y1, z0), //
+				obtainV3().set(x0, y0, z1), obtainV3().set(x0, y1, z1), obtainV3().set(x1, y0, z1), obtainV3().set(x1, y1, z1));
 		freeAll();
 	}
 

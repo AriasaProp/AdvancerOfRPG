@@ -596,8 +596,7 @@ public interface Input {
 	}
 
 	public enum Peripheral {
-		HardwareKeyboard, OnscreenKeyboard, MultitouchScreen, Accelerometer, Compass, Vibrator, Gyroscope,
-		RotationVector, Pressure
+		HardwareKeyboard, OnscreenKeyboard, MultitouchScreen, Accelerometer, Compass, Vibrator, Gyroscope, RotationVector, Pressure
 	}
 
 	public float getAccelerometerX();
@@ -652,8 +651,7 @@ public interface Input {
 
 	public void getTextInput(TextInputListener listener, String title, String text, String hint);
 
-	public void getTextInput(TextInputListener listener, String title, String text, String hint,
-			OnscreenKeyboardType type);
+	public void getTextInput(TextInputListener listener, String title, String text, String hint, OnscreenKeyboardType type);
 
 	public void setOnscreenKeyboardVisible(boolean visible);
 

@@ -89,12 +89,13 @@ public class Dialog extends Window {
 
 			private void focusChanged(FocusEvent event) {
 				Stage stage = getStage();
-				if (isModal && stage != null && stage.getRoot().getChildren().size > 0
-						&& stage.getRoot().getChildren().peek() == Dialog.this) { // Dialog is top most actor.
+				if (isModal && stage != null && stage.getRoot().getChildren().size > 0 && stage.getRoot().getChildren().peek() == Dialog.this) { // Dialog
+																																					// is
+																																					// top
+																																					// most
+																																					// actor.
 					Actor newFocusedActor = event.getRelatedActor();
-					if (newFocusedActor != null && !newFocusedActor.isDescendantOf(Dialog.this)
-							&& !(newFocusedActor.equals(previousKeyboardFocus)
-									|| newFocusedActor.equals(previousScrollFocus)))
+					if (newFocusedActor != null && !newFocusedActor.isDescendantOf(Dialog.this) && !(newFocusedActor.equals(previousKeyboardFocus) || newFocusedActor.equals(previousScrollFocus)))
 						event.cancel();
 				}
 			}

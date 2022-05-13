@@ -13,6 +13,7 @@ import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.graphics.g2d.Batch;
 import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;
 import com.ariasaproject.advancerofrpg.graphics.g2d.GlyphLayout;
+import com.ariasaproject.advancerofrpg.graphics.g3d.ModelBatch;
 import com.ariasaproject.advancerofrpg.scenes2d.Stage;
 import com.ariasaproject.advancerofrpg.screen.Scene;
 import com.ariasaproject.advancerofrpg.screen.SplashScreen;
@@ -21,21 +22,24 @@ import com.ariasaproject.advancerofrpg.utils.Viewport;
 public class ApplicationListener {
 	public Stage stage;
 	public Batch batch;
+	public ModelBatch modelBatch;
 	public BitmapFont fps;
 	public GlyphLayout layDebug;
 	public Viewport uiView;
 	private Scene screen;
 	protected static ExecutorService exec = Executors.newFixedThreadPool(1, new ThreadFactory() {
-			@Override
-			public Thread newThread(final Runnable r) {
-				Thread thread = new Thread(r, "Background Task");
-				thread.setDaemon(true);
-				return thread;
-			}
-		});
+		@Override
+		public Thread newThread(final Runnable r) {
+			Thread thread = new Thread(r, "Background Task");
+			thread.setDaemon(true);
+			return thread;
+		}
+	});
 	public static final AssetContainer asset = new AssetContainer(exec, new InternalFileHandleResolver());
+
 	public void create() {
 		batch = new Batch();
+		modelBatch = new ModelBatch();
 		uiView = new Viewport(new OrthographicCamera(), 800, 600, 1920, 1080);
 		stage = new Stage(uiView, batch);
 		fps = new BitmapFont();
@@ -63,10 +67,12 @@ public class ApplicationListener {
 		if (screen != null)
 			screen.resize(width, height);
 	}
+
 	public void resume() {
 		if (screen != null)
 			screen.resume();
 	}
+
 	public String logUpt = "";
 	private String logUp = "";
 
@@ -78,7 +84,7 @@ public class ApplicationListener {
 		batch.begin();
 		final Runtime r = Runtime.getRuntime();
 		final Graphics g = GraphFunc.app.getGraphics();
-		logUpt = String.format("used: %03.2f of RAM" , (float) (r.totalMemory() - r.freeMemory()) * 100 / r.maxMemory());
+		logUpt = String.format("used: %03.2f of RAM", (float) (r.totalMemory() - r.freeMemory()) * 100 / r.maxMemory());
 		logUp = String.format("FPS:%03d|2022/05/12_0|N{%s}\n%s", g.getFramesPerSecond(), GraphFunc.nativeLog(), logUpt);
 		layDebug.setText(fps, logUp);
 		fps.draw(batch, layDebug, (g.getWidth() - layDebug.width) / 2, g.getHeight() - (layDebug.height / 2.25f));
@@ -98,6 +104,7 @@ public class ApplicationListener {
 		batch.dispose();
 		uiView = null;
 		asset.dispose();
+		modelBatch.dispose();
 
 		exec.shutdown();
 		try {

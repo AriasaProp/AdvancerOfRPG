@@ -222,11 +222,8 @@ public class DirectionalLights implements Iterable<DirectionalLights.Directional
 	}
 
 	public static class DirectionalLight implements BaseLight {
-		public final Vector3
-		d = new Vector3(-1, -1, -1).nor(),
-		u = new Vector3(0, 1, 0),
-		s = new Vector3(1, 0, 0),
-		pos = new Vector3();
+		public final Vector3 d = new Vector3(-1, -1, -1).nor(), u = new Vector3(0, 1, 0), s = new Vector3(1, 0, 0),
+				pos = new Vector3();
 		protected final float[] proj = new float[16];
 		private int shadowIndex = -1;
 

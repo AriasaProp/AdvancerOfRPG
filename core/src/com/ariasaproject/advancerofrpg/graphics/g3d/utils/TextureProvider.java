@@ -27,8 +27,7 @@ public interface TextureProvider {
 			useMipMaps = false;
 		}
 
-		public FileTextureProvider(Texture.TextureFilter minFilter, Texture.TextureFilter magFilter,
-				Texture.TextureWrap uWrap, Texture.TextureWrap vWrap, boolean useMipMaps) {
+		public FileTextureProvider(Texture.TextureFilter minFilter, Texture.TextureFilter magFilter, Texture.TextureWrap uWrap, Texture.TextureWrap vWrap, boolean useMipMaps) {
 			this.minFilter = minFilter;
 			this.magFilter = magFilter;
 			this.uWrap = uWrap;

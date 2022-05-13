@@ -204,8 +204,7 @@ public class UBJsonReader implements BaseJsonReader {
 		return parseString(din, false, type);
 	}
 
-	protected String parseString(final DataInputStream din, final boolean sOptional, final byte type)
-			throws IOException {
+	protected String parseString(final DataInputStream din, final boolean sOptional, final byte type) throws IOException {
 		long size = -1;
 		if (type == 'S') {
 			size = parseSize(din, true, -1);
@@ -218,13 +217,11 @@ public class UBJsonReader implements BaseJsonReader {
 		return size > 0 ? readString(din, size) : "";
 	}
 
-	protected long parseSize(final DataInputStream din, final boolean useIntOnError, final long defaultValue)
-			throws IOException {
+	protected long parseSize(final DataInputStream din, final boolean useIntOnError, final long defaultValue) throws IOException {
 		return parseSize(din, din.readByte(), useIntOnError, defaultValue);
 	}
 
-	protected long parseSize(final DataInputStream din, final byte type, final boolean useIntOnError,
-			final long defaultValue) throws IOException {
+	protected long parseSize(final DataInputStream din, final byte type, final boolean useIntOnError, final long defaultValue) throws IOException {
 		if (type == 'i')
 			return readUChar(din);
 		if (type == 'I')

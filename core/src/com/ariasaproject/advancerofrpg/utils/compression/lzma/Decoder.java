@@ -94,8 +94,7 @@ public class Decoder {
 				if (m_RangeDecoder.DecodeBit(m_IsRepDecoders, state) == 1) {
 					len = 0;
 					if (m_RangeDecoder.DecodeBit(m_IsRepG0Decoders, state) == 0) {
-						if (m_RangeDecoder.DecodeBit(m_IsRep0LongDecoders,
-								(state << Base.kNumPosStatesBitsMax) + posState) == 0) {
+						if (m_RangeDecoder.DecodeBit(m_IsRep0LongDecoders, (state << Base.kNumPosStatesBitsMax) + posState) == 0) {
 							state = Base.StateUpdateShortRep(state);
 							len = 1;
 						}
@@ -130,11 +129,9 @@ public class Decoder {
 						int numDirectBits = (posSlot >> 1) - 1;
 						rep0 = ((2 | (posSlot & 1)) << numDirectBits);
 						if (posSlot < Base.kEndPosModelIndex)
-							rep0 += BitTreeDecoder.ReverseDecode(m_PosDecoders, rep0 - posSlot - 1, m_RangeDecoder,
-									numDirectBits);
+							rep0 += BitTreeDecoder.ReverseDecode(m_PosDecoders, rep0 - posSlot - 1, m_RangeDecoder, numDirectBits);
 						else {
-							rep0 += (m_RangeDecoder
-									.DecodeDirectBits(numDirectBits - Base.kNumAlignBits) << Base.kNumAlignBits);
+							rep0 += (m_RangeDecoder.DecodeDirectBits(numDirectBits - Base.kNumAlignBits) << Base.kNumAlignBits);
 							rep0 += m_PosAlignDecoder.ReverseDecode(m_RangeDecoder);
 							if (rep0 < 0) {
 								if (rep0 == -1)
@@ -199,8 +196,7 @@ public class Decoder {
 			m_HighCoder.Init();
 		}
 
-		public int Decode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder rangeDecoder,
-				int posState) throws IOException {
+		public int Decode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder rangeDecoder, int posState) throws IOException {
 			if (rangeDecoder.DecodeBit(m_Choice, 0) == 0)
 				return m_LowCoder[posState].Decode(rangeDecoder);
 			int symbol = Base.kNumLowLenSymbols;
@@ -247,8 +243,7 @@ public class Decoder {
 				com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder.InitBitModels(m_Decoders);
 			}
 
-			public byte DecodeNormal(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder rangeDecoder)
-					throws IOException {
+			public byte DecodeNormal(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder rangeDecoder) throws IOException {
 				int symbol = 1;
 				do
 					symbol = (symbol << 1) | rangeDecoder.DecodeBit(m_Decoders, symbol);
@@ -256,9 +251,7 @@ public class Decoder {
 				return (byte) symbol;
 			}
 
-			public byte DecodeWithMatchByte(
-					com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder rangeDecoder, byte matchByte)
-					throws IOException {
+			public byte DecodeWithMatchByte(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Decoder rangeDecoder, byte matchByte) throws IOException {
 				int symbol = 1;
 				do {
 					int matchBit = (matchByte >> 7) & 1;

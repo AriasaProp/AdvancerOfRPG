@@ -6,19 +6,21 @@ public class Contact {
 	protected long addr;
 	protected World world;
 	protected final WorldManifold worldManifold = new WorldManifold();
-	
+
 	private static native void initialize();
+
 	static {
 		initialize();
 	}
 
-	protected Contact (World world, long addr) {
+	protected Contact(World world, long addr) {
 		this.addr = addr;
 		this.world = world;
 	}
 
 	private final float[] tmp = new float[8];
-	public WorldManifold getWorldManifold () {
+
+	public WorldManifold getWorldManifold() {
 		int numContactPoints = jniGetWorldManifold(tmp);
 
 		worldManifold.numContactPoints = numContactPoints;
@@ -35,26 +37,40 @@ public class Contact {
 	}
 
 	private native int jniGetWorldManifold(float[] tmp);
-	public native void setEnabled (boolean flag);
-	public native boolean isEnabled ();
-	public Fixture getFixtureA () {
+
+	public native void setEnabled(boolean flag);
+
+	public native boolean isEnabled();
+
+	public Fixture getFixtureA() {
 		return world.fixtures.get(jniGetFixtureA());
 	}
 
-	private native long jniGetFixtureA ();
-	public Fixture getFixtureB () {
+	private native long jniGetFixtureA();
+
+	public Fixture getFixtureB() {
 		return world.fixtures.get(jniGetFixtureB());
 	}
 
-	private native long jniGetFixtureB ();
-	public native int getChildIndexA ();
-	public native int getChildIndexB ();
-	public native void setFriction (float friction);
-	public native float getFriction ();
-	public native void resetFriction ();
-	public native void setRestitution (float restitution);
-	public native float getRestitution ();
-	public native void ResetRestitution ();
-	public native float getTangentSpeed ();
-	public native void setTangentSpeed (float speed);
+	private native long jniGetFixtureB();
+
+	public native int getChildIndexA();
+
+	public native int getChildIndexB();
+
+	public native void setFriction(float friction);
+
+	public native float getFriction();
+
+	public native void resetFriction();
+
+	public native void setRestitution(float restitution);
+
+	public native float getRestitution();
+
+	public native void ResetRestitution();
+
+	public native float getTangentSpeed();
+
+	public native void setTangentSpeed(float speed);
 }

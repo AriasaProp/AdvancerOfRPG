@@ -35,12 +35,11 @@ public class Box2DDebugRenderer implements Disposable {
 	private boolean drawVelocities;
 	private boolean drawContacts;
 
-	public Box2DDebugRenderer () {
+	public Box2DDebugRenderer() {
 		this(true, true, false, true, false, true);
 	}
 
-	public Box2DDebugRenderer (boolean drawBodies, boolean drawJoints, boolean drawAABBs, boolean drawInactiveBodies,
-		boolean drawVelocities, boolean drawContacts) {
+	public Box2DDebugRenderer(boolean drawBodies, boolean drawJoints, boolean drawAABBs, boolean drawInactiveBodies, boolean drawVelocities, boolean drawContacts) {
 		// next we setup the immediate mode renderer
 		renderer = new ShapeRenderer();
 
@@ -57,7 +56,7 @@ public class Box2DDebugRenderer implements Disposable {
 	}
 
 	/** This assumes that the projection matrix has already been set. */
-	public void render (World world, Matrix4 projMatrix) {
+	public void render(World world, Matrix4 projMatrix) {
 		renderer.setProjectionMatrix(projMatrix);
 		renderBodies(world);
 	}
@@ -71,14 +70,15 @@ public class Box2DDebugRenderer implements Disposable {
 	public final Color AABB_COLOR = new Color(1.0f, 0, 1.0f, 1f);
 	public final Color VELOCITY_COLOR = new Color(1.0f, 0, 0f, 1f);
 
-	private void renderBodies (World world) {
+	private void renderBodies(World world) {
 		renderer.begin(ShapeType.Line);
 
 		if (drawBodies || drawAABBs) {
 			world.getBodies(bodies);
 			for (Iterator<Body> iter = bodies.iterator(); iter.hasNext();) {
 				Body body = iter.next();
-				if (body.isActive() || drawInactiveBodies) renderBody(body);
+				if (body.isActive() || drawInactiveBodies)
+					renderBody(body);
 			}
 		}
 
@@ -98,7 +98,7 @@ public class Box2DDebugRenderer implements Disposable {
 		}
 	}
 
-	protected void renderBody (Body body) {
+	protected void renderBody(Body body) {
 		Transform transform = body.getTransform();
 		for (Fixture fixture : body.getFixtureList()) {
 			if (drawBodies) {
@@ -115,7 +115,7 @@ public class Box2DDebugRenderer implements Disposable {
 		}
 	}
 
-	private Color getColorByBody (Body body) {
+	private Color getColorByBody(Body body) {
 		if (body.isActive() == false)
 			return SHAPE_NOT_ACTIVE;
 		else if (body.getType() == BodyType.StaticBody)
@@ -128,13 +128,13 @@ public class Box2DDebugRenderer implements Disposable {
 			return SHAPE_AWAKE;
 	}
 
-	private void drawAABB (Fixture fixture, Transform transform) {
+	private void drawAABB(Fixture fixture, Transform transform) {
 		if (fixture.getType() == Type.Circle) {
 
-			CircleShape shape = (CircleShape)fixture.getShape();
+			CircleShape shape = (CircleShape) fixture.getShape();
 			float radius = shape.getRadius();
 			vertices[0].set(shape.getPosition());
-			
+
 			transform.mul(vertices[0]);
 			lower.set(vertices[0].x - radius, vertices[0].y - radius);
 			upper.set(vertices[0].x + radius, vertices[0].y + radius);
@@ -147,7 +147,7 @@ public class Box2DDebugRenderer implements Disposable {
 
 			drawSolidPolygon(vertices, 4, AABB_COLOR, true);
 		} else if (fixture.getType() == Type.Polygon) {
-			PolygonShape shape = (PolygonShape)fixture.getShape();
+			PolygonShape shape = (PolygonShape) fixture.getShape();
 			int vertexCount = shape.getVertexCount();
 
 			shape.getVertex(0, vertices[0]);
@@ -175,9 +175,9 @@ public class Box2DDebugRenderer implements Disposable {
 	private static Vector2 t = new Vector2();
 	private static Vector2 axis = new Vector2();
 
-	private void drawShape (Fixture fixture, Transform transform, Color color) {
+	private void drawShape(Fixture fixture, Transform transform, Color color) {
 		if (fixture.getType() == Type.Circle) {
-			CircleShape circle = (CircleShape)fixture.getShape();
+			CircleShape circle = (CircleShape) fixture.getShape();
 			t.set(circle.getPosition());
 			transform.mul(t);
 			drawSolidCircle(t, circle.getRadius(), axis.set(transform.vals[Transform.COS], transform.vals[Transform.SIN]), color);
@@ -185,7 +185,7 @@ public class Box2DDebugRenderer implements Disposable {
 		}
 
 		if (fixture.getType() == Type.Edge) {
-			EdgeShape edge = (EdgeShape)fixture.getShape();
+			EdgeShape edge = (EdgeShape) fixture.getShape();
 			edge.getVertex1(vertices[0]);
 			edge.getVertex2(vertices[1]);
 			transform.mul(vertices[0]);
@@ -195,7 +195,7 @@ public class Box2DDebugRenderer implements Disposable {
 		}
 
 		if (fixture.getType() == Type.Polygon) {
-			PolygonShape chain = (PolygonShape)fixture.getShape();
+			PolygonShape chain = (PolygonShape) fixture.getShape();
 			int vertexCount = chain.getVertexCount();
 			for (int i = 0; i < vertexCount; i++) {
 				chain.getVertex(i, vertices[i]);
@@ -206,7 +206,7 @@ public class Box2DDebugRenderer implements Disposable {
 		}
 
 		if (fixture.getType() == Type.Chain) {
-			ChainShape chain = (ChainShape)fixture.getShape();
+			ChainShape chain = (ChainShape) fixture.getShape();
 			int vertexCount = chain.getVertexCount();
 			for (int i = 0; i < vertexCount; i++) {
 				chain.getVertex(i, vertices[i]);
@@ -220,12 +220,12 @@ public class Box2DDebugRenderer implements Disposable {
 	private final Vector2 v = new Vector2();
 	private final Vector2 lv = new Vector2();
 
-	private void drawSolidCircle (Vector2 center, float radius, Vector2 axis, Color color) {
+	private void drawSolidCircle(Vector2 center, float radius, Vector2 axis, Color color) {
 		float angle = 0;
-		float angleInc = 2 * (float)Math.PI / 20;
+		float angleInc = 2 * (float) Math.PI / 20;
 		renderer.setColor(color.r, color.g, color.b, color.a);
 		for (int i = 0; i < 20; i++, angle += angleInc) {
-			v.set((float)Math.cos(angle) * radius + center.x, (float)Math.sin(angle) * radius + center.y);
+			v.set((float) Math.cos(angle) * radius + center.x, (float) Math.sin(angle) * radius + center.y);
 			if (i == 0) {
 				lv.set(v);
 				f.set(v);
@@ -238,7 +238,7 @@ public class Box2DDebugRenderer implements Disposable {
 		renderer.line(center.x, center.y, 0, center.x + axis.x * radius, center.y + axis.y * radius, 0);
 	}
 
-	private void drawSolidPolygon (Vector2[] vertices, int vertexCount, Color color, boolean closed) {
+	private void drawSolidPolygon(Vector2[] vertices, int vertexCount, Color color, boolean closed) {
 		renderer.setColor(color.r, color.g, color.b, color.a);
 		lv.set(vertices[0]);
 		f.set(vertices[0]);
@@ -247,10 +247,11 @@ public class Box2DDebugRenderer implements Disposable {
 			renderer.line(lv.x, lv.y, v.x, v.y);
 			lv.set(v);
 		}
-		if (closed) renderer.line(f.x, f.y, lv.x, lv.y);
+		if (closed)
+			renderer.line(f.x, f.y, lv.x, lv.y);
 	}
 
-	private void drawJoint (Joint joint) {
+	private void drawJoint(Joint joint) {
 		Body bodyA = joint.getBodyA();
 		Body bodyB = joint.getBodyB();
 		Transform xf1 = bodyA.getTransform();
@@ -264,7 +265,7 @@ public class Box2DDebugRenderer implements Disposable {
 		if (joint.getType() == JointType.DistanceJoint) {
 			drawSegment(p1, p2, JOINT_COLOR);
 		} else if (joint.getType() == JointType.PulleyJoint) {
-			PulleyJoint pulley = (PulleyJoint)joint;
+			PulleyJoint pulley = (PulleyJoint) joint;
 			Vector2 s1 = pulley.getGroundAnchorA();
 			Vector2 s2 = pulley.getGroundAnchorB();
 			drawSegment(s1, p1, JOINT_COLOR);
@@ -279,77 +280,78 @@ public class Box2DDebugRenderer implements Disposable {
 		}
 	}
 
-	private void drawSegment (Vector2 x1, Vector2 x2, Color color) {
+	private void drawSegment(Vector2 x1, Vector2 x2, Color color) {
 		renderer.setColor(color);
 		renderer.line(x1.x, x1.y, x2.x, x2.y);
 	}
 
-	private void drawContact (Contact contact) {
+	private void drawContact(Contact contact) {
 		WorldManifold worldManifold = contact.getWorldManifold();
-		if (worldManifold.getNumberOfContactPoints() == 0) return;
+		if (worldManifold.getNumberOfContactPoints() == 0)
+			return;
 		Vector2 point = worldManifold.getPoints()[0];
 		renderer.setColor(getColorByBody(contact.getFixtureA().getBody()));
 		renderer.point(point.x, point.y, 0);
 	}
 
-	public boolean isDrawBodies () {
+	public boolean isDrawBodies() {
 		return drawBodies;
 	}
 
-	public void setDrawBodies (boolean drawBodies) {
+	public void setDrawBodies(boolean drawBodies) {
 		this.drawBodies = drawBodies;
 	}
 
-	public boolean isDrawJoints () {
+	public boolean isDrawJoints() {
 		return drawJoints;
 	}
 
-	public void setDrawJoints (boolean drawJoints) {
+	public void setDrawJoints(boolean drawJoints) {
 		this.drawJoints = drawJoints;
 	}
 
-	public boolean isDrawAABBs () {
+	public boolean isDrawAABBs() {
 		return drawAABBs;
 	}
 
-	public void setDrawAABBs (boolean drawAABBs) {
+	public void setDrawAABBs(boolean drawAABBs) {
 		this.drawAABBs = drawAABBs;
 	}
 
-	public boolean isDrawInactiveBodies () {
+	public boolean isDrawInactiveBodies() {
 		return drawInactiveBodies;
 	}
 
-	public void setDrawInactiveBodies (boolean drawInactiveBodies) {
+	public void setDrawInactiveBodies(boolean drawInactiveBodies) {
 		this.drawInactiveBodies = drawInactiveBodies;
 	}
 
-	public boolean isDrawVelocities () {
+	public boolean isDrawVelocities() {
 		return drawVelocities;
 	}
 
-	public void setDrawVelocities (boolean drawVelocities) {
+	public void setDrawVelocities(boolean drawVelocities) {
 		this.drawVelocities = drawVelocities;
 	}
 
-	public boolean isDrawContacts () {
+	public boolean isDrawContacts() {
 		return drawContacts;
 	}
 
-	public void setDrawContacts (boolean drawContacts) {
+	public void setDrawContacts(boolean drawContacts) {
 		this.drawContacts = drawContacts;
 	}
 
-	public static Vector2 getAxis () {
+	public static Vector2 getAxis() {
 		return axis;
 	}
 
-	public static void setAxis (Vector2 axis) {
+	public static void setAxis(Vector2 axis) {
 		Box2DDebugRenderer.axis = axis;
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		renderer.dispose();
 	}
 }

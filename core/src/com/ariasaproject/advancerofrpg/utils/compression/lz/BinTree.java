@@ -155,8 +155,7 @@ public class BinTree extends InWindow {
 		len0 = len1 = kNumHashDirectBytes;
 		if (kNumHashDirectBytes != 0) {
 			if (curMatch > matchMinPos) {
-				if (_bufferBase[_bufferOffset + curMatch + kNumHashDirectBytes] != _bufferBase[cur
-						+ kNumHashDirectBytes]) {
+				if (_bufferBase[_bufferOffset + curMatch + kNumHashDirectBytes] != _bufferBase[cur + kNumHashDirectBytes]) {
 					distances[offset++] = maxLen = kNumHashDirectBytes;
 					distances[offset++] = _pos - curMatch - 1;
 				}
@@ -169,8 +168,7 @@ public class BinTree extends InWindow {
 				break;
 			}
 			int delta = _pos - curMatch;
-			int cyclicPos = ((delta <= _cyclicBufferPos) ? (_cyclicBufferPos - delta)
-					: (_cyclicBufferPos - delta + _cyclicBufferSize)) << 1;
+			int cyclicPos = ((delta <= _cyclicBufferPos) ? (_cyclicBufferPos - delta) : (_cyclicBufferPos - delta + _cyclicBufferSize)) << 1;
 			int pby1 = _bufferOffset + curMatch;
 			int len = Math.min(len0, len1);
 			if (_bufferBase[pby1 + len] == _bufferBase[cur + len]) {
@@ -241,8 +239,7 @@ public class BinTree extends InWindow {
 					break;
 				}
 				int delta = _pos - curMatch;
-				int cyclicPos = ((delta <= _cyclicBufferPos) ? (_cyclicBufferPos - delta)
-						: (_cyclicBufferPos - delta + _cyclicBufferSize)) << 1;
+				int cyclicPos = ((delta <= _cyclicBufferPos) ? (_cyclicBufferPos - delta) : (_cyclicBufferPos - delta + _cyclicBufferSize)) << 1;
 				int pby1 = _bufferOffset + curMatch;
 				int len = Math.min(len0, len1);
 				if (_bufferBase[pby1 + len] == _bufferBase[cur + len]) {

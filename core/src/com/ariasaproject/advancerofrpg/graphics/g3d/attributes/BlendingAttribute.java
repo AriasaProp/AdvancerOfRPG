@@ -58,9 +58,7 @@ public class BlendingAttribute extends Attribute {
 	}
 
 	public BlendingAttribute(final BlendingAttribute copyFrom) {
-		this(copyFrom == null || copyFrom.blended, copyFrom == null ? TGF.GL_SRC_ALPHA : copyFrom.sourceFunction,
-				copyFrom == null ? TGF.GL_ONE_MINUS_SRC_ALPHA : copyFrom.destFunction,
-				copyFrom == null ? 1.f : copyFrom.opacity);
+		this(copyFrom == null || copyFrom.blended, copyFrom == null ? TGF.GL_SRC_ALPHA : copyFrom.sourceFunction, copyFrom == null ? TGF.GL_ONE_MINUS_SRC_ALPHA : copyFrom.destFunction, copyFrom == null ? 1.f : copyFrom.opacity);
 	}
 
 	public final static boolean is(final long mask) {

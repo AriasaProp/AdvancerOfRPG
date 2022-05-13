@@ -5,11 +5,11 @@ import com.ariasaproject.advancerofrpg.physics.box2d.Body;
 import com.ariasaproject.advancerofrpg.physics.box2d.JointDef;
 
 public class WheelJointDef extends JointDef {
-	public WheelJointDef () {
+	public WheelJointDef() {
 		type = JointType.WheelJoint;
 	}
 
-	public void initialize (Body bodyA, Body bodyB, Vector2 anchor, Vector2 axis) {
+	public void initialize(Body bodyA, Body bodyB, Vector2 anchor, Vector2 axis) {
 		this.bodyA = bodyA;
 		this.bodyB = bodyB;
 		localAnchorA.set(bodyA.getLocalPoint(anchor));

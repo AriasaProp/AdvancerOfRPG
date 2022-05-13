@@ -158,8 +158,7 @@ public class ModelBuilder {
 	 *
 	 * @return The added MeshPart.
 	 */
-	public MeshPart part(final String id, final Mesh mesh, int primitiveType, int offset, int size,
-			final Material material) {
+	public MeshPart part(final String id, final Mesh mesh, int primitiveType, int offset, int size, final Material material) {
 		final MeshPart meshPart = new MeshPart();
 		meshPart.id = id;
 		meshPart.primitiveType = primitiveType;
@@ -192,8 +191,7 @@ public class ModelBuilder {
 	 *
 	 * @return The {@link MeshPartBuilder} you can use to build the MeshPart.
 	 */
-	public MeshPartBuilder part(final String id, int primitiveType, final VertexAttributes attributes,
-			final Material material) {
+	public MeshPartBuilder part(final String id, int primitiveType, final VertexAttributes attributes, final Material material) {
 		final MeshBuilder builder = getBuilder(attributes);
 		part(builder.part(id, primitiveType), material);
 		return builder;
@@ -241,8 +239,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createBox(float width, float height, float depth, int primitiveType, final Material material,
-			final long attributes) {
+	public Model createBox(float width, float height, float depth, int primitiveType, final Material material, final long attributes) {
 		begin();
 		MeshPartBuilder builder = part("box", primitiveType, attributes, material);
 		BoxShapeBuilder.build(builder, width, height, depth);
@@ -259,11 +256,8 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createRect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11,
-			float z11, float x01, float y01, float z01, float normalX, float normalY, float normalZ,
-			final Material material, final long attributes) {
-		return createRect(x00, y00, z00, x10, y10, z10, x11, y11, z11, x01, y01, z01, normalX, normalY, normalZ,
-				TGF.GL_TRIANGLES, material, attributes);
+	public Model createRect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11, float z11, float x01, float y01, float z01, float normalX, float normalY, float normalZ, final Material material, final long attributes) {
+		return createRect(x00, y00, z00, x10, y10, z10, x11, y11, z11, x01, y01, z01, normalX, normalY, normalZ, TGF.GL_TRIANGLES, material, attributes);
 	}
 
 	/**
@@ -276,12 +270,9 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createRect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11,
-			float z11, float x01, float y01, float z01, float normalX, float normalY, float normalZ, int primitiveType,
-			final Material material, final long attributes) {
+	public Model createRect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11, float z11, float x01, float y01, float z01, float normalX, float normalY, float normalZ, int primitiveType, final Material material, final long attributes) {
 		begin();
-		part("rect", primitiveType, attributes, material).rect(x00, y00, z00, x10, y10, z10, x11, y11, z11, x01, y01,
-				z01, normalX, normalY, normalZ);
+		part("rect", primitiveType, attributes, material).rect(x00, y00, z00, x10, y10, z10, x11, y11, z11, x01, y01, z01, normalX, normalY, normalZ);
 		return end();
 	}
 
@@ -295,8 +286,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCylinder(float width, float height, float depth, int divisions, final Material material,
-			final long attributes) {
+	public Model createCylinder(float width, float height, float depth, int divisions, final Material material, final long attributes) {
 		return createCylinder(width, height, depth, divisions, TGF.GL_TRIANGLES, material, attributes);
 	}
 
@@ -310,8 +300,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCylinder(float width, float height, float depth, int divisions, int primitiveType,
-			final Material material, final long attributes) {
+	public Model createCylinder(float width, float height, float depth, int divisions, int primitiveType, final Material material, final long attributes) {
 		return createCylinder(width, height, depth, divisions, primitiveType, material, attributes, 0, 360);
 	}
 
@@ -325,10 +314,8 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCylinder(float width, float height, float depth, int divisions, final Material material,
-			final long attributes, float angleFrom, float angleTo) {
-		return createCylinder(width, height, depth, divisions, TGF.GL_TRIANGLES, material, attributes, angleFrom,
-				angleTo);
+	public Model createCylinder(float width, float height, float depth, int divisions, final Material material, final long attributes, float angleFrom, float angleTo) {
+		return createCylinder(width, height, depth, divisions, TGF.GL_TRIANGLES, material, attributes, angleFrom, angleTo);
 	}
 
 	/**
@@ -341,8 +328,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCylinder(float width, float height, float depth, int divisions, int primitiveType,
-			final Material material, final long attributes, float angleFrom, float angleTo) {
+	public Model createCylinder(float width, float height, float depth, int divisions, int primitiveType, final Material material, final long attributes, float angleFrom, float angleTo) {
 		begin();
 		MeshPartBuilder builder = part("cylinder", primitiveType, attributes, material);
 		CylinderShapeBuilder.build(builder, width, height, depth, divisions, angleFrom, angleTo);
@@ -359,8 +345,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCone(float width, float height, float depth, int divisions, final Material material,
-			final long attributes) {
+	public Model createCone(float width, float height, float depth, int divisions, final Material material, final long attributes) {
 		return createCone(width, height, depth, divisions, TGF.GL_TRIANGLES, material, attributes);
 	}
 
@@ -374,8 +359,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCone(float width, float height, float depth, int divisions, int primitiveType,
-			final Material material, final long attributes) {
+	public Model createCone(float width, float height, float depth, int divisions, int primitiveType, final Material material, final long attributes) {
 		return createCone(width, height, depth, divisions, primitiveType, material, attributes, 0, 360);
 	}
 
@@ -389,8 +373,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCone(float width, float height, float depth, int divisions, final Material material,
-			final long attributes, float angleFrom, float angleTo) {
+	public Model createCone(float width, float height, float depth, int divisions, final Material material, final long attributes, float angleFrom, float angleTo) {
 		return createCone(width, height, depth, divisions, TGF.GL_TRIANGLES, material, attributes, angleFrom, angleTo);
 	}
 
@@ -404,8 +387,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCone(float width, float height, float depth, int divisions, int primitiveType,
-			final Material material, final long attributes, float angleFrom, float angleTo) {
+	public Model createCone(float width, float height, float depth, int divisions, int primitiveType, final Material material, final long attributes, float angleFrom, float angleTo) {
 		begin();
 		MeshPartBuilder builder = part("cone", primitiveType, attributes, material);
 		ConeShapeBuilder.build(builder, width, height, depth, divisions, angleFrom, angleTo);
@@ -422,8 +404,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV,
-			final Material material, final long attributes) {
+	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV, final Material material, final long attributes) {
 		return createSphere(width, height, depth, divisionsU, divisionsV, TGF.GL_TRIANGLES, material, attributes);
 	}
 
@@ -437,10 +418,8 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV, int primitiveType,
-			final Material material, final long attributes) {
-		return createSphere(width, height, depth, divisionsU, divisionsV, primitiveType, material, attributes, 0, 360,
-				0, 180);
+	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV, int primitiveType, final Material material, final long attributes) {
+		return createSphere(width, height, depth, divisionsU, divisionsV, primitiveType, material, attributes, 0, 360, 0, 180);
 	}
 
 	/**
@@ -453,11 +432,8 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV,
-			final Material material, final long attributes, float angleUFrom, float angleUTo, float angleVFrom,
-			float angleVTo) {
-		return createSphere(width, height, depth, divisionsU, divisionsV, TGF.GL_TRIANGLES, material, attributes,
-				angleUFrom, angleUTo, angleVFrom, angleVTo);
+	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV, final Material material, final long attributes, float angleUFrom, float angleUTo, float angleVFrom, float angleVTo) {
+		return createSphere(width, height, depth, divisionsU, divisionsV, TGF.GL_TRIANGLES, material, attributes, angleUFrom, angleUTo, angleVFrom, angleVTo);
 	}
 
 	/**
@@ -470,13 +446,10 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV, int primitiveType,
-			final Material material, final long attributes, float angleUFrom, float angleUTo, float angleVFrom,
-			float angleVTo) {
+	public Model createSphere(float width, float height, float depth, int divisionsU, int divisionsV, int primitiveType, final Material material, final long attributes, float angleUFrom, float angleUTo, float angleVFrom, float angleVTo) {
 		begin();
 		MeshPartBuilder builder = part("sphere", primitiveType, attributes, material);
-		SphereShapeBuilder.build(builder, width, height, depth, divisionsU, divisionsV, angleUFrom, angleUTo,
-				angleVFrom, angleVTo);
+		SphereShapeBuilder.build(builder, width, height, depth, divisionsU, divisionsV, angleUFrom, angleUTo, angleVFrom, angleVTo);
 		return end();
 	}
 
@@ -490,8 +463,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCapsule(float radius, float height, int divisions, final Material material,
-			final long attributes) {
+	public Model createCapsule(float radius, float height, int divisions, final Material material, final long attributes) {
 		return createCapsule(radius, height, divisions, TGF.GL_TRIANGLES, material, attributes);
 	}
 
@@ -505,8 +477,7 @@ public class ModelBuilder {
 	 *                   only Position, Color, Normal and TextureCoordinates is
 	 *                   supported.
 	 */
-	public Model createCapsule(float radius, float height, int divisions, int primitiveType, final Material material,
-			final long attributes) {
+	public Model createCapsule(float radius, float height, int divisions, int primitiveType, final Material material, final long attributes) {
 		begin();
 		MeshPartBuilder build = part("capsule", primitiveType, attributes, material);
 		CapsuleShapeBuilder.build(build, radius, height, divisions);
@@ -525,8 +496,7 @@ public class ModelBuilder {
 	 * @param divisions     the amount of vertices used to generate the cap and stem
 	 *                      ellipsoidal bases
 	 */
-	public Model createXYZCoordinates(float axisLength, float capLength, float stemThickness, int divisions,
-			int primitiveType, Material material, long attributes) {
+	public Model createXYZCoordinates(float axisLength, float capLength, float stemThickness, int divisions, int primitiveType, Material material, long attributes) {
 		begin();
 		MeshPartBuilder partBuilder;
 		Node node = node();
@@ -544,8 +514,7 @@ public class ModelBuilder {
 		return createXYZCoordinates(axisLength, 0.1f, 0.1f, 5, TGF.GL_TRIANGLES, material, attributes);
 	}
 
-	public Model createArrow(float x1, float y1, float z1, float x2, float y2, float z2, float capLength,
-			float stemThickness, int divisions, int primitiveType, Material material, long attributes) {
+	public Model createArrow(float x1, float y1, float z1, float x2, float y2, float z2, float capLength, float stemThickness, int divisions, int primitiveType, Material material, long attributes) {
 		begin();
 		MeshPartBuilder build = part("arrow", primitiveType, attributes, material);
 		ArrowShapeBuilder.build(build, x1, y1, z1, x2, y2, z2, capLength, stemThickness, divisions);
@@ -553,12 +522,10 @@ public class ModelBuilder {
 	}
 
 	public Model createArrow(Vector3 from, Vector3 to, Material material, long attributes) {
-		return createArrow(from.x, from.y, from.z, to.x, to.y, to.z, 0.1f, 0.1f, 5, TGF.GL_TRIANGLES, material,
-				attributes);
+		return createArrow(from.x, from.y, from.z, to.x, to.y, to.z, 0.1f, 0.1f, 5, TGF.GL_TRIANGLES, material, attributes);
 	}
 
-	public Model createLineGrid(int xDivisions, int zDivisions, float xSize, float zSize, Material material,
-			long attributes) {
+	public Model createLineGrid(int xDivisions, int zDivisions, float xSize, float zSize, Material material, long attributes) {
 		begin();
 		MeshPartBuilder partBuilder = part("lines", TGF.GL_LINES, attributes, material);
 		float xlength = xDivisions * xSize, zlength = zDivisions * zSize, hxlength = xlength / 2,

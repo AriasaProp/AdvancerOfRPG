@@ -25,8 +25,7 @@ public class FloatFrameBuffer extends FrameBuffer {
 
 	@Override
 	protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec) {
-		FloatTextureData data = new FloatTextureData(bufferBuilder.width, bufferBuilder.height,
-				attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type, attachmentSpec.isGpuOnly);
+		FloatTextureData data = new FloatTextureData(bufferBuilder.width, bufferBuilder.height, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type, attachmentSpec.isGpuOnly);
 		Texture result = new Texture(data);
 		result.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		result.setWrap(TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);

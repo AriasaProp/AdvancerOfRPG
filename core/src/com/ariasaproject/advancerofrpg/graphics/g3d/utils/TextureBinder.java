@@ -74,14 +74,14 @@ public class TextureBinder {
 		final GLTexture texture = textureDesc.texture;
 		reused = false;
 		switch (method) {
-			case ROUNDROBIN:
-				result = offset + bindTextureRoundRobin(texture);
-				break;
-			case LRU:
-				result = offset + bindTextureLRU(texture);
-				break;
-			default:
-				return -1;
+		case ROUNDROBIN:
+			result = offset + bindTextureRoundRobin(texture);
+			break;
+		case LRU:
+			result = offset + bindTextureLRU(texture);
+			break;
+		default:
+			return -1;
 		}
 		if (reused) {
 			if (rebind)

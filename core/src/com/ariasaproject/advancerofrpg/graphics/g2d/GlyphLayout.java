@@ -36,8 +36,7 @@ public class GlyphLayout implements Poolable {
 	/**
 	 * @see #setText(BitmapFont, CharSequence)
 	 */
-	public GlyphLayout(BitmapFont font, CharSequence str, int start, int end, Color color, float targetWidth,
-			int halign, boolean wrap, String truncate) {
+	public GlyphLayout(BitmapFont font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate) {
 		setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);
 	}
 
@@ -76,8 +75,7 @@ public class GlyphLayout implements Poolable {
 	 *                    Truncate should not be used with text that contains
 	 *                    multiple lines. Wrap is ignored if truncate is not null.
 	 */
-	public void setText(BitmapFont font, CharSequence str, int start, int end, Color color, float targetWidth,
-			int halign, boolean wrap, String truncate) {
+	public void setText(BitmapFont font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate) {
 		BitmapFontData fontData = font.data;
 		if (truncate != null)
 			wrap = true; // Causes truncate code to run, doesn't actually cause wrapping.
@@ -138,8 +136,7 @@ public class GlyphLayout implements Poolable {
 						break runEnded;
 					}
 					if (lastGlyph != null) { // Move back the width of the last glyph from the previous run.
-						x -= lastGlyph.fixedWidth ? lastGlyph.xadvance * fontData.scaleX
-								: (lastGlyph.width + lastGlyph.xoffset) * fontData.scaleX - fontData.padRight;
+						x -= lastGlyph.fixedWidth ? lastGlyph.xadvance * fontData.scaleX : (lastGlyph.width + lastGlyph.xoffset) * fontData.scaleX - fontData.padRight;
 					}
 					lastGlyph = run.glyphs.peek();
 					run.x = x;
@@ -288,19 +285,16 @@ public class GlyphLayout implements Poolable {
 		}
 		this.width = width;
 		/*
-		if (fontData.flipped)
-			this.height = fontData.capHeight + lines * fontData.down
-					+ blankLines * fontData.down * fontData.blankLineScale;
-		else*/
-			this.height = fontData.capHeight + lines * -fontData.down
-					+ blankLines * -fontData.down * fontData.blankLineScale;
+		 * if (fontData.flipped) this.height = fontData.capHeight + lines *
+		 * fontData.down + blankLines * fontData.down * fontData.blankLineScale; else
+		 */
+		this.height = fontData.capHeight + lines * -fontData.down + blankLines * -fontData.down * fontData.blankLineScale;
 	}
 
 	/**
 	 * @param truncate May be empty string.
 	 */
-	private void truncate(BitmapFontData fontData, GlyphRun run, float targetWidth, String truncate, int widthIndex,
-			Pool<GlyphRun> glyphRunPool) {
+	private void truncate(BitmapFontData fontData, GlyphRun run, float targetWidth, String truncate, int widthIndex, Pool<GlyphRun> glyphRunPool) {
 		// Determine truncate string size.
 		GlyphRun truncateRun = glyphRunPool.obtain();
 		fontData.getGlyphs(truncateRun, truncate, 0, truncate.length(), null);
@@ -348,8 +342,7 @@ public class GlyphLayout implements Poolable {
 	 *
 	 * @return May be null if second run is all whitespace.
 	 */
-	private GlyphRun wrap(BitmapFontData fontData, GlyphRun first, Pool<GlyphRun> glyphRunPool, int wrapIndex,
-			int widthIndex) {
+	private GlyphRun wrap(BitmapFontData fontData, GlyphRun first, Pool<GlyphRun> glyphRunPool, int wrapIndex, int widthIndex) {
 		Array<Glyph> glyphs2 = first.glyphs; // Starts with all the glyphs.
 		int glyphCount = first.glyphs.size;
 		FloatArray xAdvances2 = first.xAdvances; // Starts with all the xAdvances.

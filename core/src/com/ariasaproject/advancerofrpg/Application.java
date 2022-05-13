@@ -7,7 +7,7 @@ import com.ariasaproject.advancerofrpg.input.Input;
 import com.ariasaproject.advancerofrpg.net.Net;
 
 public interface Application {
-	
+
 	public Graphics getGraphics();
 
 	public Audio getAudio();

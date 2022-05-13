@@ -23,55 +23,37 @@ public class FacedCubemapData implements CubemapData {
 	 * Construct a Cubemap with the specified texture files for the sides,
 	 * optionally generating mipmaps.
 	 */
-	public FacedCubemapData(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
-			FileHandle positiveZ, FileHandle negativeZ) {
-		this(new FileTextureData(positiveX, false), new FileTextureData(negativeX, false),
-				new FileTextureData(positiveY, false), new FileTextureData(negativeY, false),
-				new FileTextureData(positiveZ, false), new FileTextureData(negativeZ, false));
+	public FacedCubemapData(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY, FileHandle positiveZ, FileHandle negativeZ) {
+		this(new FileTextureData(positiveX, false), new FileTextureData(negativeX, false), new FileTextureData(positiveY, false), new FileTextureData(negativeY, false), new FileTextureData(positiveZ, false), new FileTextureData(negativeZ, false));
 	}
 
 	/**
 	 * Construct a Cubemap with the specified texture files for the sides,
 	 * optionally generating mipmaps.
 	 */
-	public FacedCubemapData(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY,
-			FileHandle positiveZ, FileHandle negativeZ, boolean useMipMaps) {
-		this(new FileTextureData(positiveX, useMipMaps), new FileTextureData(negativeX, useMipMaps),
-				new FileTextureData(positiveY, useMipMaps), new FileTextureData(negativeY, useMipMaps),
-				new FileTextureData(positiveZ, useMipMaps), new FileTextureData(negativeZ, useMipMaps));
+	public FacedCubemapData(FileHandle positiveX, FileHandle negativeX, FileHandle positiveY, FileHandle negativeY, FileHandle positiveZ, FileHandle negativeZ, boolean useMipMaps) {
+		this(new FileTextureData(positiveX, useMipMaps), new FileTextureData(negativeX, useMipMaps), new FileTextureData(positiveY, useMipMaps), new FileTextureData(negativeY, useMipMaps), new FileTextureData(positiveZ, useMipMaps), new FileTextureData(negativeZ, useMipMaps));
 	}
 
 	/**
 	 * Construct a Cubemap with the specified {@link Pixmap}s for the sides,
 	 * optionally generating mipmaps.
 	 */
-	public FacedCubemapData(Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ,
-			Pixmap negativeZ, boolean useMipMaps) {
-		this(positiveX == null ? null : new PixmapTextureData(positiveX, null, useMipMaps, false),
-				negativeX == null ? null : new PixmapTextureData(negativeX, null, useMipMaps, false),
-				positiveY == null ? null : new PixmapTextureData(positiveY, null, useMipMaps, false),
-				negativeY == null ? null : new PixmapTextureData(negativeY, null, useMipMaps, false),
-				positiveZ == null ? null : new PixmapTextureData(positiveZ, null, useMipMaps, false),
-				negativeZ == null ? null : new PixmapTextureData(negativeZ, null, useMipMaps, false));
+	public FacedCubemapData(Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ, Pixmap negativeZ, boolean useMipMaps) {
+		this(positiveX == null ? null : new PixmapTextureData(positiveX, null, useMipMaps, false), negativeX == null ? null : new PixmapTextureData(negativeX, null, useMipMaps, false), positiveY == null ? null : new PixmapTextureData(positiveY, null, useMipMaps, false), negativeY == null ? null : new PixmapTextureData(negativeY, null, useMipMaps, false), positiveZ == null ? null : new PixmapTextureData(positiveZ, null, useMipMaps, false), negativeZ == null ? null : new PixmapTextureData(negativeZ, null, useMipMaps, false));
 	}
 
 	/**
 	 * Construct a Cubemap with {@link Pixmap}s for each side of the specified size.
 	 */
 	public FacedCubemapData(int width, int height, int depth, Format format) {
-		this(new PixmapTextureData(new Pixmap(depth, height, format), null, false, true),
-				new PixmapTextureData(new Pixmap(depth, height, format), null, false, true),
-				new PixmapTextureData(new Pixmap(width, depth, format), null, false, true),
-				new PixmapTextureData(new Pixmap(width, depth, format), null, false, true),
-				new PixmapTextureData(new Pixmap(width, height, format), null, false, true),
-				new PixmapTextureData(new Pixmap(width, height, format), null, false, true));
+		this(new PixmapTextureData(new Pixmap(depth, height, format), null, false, true), new PixmapTextureData(new Pixmap(depth, height, format), null, false, true), new PixmapTextureData(new Pixmap(width, depth, format), null, false, true), new PixmapTextureData(new Pixmap(width, depth, format), null, false, true), new PixmapTextureData(new Pixmap(width, height, format), null, false, true), new PixmapTextureData(new Pixmap(width, height, format), null, false, true));
 	}
 
 	/**
 	 * Construct a Cubemap with the specified {@link TextureData}'s for the sides
 	 */
-	public FacedCubemapData(TextureData positiveX, TextureData negativeX, TextureData positiveY, TextureData negativeY,
-			TextureData positiveZ, TextureData negativeZ) {
+	public FacedCubemapData(TextureData positiveX, TextureData negativeX, TextureData positiveY, TextureData negativeY, TextureData positiveZ, TextureData negativeZ) {
 		data[0] = positiveX;
 		data[1] = negativeX;
 		data[2] = positiveY;
@@ -182,18 +164,16 @@ public class FacedCubemapData implements CubemapData {
 			} else {
 				Pixmap pixmap = data[i].consumePixmap();
 				boolean disposePixmap = data[i].disposePixmap();
-				if (data[i].getFormat() != pixmap.getFormat()) {
-					Pixmap tmp = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), data[i].getFormat());
-					tmp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight());
+				if (data[i].getFormat() != pixmap.format) {
+					Pixmap tmp = new Pixmap(pixmap.width, pixmap.height, data[i].getFormat());
+					tmp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.width, pixmap.height);
 					if (data[i].disposePixmap())
 						pixmap.dispose();
 					pixmap = tmp;
 					disposePixmap = true;
 				}
 				GraphFunc.tgf.glPixelStorei(TGF.GL_UNPACK_ALIGNMENT, 1);
-				GraphFunc.tgf.glTexImage2D(TGF.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pixmap.getFormat().InternalGLFormat,
-						pixmap.getWidth(), pixmap.getHeight(), 0, pixmap.getFormat().GLFormat,
-						pixmap.getFormat().GLType, pixmap.getPixels());
+				GraphFunc.tgf.glTexImage2D(TGF.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pixmap.format.InternalGLFormat, pixmap.width, pixmap.height, 0, pixmap.format.GLFormat, pixmap.format.GLType, pixmap.getPixels());
 				if (disposePixmap)
 					pixmap.dispose();
 			}

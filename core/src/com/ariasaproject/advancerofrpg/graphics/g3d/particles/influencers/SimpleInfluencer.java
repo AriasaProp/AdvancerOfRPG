@@ -45,8 +45,7 @@ public abstract class SimpleInfluencer extends Influencer {
 	@Override
 	public void activateParticles(int startIndex, int count) {
 		if (!value.isRelative()) {
-			for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i
-					+ count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
+			for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i + count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
 				float start = value.newLowValue();
 				float diff = value.newHighValue() - start;
 				interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] = start;
@@ -54,8 +53,7 @@ public abstract class SimpleInfluencer extends Influencer {
 				valueChannel.data[i] = start + diff * value.getScale(0);
 			}
 		} else {
-			for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i
-					+ count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
+			for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i + count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
 				float start = value.newLowValue();
 				float diff = value.newHighValue();
 				interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] = start;
@@ -67,11 +65,8 @@ public abstract class SimpleInfluencer extends Influencer {
 
 	@Override
 	public void update() {
-		for (int i = 0, a = 0, l = ParticleChannels.LifePercentOffset, c = i + controller.particles.size
-				* valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize, l += lifeChannel.strideSize) {
-			valueChannel.data[i] = interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset]
-					+ interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset]
-							* value.getScale(lifeChannel.data[l]);
+		for (int i = 0, a = 0, l = ParticleChannels.LifePercentOffset, c = i + controller.particles.size * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize, l += lifeChannel.strideSize) {
+			valueChannel.data[i] = interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] + interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] * value.getScale(lifeChannel.data[l]);
 		}
 	}
 

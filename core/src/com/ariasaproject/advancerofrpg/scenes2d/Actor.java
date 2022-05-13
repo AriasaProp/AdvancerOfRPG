@@ -136,8 +136,7 @@ public class Actor {
 					if (event instanceof InputEvent) {
 						InputEvent inputEvent = (InputEvent) event;
 						if (inputEvent.getType() == Type.touchDown) {
-							event.getStage().addTouchFocus(listener, this, inputEvent.getTarget(),
-									inputEvent.getPointer(), inputEvent.getButton());
+							event.getStage().addTouchFocus(listener, this, inputEvent.getTarget(), inputEvent.getPointer(), inputEvent.getButton());
 						}
 					}
 				}

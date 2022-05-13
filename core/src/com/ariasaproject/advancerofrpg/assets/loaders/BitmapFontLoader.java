@@ -53,8 +53,7 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
 	}
 
 	@Override
-	public BitmapFont loadSync(AssetContainer manager, String fileName, FileHandle file,
-			BitmapFontParameter parameter) {
+	public BitmapFont loadSync(AssetContainer manager, String fileName, FileHandle file, BitmapFontParameter parameter) {
 		if (parameter != null && parameter.atlasName != null) {
 			TextureAtlas atlas = manager.get(parameter.atlasName, TextureAtlas.class);
 			String name = file.sibling(data.imagePaths[0]).nameWithoutExtension();
@@ -73,7 +72,7 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
 	}
 
 	static public class BitmapFontParameter extends AssetLoaderParameters<BitmapFont> {
-		
+
 		/**
 		 * Generates mipmaps for the font if {@code true}. Defaults to {@code false}.
 		 **/

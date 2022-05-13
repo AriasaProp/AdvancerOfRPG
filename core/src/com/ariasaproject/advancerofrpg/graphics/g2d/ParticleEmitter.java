@@ -449,8 +449,7 @@ public class ParticleEmitter {
 			particle.yScaleDiff = yScaleValue.newHighValue() / spriteHeight;
 			if (!yScaleValue.isRelative())
 				particle.yScaleDiff -= particle.yScale;
-			particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(0),
-					particle.yScale + particle.yScaleDiff * yScaleValue.getScale(0));
+			particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(0), particle.yScale + particle.yScaleDiff * yScaleValue.getScale(0));
 		} else {
 			particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(0));
 		}
@@ -574,8 +573,7 @@ public class ParticleEmitter {
 		int updateFlags = this.updateFlags;
 		if ((updateFlags & UPDATE_SCALE) != 0) {
 			if (yScaleValue.active) {
-				particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(percent),
-						particle.yScale + particle.yScaleDiff * yScaleValue.getScale(percent));
+				particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(percent), particle.yScale + particle.yScaleDiff * yScaleValue.getScale(percent));
 			} else {
 				particle.setScale(particle.xScale + particle.xScaleDiff * xScaleValue.getScale(percent));
 			}
@@ -622,8 +620,7 @@ public class ParticleEmitter {
 			float a = particle.transparency + particle.transparencyDiff * transparencyValue.getScale(percent);
 			particle.setColor(color[0] * a, color[1] * a, color[2] * a, a * alphaMultiplier);
 		} else {
-			particle.setColor(color[0], color[1], color[2],
-					particle.transparency + particle.transparencyDiff * transparencyValue.getScale(percent));
+			particle.setColor(color[0], color[1], color[2], particle.transparency + particle.transparencyDiff * transparencyValue.getScale(percent));
 		}
 		if ((updateFlags & UPDATE_SPRITE) != 0) {
 			int frame = Math.min((int) (percent * sprites.size), sprites.size - 1);
@@ -634,8 +631,7 @@ public class ParticleEmitter {
 				particle.setRegion(sprite);
 				particle.setSize(sprite.getWidth(), sprite.getHeight());
 				particle.setOrigin(sprite.getOriginX(), sprite.getOriginY());
-				particle.translate((prevSpriteWidth - sprite.getWidth()) / 2,
-						(prevSpriteHeight - sprite.getHeight()) / 2);
+				particle.translate((prevSpriteWidth - sprite.getWidth()) / 2, (prevSpriteHeight - sprite.getHeight()) / 2);
 				particle.frame = frame;
 			}
 		}
@@ -676,8 +672,7 @@ public class ParticleEmitter {
 	 */
 	public void preAllocateParticles() {
 		if (sprites.isEmpty())
-			throw new IllegalStateException(
-					"ParticleEmitter.setSprites() must have been called before preAllocateParticles()");
+			throw new IllegalStateException("ParticleEmitter.setSprites() must have been called before preAllocateParticles()");
 		for (int index = 0; index < particles.length; index++) {
 			Particle particle = particles[index];
 			if (particle == null) {
@@ -1517,8 +1512,7 @@ public class ParticleEmitter {
 			int startIndex = endIndex - 1;
 			float startValue = scaling[startIndex];
 			float startTime = timeline[startIndex];
-			return startValue
-					+ (scaling[endIndex] - startValue) * ((percent - startTime) / (timeline[endIndex] - startTime));
+			return startValue + (scaling[endIndex] - startValue) * ((percent - startTime) / (timeline[endIndex] - startTime));
 		}
 
 		@Override
@@ -1620,9 +1614,7 @@ public class ParticleEmitter {
 				// @see java.io.BufferedReader#markSupported may return false in some platforms
 				// (such as GWT),
 				// in that case backwards commpatibility is not possible
-				String errorMessage = "The loaded particle effect descriptor file uses an old invalid format. "
-						+ "Please download the latest version of the Particle Editor tool and recreate the file by"
-						+ " loading and saving it again.";
+				String errorMessage = "The loaded particle effect descriptor file uses an old invalid format. " + "Please download the latest version of the Particle Editor tool and recreate the file by" + " loading and saving it again.";
 				GraphFunc.app.error("ParticleEmitter", errorMessage);
 				throw new IOException(errorMessage);
 			}

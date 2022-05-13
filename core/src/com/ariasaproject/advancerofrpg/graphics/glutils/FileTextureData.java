@@ -27,10 +27,10 @@ public class FileTextureData implements TextureData {
 		this.format = format;
 		this.useMipMaps = useMipMaps;
 		if (pixmap != null) {
-			width = pixmap.getWidth();
-			height = pixmap.getHeight();
+			width = pixmap.width;
+			height = pixmap.height;
 			if (format == null)
-				this.format = pixmap.getFormat();
+				this.format = pixmap.format;
 		}
 	}
 
@@ -45,10 +45,10 @@ public class FileTextureData implements TextureData {
 			return;
 		if (pixmap == null) {
 			pixmap = new Pixmap(file);
-			width = pixmap.getWidth();
-			height = pixmap.getHeight();
+			width = pixmap.width;
+			height = pixmap.height;
 			if (format == null)
-				format = pixmap.getFormat();
+				format = pixmap.format;
 		}
 		isPrepared = true;
 	}

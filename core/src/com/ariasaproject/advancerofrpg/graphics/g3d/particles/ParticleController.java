@@ -80,8 +80,7 @@ public class ParticleController implements Json.Serializable, ResourceData.Confi
 		setTimeStep(DEFAULT_TIME_STEP);
 	}
 
-	public ParticleController(String name, Emitter emitter, ParticleControllerRenderer<?, ?> renderer,
-			Influencer... influencers) {
+	public ParticleController(String name, Emitter emitter, ParticleControllerRenderer<?, ?> renderer, Influencer... influencers) {
 		this();
 		this.name = name;
 		this.emitter = emitter;
@@ -302,8 +301,7 @@ public class ParticleController implements Json.Serializable, ResourceData.Confi
 		for (Influencer influencer : this.influencers) {
 			influencers[i++] = (Influencer) influencer.copy();
 		}
-		return new ParticleController(this.name, emitter, (ParticleControllerRenderer<?, ?>) renderer.copy(),
-				influencers);
+		return new ParticleController(this.name, emitter, (ParticleControllerRenderer<?, ?>) renderer.copy(), influencers);
 	}
 
 	public void dispose() {
@@ -330,9 +328,7 @@ public class ParticleController implements Json.Serializable, ResourceData.Confi
 		boundingBox.clr();
 		FloatChannel positionChannel = particles.getChannel(ParticleChannels.Position);
 		for (int pos = 0, c = positionChannel.strideSize * particles.size; pos < c; pos += positionChannel.strideSize) {
-			boundingBox.ext(positionChannel.data[pos + ParticleChannels.XOffset],
-					positionChannel.data[pos + ParticleChannels.YOffset],
-					positionChannel.data[pos + ParticleChannels.ZOffset]);
+			boundingBox.ext(positionChannel.data[pos + ParticleChannels.XOffset], positionChannel.data[pos + ParticleChannels.YOffset], positionChannel.data[pos + ParticleChannels.ZOffset]);
 		}
 	}
 

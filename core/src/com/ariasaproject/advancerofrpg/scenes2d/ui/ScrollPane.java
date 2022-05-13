@@ -262,10 +262,8 @@ public class ScrollPane extends WidgetGroup {
 	void clamp() {
 		if (!clamp)
 			return;
-		scrollX(overscrollX ? MathUtils.clamp(amountX, -overscrollDistance, maxX + overscrollDistance)
-				: MathUtils.clamp(amountX, 0, maxX));
-		scrollY(overscrollY ? MathUtils.clamp(amountY, -overscrollDistance, maxY + overscrollDistance)
-				: MathUtils.clamp(amountY, 0, maxY));
+		scrollX(overscrollX ? MathUtils.clamp(amountX, -overscrollDistance, maxX + overscrollDistance) : MathUtils.clamp(amountX, 0, maxX));
+		scrollY(overscrollY ? MathUtils.clamp(amountY, -overscrollDistance, maxY + overscrollDistance) : MathUtils.clamp(amountY, 0, maxY));
 	}
 
 	/**
@@ -317,24 +315,19 @@ public class ScrollPane extends WidgetGroup {
 		// Scroll smoothly when grabbing the scrollbar if one pixel of scrollbar
 		// movement is > 10% of the scroll area.
 				((!touchScrollH || (scrollX && maxX / (hScrollBounds.width - hKnobBounds.width) > areaWidth * 0.1f)) //
-						&& (!touchScrollV
-								|| (scrollY && maxY / (vScrollBounds.height - vKnobBounds.height) > areaHeight * 0.1f))) //
+						&& (!touchScrollV || (scrollY && maxY / (vScrollBounds.height - vKnobBounds.height) > areaHeight * 0.1f))) //
 		) {
 			if (visualAmountX != amountX) {
 				if (visualAmountX < amountX)
-					visualScrollX(Math.min(amountX,
-							visualAmountX + Math.max(200 * delta, (amountX - visualAmountX) * 7 * delta)));
+					visualScrollX(Math.min(amountX, visualAmountX + Math.max(200 * delta, (amountX - visualAmountX) * 7 * delta)));
 				else
-					visualScrollX(Math.max(amountX,
-							visualAmountX - Math.max(200 * delta, (visualAmountX - amountX) * 7 * delta)));
+					visualScrollX(Math.max(amountX, visualAmountX - Math.max(200 * delta, (visualAmountX - amountX) * 7 * delta)));
 			}
 			if (visualAmountY != amountY) {
 				if (visualAmountY < amountY)
-					visualScrollY(Math.min(amountY,
-							visualAmountY + Math.max(200 * delta, (amountY - visualAmountY) * 7 * delta)));
+					visualScrollY(Math.min(amountY, visualAmountY + Math.max(200 * delta, (amountY - visualAmountY) * 7 * delta)));
 				else
-					visualScrollY(Math.max(amountY,
-							visualAmountY - Math.max(200 * delta, (visualAmountY - amountY) * 7 * delta)));
+					visualScrollY(Math.max(amountY, visualAmountY - Math.max(200 * delta, (visualAmountY - amountY) * 7 * delta)));
 			}
 		} else {
 			if (visualAmountX != amountX)
@@ -346,15 +339,12 @@ public class ScrollPane extends WidgetGroup {
 			if (overscrollX && scrollX) {
 				if (amountX < 0) {
 					setScrollbarsVisible(true);
-					amountX += (overscrollSpeedMin
-							+ (overscrollSpeedMax - overscrollSpeedMin) * -amountX / overscrollDistance) * delta;
+					amountX += (overscrollSpeedMin + (overscrollSpeedMax - overscrollSpeedMin) * -amountX / overscrollDistance) * delta;
 					if (amountX > 0)
 						scrollX(0);
 				} else if (amountX > maxX) {
 					setScrollbarsVisible(true);
-					amountX -= (overscrollSpeedMin
-							+ (overscrollSpeedMax - overscrollSpeedMin) * -(maxX - amountX) / overscrollDistance)
-							* delta;
+					amountX -= (overscrollSpeedMin + (overscrollSpeedMax - overscrollSpeedMin) * -(maxX - amountX) / overscrollDistance) * delta;
 					if (amountX < maxX)
 						scrollX(maxX);
 				}
@@ -362,15 +352,12 @@ public class ScrollPane extends WidgetGroup {
 			if (overscrollY && scrollY) {
 				if (amountY < 0) {
 					setScrollbarsVisible(true);
-					amountY += (overscrollSpeedMin
-							+ (overscrollSpeedMax - overscrollSpeedMin) * -amountY / overscrollDistance) * delta;
+					amountY += (overscrollSpeedMin + (overscrollSpeedMax - overscrollSpeedMin) * -amountY / overscrollDistance) * delta;
 					if (amountY > 0)
 						scrollY(0);
 				} else if (amountY > maxY) {
 					setScrollbarsVisible(true);
-					amountY -= (overscrollSpeedMin
-							+ (overscrollSpeedMax - overscrollSpeedMin) * -(maxY - amountY) / overscrollDistance)
-							* delta;
+					amountY -= (overscrollSpeedMin + (overscrollSpeedMax - overscrollSpeedMin) * -(maxY - amountY) / overscrollDistance) * delta;
 					if (amountY < maxY)
 						scrollY(maxY);
 				}
@@ -487,15 +474,13 @@ public class ScrollPane extends WidgetGroup {
 				float boundsY = hScrollOnBottom ? bgBottomHeight : height - bgTopHeight - hScrollHeight;
 				hScrollBounds.set(boundsX, boundsY, areaWidth, hScrollHeight);
 				if (variableSizeKnobs)
-					hKnobBounds.width = Math.max(hScrollKnob.getMinWidth(),
-							(int) (hScrollBounds.width * areaWidth / widgetWidth));
+					hKnobBounds.width = Math.max(hScrollKnob.getMinWidth(), (int) (hScrollBounds.width * areaWidth / widgetWidth));
 				else
 					hKnobBounds.width = hScrollKnob.getMinWidth();
 				if (hKnobBounds.width > widgetWidth)
 					hKnobBounds.width = 0;
 				hKnobBounds.height = hScrollKnob.getMinHeight();
-				hKnobBounds.x = hScrollBounds.x
-						+ (int) ((hScrollBounds.width - hKnobBounds.width) * getScrollPercentX());
+				hKnobBounds.x = hScrollBounds.x + (int) ((hScrollBounds.width - hKnobBounds.width) * getScrollPercentX());
 				hKnobBounds.y = hScrollBounds.y;
 			} else {
 				hScrollBounds.set(0, 0, 0, 0);
@@ -522,8 +507,7 @@ public class ScrollPane extends WidgetGroup {
 				vScrollBounds.set(boundsX, boundsY, vScrollWidth, areaHeight);
 				vKnobBounds.width = vScrollKnob.getMinWidth();
 				if (variableSizeKnobs)
-					vKnobBounds.height = Math.max(vScrollKnob.getMinHeight(),
-							(int) (vScrollBounds.height * areaHeight / widgetHeight));
+					vKnobBounds.height = Math.max(vScrollKnob.getMinHeight(), (int) (vScrollBounds.height * areaHeight / widgetHeight));
 				else
 					vKnobBounds.height = vScrollKnob.getMinHeight();
 				if (vKnobBounds.height > widgetHeight)
@@ -533,8 +517,7 @@ public class ScrollPane extends WidgetGroup {
 				} else {
 					vKnobBounds.x = bgLeftWidth;
 				}
-				vKnobBounds.y = vScrollBounds.y
-						+ (int) ((vScrollBounds.height - vKnobBounds.height) * (1 - getScrollPercentY()));
+				vKnobBounds.y = vScrollBounds.y + (int) ((vScrollBounds.height - vKnobBounds.height) * (1 - getScrollPercentY()));
 			} else {
 				vScrollBounds.set(0, 0, 0, 0);
 				vKnobBounds.set(0, 0, 0, 0);
@@ -594,11 +577,9 @@ public class ScrollPane extends WidgetGroup {
 		// Setup transform for this group.
 		applyTransform(batch, computeTransform());
 		if (scrollX)
-			hKnobBounds.x = hScrollBounds.x
-					+ (int) ((hScrollBounds.width - hKnobBounds.width) * getVisualScrollPercentX());
+			hKnobBounds.x = hScrollBounds.x + (int) ((hScrollBounds.width - hKnobBounds.width) * getVisualScrollPercentX());
 		if (scrollY)
-			vKnobBounds.y = vScrollBounds.y
-					+ (int) ((vScrollBounds.height - vKnobBounds.height) * (1 - getVisualScrollPercentY()));
+			vKnobBounds.y = vScrollBounds.y + (int) ((vScrollBounds.height - vKnobBounds.height) * (1 - getVisualScrollPercentY()));
 		updateWidgetPosition();
 		// Draw the background ninepatch.
 		Color color = getColor();
@@ -632,8 +613,7 @@ public class ScrollPane extends WidgetGroup {
 		boolean y = scrollY && vKnobBounds.height > 0;
 		if (x && y) {
 			if (style.corner != null) {
-				style.corner.draw(batch, hScrollBounds.x + hScrollBounds.width, hScrollBounds.y, vScrollBounds.width,
-						vScrollBounds.y);
+				style.corner.draw(batch, hScrollBounds.x + hScrollBounds.width, hScrollBounds.y, vScrollBounds.width, vScrollBounds.y);
 			}
 		}
 		if (x) {
@@ -693,8 +673,7 @@ public class ScrollPane extends WidgetGroup {
 			height = widget.getHeight();
 		Drawable background = style.background;
 		if (background != null)
-			height = Math.max(height + background.getTopHeight() + background.getBottomHeight(),
-					background.getMinHeight());
+			height = Math.max(height + background.getTopHeight() + background.getBottomHeight(), background.getMinHeight());
 		if (scrollX) {
 			float scrollbarHeight = 0;
 			if (style.hScrollKnob != null)
@@ -916,8 +895,7 @@ public class ScrollPane extends WidgetGroup {
 	 * optionally centered vertically and/or horizontally, if possible. Coordinates
 	 * are in the scroll pane widget's coordinate system.
 	 */
-	public void scrollTo(float x, float y, float width, float height, boolean centerHorizontal,
-			boolean centerVertical) {
+	public void scrollTo(float x, float y, float width, float height, boolean centerHorizontal, boolean centerVertical) {
 		validate();
 		float amountX = this.amountX;
 		if (centerHorizontal) {
@@ -1242,8 +1220,7 @@ public class ScrollPane extends WidgetGroup {
 		public ScrollPaneStyle() {
 		}
 
-		public ScrollPaneStyle(@Null Drawable background, @Null Drawable hScroll, @Null Drawable hScrollKnob,
-				@Null Drawable vScroll, @Null Drawable vScrollKnob) {
+		public ScrollPaneStyle(@Null Drawable background, @Null Drawable hScroll, @Null Drawable hScrollKnob, @Null Drawable vScroll, @Null Drawable vScrollKnob) {
 			this.background = background;
 			this.hScroll = hScroll;
 			this.hScrollKnob = hScrollKnob;

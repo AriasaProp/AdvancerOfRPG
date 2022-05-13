@@ -33,16 +33,9 @@ import com.ariasaproject.advancerofrpg.utils.reflect.ReflectionException;
 
 public class Skin implements Disposable {
 	/*
-	this skin doesn't allow flipped value to direct read
-	*/
-	static private final Class[] defaultTagClasses = { BitmapFont.class, Color.class, TintedDrawable.class,
-			NinePatchDrawable.class, SpriteDrawable.class, TextureRegionDrawable.class, TiledDrawable.class,
-			Button.ButtonStyle.class, CheckBox.CheckBoxStyle.class, ImageButton.ImageButtonStyle.class,
-			ImageTextButton.ImageTextButtonStyle.class, Label.LabelStyle.class, List.ListStyle.class,
-			ProgressBar.ProgressBarStyle.class, ScrollPane.ScrollPaneStyle.class, SelectBox.SelectBoxStyle.class,
-			Slider.SliderStyle.class, SplitPane.SplitPaneStyle.class, TextButton.TextButtonStyle.class,
-			TextField.TextFieldStyle.class, Touchpad.TouchpadStyle.class, Tree.TreeStyle.class,
-			Window.WindowStyle.class };
+	 * this skin doesn't allow flipped value to direct read
+	 */
+	static private final Class[] defaultTagClasses = { BitmapFont.class, Color.class, TintedDrawable.class, NinePatchDrawable.class, SpriteDrawable.class, TextureRegionDrawable.class, TiledDrawable.class, Button.ButtonStyle.class, CheckBox.CheckBoxStyle.class, ImageButton.ImageButtonStyle.class, ImageTextButton.ImageTextButtonStyle.class, Label.LabelStyle.class, List.ListStyle.class, ProgressBar.ProgressBarStyle.class, ScrollPane.ScrollPaneStyle.class, SelectBox.SelectBoxStyle.class, Slider.SliderStyle.class, SplitPane.SplitPaneStyle.class, TextButton.TextButtonStyle.class, TextField.TextFieldStyle.class, Touchpad.TouchpadStyle.class, Tree.TreeStyle.class, Window.WindowStyle.class };
 	private final ObjectMap<String, Class> jsonClassTags = new ObjectMap<String, Class>(defaultTagClasses.length);
 	ObjectMap<Class, ObjectMap<String, Object>> resources = new ObjectMap<Class, ObjectMap<String, Object>>();
 	TextureAtlas atlas;
@@ -119,8 +112,7 @@ public class Skin implements Disposable {
 			throw new IllegalArgumentException("resource cannot be null.");
 		ObjectMap<String, Object> typeResources = resources.get(type);
 		if (typeResources == null) {
-			typeResources = new ObjectMap<String, Object>(
-					type == TextureRegion.class || type == Drawable.class || type == Sprite.class ? 256 : 64);
+			typeResources = new ObjectMap<String, Object>(type == TextureRegion.class || type == Drawable.class || type == Sprite.class ? 256 : 64);
 			resources.put(type, typeResources);
 		}
 		typeResources.put(name, resource);
@@ -287,8 +279,7 @@ public class Skin implements Disposable {
 			TextureRegion textureRegion = getRegion(name);
 			if (textureRegion instanceof AtlasRegion) {
 				AtlasRegion region = (AtlasRegion) textureRegion;
-				if (region.rotate || region.packedWidth != region.originalWidth
-						|| region.packedHeight != region.originalHeight)
+				if (region.rotate || region.packedWidth != region.originalWidth || region.packedHeight != region.originalHeight)
 					sprite = new AtlasSprite(region);
 			}
 			if (sprite == null)
@@ -319,8 +310,7 @@ public class Skin implements Disposable {
 				AtlasRegion region = (AtlasRegion) textureRegion;
 				if (region.splits != null)
 					drawable = new NinePatchDrawable(getPatch(name));
-				else if (region.rotate || region.packedWidth != region.originalWidth
-						|| region.packedHeight != region.originalHeight)
+				else if (region.rotate || region.packedWidth != region.originalWidth || region.packedHeight != region.originalHeight)
 					drawable = new SpriteDrawable(getSprite(name));
 			}
 			if (drawable == null) {
@@ -340,8 +330,7 @@ public class Skin implements Disposable {
 				if (sprite != null)
 					drawable = new SpriteDrawable(sprite);
 				else
-					throw new RuntimeException(
-							"No Drawable, NinePatch, TextureRegion, Texture, or Sprite registered with name: " + name);
+					throw new RuntimeException("No Drawable, NinePatch, TextureRegion, Texture, or Sprite registered with name: " + name);
 			}
 		}
 		if (drawable instanceof BaseDrawable)
@@ -526,8 +515,7 @@ public class Skin implements Disposable {
 			public <T> T readValue(Class<T> type, Class elementType, JsonValue jsonData) {
 				// If the JSON is a string but the type is not, look up the actual value by
 				// name.
-				if (jsonData != null && jsonData.isString()
-						&& !ClassReflection.isAssignableFrom(CharSequence.class, type))
+				if (jsonData != null && jsonData.isString() && !ClassReflection.isAssignableFrom(CharSequence.class, type))
 					return get(jsonData.asString(), type);
 				return super.readValue(type, elementType, jsonData);
 			}
@@ -549,8 +537,7 @@ public class Skin implements Disposable {
 						} catch (RuntimeException ex) { // Parent resource doesn't exist.
 							parentType = parentType.getSuperclass(); // Try resource for super class.
 							if (parentType == Object.class) {
-								SerializationException se = new SerializationException(
-										"Unable to find parent resource with name: " + parentName);
+								SerializationException se = new SerializationException("Unable to find parent resource with name: " + parentName);
 								se.addTrace(jsonMap.child.trace());
 								throw se;
 							}
@@ -589,8 +576,7 @@ public class Skin implements Disposable {
 						if (addType != Drawable.class && ClassReflection.isAssignableFrom(Drawable.class, addType))
 							add(valueEntry.name, object, Drawable.class);
 					} catch (Exception ex) {
-						throw new SerializationException(
-								"Error reading " + ClassReflection.getSimpleName(type) + ": " + valueEntry.name, ex);
+						throw new SerializationException("Error reading " + ClassReflection.getSimpleName(type) + ": " + valueEntry.name, ex);
 					}
 				}
 			}

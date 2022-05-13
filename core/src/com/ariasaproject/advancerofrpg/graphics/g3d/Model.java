@@ -123,8 +123,7 @@ public class Model implements Disposable {
 					for (ModelNodeKeyframe<Vector3> kf : nanim.translation) {
 						if (kf.keytime > animation.duration)
 							animation.duration = kf.keytime;
-						nodeAnim.translation.add(new NodeKeyframe<Vector3>(kf.keytime,
-																		   new Vector3(kf.value == null ? node.translation : kf.value)));
+						nodeAnim.translation.add(new NodeKeyframe<Vector3>(kf.keytime, new Vector3(kf.value == null ? node.translation : kf.value)));
 					}
 				}
 				if (nanim.rotation != null) {
@@ -133,8 +132,7 @@ public class Model implements Disposable {
 					for (ModelNodeKeyframe<Quaternion> kf : nanim.rotation) {
 						if (kf.keytime > animation.duration)
 							animation.duration = kf.keytime;
-						nodeAnim.rotation.add(new NodeKeyframe<Quaternion>(kf.keytime,
-																		   new Quaternion(kf.value == null ? node.rotation : kf.value)));
+						nodeAnim.rotation.add(new NodeKeyframe<Quaternion>(kf.keytime, new Quaternion(kf.value == null ? node.rotation : kf.value)));
 					}
 				}
 				if (nanim.scaling != null) {
@@ -143,13 +141,10 @@ public class Model implements Disposable {
 					for (ModelNodeKeyframe<Vector3> kf : nanim.scaling) {
 						if (kf.keytime > animation.duration)
 							animation.duration = kf.keytime;
-						nodeAnim.scaling.add(new NodeKeyframe<Vector3>(kf.keytime,
-																	   new Vector3(kf.value == null ? node.scale : kf.value)));
+						nodeAnim.scaling.add(new NodeKeyframe<Vector3>(kf.keytime, new Vector3(kf.value == null ? node.scale : kf.value)));
 					}
 				}
-				if ((nodeAnim.translation != null && nodeAnim.translation.size > 0)
-					|| (nodeAnim.rotation != null && nodeAnim.rotation.size > 0)
-					|| (nodeAnim.scaling != null && nodeAnim.scaling.size > 0))
+				if ((nodeAnim.translation != null && nodeAnim.translation.size > 0) || (nodeAnim.rotation != null && nodeAnim.rotation.size > 0) || (nodeAnim.scaling != null && nodeAnim.scaling.size > 0))
 					animation.nodeAnimations.add(nodeAnim);
 			}
 			if (animation.nodeAnimations.size > 0)
@@ -300,34 +295,27 @@ public class Model implements Disposable {
 				float scaleU = tex.uvScaling == null ? 1f : tex.uvScaling.x;
 				float scaleV = tex.uvScaling == null ? 1f : tex.uvScaling.y;
 				switch (tex.usage) {
-					case ModelTexture.USAGE_DIFFUSE:
-						result.set(new TextureAttribute(TextureAttribute.Diffuse, t, offsetU, offsetV, scaleU,
-														scaleV));
-						break;
-					case ModelTexture.USAGE_SPECULAR:
-						result.set(new TextureAttribute(TextureAttribute.Specular, t, offsetU, offsetV, scaleU,
-														scaleV));
-						break;
-					case ModelTexture.USAGE_BUMP:
-						result.set(
-							new TextureAttribute(TextureAttribute.Bump, t, offsetU, offsetV, scaleU, scaleV));
-						break;
-					case ModelTexture.USAGE_NORMAL:
-						result.set(new TextureAttribute(TextureAttribute.Normal, t, offsetU, offsetV, scaleU,
-														scaleV));
-						break;
-					case ModelTexture.USAGE_AMBIENT:
-						result.set(new TextureAttribute(TextureAttribute.Ambient, t, offsetU, offsetV, scaleU,
-														scaleV));
-						break;
-					case ModelTexture.USAGE_EMISSIVE:
-						result.set(new TextureAttribute(TextureAttribute.Emissive, t, offsetU, offsetV, scaleU,
-														scaleV));
-						break;
-					case ModelTexture.USAGE_REFLECTION:
-						result.set(new TextureAttribute(TextureAttribute.Reflection, t, offsetU, offsetV, scaleU,
-														scaleV));
-						break;
+				case ModelTexture.USAGE_DIFFUSE:
+					result.set(new TextureAttribute(TextureAttribute.Diffuse, t, offsetU, offsetV, scaleU, scaleV));
+					break;
+				case ModelTexture.USAGE_SPECULAR:
+					result.set(new TextureAttribute(TextureAttribute.Specular, t, offsetU, offsetV, scaleU, scaleV));
+					break;
+				case ModelTexture.USAGE_BUMP:
+					result.set(new TextureAttribute(TextureAttribute.Bump, t, offsetU, offsetV, scaleU, scaleV));
+					break;
+				case ModelTexture.USAGE_NORMAL:
+					result.set(new TextureAttribute(TextureAttribute.Normal, t, offsetU, offsetV, scaleU, scaleV));
+					break;
+				case ModelTexture.USAGE_AMBIENT:
+					result.set(new TextureAttribute(TextureAttribute.Ambient, t, offsetU, offsetV, scaleU, scaleV));
+					break;
+				case ModelTexture.USAGE_EMISSIVE:
+					result.set(new TextureAttribute(TextureAttribute.Emissive, t, offsetU, offsetV, scaleU, scaleV));
+					break;
+				case ModelTexture.USAGE_REFLECTION:
+					result.set(new TextureAttribute(TextureAttribute.Reflection, t, offsetU, offsetV, scaleU, scaleV));
+					break;
 				}
 			}
 		}

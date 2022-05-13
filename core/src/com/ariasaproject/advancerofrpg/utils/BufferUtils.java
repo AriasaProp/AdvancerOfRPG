@@ -93,8 +93,7 @@ public final class BufferUtils {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 
-	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix,
-			int offset) {
+	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
 		switch (dimensions) {
 		case 4:
 			transformV4M4Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
@@ -110,8 +109,7 @@ public final class BufferUtils {
 		}
 	}
 
-	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix,
-			int offset) {
+	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix4 matrix, int offset) {
 		switch (dimensions) {
 		case 4:
 			transformV4M4Jni(data, strideInBytes, count, matrix.val, offset);
@@ -135,8 +133,7 @@ public final class BufferUtils {
 		transform(data, dimensions, strideInBytes, count, matrix, 0);
 	}
 
-	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix,
-			int offset) {
+	public static void transform(Buffer data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
 		switch (dimensions) {
 		case 3:
 			transformV3M3Jni(data, strideInBytes, count, matrix.val, positionInBytes(data) + offset);
@@ -149,8 +146,7 @@ public final class BufferUtils {
 		}
 	}
 
-	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix,
-			int offset) {
+	public static void transform(float[] data, int dimensions, int strideInBytes, int count, Matrix3 matrix, int offset) {
 		switch (dimensions) {
 		case 3:
 			transformV3M3Jni(data, strideInBytes, count, matrix.val, offset);
@@ -180,8 +176,7 @@ public final class BufferUtils {
 	}
 
 	public static long findFloats(Buffer vertex, int strideInBytes, Buffer vertices, int numVertices, float epsilon) {
-		return find(vertex, positionInBytes(vertex), strideInBytes, vertices, positionInBytes(vertices), numVertices,
-				epsilon);
+		return find(vertex, positionInBytes(vertex), strideInBytes, vertices, positionInBytes(vertices), numVertices, epsilon);
 	}
 
 	public static long findFloats(float[] vertex, int strideInBytes, Buffer vertices, int numVertices, float epsilon) {
@@ -252,15 +247,17 @@ public final class BufferUtils {
 		else
 			throw new RuntimeException("Can't copy to a " + dst.getClass().getName() + " instance");
 	}
-	
-	public static ByteBuffer newByteBuffer(int size){
+
+	public static ByteBuffer newByteBuffer(int size) {
 		return ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder());
 	}
-	public static IntBuffer newIntBuffer(int size){
-		return newByteBuffer(size*4).asIntBuffer();
+
+	public static IntBuffer newIntBuffer(int size) {
+		return newByteBuffer(size * 4).asIntBuffer();
 	}
-	public static FloatBuffer newFloatBuffer(int size){
-		return newByteBuffer(4*size).asFloatBuffer();
+
+	public static FloatBuffer newFloatBuffer(int size) {
+		return newByteBuffer(4 * size).asFloatBuffer();
 	}
 
 	public static long getUnsafeBufferAddress(Buffer buffer) {
@@ -293,57 +290,39 @@ public final class BufferUtils {
 
 	private native static void copyJni(Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes);
 
-	private native static void transformV4M4Jni(Buffer data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV4M4Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV4M4Jni(float[] data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV4M4Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV3M4Jni(Buffer data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV3M4Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV3M4Jni(float[] data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV3M4Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV2M4Jni(Buffer data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV2M4Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV2M4Jni(float[] data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV2M4Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV3M3Jni(Buffer data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV3M3Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV3M3Jni(float[] data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV3M3Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV2M3Jni(Buffer data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV2M3Jni(Buffer data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static void transformV2M3Jni(float[] data, int strideInBytes, int count, float[] matrix,
-			int offsetInBytes);
+	private native static void transformV2M3Jni(float[] data, int strideInBytes, int count, float[] matrix, int offsetInBytes);
 
-	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices,
-			int verticesOffsetInBytes, int numVertices);
+	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices, int verticesOffsetInBytes, int numVertices);
 
-	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices,
-			int verticesOffsetInBytes, int numVertices);
+	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices, int verticesOffsetInBytes, int numVertices);
 
-	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices,
-			int verticesOffsetInBytes, int numVertices);
+	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices, int verticesOffsetInBytes, int numVertices);
 
-	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices,
-			int verticesOffsetInBytes, int numVertices);
+	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices, int verticesOffsetInBytes, int numVertices);
 
-	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices,
-			int verticesOffsetInBytes, int numVertices, float epsilon);
+	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices, int verticesOffsetInBytes, int numVertices, float epsilon);
 
-	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices,
-			int verticesOffsetInBytes, int numVertices, float epsilon);
+	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, Buffer vertices, int verticesOffsetInBytes, int numVertices, float epsilon);
 
-	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices,
-			int verticesOffsetInBytes, int numVertices, float epsilon);
+	private native static long find(Buffer vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices, int verticesOffsetInBytes, int numVertices, float epsilon);
 
-	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices,
-			int verticesOffsetInBytes, int numVertices, float epsilon);
+	private native static long find(float[] vertex, int vertexOffsetInBytes, int strideInBytes, float[] vertices, int verticesOffsetInBytes, int numVertices, float epsilon);
 }

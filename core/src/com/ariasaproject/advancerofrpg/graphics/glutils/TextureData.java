@@ -1,4 +1,5 @@
 package com.ariasaproject.advancerofrpg.graphics.glutils;
+
 import com.ariasaproject.advancerofrpg.graphics.Pixmap;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 
@@ -27,5 +28,5 @@ public interface TextureData {
 
 	enum TextureDataType {
 		Pixmap, Custom
-		}
+	}
 }

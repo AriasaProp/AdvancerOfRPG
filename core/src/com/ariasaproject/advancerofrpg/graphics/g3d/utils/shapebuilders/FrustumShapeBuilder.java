@@ -20,8 +20,7 @@ public class FrustumShapeBuilder extends BaseShapeBuilder {
 	 * @param camera  Camera
 	 */
 	public static void build(MeshPartBuilder builder, Camera camera) {
-		build(builder, camera, tmpColor0.set(1, 0.66f, 0, 1), tmpColor1.set(1, 0, 0, 1), tmpColor2.set(0, 0.66f, 1, 1),
-				tmpColor3.set(1, 1, 1, 1), tmpColor4.set(0.2f, 0.2f, 0.2f, 1));
+		build(builder, camera, tmpColor0.set(1, 0.66f, 0, 1), tmpColor1.set(1, 0, 0, 1), tmpColor2.set(0, 0.66f, 1, 1), tmpColor3.set(1, 1, 1, 1), tmpColor4.set(0.2f, 0.2f, 0.2f, 1));
 	}
 
 	/**
@@ -35,8 +34,7 @@ public class FrustumShapeBuilder extends BaseShapeBuilder {
 	 * @param targetColor
 	 * @param crossColor
 	 */
-	public static void build(MeshPartBuilder builder, Camera camera, Color frustumColor, Color coneColor, Color upColor,
-			Color targetColor, Color crossColor) {
+	public static void build(MeshPartBuilder builder, Camera camera, Color frustumColor, Color coneColor, Color upColor, Color targetColor, Color crossColor) {
 		Vector3[] planePoints = camera.frustum.planePoints;
 		// Frustum
 		build(builder, camera.frustum, frustumColor, crossColor);
@@ -46,8 +44,7 @@ public class FrustumShapeBuilder extends BaseShapeBuilder {
 		builder.line(planePoints[2], coneColor, camera.position, coneColor);
 		builder.line(planePoints[3], coneColor, camera.position, coneColor);
 		// Target line
-		builder.line(camera.position, targetColor, centerPoint(planePoints[4], planePoints[5], planePoints[6]),
-				targetColor);
+		builder.line(camera.position, targetColor, centerPoint(planePoints[4], planePoints[5], planePoints[6]), targetColor);
 		// Up triangle
 		float halfNearSize = tmpV0.set(planePoints[1]).sub(planePoints[0]).scl(0.5f).len();
 		Vector3 centerNear = centerPoint(planePoints[0], planePoints[1], planePoints[2]);
@@ -84,15 +81,11 @@ public class FrustumShapeBuilder extends BaseShapeBuilder {
 		builder.line(planePoints[2], frustumColor, planePoints[6], frustumColor);
 		builder.line(planePoints[3], frustumColor, planePoints[7], frustumColor);
 		// Cross near
-		builder.line(middlePoint(planePoints[1], planePoints[0]), crossColor,
-				middlePoint(planePoints[3], planePoints[2]), crossColor);
-		builder.line(middlePoint(planePoints[2], planePoints[1]), crossColor,
-				middlePoint(planePoints[3], planePoints[0]), crossColor);
+		builder.line(middlePoint(planePoints[1], planePoints[0]), crossColor, middlePoint(planePoints[3], planePoints[2]), crossColor);
+		builder.line(middlePoint(planePoints[2], planePoints[1]), crossColor, middlePoint(planePoints[3], planePoints[0]), crossColor);
 		// Cross far
-		builder.line(middlePoint(planePoints[5], planePoints[4]), crossColor,
-				middlePoint(planePoints[7], planePoints[6]), crossColor);
-		builder.line(middlePoint(planePoints[6], planePoints[5]), crossColor,
-				middlePoint(planePoints[7], planePoints[4]), crossColor);
+		builder.line(middlePoint(planePoints[5], planePoints[4]), crossColor, middlePoint(planePoints[7], planePoints[6]), crossColor);
+		builder.line(middlePoint(planePoints[6], planePoints[5]), crossColor, middlePoint(planePoints[7], planePoints[4]), crossColor);
 	}
 
 	/**

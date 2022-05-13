@@ -31,15 +31,11 @@ public class TextureAttribute extends Attribute {
 	public int uvIndex = 0;
 
 	/*
-	public TextureAttribute(final long type) {
-		super(type);
-		if (!is(type))
-			throw new RuntimeException("Invalid type specified");
-	}
-	*/
+	 * public TextureAttribute(final long type) { super(type); if (!is(type)) throw
+	 * new RuntimeException("Invalid type specified"); }
+	 */
 
-	public <T extends Texture> TextureAttribute(final long type, final T texture,
-			float offsetU, float offsetV, float scaleU, float scaleV, int uvIndex) {
+	public <T extends Texture> TextureAttribute(final long type, final T texture, float offsetU, float offsetV, float scaleU, float scaleV, int uvIndex) {
 		this(type, texture);
 		this.offsetU = offsetU;
 		this.offsetV = offsetV;
@@ -48,8 +44,7 @@ public class TextureAttribute extends Attribute {
 		this.uvIndex = uvIndex;
 	}
 
-	public <T extends Texture> TextureAttribute(final long type, final T texture,
-			float offsetU, float offsetV, float scaleU, float scaleV) {
+	public <T extends Texture> TextureAttribute(final long type, final T texture, float offsetU, float offsetV, float scaleU, float scaleV) {
 		this(type, texture, offsetU, offsetV, scaleU, scaleV, 0);
 	}
 
@@ -70,10 +65,9 @@ public class TextureAttribute extends Attribute {
 		scaleU = region.getU2() - offsetU;
 		scaleV = region.getV2() - offsetV;
 	}
-	
+
 	public TextureAttribute(final TextureAttribute copyFrom) {
-		this(copyFrom.type, copyFrom.texture, copyFrom.offsetU, copyFrom.offsetV, copyFrom.scaleU,
-				copyFrom.scaleV, copyFrom.uvIndex);
+		this(copyFrom.type, copyFrom.texture, copyFrom.offsetU, copyFrom.offsetV, copyFrom.scaleU, copyFrom.scaleV, copyFrom.uvIndex);
 	}
 
 	public final static boolean is(final long mask) {

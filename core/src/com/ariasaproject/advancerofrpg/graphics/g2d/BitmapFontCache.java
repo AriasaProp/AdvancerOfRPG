@@ -479,8 +479,7 @@ public class BitmapFontCache {
 	 * @see #addText(CharSequence, float, float, int, int, float, int, boolean,
 	 *      String)
 	 */
-	public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
-			boolean wrap) {
+	public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) {
 		clear();
 		return addText(str, x, y, start, end, targetWidth, halign, wrap);
 	}
@@ -491,8 +490,7 @@ public class BitmapFontCache {
 	 * @see #addText(CharSequence, float, float, int, int, float, int, boolean,
 	 *      String)
 	 */
-	public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
-			boolean wrap, String truncate) {
+	public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) {
 		clear();
 		return addText(str, x, y, start, end, targetWidth, halign, wrap, truncate);
 	}
@@ -534,8 +532,7 @@ public class BitmapFontCache {
 	 * @see #addText(CharSequence, float, float, int, int, float, int, boolean,
 	 *      String)
 	 */
-	public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
-			boolean wrap) {
+	public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) {
 		return addText(str, x, y, start, end, targetWidth, halign, wrap, null);
 	}
 
@@ -556,8 +553,7 @@ public class BitmapFontCache {
 	 * @return The glyph layout for the cached string (the layout's height is the
 	 *         distance from y to the baseline).
 	 */
-	public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign,
-			boolean wrap, String truncate) {
+	public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) {
 		GlyphLayout layout = Pools.obtain(GlyphLayout.class);
 		pooledLayouts.add(layout);
 		layout.setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);

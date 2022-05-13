@@ -20,8 +20,8 @@ import com.ariasaproject.advancerofrpg.utils.Align;
 import com.ariasaproject.advancerofrpg.utils.Pool;
 
 public class SplashScreen extends Scene {
-	
-	public SplashScreen(ApplicationListener appl){
+
+	public SplashScreen(ApplicationListener appl) {
 		super(appl);
 	}
 
@@ -68,81 +68,70 @@ public class SplashScreen extends Scene {
 		progressBar.setAnimateInterpolation(Interpolation.fastSlow);
 		table.add(progressBar).height(Value.percentHeight(0.062f, table)).fillY().growX();
 
-		//new ColladaModelLoader().loadModel(GraphFunc.app.getFiles().internal("model/model.dae"), new ModelLoader.ModelParameters());
+		// new
+		// ColladaModelLoader().loadModel(GraphFunc.app.getFiles().internal("model/model.dae"),
+		// new ModelLoader.ModelParameters());
 		/*
-		 ModelData md = new G3dModelLoader(new UBJsonReader()).loadModelData(GraphFunc.app.getFiles().internal("model/KnightCharacter.g3db"));
-		 UBJsonWriter jw = new UBJsonWriter(GraphFunc.app.getFiles().external("json_log.txt").write(false));
-		 try {
-		 jw.value(md);
-		 jw.flush();
-		 jw.close();
-		 } catch (IOException e) {
-
-		 }
-
+		 * ModelData md = new G3dModelLoader(new
+		 * UBJsonReader()).loadModelData(GraphFunc.app.getFiles().internal(
+		 * "model/KnightCharacter.g3db")); UBJsonWriter jw = new
+		 * UBJsonWriter(GraphFunc.app.getFiles().external("json_log.txt").write(false));
+		 * try { jw.value(md); jw.flush(); jw.close(); } catch (IOException e) {
+		 * 
+		 * }
+		 * 
 		 */
-		appl.stage
-			.addAction(Actions.sequence(
-						   Actions.run(new Runnable() {
-								   @Override
-								   public void run() {
-									   ApplicationListener.asset.load(
-										   new AssetDescriptor<Texture>("texture/badlogic.jpg", Texture.class),
-										   new AssetDescriptor<Texture>("texture/android.jpg", Texture.class),
-										   new AssetDescriptor<Model>("model/KnightCharacter.g3db", Model.class)
-									   );
-								   }
-							   }),
-						   new Action() {
-							   private boolean began = false, complete = false;
+		appl.stage.addAction(Actions.sequence(Actions.run(new Runnable() {
+			@Override
+			public void run() {
+				ApplicationListener.asset.load(new AssetDescriptor<Texture>("texture/badlogic.jpg", Texture.class), new AssetDescriptor<Texture>("texture/android.jpg", Texture.class), new AssetDescriptor<Model>("model/KnightCharacter.g3db", Model.class));
+			}
+		}), new Action() {
+			private boolean began = false, complete = false;
 
-							   @Override
-							   public void restart() {
-								   began = false;
-								   complete = false;
-							   }
+			@Override
+			public void restart() {
+				began = false;
+				complete = false;
+			}
 
-							   @Override
-							   public boolean act(float delta) {
-								   if (complete)
-									   return true;
-								   Pool pool = getPool();
-								   setPool(null); // Ensure this action can't be returned to the pool while executing.
-								   try {
-									   ProgressBar p = table.findActor("bar");
-									   if (!began) {
-										   p.setValue(0);
-										   began = true;
-									   }
-									   if ((p.getVisualValue() >= 1) & ApplicationListener.asset.update()) {
-										   ((Label) table.findActor("load")).setText("Loading Is Done!");
-										   return true;
-									   }
-									   final String status = String.format(Locale.getDefault(), "Loading data [ %02d queued -> %02d loaded ] ",
-																		   ApplicationListener.asset.getQueuedAssets(), ApplicationListener.asset.getLoadedAssets());
-									   final float prog = ApplicationListener.asset.getProgress();
-									   if (p.getValue() < prog) {
-										   p.setValue(prog);
-									   }
+			@Override
+			public boolean act(float delta) {
+				if (complete)
+					return true;
+				Pool pool = getPool();
+				setPool(null); // Ensure this action can't be returned to the pool while executing.
+				try {
+					ProgressBar p = table.findActor("bar");
+					if (!began) {
+						p.setValue(0);
+						began = true;
+					}
+					if ((p.getVisualValue() >= 1) & ApplicationListener.asset.update()) {
+						((Label) table.findActor("load")).setText("Loading Is Done!");
+						return true;
+					}
+					final String status = String.format(Locale.getDefault(), "Loading data [ %02d queued -> %02d loaded ] ", ApplicationListener.asset.getQueuedAssets(), ApplicationListener.asset.getLoadedAssets());
+					final float prog = ApplicationListener.asset.getProgress();
+					if (p.getValue() < prog) {
+						p.setValue(prog);
+					}
 
-									   ((Label) table.findActor("load")).setText(status);
+					((Label) table.findActor("load")).setText(status);
 
-									   return false;
-								   } catch (Exception e) {
-									   GraphFunc.app.error("Screen", e.getMessage());
-									   throw new RuntimeException("Screen error " + e);
-								   } finally {
-									   setPool(pool);
-								   }
-							   }
-						   },
-						   Actions.fadeOut(0.25f),
-						   Actions.run(new Runnable() {
-								   @Override
-								   public void run() {
-									   appl.setScene(new Dashboard(appl));
-								   }
-							   })
-					   ));
+					return false;
+				} catch (Exception e) {
+					GraphFunc.app.error("Screen", e.getMessage());
+					throw new RuntimeException("Screen error " + e);
+				} finally {
+					setPool(pool);
+				}
+			}
+		}, Actions.fadeOut(0.25f), Actions.run(new Runnable() {
+			@Override
+			public void run() {
+				appl.setScene(new Dashboard(appl));
+			}
+		})));
 	}
 }

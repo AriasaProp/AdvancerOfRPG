@@ -71,8 +71,7 @@ public class Actions {
 		return moveToAligned(x, y, alignment, duration, null);
 	}
 
-	static public MoveToAction moveToAligned(float x, float y, int alignment, float duration,
-			@Null Interpolation interpolation) {
+	static public MoveToAction moveToAligned(float x, float y, int alignment, float duration, @Null Interpolation interpolation) {
 		MoveToAction action = action(MoveToAction.class);
 		action.setPosition(x, y, alignment);
 		action.setDuration(duration);
@@ -167,8 +166,7 @@ public class Actions {
 		return scaleBy(amountX, amountY, duration, null);
 	}
 
-	static public ScaleByAction scaleBy(float amountX, float amountY, float duration,
-			@Null Interpolation interpolation) {
+	static public ScaleByAction scaleBy(float amountX, float amountY, float duration, @Null Interpolation interpolation) {
 		ScaleByAction action = action(ScaleByAction.class);
 		action.setAmount(amountX, amountY);
 		action.setDuration(duration);
@@ -222,16 +220,16 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the color at the time this action starts to the
-	 * specified color.
+	 * Transitions from the color at the time this action starts to the specified
+	 * color.
 	 */
 	static public ColorAction color(Color color, float duration) {
 		return color(color, duration, null);
 	}
 
 	/**
-	 * Transitions from the color at the time this action starts to the
-	 * specified color.
+	 * Transitions from the color at the time this action starts to the specified
+	 * color.
 	 */
 	static public ColorAction color(Color color, float duration, @Null Interpolation interpolation) {
 		ColorAction action = action(ColorAction.class);
@@ -249,16 +247,16 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to the
-	 * specified alpha.
+	 * Transitions from the alpha at the time this action starts to the specified
+	 * alpha.
 	 */
 	static public AlphaAction alpha(float a, float duration) {
 		return alpha(a, duration, null);
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to the
-	 * specified alpha.
+	 * Transitions from the alpha at the time this action starts to the specified
+	 * alpha.
 	 */
 	static public AlphaAction alpha(float a, float duration, @Null Interpolation interpolation) {
 		AlphaAction action = action(AlphaAction.class);
@@ -269,16 +267,14 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of
-	 * 0.
+	 * Transitions from the alpha at the time this action starts to an alpha of 0.
 	 */
 	static public AlphaAction fadeOut(float duration) {
 		return alpha(0, duration, null);
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of
-	 * 0.
+	 * Transitions from the alpha at the time this action starts to an alpha of 0.
 	 */
 	static public AlphaAction fadeOut(float duration, @Null Interpolation interpolation) {
 		AlphaAction action = action(AlphaAction.class);
@@ -289,16 +285,14 @@ public class Actions {
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of
-	 * 1.
+	 * Transitions from the alpha at the time this action starts to an alpha of 1.
 	 */
 	static public AlphaAction fadeIn(float duration) {
 		return alpha(1, duration, null);
 	}
 
 	/**
-	 * Transitions from the alpha at the time this action starts to an alpha of
-	 * 1.
+	 * Transitions from the alpha at the time this action starts to an alpha of 1.
 	 */
 	static public AlphaAction fadeIn(float duration, @Null Interpolation interpolation) {
 		AlphaAction action = action(AlphaAction.class);
@@ -388,8 +382,7 @@ public class Actions {
 		return action;
 	}
 
-	static public SequenceAction sequence(Action action1, Action action2, Action action3, Action action4,
-			Action action5) {
+	static public SequenceAction sequence(Action action1, Action action2, Action action3, Action action4, Action action5) {
 		SequenceAction action = action(SequenceAction.class);
 		action.addAction(action1);
 		action.addAction(action2);
@@ -440,8 +433,7 @@ public class Actions {
 		return action;
 	}
 
-	static public ParallelAction parallel(Action action1, Action action2, Action action3, Action action4,
-			Action action5) {
+	static public ParallelAction parallel(Action action1, Action action2, Action action3, Action action4, Action action5) {
 		ParallelAction action = action(ParallelAction.class);
 		action.addAction(action1);
 		action.addAction(action2);
@@ -527,10 +519,8 @@ public class Actions {
 	/**
 	 * Sets the target of an action and returns the action.
 	 *
-	 * @param target
-	 *            the desired target of the action
-	 * @param action
-	 *            the action on which to set the target
+	 * @param target the desired target of the action
+	 * @param action the action on which to set the target
 	 * @return the action with its target set
 	 */
 	static public Action targeting(Actor target, Action action) {

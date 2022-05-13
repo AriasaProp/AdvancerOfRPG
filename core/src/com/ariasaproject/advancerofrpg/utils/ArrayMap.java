@@ -87,8 +87,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 	 * any subsequent elements added will cause the backing arrays to be grown.
 	 */
 	public ArrayMap(ArrayMap array) {
-		this(array.ordered, array.size, array.keys.getClass().getComponentType(),
-				array.values.getClass().getComponentType());
+		this(array.ordered, array.size, array.keys.getClass().getComponentType(), array.values.getClass().getComponentType());
 		size = array.size;
 		System.arraycopy(array.keys, 0, keys, 0, size);
 		System.arraycopy(array.values, 0, values, 0, size);
@@ -126,8 +125,7 @@ public class ArrayMap<K, V> implements Iterable<ObjectMap.Entry<K, V>> {
 
 	public void putAll(ArrayMap<? extends K, ? extends V> map, int offset, int length) {
 		if (offset + length > map.size)
-			throw new IllegalArgumentException(
-					"offset + length must be <= size: " + offset + " + " + length + " <= " + map.size);
+			throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + map.size);
 		int sizeNeeded = size + length - offset;
 		if (sizeNeeded >= keys.length)
 			resize(Math.max(8, (int) (sizeNeeded * 1.75f)));

@@ -176,8 +176,7 @@ public class IntSet {
 
 	public void addAll(IntArray array, int offset, int length) {
 		if (offset + length > array.size)
-			throw new IllegalArgumentException(
-					"offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
+			throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
 		addAll(array.items, offset, length);
 	}
 

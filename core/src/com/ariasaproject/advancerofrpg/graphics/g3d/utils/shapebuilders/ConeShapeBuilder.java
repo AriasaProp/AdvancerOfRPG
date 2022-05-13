@@ -15,13 +15,11 @@ public class ConeShapeBuilder extends BaseShapeBuilder {
 		build(builder, width, height, depth, divisions, 0, 360);
 	}
 
-	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisions,
-			float angleFrom, float angleTo) {
+	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisions, float angleFrom, float angleTo) {
 		build(builder, width, height, depth, divisions, angleFrom, angleTo, true);
 	}
 
-	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisions,
-			float angleFrom, float angleTo, boolean close) {
+	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisions, float angleFrom, float angleTo, boolean close) {
 		// FIXME create better cylinder method (- axis on which to create the cone
 		// (matrix?))
 		builder.ensureVertices(divisions + 2);
@@ -52,7 +50,6 @@ public class ConeShapeBuilder extends BaseShapeBuilder {
 			i2 = i1;
 		}
 		if (close)
-			EllipseShapeBuilder.build(builder, width, depth, 0, 0, divisions, 0, -hh, 0, 0, -1, 0, -1, 0, 0, 0, 0, 1,
-					180f - angleTo, 180f - angleFrom);
+			EllipseShapeBuilder.build(builder, width, depth, 0, 0, divisions, 0, -hh, 0, 0, -1, 0, -1, 0, 0, 0, 0, 1, 180f - angleTo, 180f - angleFrom);
 	}
 }

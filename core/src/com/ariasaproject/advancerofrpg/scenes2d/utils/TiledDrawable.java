@@ -39,7 +39,7 @@ public class TiledDrawable extends TextureRegionDrawable {
 		int fullX = (int) (width / regionWidth), fullY = (int) (height / regionHeight);
 		float remainingX = width - regionWidth * fullX, remainingY = height - regionHeight * fullY;
 		float startX = x, startY = y;
-		float endX = x + width - remainingX, endY = y + height - remainingY;
+		//float endX = x + width - remainingX, endY = y + height - remainingY;
 		for (int i = 0; i < fullX; i++) {
 			y = startY;
 			for (int ii = 0; ii < fullY; ii++) {
@@ -80,8 +80,7 @@ public class TiledDrawable extends TextureRegionDrawable {
 	}
 
 	@Override
-	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height,
-			float scaleX, float scaleY, float rotation) {
+	public void draw(Batch batch, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {
 		throw new UnsupportedOperationException();
 	}
 

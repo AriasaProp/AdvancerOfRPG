@@ -13,8 +13,7 @@ public class ParticleControllerControllerRenderer extends ParticleControllerRend
 	public void init() {
 		controllerChannel = controller.particles.getChannel(ParticleChannels.ParticleController);
 		if (controllerChannel == null)
-			throw new RuntimeException(
-					"ParticleController channel not found, specify an influencer which will allocate it please.");
+			throw new RuntimeException("ParticleController channel not found, specify an influencer which will allocate it please.");
 	}
 
 	@Override

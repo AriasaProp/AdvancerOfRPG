@@ -40,7 +40,6 @@ import com.ariasaproject.advancerofrpg.utils.ObjectSet;
 import com.ariasaproject.advancerofrpg.utils.UBJsonReader;
 import com.ariasaproject.advancerofrpg.utils.reflect.ClassReflection;
 
-
 public class AssetContainer implements Disposable {
 	protected final ObjectMap<Class, ObjectMap<String, AssetLoader>> loaders = new ObjectMap<Class, ObjectMap<String, AssetLoader>>();
 	final ObjectMap<Class, ObjectMap<String, RefCountedContainer>> assets = new ObjectMap<Class, ObjectMap<String, RefCountedContainer>>();
@@ -59,74 +58,72 @@ public class AssetContainer implements Disposable {
 	public AssetContainer(final ExecutorService exec, final FileHandleResolver resolver) {
 		this.resolver = resolver;
 		this.loaders.put(BitmapFont.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new BitmapFontLoader(resolver));
-				}
-			});
+			{
+				put("", new BitmapFontLoader(resolver));
+			}
+		});
 		this.loaders.put(Music.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new MusicLoader(resolver));
-				}
-			});
+			{
+				put("", new MusicLoader(resolver));
+			}
+		});
 		this.loaders.put(Pixmap.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new PixmapLoader(resolver));
-				}
-			});
+			{
+				put("", new PixmapLoader(resolver));
+			}
+		});
 		this.loaders.put(Sound.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new SoundLoader(resolver));
-				}
-			});
+			{
+				put("", new SoundLoader(resolver));
+			}
+		});
 		this.loaders.put(TextureAtlas.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new TextureAtlasLoader(resolver));
-				}
-			});
+			{
+				put("", new TextureAtlasLoader(resolver));
+			}
+		});
 		this.loaders.put(Texture.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new TextureLoader(resolver));
-				}
-			});
+			{
+				put("", new TextureLoader(resolver));
+			}
+		});
 		this.loaders.put(Skin.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new SkinLoader(resolver));
-				}
-			});
+			{
+				put("", new SkinLoader(resolver));
+			}
+		});
 		this.loaders.put(ParticleEffect.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new ParticleEffectLoader(resolver));
-				}
-			});
-		this.loaders.put(com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleEffect.class,
-			new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleEffectLoader(
-							resolver));
-				}
-			});
+			{
+				put("", new ParticleEffectLoader(resolver));
+			}
+		});
+		this.loaders.put(com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleEffect.class, new ObjectMap<String, AssetLoader>() {
+			{
+				put("", new com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleEffectLoader(resolver));
+			}
+		});
 		this.loaders.put(I18NBundle.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new I18NBundleLoader(resolver));
-				}
-			});
+			{
+				put("", new I18NBundleLoader(resolver));
+			}
+		});
 		this.loaders.put(Model.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put(".g3dj", new G3dModelLoader(new JsonReader(), resolver));
-					put(".g3db", new G3dModelLoader(new UBJsonReader(), resolver));
-					put(".obj", new ObjLoader(resolver));
-				}
-			});
+			{
+				put(".g3dj", new G3dModelLoader(new JsonReader(), resolver));
+				put(".g3db", new G3dModelLoader(new UBJsonReader(), resolver));
+				put(".obj", new ObjLoader(resolver));
+			}
+		});
 		this.loaders.put(ShaderProgram.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new ShaderProgramLoader(resolver));
-				}
-			});
+			{
+				put("", new ShaderProgramLoader(resolver));
+			}
+		});
 		this.loaders.put(Cubemap.class, new ObjectMap<String, AssetLoader>() {
-				{
-					put("", new CubemapLoader(resolver));
-				}
-			});
+			{
+				put("", new CubemapLoader(resolver));
+			}
+		});
 		executor = exec;
 	}
 
@@ -163,7 +160,7 @@ public class AssetContainer implements Disposable {
 		ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
 		if (assetsByType != null) {
 			for (ObjectMap.Entry<String, RefCountedContainer> asset : assetsByType.entries()) {
-				out.add( (T) asset.value.getObject());
+				out.add((T) asset.value.getObject());
 			}
 		}
 		return out;
@@ -261,6 +258,7 @@ public class AssetContainer implements Disposable {
 		}
 		return false;
 	}
+
 	public synchronized <T> String getAssetFileName(T asset) {
 		for (Class assetType : assets.keys()) {
 			ObjectMap<String, RefCountedContainer> assetsByType = assets.get(assetType);
@@ -272,14 +270,17 @@ public class AssetContainer implements Disposable {
 		}
 		return null;
 	}
+
 	public synchronized boolean isLoaded(AssetDescriptor assetDesc) {
 		return isLoaded(assetDesc.fullPath);
 	}
+
 	public synchronized boolean isLoaded(String fileName) {
 		if (fileName == null)
 			return false;
 		return assetTypes.containsKey(fileName);
 	}
+
 	public synchronized boolean isLoaded(String fileName, Class type) {
 		ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
 		if (assetsByType == null)
@@ -289,7 +290,7 @@ public class AssetContainer implements Disposable {
 			return false;
 		return type.cast(assetContainer.getObject()) != null;
 	}
-	
+
 	public <T> AssetLoader getLoader(final AssetDescriptor assetDesc) {
 		final ObjectMap<String, AssetLoader> loaders = this.loaders.get(assetDesc.type);
 		if (loaders == null || loaders.size < 1)
@@ -321,25 +322,17 @@ public class AssetContainer implements Disposable {
 			for (int i = 0; i < loadQueue.size; i++) {
 				final AssetDescriptor pre = loadQueue.get(i);
 				if (pre.fullPath.equals(desc.fullPath) && !pre.type.equals(desc.type))
-					throw new RuntimeException("Asset with name '" + desc.fullPath
-											   + "' already in preload queue, but has different type (expected: "
-											   + ClassReflection.getSimpleName(desc.type) + ", found: " + ClassReflection.getSimpleName(pre.type)
-											   + ")");
+					throw new RuntimeException("Asset with name '" + desc.fullPath + "' already in preload queue, but has different type (expected: " + ClassReflection.getSimpleName(desc.type) + ", found: " + ClassReflection.getSimpleName(pre.type) + ")");
 			}
 			for (int i = 0; i < tasks.size(); i++) {
 				final AssetDescriptor tas = tasks.get(i).assetDesc;
 				if (tas.fullPath.equals(desc.fullPath) && !tas.type.equals(desc.type))
-					throw new RuntimeException(
-						"Asset with name '" + desc.fullPath + "' already in task list, but has different type (expected: "
-						+ ClassReflection.getSimpleName(desc.type) + ", found: "
-						+ ClassReflection.getSimpleName(tas.type) + ")");
+					throw new RuntimeException("Asset with name '" + desc.fullPath + "' already in task list, but has different type (expected: " + ClassReflection.getSimpleName(desc.type) + ", found: " + ClassReflection.getSimpleName(tas.type) + ")");
 			}
 			// check loaded assets
 			Class otherType = assetTypes.get(desc.fullPath);
 			if (otherType != null && !otherType.equals(desc.type))
-				throw new RuntimeException("Asset with name '" + desc.fullPath
-										   + "' already loaded, but has different type (expected: " + ClassReflection.getSimpleName(desc.type)
-										   + ", found: " + ClassReflection.getSimpleName(otherType) + ")");
+				throw new RuntimeException("Asset with name '" + desc.fullPath + "' already loaded, but has different type (expected: " + ClassReflection.getSimpleName(desc.type) + ", found: " + ClassReflection.getSimpleName(otherType) + ")");
 			toLoad++;
 			loadQueue.add(desc);
 		}
@@ -385,7 +378,8 @@ public class AssetContainer implements Disposable {
 				throw new RuntimeException("task error " + ex);
 			} finally {
 				// if the task has been cancelled or has finished loading
-				if (!complete) return false;
+				if (!complete)
+					return false;
 			}
 			// increase the number of loaded assets and pop the task from the stack
 			if (tasks.size() == 1) {
@@ -412,12 +406,12 @@ public class AssetContainer implements Disposable {
 			}
 			return loadQueue.size == 0 && tasks.size() == 0;
 		} catch (Throwable t) {
-			//Handles a runtime/loading error
+			// Handles a runtime/loading error
 			if (tasks.isEmpty())
 				throw new RuntimeException(t);
 			// pop the faulty task from the stack
 			AssetLoadingTask task = tasks.pop();
-			//AssetDescriptor assetDesc = task.assetDesc;
+			// AssetDescriptor assetDesc = task.assetDesc;
 			// remove all dependencies
 			if (task.dependenciesLoaded && task.dependencies != null) {
 				for (AssetDescriptor desc : task.dependencies) {
@@ -441,7 +435,6 @@ public class AssetContainer implements Disposable {
 		while (!update())
 			Thread.yield();
 	}
-
 
 	public <T> T finishLoadingAsset(AssetDescriptor assetDesc) {
 		return finishLoadingAsset(assetDesc.fullPath);
@@ -488,7 +481,7 @@ public class AssetContainer implements Disposable {
 				assetRef.incRefCount();
 				incrementRefCountedDependencies(dependendAssetDesc.fullPath);
 			} else {
-				//add task to executor
+				// add task to executor
 				AssetLoader loader = getLoader(dependendAssetDesc);
 				if (loader == null)
 					throw new RuntimeException("No loader for type: " + ClassReflection.getSimpleName(dependendAssetDesc.type));
@@ -498,6 +491,7 @@ public class AssetContainer implements Disposable {
 		}
 		injected.clear(32);
 	}
+
 	private void incrementRefCountedDependencies(String parent) {
 		Array<String> dependencies = assetDependencies.get(parent);
 		if (dependencies == null)
@@ -509,6 +503,7 @@ public class AssetContainer implements Disposable {
 			incrementRefCountedDependencies(dependency);
 		}
 	}
+
 	/**
 	 * @return the number of loaded assets
 	 */
@@ -535,6 +530,7 @@ public class AssetContainer implements Disposable {
 		}
 		return Math.min(1, fractionalLoaded / toLoad);
 	}
+
 	@Override
 	public synchronized void dispose() {
 		loadQueue.clear();

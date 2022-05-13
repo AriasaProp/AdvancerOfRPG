@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class Matrix4 implements Serializable {
 	private static final long serialVersionUID = 8189572388708539292L;
 	public static final int M00 = 0, M10 = 1, M20 = 2, M30 = 3, M01 = 4, M11 = 5, M21 = 6, M31 = 7, M02 = 8, M12 = 9,
-	M22 = 10, M32 = 11, M03 = 12, M13 = 13, M23 = 14, M33 = 15;
-	private static final float[] identity = new float[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+			M22 = 10, M32 = 11, M03 = 12, M13 = 13, M23 = 14, M33 = 15;
+	private static final float[] identity = new float[] { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	private static final Vector3 right = new Vector3(), tmpForward = new Vector3(), tmpUp = new Vector3(),
-	l_vez = new Vector3(), l_vex = new Vector3(), l_vey = new Vector3(), tmpVec = new Vector3();
+			l_vez = new Vector3(), l_vex = new Vector3(), l_vey = new Vector3(), tmpVec = new Vector3();
 	private static final float[] tmp = new float[16];
 	private static final Quaternion quat = new Quaternion(), quat2 = new Quaternion();
 	public final float[] val = new float[16];
@@ -16,9 +16,9 @@ public class Matrix4 implements Serializable {
 	static {
 		initialize();
 	}
-	
+
 	private static native void initialize();
-	
+
 	public Matrix4() {
 		idt();
 	}
@@ -38,11 +38,11 @@ public class Matrix4 implements Serializable {
 	public Matrix4(Vector3 position, Quaternion rotation) {
 		set(position, rotation);
 	}
-	
+
 	public Matrix4(Vector3 position, Quaternion rotation, Vector3 scale) {
 		set(position, rotation, scale);
 	}
-	
+
 	public native Matrix4 set(float tX, float tY, float tZ, float qX, float qY, float qZ, float qW, float sX, float sY, float sZ);
 
 	private static native void mul(float[] mata, float[] matb);
@@ -52,13 +52,13 @@ public class Matrix4 implements Serializable {
 	public native void mulVec(float[] vecs, int offset, int numVecs, int stride);
 
 	private native void lerp(float[] matb, float alpha);
-	
+
 	public native Matrix4 translate(float x, float y, float z);
-	
+
 	public native Matrix4 rotate(float qX, float qY, float qZ, float qW);
-	
+
 	public native Matrix4 scale(float x, float y, float z);
-	
+
 	public native void prj(float[] vec);
 
 	public native void prj(float[] vecs, int offset, int numVecs, int stride);
@@ -66,8 +66,8 @@ public class Matrix4 implements Serializable {
 	public native void rot(float[] vec);
 
 	public native void rot(float[] vecs, int offset, int numVecs, int stride);
-	
-	//fovy in degree
+
+	// fovy in degree
 	public native Matrix4 setToProjection(float near, float far, float fovy, float aspectRatio);
 
 	public native Matrix4 setToProjection(float left, float right, float bottom, float top, float near, float far);
@@ -90,7 +90,7 @@ public class Matrix4 implements Serializable {
 	public Matrix4 set(Vector3 position) {
 		return set(position.x, position.y, position.z);
 	}
-	
+
 	public Matrix4 set(Quaternion quaternion) {
 		return set(0, 0, 0, quaternion.x, quaternion.y, quaternion.z, quaternion.w);
 	}
@@ -110,7 +110,7 @@ public class Matrix4 implements Serializable {
 	public Matrix4 set(float trnX, float trnY, float trnZ, float qX, float qY, float qZ, float qW) {
 		return set(trnX, trnY, trnZ, qX, qY, qZ, qW, 1, 1, 1);
 	}
-	
+
 	public Matrix4 set(Vector3 xAxis, Vector3 yAxis, Vector3 zAxis, Vector3 pos) {
 		val[M00] = xAxis.x;
 		val[M01] = xAxis.y;
@@ -200,8 +200,7 @@ public class Matrix4 implements Serializable {
 	}
 
 	public float det3x3() {
-		return val[M00] * val[M11] * val[M22] + val[M01] * val[M12] * val[M20] + val[M02] * val[M10] * val[M21]
-			- val[M00] * val[M12] * val[M21] - val[M01] * val[M10] * val[M22] - val[M02] * val[M11] * val[M20];
+		return val[M00] * val[M11] * val[M22] + val[M01] * val[M12] * val[M20] + val[M02] * val[M10] * val[M21] - val[M00] * val[M12] * val[M21] - val[M01] * val[M10] * val[M22] - val[M02] * val[M11] * val[M20];
 	}
 
 	public Matrix4 setToOrtho2D(float x, float y, float width, float height) {
@@ -267,7 +266,7 @@ public class Matrix4 implements Serializable {
 	}
 
 	public Matrix4 setToScaling(float x, float y, float z) {
-		return set(0,0,0, 0,0,0,1, x, y, z);
+		return set(0, 0, 0, 0, 0, 0, 1, x, y, z);
 	}
 
 	public Matrix4 setToLookAt(Vector3 direction, Vector3 up) {
@@ -275,7 +274,7 @@ public class Matrix4 implements Serializable {
 		l_vey.set(up).nor();
 		l_vex.set(l_vez).crs(l_vey).nor();
 		l_vey.set(l_vex).crs(l_vez).nor();
-		set(l_vex, l_vey, l_vez.scl(-1), tmpVec.set(0,0,0));
+		set(l_vex, l_vey, l_vez.scl(-1), tmpVec.set(0, 0, 0));
 		return this;
 	}
 
@@ -296,9 +295,7 @@ public class Matrix4 implements Serializable {
 
 	@Override
 	public String toString() {
-		return "[" + val[M00] + "|" + val[M01] + "|" + val[M02] + "|" + val[M03] + "]\n" + "[" + val[M10] + "|"
-			+ val[M11] + "|" + val[M12] + "|" + val[M13] + "]\n" + "[" + val[M20] + "|" + val[M21] + "|" + val[M22]
-			+ "|" + val[M23] + "]\n" + "[" + val[M30] + "|" + val[M31] + "|" + val[M32] + "|" + val[M33] + "]\n";
+		return "[" + val[M00] + "|" + val[M01] + "|" + val[M02] + "|" + val[M03] + "]\n" + "[" + val[M10] + "|" + val[M11] + "|" + val[M12] + "|" + val[M13] + "]\n" + "[" + val[M20] + "|" + val[M21] + "|" + val[M22] + "|" + val[M23] + "]\n" + "[" + val[M30] + "|" + val[M31] + "|" + val[M32] + "|" + val[M33] + "]\n";
 	}
 
 	public Matrix4 lerp(Matrix4 matrix, float alpha) {
@@ -417,33 +414,27 @@ public class Matrix4 implements Serializable {
 	}
 
 	public float getScaleXSquared() {
-		return val[Matrix4.M00] * val[Matrix4.M00] + val[Matrix4.M01] * val[Matrix4.M01]
-			+ val[Matrix4.M02] * val[Matrix4.M02];
+		return val[Matrix4.M00] * val[Matrix4.M00] + val[Matrix4.M01] * val[Matrix4.M01] + val[Matrix4.M02] * val[Matrix4.M02];
 	}
 
 	public float getScaleYSquared() {
-		return val[Matrix4.M10] * val[Matrix4.M10] + val[Matrix4.M11] * val[Matrix4.M11]
-			+ val[Matrix4.M12] * val[Matrix4.M12];
+		return val[Matrix4.M10] * val[Matrix4.M10] + val[Matrix4.M11] * val[Matrix4.M11] + val[Matrix4.M12] * val[Matrix4.M12];
 	}
 
 	public float getScaleZSquared() {
-		return val[Matrix4.M20] * val[Matrix4.M20] + val[Matrix4.M21] * val[Matrix4.M21]
-			+ val[Matrix4.M22] * val[Matrix4.M22];
+		return val[Matrix4.M20] * val[Matrix4.M20] + val[Matrix4.M21] * val[Matrix4.M21] + val[Matrix4.M22] * val[Matrix4.M22];
 	}
 
 	public float getScaleX() {
-		return (MathUtils.isZero(val[Matrix4.M01]) && MathUtils.isZero(val[Matrix4.M02])) ? Math.abs(val[Matrix4.M00])
-			: (float) Math.sqrt(getScaleXSquared());
+		return (MathUtils.isZero(val[Matrix4.M01]) && MathUtils.isZero(val[Matrix4.M02])) ? Math.abs(val[Matrix4.M00]) : (float) Math.sqrt(getScaleXSquared());
 	}
 
 	public float getScaleY() {
-		return (MathUtils.isZero(val[Matrix4.M10]) && MathUtils.isZero(val[Matrix4.M12])) ? Math.abs(val[Matrix4.M11])
-			: (float) Math.sqrt(getScaleYSquared());
+		return (MathUtils.isZero(val[Matrix4.M10]) && MathUtils.isZero(val[Matrix4.M12])) ? Math.abs(val[Matrix4.M11]) : (float) Math.sqrt(getScaleYSquared());
 	}
 
 	public float getScaleZ() {
-		return (MathUtils.isZero(val[Matrix4.M20]) && MathUtils.isZero(val[Matrix4.M21])) ? Math.abs(val[Matrix4.M22])
-			: (float) Math.sqrt(getScaleZSquared());
+		return (MathUtils.isZero(val[Matrix4.M20]) && MathUtils.isZero(val[Matrix4.M21])) ? Math.abs(val[Matrix4.M22]) : (float) Math.sqrt(getScaleZSquared());
 	}
 
 	public Vector3 getScale(Vector3 scale) {
@@ -508,7 +499,7 @@ public class Matrix4 implements Serializable {
 	public Matrix4 scale(float scale) {
 		return scale(scale, scale, scale);
 	}
-	
+
 	public void extract4x3Matrix(float[] dst) {
 		dst[0] = val[M00];
 		dst[1] = val[M10];
@@ -525,9 +516,7 @@ public class Matrix4 implements Serializable {
 	}
 
 	public boolean hasRotationOrScaling() {
-		return !(MathUtils.isEqual(val[M00], 1) && MathUtils.isEqual(val[M11], 1) && MathUtils.isEqual(val[M22], 1)
-			&& MathUtils.isZero(val[M01]) && MathUtils.isZero(val[M02]) && MathUtils.isZero(val[M10])
-			&& MathUtils.isZero(val[M12]) && MathUtils.isZero(val[M20]) && MathUtils.isZero(val[M21]));
+		return !(MathUtils.isEqual(val[M00], 1) && MathUtils.isEqual(val[M11], 1) && MathUtils.isEqual(val[M22], 1) && MathUtils.isZero(val[M01]) && MathUtils.isZero(val[M02]) && MathUtils.isZero(val[M10]) && MathUtils.isZero(val[M12]) && MathUtils.isZero(val[M20]) && MathUtils.isZero(val[M21]));
 	}
 
 	@Override

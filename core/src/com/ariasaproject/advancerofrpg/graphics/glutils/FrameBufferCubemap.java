@@ -35,8 +35,7 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap> {
 
 	@Override
 	protected Cubemap createTexture(FrameBufferTextureAttachmentSpec attachmentSpec) {
-		GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0,
-				attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
+		GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
 		Cubemap result = new Cubemap(data, data, data, data, data, data);
 		result.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		result.setWrap(TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
@@ -92,8 +91,7 @@ public class FrameBufferCubemap extends GLFrameBuffer<Cubemap> {
 	 * @param side The side to bind
 	 */
 	protected void bindSide(final Cubemap.CubemapSide side) {
-		GraphFunc.tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_COLOR_ATTACHMENT0, side.glEnum,
-				getColorBufferTexture().getTextureObjectHandle(), 0);
+		GraphFunc.tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_COLOR_ATTACHMENT0, side.glEnum, getColorBufferTexture().getTextureObjectHandle(), 0);
 	}
 
 	/**

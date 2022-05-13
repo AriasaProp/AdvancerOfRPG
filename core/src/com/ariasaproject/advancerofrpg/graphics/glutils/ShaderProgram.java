@@ -19,7 +19,7 @@ import com.ariasaproject.advancerofrpg.utils.ObjectIntMap;
 public class ShaderProgram implements Disposable {
 	static final IntBuffer params = BufferUtils.newIntBuffer(1);
 	static final IntBuffer type = BufferUtils.newIntBuffer(4);
-	
+
 	private final ObjectIntMap<String> uniforms = new ObjectIntMap<String>();
 	private final ObjectIntMap<String> uniformTypes = new ObjectIntMap<String>();
 	private final ObjectIntMap<String> uniformSizes = new ObjectIntMap<String>();
@@ -44,7 +44,7 @@ public class ShaderProgram implements Disposable {
 		this.prefix = prefix;
 		final TGF tgf = GraphFunc.tgf;
 		handlers = tgf.compileShaderProgram(source, prefix);
-		//prepare all attribute variable name in this shader
+		// prepare all attribute variable name in this shader
 		tgf.glGetProgramiv(handlers[0], TGF.GL_ACTIVE_ATTRIBUTES, params);
 		int numAttributes = params.get(0);
 		attributeNames = new String[numAttributes];
@@ -57,7 +57,7 @@ public class ShaderProgram implements Disposable {
 			attributeSizes.put(name, params.get(0));
 			attributeNames[i] = name;
 		}
-		//prepare all uniform variable name in this shader
+		// prepare all uniform variable name in this shader
 		tgf.glGetProgramiv(handlers[0], TGF.GL_ACTIVE_UNIFORMS, params);
 		int numUniforms = params.get(0);
 		uniformNames = new String[numUniforms];
@@ -309,6 +309,7 @@ public class ShaderProgram implements Disposable {
 		int location = fetchUniformLocation(name);
 		tgf.glUniformMatrix3fv(location, count, transpose, buffer);
 	}
+
 	public void setUniformMatrix3fv(String name, float[] values, int offset, int matCount) {
 		TGF tgf = GraphFunc.tgf;
 		checkManaged();
@@ -383,6 +384,7 @@ public class ShaderProgram implements Disposable {
 		checkManaged();
 		GraphFunc.tgf.glVertexAttribPointer(location, size, type, normalize, stride, offset);
 	}
+
 	private static int currentUsedProgram = -1;
 
 	public void bind() {

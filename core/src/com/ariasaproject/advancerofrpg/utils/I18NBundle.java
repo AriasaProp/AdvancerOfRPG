@@ -136,9 +136,7 @@ public class I18NBundle implements Disposable {
 		if (bundle == null) {
 			if (baseBundle == null) {
 				// No bundle found
-				throw new MissingResourceException(
-						"Can't find bundle for base file handle " + baseFileHandle.path() + ", locale " + locale,
-						baseFileHandle + "_" + locale, "");
+				throw new MissingResourceException("Can't find bundle for base file handle " + baseFileHandle.path() + ", locale " + locale, baseFileHandle + "_" + locale, "");
 			}
 			// Set the base bundle to be returned
 			bundle = baseBundle;
@@ -252,8 +250,7 @@ public class I18NBundle implements Disposable {
 		return locale.equals(defaultLocale) ? null : defaultLocale;
 	}
 
-	private static I18NBundle loadBundleChain(FileHandle baseFileHandle, String encoding, List<Locale> candidateLocales,
-			int candidateIndex, I18NBundle baseBundle) {
+	private static I18NBundle loadBundleChain(FileHandle baseFileHandle, String encoding, List<Locale> candidateLocales, int candidateIndex, I18NBundle baseBundle) {
 		Locale targetLocale = candidateLocales.get(candidateIndex);
 		I18NBundle parent = null;
 		if (candidateIndex != candidateLocales.size() - 1) {

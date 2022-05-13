@@ -19,8 +19,7 @@ public class Slider extends ProgressBar {
 	private float threshold;
 
 	public Slider(float min, float max, float stepSize, boolean vertical, Skin skin) {
-		this(min, max, stepSize, vertical,
-				skin.get("default-" + (vertical ? "vertical" : "horizontal"), SliderStyle.class));
+		this(min, max, stepSize, vertical, skin.get("default-" + (vertical ? "vertical" : "horizontal"), SliderStyle.class));
 	}
 
 	public Slider(float min, float max, float stepSize, boolean vertical, Skin skin, String styleName) {
@@ -88,9 +87,7 @@ public class Slider extends ProgressBar {
 	@Null
 	protected Drawable getKnobDrawable() {
 		SliderStyle style = getStyle();
-		return (disabled && style.disabledKnob != null) ? style.disabledKnob
-				: (isDragging() && style.knobDown != null) ? style.knobDown
-						: ((mouseOver && style.knobOver != null) ? style.knobOver : style.knob);
+		return (disabled && style.disabledKnob != null) ? style.disabledKnob : (isDragging() && style.knobDown != null) ? style.knobDown : ((mouseOver && style.knobOver != null) ? style.knobOver : style.knob);
 	}
 
 	boolean calculatePositionAndValue(float x, float y) {
@@ -117,8 +114,7 @@ public class Slider extends ProgressBar {
 			position = Math.min(width - knobWidth, position);
 		}
 		float oldValue = value;
-		if (!GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_LEFT)
-				&& !GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_RIGHT))
+		if (!GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_LEFT) && !GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_RIGHT))
 			value = snap(value);
 		boolean valueSet = setValue(value);
 		if (value == oldValue)

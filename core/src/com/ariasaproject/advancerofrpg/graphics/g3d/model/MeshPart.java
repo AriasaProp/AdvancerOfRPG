@@ -153,8 +153,7 @@ public class MeshPart {
 	 *         {@link #id} member), false otherwise.
 	 */
 	public boolean equals(final MeshPart other) {
-		return other == this || (other != null && other.mesh == mesh && other.primitiveType == primitiveType
-				&& other.offset == offset && other.size == size);
+		return other == this || (other != null && other.mesh == mesh && other.primitiveType == primitiveType && other.offset == offset && other.size == size);
 	}
 
 	@Override

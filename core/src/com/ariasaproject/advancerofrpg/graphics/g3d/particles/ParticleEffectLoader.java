@@ -29,8 +29,7 @@ import com.ariasaproject.advancerofrpg.utils.reflect.ClassReflection;
  *
  * @author inferno
  */
-public class ParticleEffectLoader
-		extends AsynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectLoadParameter> {
+public class ParticleEffectLoader extends AsynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectLoadParameter> {
 	protected Array<ObjectMap.Entry<String, ResourceData<ParticleEffect>>> items = new Array<ObjectMap.Entry<String, ResourceData<ParticleEffect>>>();
 
 	public ParticleEffectLoader(FileHandleResolver resolver) {
@@ -38,13 +37,11 @@ public class ParticleEffectLoader
 	}
 
 	@Override
-	public void loadAsync(AssetContainer manager, String fileName, FileHandle file,
-			ParticleEffectLoadParameter parameter) {
+	public void loadAsync(AssetContainer manager, String fileName, FileHandle file, ParticleEffectLoadParameter parameter) {
 	}
 
 	@Override
-	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file,
-			ParticleEffectLoadParameter parameter) {
+	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, ParticleEffectLoadParameter parameter) {
 		Json json = new Json();
 		ResourceData<ParticleEffect> data = json.fromJson(ResourceData.class, file);
 		Array<AssetData> assets = null;
@@ -59,8 +56,7 @@ public class ParticleEffectLoader
 		for (AssetData<?> assetData : assets) {
 			// If the asset doesn't exist try to load it from loading effect directory
 			if (!resolve(assetData.filename).exists()) {
-				assetData.filename = file.parent().child(GraphFunc.app.getFiles().internal(assetData.filename).name())
-						.path();
+				assetData.filename = file.parent().child(GraphFunc.app.getFiles().internal(assetData.filename).name()).path();
 			}
 			if (assetData.type == ParticleEffect.class) {
 				descriptors.add(new AssetDescriptor(assetData.filename, assetData.type, parameter));
@@ -98,8 +94,7 @@ public class ParticleEffectLoader
 	}
 
 	@Override
-	public ParticleEffect loadSync(AssetContainer manager, String fileName, FileHandle file,
-			ParticleEffectLoadParameter parameter) {
+	public ParticleEffect loadSync(AssetContainer manager, String fileName, FileHandle file, ParticleEffectLoadParameter parameter) {
 		ResourceData<ParticleEffect> effectData = null;
 		synchronized (items) {
 			for (int i = 0; i < items.size; ++i) {

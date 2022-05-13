@@ -131,8 +131,7 @@ public class Texture extends GLTexture {
 		if (data.isManaged())
 			throw new RuntimeException("can't draw to a managed texture");
 		bind();
-		GraphFunc.tgf.glTexSubImage2D(glTarget, 0, x, y, pixmap.getWidth(), pixmap.getHeight(),
-									  pixmap.getFormat().GLFormat, pixmap.getFormat().GLType, pixmap.getPixels());
+		GraphFunc.tgf.glTexSubImage2D(glTarget, 0, x, y, pixmap.width, pixmap.height, pixmap.format.GLFormat, pixmap.format.GLType, pixmap.getPixels());
 	}
 
 	@Override
@@ -176,9 +175,7 @@ public class Texture extends GLTexture {
 	}
 
 	public enum TextureFilter {
-		Nearest(TGF.GL_NEAREST), Linear(TGF.GL_LINEAR), MipMap(TGF.GL_LINEAR_MIPMAP_LINEAR),
-		MipMapNearestNearest(TGF.GL_NEAREST_MIPMAP_NEAREST), MipMapLinearNearest(TGF.GL_LINEAR_MIPMAP_NEAREST),
-		MipMapNearestLinear(TGF.GL_NEAREST_MIPMAP_LINEAR), MipMapLinearLinear(TGF.GL_LINEAR_MIPMAP_LINEAR);
+		Nearest(TGF.GL_NEAREST), Linear(TGF.GL_LINEAR), MipMap(TGF.GL_LINEAR_MIPMAP_LINEAR), MipMapNearestNearest(TGF.GL_NEAREST_MIPMAP_NEAREST), MipMapLinearNearest(TGF.GL_LINEAR_MIPMAP_NEAREST), MipMapNearestLinear(TGF.GL_NEAREST_MIPMAP_LINEAR), MipMapLinearLinear(TGF.GL_LINEAR_MIPMAP_LINEAR);
 		public final int glEnum;
 
 		TextureFilter(final int glEnum) {

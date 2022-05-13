@@ -49,14 +49,10 @@ public class PointLights implements Iterable<PointLights.PointLight>, Disposable
 				p.r[i][9] = upView[indF + 2] / mathFOY;
 				p.r[i][10] = -faceView[indF + 2] * mathZ;
 				p.r[i][11] = faceView[indF + 2];
-				p.r[i][12] = (-(sideView[indF] * p.position.x) - sideView[indF + 1] * p.position.y
-						- sideView[indF + 2] * p.position.z) / mathFOY;
-				p.r[i][13] = (-(upView[indF] * p.position.x) - upView[indF + 1] * p.position.y
-						- upView[indF + 2] * p.position.z) / mathFOY;
-				p.r[i][14] = (faceView[indF] * p.position.x + faceView[indF + 1] * p.position.y
-						+ faceView[indF + 2] * p.position.z) * mathZ - 1;
-				p.r[i][15] = -(faceView[indF] * p.position.x + faceView[indF + 1] * p.position.y
-						+ faceView[indF + 2] * p.position.z);
+				p.r[i][12] = (-(sideView[indF] * p.position.x) - sideView[indF + 1] * p.position.y - sideView[indF + 2] * p.position.z) / mathFOY;
+				p.r[i][13] = (-(upView[indF] * p.position.x) - upView[indF + 1] * p.position.y - upView[indF + 2] * p.position.z) / mathFOY;
+				p.r[i][14] = (faceView[indF] * p.position.x + faceView[indF + 1] * p.position.y + faceView[indF + 2] * p.position.z) * mathZ - 1;
+				p.r[i][15] = -(faceView[indF] * p.position.x + faceView[indF + 1] * p.position.y + faceView[indF + 2] * p.position.z);
 			}
 		}
 	}

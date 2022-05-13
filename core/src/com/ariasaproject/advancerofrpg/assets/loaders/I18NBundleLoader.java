@@ -37,8 +37,7 @@ public class I18NBundleLoader extends AsynchronousAssetLoader<I18NBundle, I18NBu
 	}
 
 	@Override
-	public I18NBundle loadSync(AssetContainer manager, String fileName, FileHandle file,
-			I18NBundleParameter parameter) {
+	public I18NBundle loadSync(AssetContainer manager, String fileName, FileHandle file, I18NBundleParameter parameter) {
 		I18NBundle bundle = this.bundle;
 		this.bundle = null;
 		return bundle;

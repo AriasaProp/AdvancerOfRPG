@@ -28,8 +28,7 @@ public class ParticleEffectPool extends Pool<PooledEffect> {
 	public void free(PooledEffect effect) {
 		super.free(effect);
 		effect.reset(false); // copy parameters exactly to avoid introducing error
-		if (effect.xSizeScale != this.effect.xSizeScale || effect.ySizeScale != this.effect.ySizeScale
-				|| effect.motionScale != this.effect.motionScale) {
+		if (effect.xSizeScale != this.effect.xSizeScale || effect.ySizeScale != this.effect.ySizeScale || effect.motionScale != this.effect.motionScale) {
 			Array<ParticleEmitter> emitters = effect.getEmitters();
 			Array<ParticleEmitter> templateEmitters = this.effect.getEmitters();
 			for (int i = 0; i < emitters.size; i++) {

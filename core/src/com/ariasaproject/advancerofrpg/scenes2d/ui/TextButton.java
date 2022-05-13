@@ -67,8 +67,7 @@ public class TextButton extends Button {
 		else if (isPressed() && style.downFontColor != null)
 			fontColor = style.downFontColor;
 		else if (isChecked && style.checkedFontColor != null)
-			fontColor = (isOver() && style.checkedOverFontColor != null) ? style.checkedOverFontColor
-					: style.checkedFontColor;
+			fontColor = (isOver() && style.checkedOverFontColor != null) ? style.checkedOverFontColor : style.checkedFontColor;
 		else if (isOver() && style.overFontColor != null)
 			fontColor = style.overFontColor;
 		else

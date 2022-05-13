@@ -138,8 +138,7 @@ public class ShortArray {
 
 	public void addAll(ShortArray array, int offset, int length) {
 		if (offset + length > array.size)
-			throw new IllegalArgumentException(
-					"offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
+			throw new IllegalArgumentException("offset + length must be <= size: " + offset + " + " + length + " <= " + array.size);
 		addAll(array.items, offset, length);
 	}
 

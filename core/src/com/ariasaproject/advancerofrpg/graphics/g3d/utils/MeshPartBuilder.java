@@ -171,8 +171,7 @@ public interface MeshPartBuilder {
 	/**
 	 * Add multiple indices, MeshPartBuilder expects all meshes to be indexed.
 	 */
-	void index(short value1, short value2, short value3, short value4, short value5, short value6, short value7,
-			short value8);
+	void index(short value1, short value2, short value3, short value4, short value5, short value6, short value7, short value8);
 
 	/**
 	 * Add a line by indices. Requires GL_LINES primitive type.
@@ -239,8 +238,7 @@ public interface MeshPartBuilder {
 	/**
 	 * Add a rectangle Requires GL_POINTS, GL_LINES or GL_TRIANGLES primitive type.
 	 */
-	void rect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11, float z11,
-			float x01, float y01, float z01, float normalX, float normalY, float normalZ);
+	void rect(float x00, float y00, float z00, float x10, float y10, float z10, float x11, float y11, float z11, float x01, float y01, float z01, float normalX, float normalY, float normalZ);
 
 	/**
 	 * Copies a mesh to the mesh (part) currently being build.

@@ -122,10 +122,8 @@ public class List<T> extends Widget implements Cullable {
 		prefHeight = items.size * itemHeight;
 		Drawable background = style.background;
 		if (background != null) {
-			prefWidth = Math.max(prefWidth + background.getLeftWidth() + background.getRightWidth(),
-					background.getMinWidth());
-			prefHeight = Math.max(prefHeight + background.getTopHeight() + background.getBottomHeight(),
-					background.getMinHeight());
+			prefWidth = Math.max(prefWidth + background.getLeftWidth() + background.getRightWidth(), background.getMinWidth());
+			prefHeight = Math.max(prefHeight + background.getTopHeight() + background.getBottomHeight(), background.getMinHeight());
 		}
 	}
 
@@ -151,11 +149,9 @@ public class List<T> extends Widget implements Cullable {
 		float textOffsetX = selectedDrawable.getLeftWidth(),
 				textWidth = width - textOffsetX - selectedDrawable.getRightWidth();
 		float textOffsetY = selectedDrawable.getTopHeight() - font.getDescent();
-		font.setColor(fontColorUnselected.r, fontColorUnselected.g, fontColorUnselected.b,
-				fontColorUnselected.a * parentAlpha);
+		font.setColor(fontColorUnselected.r, fontColorUnselected.g, fontColorUnselected.b, fontColorUnselected.a * parentAlpha);
 		for (int i = 0; i < items.size; i++) {
-			if (cullingArea == null
-					|| (itemY - itemHeight <= cullingArea.y + cullingArea.height && itemY >= cullingArea.y)) {
+			if (cullingArea == null || (itemY - itemHeight <= cullingArea.y + cullingArea.height && itemY >= cullingArea.y)) {
 				T item = items.get(i);
 				boolean selected = selection.contains(item);
 				Drawable drawable = null;
@@ -163,16 +159,14 @@ public class List<T> extends Widget implements Cullable {
 					drawable = style.down;
 				else if (selected) {
 					drawable = selectedDrawable;
-					font.setColor(fontColorSelected.r, fontColorSelected.g, fontColorSelected.b,
-							fontColorSelected.a * parentAlpha);
+					font.setColor(fontColorSelected.r, fontColorSelected.g, fontColorSelected.b, fontColorSelected.a * parentAlpha);
 				} else if (overIndex == i && style.over != null) //
 					drawable = style.over;
 				if (drawable != null)
 					drawable.draw(batch, x, y + itemY - itemHeight, width, itemHeight);
 				drawItem(batch, font, i, item, x + textOffsetX, y + itemY - textOffsetY, textWidth);
 				if (selected) {
-					font.setColor(fontColorUnselected.r, fontColorUnselected.g, fontColorUnselected.b,
-							fontColorUnselected.a * parentAlpha);
+					font.setColor(fontColorUnselected.r, fontColorUnselected.g, fontColorUnselected.b, fontColorUnselected.a * parentAlpha);
 				}
 			} else if (itemY < cullingArea.y) {
 				break;

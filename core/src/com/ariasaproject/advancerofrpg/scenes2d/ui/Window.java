@@ -120,8 +120,10 @@ public class Window extends Table {
 					return;
 				float width = getWidth(), height = getHeight();
 				float windowX = getX(), windowY = getY();
-				float minWidth = getMinWidth(), maxWidth = getMaxWidth();
-				float minHeight = getMinHeight(), maxHeight = getMaxHeight();
+				float minWidth = getMinWidth();
+				//float maxWidth = getMaxWidth();
+				float minHeight = getMinHeight();
+				//float maxHeight = getMaxHeight();
 				Stage stage = getStage();
 				boolean clampPosition = keepWithinStage && stage != null && getParent() == stage.getRoot();
 				if ((edge & MOVE) != 0) {
@@ -223,16 +225,13 @@ public class Window extends Table {
 			float parentWidth = stage.getWidth();
 			float parentHeight = stage.getHeight();
 			if (getX(Align.right) - camera.position.x > parentWidth / 2 / orthographicCamera.zoom)
-				setPosition(camera.position.x + parentWidth / 2 / orthographicCamera.zoom, getY(Align.right),
-						Align.right);
+				setPosition(camera.position.x + parentWidth / 2 / orthographicCamera.zoom, getY(Align.right), Align.right);
 			if (getX(Align.left) - camera.position.x < -parentWidth / 2 / orthographicCamera.zoom)
-				setPosition(camera.position.x - parentWidth / 2 / orthographicCamera.zoom, getY(Align.left),
-						Align.left);
+				setPosition(camera.position.x - parentWidth / 2 / orthographicCamera.zoom, getY(Align.left), Align.left);
 			if (getY(Align.top) - camera.position.y > parentHeight / 2 / orthographicCamera.zoom)
 				setPosition(getX(Align.top), camera.position.y + parentHeight / 2 / orthographicCamera.zoom, Align.top);
 			if (getY(Align.bottom) - camera.position.y < -parentHeight / 2 / orthographicCamera.zoom)
-				setPosition(getX(Align.bottom), camera.position.y - parentHeight / 2 / orthographicCamera.zoom,
-						Align.bottom);
+				setPosition(getX(Align.bottom), camera.position.y - parentHeight / 2 / orthographicCamera.zoom, Align.bottom);
 		} else if (getParent() == stage.getRoot()) {
 			float parentWidth = stage.getWidth();
 			float parentHeight = stage.getHeight();
@@ -257,8 +256,7 @@ public class Window extends Table {
 			if (style.stageBackground != null) {
 				stageToLocalCoordinates(tmpPosition.set(0, 0));
 				stageToLocalCoordinates(tmpSize.set(stage.getWidth(), stage.getHeight()));
-				drawStageBackground(batch, parentAlpha, getX() + tmpPosition.x, getY() + tmpPosition.y,
-						getX() + tmpSize.x, getY() + tmpSize.y);
+				drawStageBackground(batch, parentAlpha, getX() + tmpPosition.x, getY() + tmpPosition.y, getX() + tmpSize.x, getY() + tmpSize.y);
 			}
 		}
 		super.draw(batch, parentAlpha);

@@ -2,22 +2,32 @@ package com.ariasaproject.advancerofrpg.physics.box2d;
 
 public abstract class Shape {
 	private static native void initialize();
+
 	static {
 		initialize();
 	}
+
 	public enum Type {
 		Circle, Edge, Polygon, Chain,
 	};
+
 	protected long addr;
-	public abstract Type getType ();
-	public native float getRadius ();
-	public native void setRadius (float radius);
-	public void dispose () {
+
+	public abstract Type getType();
+
+	public native float getRadius();
+
+	public native void setRadius(float radius);
+
+	public void dispose() {
 		jniDispose();
 	}
-	private native void jniDispose ();
-	protected native int jniGetType ();
-	public native int getChildCount ();
+
+	private native void jniDispose();
+
+	protected native int jniGetType();
+
+	public native int getChildCount();
 
 // /// Test a point for containment in this shape. This only works for convex shapes.
 // /// @param xf the shape world transform.

@@ -13,5 +13,6 @@ public class GraphFunc implements Serializable {
 	public static TGF getTGF() {
 		return GraphFunc.tgf;
 	}
+
 	public static native String nativeLog();
 }

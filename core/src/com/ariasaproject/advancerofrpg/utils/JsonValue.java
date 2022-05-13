@@ -7,40 +7,13 @@ import java.util.NoSuchElementException;
 
 import com.ariasaproject.advancerofrpg.utils.JsonWriter.OutputType;
 
-/**
- * Container for a JSON object, array, string, double, long, boolean, or null.
- * <p>
- * JsonValue children are a linked list. Iteration of arrays or objects is
- * easily done using a for loop, either with the enhanced for loop syntactic
- * sugar or like the example below. This is much more efficient than accessing
- * children by index when there are many children.<br>
- * <p>
- * 
- * <pre>
- * JsonValue map = ...;
- * for (JsonValue entry = map.child; entry != null; entry = entry.next)
- * 	System.out.println(entry.name + " = " + entry.asString());
- * </pre>
- *
- * @author Nathan Sweet
- */
 public class JsonValue implements Iterable<JsonValue> {
 	public String name;
-	/**
-	 * May be null.
-	 */
-	public JsonValue child, parent;
-	/**
-	 * May be null. When changing this field the parent {@link #size()} may need to
-	 * be changed.
-	 */
-	public JsonValue next, prev;
+		public JsonValue child, parent;
+		public JsonValue next, prev;
 	public int size;
 	private ValueType type;
-	/**
-	 * May be null.
-	 */
-	private String stringValue;
+		private String stringValue;
 	private double doubleValue;
 	private long longValue;
 
@@ -48,10 +21,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		this.type = type;
 	}
 
-	/**
-	 * @param value May be null.
-	 */
-	public JsonValue(String value) {
+		public JsonValue(String value) {
 		set(value);
 	}
 
@@ -99,14 +69,7 @@ public class JsonValue implements Iterable<JsonValue> {
 			buffer.append('\t');
 	}
 
-	/**
-	 * Returns the child at the specified index. This requires walking the linked
-	 * list to the specified entry, see {@link JsonValue} for how to iterate
-	 * efficiently.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue get(int index) {
+		public JsonValue get(int index) {
 		JsonValue current = child;
 		while (current != null && index > 0) {
 			index--;
@@ -115,33 +78,18 @@ public class JsonValue implements Iterable<JsonValue> {
 		return current;
 	}
 
-	/**
-	 * Returns the child with the specified name.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue get(String name) {
+		public JsonValue get(String name) {
 		JsonValue current = child;
 		while (current != null && (current.name == null || !current.name.equalsIgnoreCase(name)))
 			current = current.next;
 		return current;
 	}
 
-	/**
-	 * Returns true if a child with the specified name exists.
-	 */
-	public boolean has(String name) {
+		public boolean has(String name) {
 		return get(name) != null;
 	}
 
-	/**
-	 * Returns the child at the specified index. This requires walking the linked
-	 * list to the specified entry, see {@link JsonValue} for how to iterate
-	 * efficiently.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public JsonValue require(int index) {
+		public JsonValue require(int index) {
 		JsonValue current = child;
 		while (current != null && index > 0) {
 			index--;
@@ -152,12 +100,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return current;
 	}
 
-	/**
-	 * Returns the child with the specified name.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public JsonValue require(String name) {
+		public JsonValue require(String name) {
 		JsonValue current = child;
 		while (current != null && (current.name == null || !current.name.equalsIgnoreCase(name)))
 			current = current.next;
@@ -166,14 +109,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return current;
 	}
 
-	/**
-	 * Removes the child with the specified index. This requires walking the linked
-	 * list to the specified entry, see {@link JsonValue} for how to iterate
-	 * efficiently.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue remove(int index) {
+		public JsonValue remove(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			return null;
@@ -190,12 +126,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return child;
 	}
 
-	/**
-	 * Removes the child with the specified name.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue remove(String name) {
+		public JsonValue remove(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			return null;
@@ -212,27 +143,15 @@ public class JsonValue implements Iterable<JsonValue> {
 		return child;
 	}
 
-	/**
-	 * Returns true if there are one or more children in the array or object.
-	 */
-	public boolean notEmpty() {
+		public boolean notEmpty() {
 		return size > 0;
 	}
 
-	/**
-	 * Returns true if there are not children in the array or object.
-	 */
-	public boolean isEmpty() {
+		public boolean isEmpty() {
 		return size == 0;
 	}
 
-	/**
-	 * Returns this value as a string.
-	 *
-	 * @return May be null if this value is null.
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public String asString() {
+		public String asString() {
 		switch (type) {
 		case stringValue:
 			return stringValue;
@@ -248,12 +167,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to string: " + type);
 	}
 
-	/**
-	 * Returns this value as a float.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public float asFloat() {
+		public float asFloat() {
 		switch (type) {
 		case stringValue:
 			return Float.parseFloat(stringValue);
@@ -267,12 +181,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to float: " + type);
 	}
 
-	/**
-	 * Returns this value as a double.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public double asDouble() {
+		public double asDouble() {
 		switch (type) {
 		case stringValue:
 			return Double.parseDouble(stringValue);
@@ -286,12 +195,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to double: " + type);
 	}
 
-	/**
-	 * Returns this value as a long.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public long asLong() {
+		public long asLong() {
 		switch (type) {
 		case stringValue:
 			return Long.parseLong(stringValue);
@@ -305,12 +209,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to long: " + type);
 	}
 
-	/**
-	 * Returns this value as an int.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public int asInt() {
+		public int asInt() {
 		switch (type) {
 		case stringValue:
 			return Integer.parseInt(stringValue);
@@ -326,12 +225,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to int: " + type);
 	}
 
-	/**
-	 * Returns this value as a boolean.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public boolean asBoolean() {
+		public boolean asBoolean() {
 		switch (type) {
 		case stringValue:
 			return stringValue.equalsIgnoreCase("true");
@@ -345,12 +239,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to boolean: " + type);
 	}
 
-	/**
-	 * Returns this value as a byte.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public byte asByte() {
+		public byte asByte() {
 		switch (type) {
 		case stringValue:
 			return Byte.parseByte(stringValue);
@@ -364,12 +253,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to byte: " + type);
 	}
 
-	/**
-	 * Returns this value as a short.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public short asShort() {
+		public short asShort() {
 		switch (type) {
 		case stringValue:
 			return Short.parseShort(stringValue);
@@ -383,12 +267,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to short: " + type);
 	}
 
-	/**
-	 * Returns this value as a char.
-	 *
-	 * @throws IllegalStateException if this an array or object.
-	 */
-	public char asChar() {
+		public char asChar() {
 		switch (type) {
 		case stringValue:
 			return stringValue.length() == 0 ? 0 : stringValue.charAt(0);
@@ -402,12 +281,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		throw new IllegalStateException("Value cannot be converted to char: " + type);
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated String array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public String[] asStringArray() {
+		public String[] asStringArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		String[] array = new String[size];
@@ -438,12 +312,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated float array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public float[] asFloatArray() {
+		public float[] asFloatArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		float[] array = new float[size];
@@ -471,12 +340,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated double array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public double[] asDoubleArray() {
+		public double[] asDoubleArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		double[] array = new double[size];
@@ -504,12 +368,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated long array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public long[] asLongArray() {
+		public long[] asLongArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		long[] array = new long[size];
@@ -537,12 +396,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated int array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public int[] asIntArray() {
+		public int[] asIntArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		int[] array = new int[size];
@@ -570,12 +424,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated boolean array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public boolean[] asBooleanArray() {
+		public boolean[] asBooleanArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		boolean[] array = new boolean[size];
@@ -603,12 +452,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated byte array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public byte[] asByteArray() {
+		public byte[] asByteArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		byte[] array = new byte[size];
@@ -636,12 +480,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated short array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public short[] asShortArray() {
+		public short[] asShortArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		short[] array = new short[size];
@@ -669,12 +508,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns the children of this value as a newly allocated char array.
-	 *
-	 * @throws IllegalStateException if this is not an array.
-	 */
-	public char[] asCharArray() {
+		public char[] asCharArray() {
 		if (type != ValueType.array)
 			throw new IllegalStateException("Value is not an array: " + type);
 		char[] array = new char[size];
@@ -702,316 +536,180 @@ public class JsonValue implements Iterable<JsonValue> {
 		return array;
 	}
 
-	/**
-	 * Returns true if a child with the specified name exists and has a child.
-	 */
-	public boolean hasChild(String name) {
+		public boolean hasChild(String name) {
 		return getChild(name) != null;
 	}
 
-	/**
-	 * Finds the child with the specified name and returns its first child.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue getChild(String name) {
+		public JsonValue getChild(String name) {
 		JsonValue child = get(name);
 		return child == null ? null : child.child;
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a string. Returns
-	 * defaultValue if not found.
-	 *
-	 * @param defaultValue May be null.
-	 */
-	public String getString(String name, String defaultValue) {
+		public String getString(String name, String defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asString();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a float. Returns
-	 * defaultValue if not found.
-	 */
-	public float getFloat(String name, float defaultValue) {
+		public float getFloat(String name, float defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asFloat();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a double. Returns
-	 * defaultValue if not found.
-	 */
-	public double getDouble(String name, double defaultValue) {
+		public double getDouble(String name, double defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asDouble();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a long. Returns
-	 * defaultValue if not found.
-	 */
-	public long getLong(String name, long defaultValue) {
+		public long getLong(String name, long defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asLong();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as an int. Returns
-	 * defaultValue if not found.
-	 */
-	public int getInt(String name, int defaultValue) {
+		public int getInt(String name, int defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asInt();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a boolean. Returns
-	 * defaultValue if not found.
-	 */
-	public boolean getBoolean(String name, boolean defaultValue) {
+		public boolean getBoolean(String name, boolean defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asBoolean();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a byte. Returns
-	 * defaultValue if not found.
-	 */
-	public byte getByte(String name, byte defaultValue) {
+		public byte getByte(String name, byte defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asByte();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a short. Returns
-	 * defaultValue if not found.
-	 */
-	public short getShort(String name, short defaultValue) {
+		public short getShort(String name, short defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asShort();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a char. Returns
-	 * defaultValue if not found.
-	 */
-	public char getChar(String name, char defaultValue) {
+		public char getChar(String name, char defaultValue) {
 		JsonValue child = get(name);
 		return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asChar();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a string.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public String getString(String name) {
+		public String getString(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asString();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a float.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public float getFloat(String name) {
+		public float getFloat(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asFloat();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a double.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public double getDouble(String name) {
+		public double getDouble(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asDouble();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a long.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public long getLong(String name) {
+		public long getLong(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asLong();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as an int.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public int getInt(String name) {
+		public int getInt(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asInt();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a boolean.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public boolean getBoolean(String name) {
+		public boolean getBoolean(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asBoolean();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a byte.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public byte getByte(String name) {
+		public byte getByte(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asByte();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a short.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public short getShort(String name) {
+		public short getShort(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asShort();
 	}
 
-	/**
-	 * Finds the child with the specified name and returns it as a char.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public char getChar(String name) {
+		public char getChar(String name) {
 		JsonValue child = get(name);
 		if (child == null)
 			throw new IllegalArgumentException("Named value not found: " + name);
 		return child.asChar();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a string.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public String getString(int index) {
+		public String getString(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asString();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a float.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public float getFloat(int index) {
+		public float getFloat(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asFloat();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a double.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public double getDouble(int index) {
+		public double getDouble(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asDouble();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a long.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public long getLong(int index) {
+		public long getLong(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asLong();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as an int.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public int getInt(int index) {
+		public int getInt(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asInt();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a boolean.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public boolean getBoolean(int index) {
+		public boolean getBoolean(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asBoolean();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a byte.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public byte getByte(int index) {
+		public byte getByte(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asByte();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a short.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public short getShort(int index) {
+		public short getShort(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
 		return child.asShort();
 	}
 
-	/**
-	 * Finds the child with the specified index and returns it as a char.
-	 *
-	 * @throws IllegalArgumentException if the child was not found.
-	 */
-	public char getChar(int index) {
+		public char getChar(int index) {
 		JsonValue child = get(index);
 		if (child == null)
 			throw new IllegalArgumentException("Indexed value not found: " + name);
@@ -1040,10 +738,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return type == ValueType.stringValue;
 	}
 
-	/**
-	 * Returns true if this is a double or long value.
-	 */
-	public boolean isNumber() {
+		public boolean isNumber() {
 		return type == ValueType.doubleValue || type == ValueType.longValue;
 	}
 
@@ -1063,10 +758,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return type == ValueType.nullValue;
 	}
 
-	/**
-	 * Returns true if this is not an array or object.
-	 */
-	public boolean isValue() {
+		public boolean isValue() {
 		switch (type) {
 		case stringValue:
 		case doubleValue:
@@ -1078,54 +770,30 @@ public class JsonValue implements Iterable<JsonValue> {
 		return false;
 	}
 
-	/**
-	 * Returns the name for this object value.
-	 *
-	 * @return May be null.
-	 */
-	public String name() {
+		public String name() {
 		return name;
 	}
 
-	/**
-	 * @param name May be null.
-	 */
-	public void setName(String name) {
+		public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * Returns the parent for this value.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue parent() {
+		public JsonValue parent() {
 		return parent;
 	}
 
-	/**
-	 * Returns the first child for this object or array.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue child() {
+		public JsonValue child() {
 		return child;
 	}
 
-	/**
-	 * Sets the name of the specified value and adds it after the last child.
-	 */
-	public void addChild(String name, JsonValue value) {
+		public void addChild(String name, JsonValue value) {
 		if (name == null)
 			throw new IllegalArgumentException("name cannot be null.");
 		value.name = name;
 		addChild(value);
 	}
 
-	/**
-	 * Adds the specified value after the last child.
-	 */
-	public void addChild(JsonValue value) {
+		public void addChild(JsonValue value) {
 		value.parent = this;
 		size++;
 		JsonValue current = child;
@@ -1143,68 +811,35 @@ public class JsonValue implements Iterable<JsonValue> {
 		}
 	}
 
-	/**
-	 * Returns the next sibling of this value.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue next() {
+		public JsonValue next() {
 		return next;
 	}
 
-	/**
-	 * Sets the next sibling of this value. Does not change the parent
-	 * {@link #size()}.
-	 *
-	 * @param next May be null.
-	 */
-	public void setNext(JsonValue next) {
+		public void setNext(JsonValue next) {
 		this.next = next;
 	}
 
-	/**
-	 * Returns the previous sibling of this value.
-	 *
-	 * @return May be null.
-	 */
-	public JsonValue prev() {
+		public JsonValue prev() {
 		return prev;
 	}
 
-	/**
-	 * Sets the next sibling of this value. Does not change the parent
-	 * {@link #size()}.
-	 *
-	 * @param prev May be null.
-	 */
-	public void setPrev(JsonValue prev) {
+		public void setPrev(JsonValue prev) {
 		this.prev = prev;
 	}
 
-	/**
-	 * @param value May be null.
-	 */
-	public void set(String value) {
+		public void set(String value) {
 		stringValue = value;
 		type = value == null ? ValueType.nullValue : ValueType.stringValue;
 	}
 
-	/**
-	 * @param stringValue May be null if the string representation is the string
-	 *                    value of the double (eg, no leading zeros).
-	 */
-	public void set(double value, String stringValue) {
+		public void set(double value, String stringValue) {
 		doubleValue = value;
 		longValue = (long) value;
 		this.stringValue = stringValue;
 		type = ValueType.doubleValue;
 	}
 
-	/**
-	 * @param stringValue May be null if the string representation is the string
-	 *                    value of the long (eg, no leading zeros).
-	 */
-	public void set(long value, String stringValue) {
+		public void set(long value, String stringValue) {
 		longValue = value;
 		doubleValue = value;
 		this.stringValue = stringValue;
@@ -1288,11 +923,7 @@ public class JsonValue implements Iterable<JsonValue> {
 		return (name == null ? "" : name + ": ") + prettyPrint(OutputType.minimal, 0);
 	}
 
-	/**
-	 * Returns a human readable string representing the path from the root of the
-	 * JSON object graph to this value.
-	 */
-	public String trace() {
+		public String trace() {
 		if (parent == null) {
 			if (type == ValueType.array)
 				return "[]";
@@ -1406,19 +1037,13 @@ public class JsonValue implements Iterable<JsonValue> {
 			throw new SerializationException("Unknown object type: " + object);
 	}
 
-	/**
-	 * More efficient than {@link #prettyPrint(PrettyPrintSettings)} but
-	 * {@link PrettyPrintSettings#singleLineColumns} and
-	 * {@link PrettyPrintSettings#wrapNumericArrays} are not supported.
-	 */
-	public void prettyPrint(OutputType outputType, Writer writer) throws IOException {
+		public void prettyPrint(OutputType outputType, Writer writer) throws IOException {
 		PrettyPrintSettings settings = new PrettyPrintSettings();
 		settings.outputType = outputType;
 		prettyPrint(this, writer, 0, settings);
 	}
 
-	private void prettyPrint(JsonValue object, Writer writer, int indent, PrettyPrintSettings settings)
-			throws IOException {
+	private void prettyPrint(JsonValue object, Writer writer, int indent, PrettyPrintSettings settings) throws IOException {
 		OutputType outputType = settings.outputType;
 		if (object.isObject()) {
 			if (object.child == null)
@@ -1483,15 +1108,9 @@ public class JsonValue implements Iterable<JsonValue> {
 	static public class PrettyPrintSettings {
 		public OutputType outputType;
 
-		/**
-		 * If an object on a single line fits this many columns, it won't wrap.
-		 */
-		public int singleLineColumns;
+				public int singleLineColumns;
 
-		/**
-		 * Arrays of floats won't wrap.
-		 */
-		public boolean wrapNumericArrays;
+				public boolean wrapNumericArrays;
 	}
 
 	public class JsonIterator implements Iterator<JsonValue>, Iterable<JsonValue> {

@@ -10,8 +10,7 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.batches.ParticleBa
  *
  * @author Inferno
  */
-public abstract class ParticleControllerRenderer<D extends ParticleControllerRenderData, T extends ParticleBatch<D>>
-		extends ParticleControllerComponent {
+public abstract class ParticleControllerRenderer<D extends ParticleControllerRenderData, T extends ParticleBatch<D>> extends ParticleControllerComponent {
 	protected T batch;
 	protected D renderData;
 

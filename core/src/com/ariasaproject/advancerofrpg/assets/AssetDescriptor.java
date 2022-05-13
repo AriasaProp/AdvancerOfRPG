@@ -21,6 +21,7 @@ public class AssetDescriptor<T extends Disposable> {
 		this(file.path(), assetType, params);
 		this.file = file;
 	}
+
 	public AssetDescriptor(String fullPath, Class<T> assetType, AssetLoaderParameters<T> params) {
 		this.fullPath = fullPath.replaceAll("\\\\", "/");
 		this.type = assetType;
@@ -29,8 +30,10 @@ public class AssetDescriptor<T extends Disposable> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof AssetDescriptor)) return false;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof AssetDescriptor))
+			return false;
 		AssetDescriptor o = (AssetDescriptor) obj;
 
 		return this.fullPath.equals(o.fullPath) && this.type.equals(o.type) && this.params.equals(o.params) || this.file.equals(o.file);

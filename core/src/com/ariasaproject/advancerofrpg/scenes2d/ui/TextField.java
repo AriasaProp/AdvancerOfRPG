@@ -255,8 +255,7 @@ public class TextField extends Widget implements Disableable {
 			int minIndex = Math.min(cursor, selectionStart);
 			int maxIndex = Math.max(cursor, selectionStart);
 			float minX = Math.max(glyphPositions[minIndex] - glyphPositions[visibleTextStart], -textOffset);
-			float maxX = Math.min(glyphPositions[maxIndex] - glyphPositions[visibleTextStart],
-					visibleWidth - textOffset);
+			float maxX = Math.min(glyphPositions[maxIndex] - glyphPositions[visibleTextStart], visibleWidth - textOffset);
 			selectionX = minX;
 			selectionWidth = maxX - minX - style.font.getData().cursorX;
 		}
@@ -265,8 +264,7 @@ public class TextField extends Widget implements Disableable {
 	@Null
 	private Drawable getBackgroundDrawable() {
 		boolean focused = hasKeyboardFocus();
-		return (disabled && style.disabledBackground != null) ? style.disabledBackground
-				: ((focused && style.focusedBackground != null) ? style.focusedBackground : style.background);
+		return (disabled && style.disabledBackground != null) ? style.disabledBackground : ((focused && style.focusedBackground != null) ? style.focusedBackground : style.background);
 	}
 
 	@Override
@@ -283,8 +281,7 @@ public class TextField extends Widget implements Disableable {
 		} else if (!focused) //
 			cursorOn = false;
 		final BitmapFont font = style.font;
-		final Color fontColor = (disabled && style.disabledFontColor != null) ? style.disabledFontColor
-				: ((focused && style.focusedFontColor != null) ? style.focusedFontColor : style.fontColor);
+		final Color fontColor = (disabled && style.disabledFontColor != null) ? style.disabledFontColor : ((focused && style.focusedFontColor != null) ? style.focusedFontColor : style.fontColor);
 		final Drawable selection = style.selection;
 		final Drawable cursorPatch = style.cursor;
 		final Drawable background = getBackgroundDrawable();
@@ -305,17 +302,15 @@ public class TextField extends Widget implements Disableable {
 		if (focused && hasSelection && selection != null) {
 			drawSelection(selection, batch, font, x + bgLeftWidth, y + textY);
 		}
-		float yOffset = /*font.isFlipped() ? -textHeight :*/ 0;
+		float yOffset = /* font.isFlipped() ? -textHeight : */ 0;
 		if (displayText.length() == 0) {
 			if (!focused && messageText != null) {
 				BitmapFont messageFont = style.messageFont != null ? style.messageFont : font;
 				if (style.messageFontColor != null) {
-					messageFont.setColor(style.messageFontColor.r, style.messageFontColor.g, style.messageFontColor.b,
-							style.messageFontColor.a * color.a * parentAlpha);
+					messageFont.setColor(style.messageFontColor.r, style.messageFontColor.g, style.messageFontColor.b, style.messageFontColor.a * color.a * parentAlpha);
 				} else
 					messageFont.setColor(0.7f, 0.7f, 0.7f, color.a * parentAlpha);
-				drawMessageText(batch, messageFont, x + bgLeftWidth, y + textY + yOffset,
-						width - bgLeftWidth - bgRightWidth);
+				drawMessageText(batch, messageFont, x + bgLeftWidth, y + textY + yOffset, width - bgLeftWidth - bgRightWidth);
 			}
 		} else {
 			font.setColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a * color.a * parentAlpha);
@@ -344,8 +339,7 @@ public class TextField extends Widget implements Disableable {
 	 * Draws selection rectangle
 	 **/
 	protected void drawSelection(Drawable selection, Batch batch, BitmapFont font, float x, float y) {
-		selection.draw(batch, x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(),
-				selectionWidth, textHeight);
+		selection.draw(batch, x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(), selectionWidth, textHeight);
 	}
 
 	protected void drawText(Batch batch, BitmapFont font, float x, float y) {
@@ -357,10 +351,7 @@ public class TextField extends Widget implements Disableable {
 	}
 
 	protected void drawCursor(Drawable cursorPatch, Batch batch, BitmapFont font, float x, float y) {
-		cursorPatch.draw(batch,
-				x + textOffset + glyphPositions.get(cursor) - glyphPositions.get(visibleTextStart) + fontOffset
-						+ font.getData().cursorX,
-				y - textHeight - font.getDescent(), cursorPatch.getMinWidth(), textHeight);
+		cursorPatch.draw(batch, x + textOffset + glyphPositions.get(cursor) - glyphPositions.get(visibleTextStart) + fontOffset + font.getData().cursorX, y - textHeight - font.getDescent(), cursorPatch.getMinWidth(), textHeight);
 	}
 
 	void updateDisplayText() {
@@ -476,8 +467,7 @@ public class TextField extends Widget implements Disableable {
 		int to = cursor;
 		int minIndex = Math.min(from, to);
 		int maxIndex = Math.max(from, to);
-		String newText = (minIndex > 0 ? text.substring(0, minIndex) : "")
-				+ (maxIndex < text.length() ? text.substring(maxIndex) : "");
+		String newText = (minIndex > 0 ? text.substring(0, minIndex) : "") + (maxIndex < text.length() ? text.substring(maxIndex) : "");
 		if (fireChangeEvent)
 			changeText(text, newText);
 		else
@@ -527,8 +517,7 @@ public class TextField extends Widget implements Disableable {
 	 * @return May be null.
 	 */
 	@Null
-	private TextField findNextTextField(Array<Actor> actors, @Null TextField best, Vector2 bestCoords,
-			Vector2 currentCoords, boolean up) {
+	private TextField findNextTextField(Array<Actor> actors, @Null TextField best, Vector2 bestCoords, Vector2 currentCoords, boolean up) {
 		for (int i = 0, n = actors.size; i < n; i++) {
 			Actor actor = actors.get(i);
 			if (actor instanceof TextField) {
@@ -747,13 +736,11 @@ public class TextField extends Widget implements Disableable {
 			minHeight = Math.max(minHeight, style.background.getMinHeight());
 		}
 		if (style.focusedBackground != null) {
-			topAndBottom = Math.max(topAndBottom,
-					style.focusedBackground.getBottomHeight() + style.focusedBackground.getTopHeight());
+			topAndBottom = Math.max(topAndBottom, style.focusedBackground.getBottomHeight() + style.focusedBackground.getTopHeight());
 			minHeight = Math.max(minHeight, style.focusedBackground.getMinHeight());
 		}
 		if (style.disabledBackground != null) {
-			topAndBottom = Math.max(topAndBottom,
-					style.disabledBackground.getBottomHeight() + style.disabledBackground.getTopHeight());
+			topAndBottom = Math.max(topAndBottom, style.disabledBackground.getBottomHeight() + style.disabledBackground.getTopHeight());
 			minHeight = Math.max(minHeight, style.disabledBackground.getMinHeight());
 		}
 		return Math.max(topAndBottom + textHeight, minHeight);
@@ -906,8 +893,7 @@ public class TextField extends Widget implements Disableable {
 		public TextFieldStyle() {
 		}
 
-		public TextFieldStyle(BitmapFont font, Color fontColor, @Null Drawable cursor, @Null Drawable selection,
-				@Null Drawable background) {
+		public TextFieldStyle(BitmapFont font, Color fontColor, @Null Drawable cursor, @Null Drawable selection, @Null Drawable background) {
 			this.background = background;
 			this.cursor = cursor;
 			this.font = font;
@@ -1022,8 +1008,7 @@ public class TextField extends Widget implements Disableable {
 			if (!hasKeyboardFocus())
 				return false;
 			boolean repeat = false;
-			boolean ctrl = GraphFunc.app.getInput().isKeyPressed(Keys.CONTROL_LEFT)
-					|| GraphFunc.app.getInput().isKeyPressed(Keys.CONTROL_RIGHT);
+			boolean ctrl = GraphFunc.app.getInput().isKeyPressed(Keys.CONTROL_LEFT) || GraphFunc.app.getInput().isKeyPressed(Keys.CONTROL_RIGHT);
 			boolean jump = ctrl && !passwordMode;
 			boolean handled = true;
 			if (ctrl) {
@@ -1052,8 +1037,7 @@ public class TextField extends Widget implements Disableable {
 					handled = false;
 				}
 			}
-			if (GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_LEFT)
-					|| GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_RIGHT)) {
+			if (GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_LEFT) || GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_RIGHT)) {
 				switch (keycode) {
 				case Keys.INSERT:
 					paste(clipboard.getContents(), true);
@@ -1173,8 +1157,7 @@ public class TextField extends Widget implements Disableable {
 			if (!hasKeyboardFocus())
 				return false;
 			if (checkFocusTraversal(character))
-				next(GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_LEFT)
-						|| GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_RIGHT));
+				next(GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_LEFT) || GraphFunc.app.getInput().isKeyPressed(Keys.SHIFT_RIGHT));
 			else {
 				boolean enter = character == CARRIAGE_RETURN || character == NEWLINE;
 				boolean delete = character == DELETE;
@@ -1208,7 +1191,7 @@ public class TextField extends Widget implements Disableable {
 						String insertion = enter ? "\n" : String.valueOf(character);
 						text = insert(cursor++, insertion, text);
 					}
-					String tempUndoText = undoText;
+					//String tempUndoText = undoText;
 					if (changeText(oldText, text)) {
 						long time = System.currentTimeMillis();
 						if (time - 750 > lastChangeTime)

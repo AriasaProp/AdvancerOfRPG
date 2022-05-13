@@ -1,5 +1,7 @@
 package com.ariasaproject.advancerofrpg.graphics.g2d;
 
+import com.ariasaproject.advancerofrpg.Files;
+import com.ariasaproject.advancerofrpg.Files.FileType;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.Mesh;
@@ -56,17 +58,13 @@ public class Batch implements Disposable {
 	public Batch() {
 		this(500);
 	}
+
 	public Batch(int size) {
-		// 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites
-		// max.
+		// 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
 		if (size > 8191)
 			throw new IllegalArgumentException("Can't have more than 8191 sprites per batch: " + size);
-		mesh = new Mesh(false, true, size * 5, size * 6,
-						new VertexAttribute(Usage.Position, 2, "a_position"),
-						new VertexAttribute(Usage.ColorPacked, 4, "a_color"),
-						new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord0"));
-		projectionMatrix.setToOrtho2D(0, 0, GraphFunc.app.getGraphics().getWidth(),
-									  GraphFunc.app.getGraphics().getHeight());
+		mesh = new Mesh(false, true, size * 5, size * 6, new VertexAttribute(Usage.Position, 2, "a_position"), new VertexAttribute(Usage.ColorPacked, 4, "a_color"), new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord"));
+		projectionMatrix.setToOrtho2D(0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight());
 		vertices = new float[size * Sprite.SPRITE_SIZE];
 		int len = size * 6;
 		short[] indices = new short[len];
@@ -80,7 +78,7 @@ public class Batch implements Disposable {
 			indices[i + 5] = j;
 		}
 		mesh.setIndices(indices);
-		shader = new ShaderProgram(GraphFunc.app.getFiles().internal("shader/batch.shaderprogram"));
+		shader = new ShaderProgram(Files.readFileAsString("shader/batch.shaderprogram", FileType.Internal), "");
 	}
 
 	public void begin() {
@@ -135,8 +133,7 @@ public class Batch implements Disposable {
 		draw(texture, x, y, width, height, 0, 1, 1, 0);
 	}
 
-	public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2,
-					 float v2) {
+	public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {
 		if (!drawing)
 			throw new IllegalStateException("Spritebegin must be called before draw.");
 		float[] vertex = vertices;
@@ -331,7 +328,7 @@ public class Batch implements Disposable {
 		vertex[idx + V2] = region.v;
 		vertex[idx + V3] = region.v2;
 		vertex[idx + V4] = region.v2;
-		
+
 		idx += 20;
 	}
 
@@ -385,6 +382,7 @@ public class Batch implements Disposable {
 		vertices[idx + V4] = region.v;
 		idx += 20;
 	}
+
 	public void flush() {
 		if (idx == 0)
 			return;

@@ -240,8 +240,7 @@ public class Rectangle implements Serializable, Shape2D {
 	 * @return whether the circle is contained in the rectangle
 	 */
 	public boolean contains(Circle circle) {
-		return (circle.x - circle.radius >= x) && (circle.x + circle.radius <= x + width)
-				&& (circle.y - circle.radius >= y) && (circle.y + circle.radius <= y + height);
+		return (circle.x - circle.radius >= x) && (circle.x + circle.radius <= x + width) && (circle.y - circle.radius >= y) && (circle.y + circle.radius <= y + height);
 	}
 
 	/**
@@ -253,8 +252,7 @@ public class Rectangle implements Serializable, Shape2D {
 		float xmax = xmin + rectangle.width;
 		float ymin = rectangle.y;
 		float ymax = ymin + rectangle.height;
-		return ((xmin > x && xmin < x + width) && (xmax > x && xmax < x + width))
-				&& ((ymin > y && ymin < y + height) && (ymax > y && ymax < y + height));
+		return ((xmin > x && xmin < x + width) && (xmax > x && xmax < x + width)) && ((ymin > y && ymin < y + height) && (ymax > y && ymax < y + height));
 	}
 
 	/**

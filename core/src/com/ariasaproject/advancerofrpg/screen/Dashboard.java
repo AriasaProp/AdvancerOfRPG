@@ -33,7 +33,7 @@ public class Dashboard extends Scene {
 	};
 	Actor previousActor = null;
 
-	public Dashboard(ApplicationListener appl){
+	public Dashboard(ApplicationListener appl) {
 		super(appl);
 	}
 
@@ -63,8 +63,7 @@ public class Dashboard extends Scene {
 	@Override
 	public void show() {
 		appl.stage.addCaptureListener(ignoreTouchDown);
-		appl.stage
-				.addAction(Actions.sequence(Actions.fadeIn(0.15f), Actions.removeListener(ignoreTouchDown, true)));
+		appl.stage.addAction(Actions.sequence(Actions.fadeIn(0.15f), Actions.removeListener(ignoreTouchDown, true)));
 		Skin skin = ApplicationListener.asset.get("uiskin/system/systemskin.json");
 		// all ui creation
 		// table initialize
@@ -153,11 +152,11 @@ public class Dashboard extends Scene {
 		mainTab.row();
 		table = new Table();
 		textButton = new TextButton("Share", skin, "tab");
-		textButton.addListener(new ClickListener(){
-				@Override
-				public void clicked(InputEvent e, float x, float y) {
-					
-				}
+		textButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent e, float x, float y) {
+
+			}
 		});
 		table.add(textButton).expand().fillX();
 		textButton = new TextButton("Social Media", skin, "tab");
@@ -205,60 +204,32 @@ public class Dashboard extends Scene {
 		configTab.setName("config");
 		GraphFunc.app.getInput().setInputProcessor(appl.stage);
 
-		//mainTab.addAction(reAct);
+		// mainTab.addAction(reAct);
 
 		// mainTab.removeCaptureListener(ignoreTouchDown);
 		appl.stage.addActor(mainTab);
 	}
 	/*
-	Action reAct = new Action() {
-		long pingUpdate = 1100;
-
-		@Override
-		public final boolean act(float delta) {
-			Pool pool = getPool();
-			setPool(null); // Ensure this action can't be returned to the pool inside the delegate action.
-			try {
-				pingUpdate -= (long) (delta * 1000.0f);
-				if (pingUpdate < 0) {
-					pingUpdate = 1100;
-					GraphFunc.app.getNet().sendHttpRequest("https://1.1.1.1/", Net.Method_GET, listener, 1000, null);
-				}
-			} finally {
-				setPool(pool);
-			}
-			return false;
-		}
-
-		HttpResponseListener listener = new HttpResponseListener() {
-			// for time date
-			final DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			final Label[] l = new Label[2];
-			float re = 1;
-			String da = "";
-
-			@Override
-			public void handle(long ping, HttpURLConnection r) {
-				try {
-					if (ping >= 0 && r != null && r.getResponseCode() == HttpURLConnection.HTTP_OK) {
-						if (l[0] == null)
-							l[0] = ((Group) getActor()).<Label>findActor("date time");
-						l[0].setText(format.format(r.getDate()));
-						re = Math.min(1, (float) ping / 1000l);
-						da = ping + " ms";
-					} else {
-						re = 1;
-						da = "Signal Lost";
-					}
-				} catch (IOException e) {
-					da = e.getMessage();
-				}
-				if (l[1] == null)
-					l[1] = ((Group) getActor()).<Label>findActor("ping");
-				l[1].setColor((float) Math.sqrt(re), (float) Math.sqrt(1f - re), 0, 1);
-				l[1].setText(da);
-			}
-		};
-	};
-*/
+	 * Action reAct = new Action() { long pingUpdate = 1100;
+	 * 
+	 * @Override public final boolean act(float delta) { Pool pool = getPool();
+	 * setPool(null); // Ensure this action can't be returned to the pool inside the
+	 * delegate action. try { pingUpdate -= (long) (delta * 1000.0f); if (pingUpdate
+	 * < 0) { pingUpdate = 1100;
+	 * GraphFunc.app.getNet().sendHttpRequest("https://1.1.1.1/", Net.Method_GET,
+	 * listener, 1000, null); } } finally { setPool(pool); } return false; }
+	 * 
+	 * HttpResponseListener listener = new HttpResponseListener() { // for time date
+	 * final DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm"); final
+	 * Label[] l = new Label[2]; float re = 1; String da = "";
+	 * 
+	 * @Override public void handle(long ping, HttpURLConnection r) { try { if (ping
+	 * >= 0 && r != null && r.getResponseCode() == HttpURLConnection.HTTP_OK) { if
+	 * (l[0] == null) l[0] = ((Group) getActor()).<Label>findActor("date time");
+	 * l[0].setText(format.format(r.getDate())); re = Math.min(1, (float) ping /
+	 * 1000l); da = ping + " ms"; } else { re = 1; da = "Signal Lost"; } } catch
+	 * (IOException e) { da = e.getMessage(); } if (l[1] == null) l[1] = ((Group)
+	 * getActor()).<Label>findActor("ping"); l[1].setColor((float) Math.sqrt(re),
+	 * (float) Math.sqrt(1f - re), 0, 1); l[1].setText(da); } }; };
+	 */
 }

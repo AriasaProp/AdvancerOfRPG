@@ -42,8 +42,7 @@ public class FileTextureArrayData implements TextureArrayData {
 				continue;
 			}
 			if (width != data.getWidth() || height != data.getHeight()) {
-				throw new RuntimeException(
-						"Error whilst preparing TextureArray: TextureArray Textures must have equal dimensions.");
+				throw new RuntimeException("Error whilst preparing TextureArray: TextureArray Textures must have equal dimensions.");
 			}
 		}
 		prepared = true;
@@ -58,17 +57,16 @@ public class FileTextureArrayData implements TextureArrayData {
 				TextureData texData = textureDatas[i];
 				Pixmap pixmap = texData.consumePixmap();
 				boolean disposePixmap = texData.disposePixmap();
-				if (texData.getFormat() != pixmap.getFormat()) {
-					Pixmap temp = new Pixmap(pixmap.getWidth(), pixmap.getHeight(), texData.getFormat());
-					temp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.getWidth(), pixmap.getHeight());
+				if (texData.getFormat() != pixmap.format) {
+					Pixmap temp = new Pixmap(pixmap.width, pixmap.height, texData.getFormat());
+					temp.drawPixmap(pixmap, 0, 0, 0, 0, pixmap.width, pixmap.height);
 					if (texData.disposePixmap()) {
 						pixmap.dispose();
 					}
 					pixmap = temp;
 					disposePixmap = true;
 				}
-				GraphFunc.tgf.glTexSubImage3D(TGF.GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, pixmap.getWidth(), pixmap.getHeight(),
-						1, pixmap.getFormat().GLFormat, pixmap.getFormat().GLType, pixmap.getPixels());
+				GraphFunc.tgf.glTexSubImage3D(TGF.GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, pixmap.width, pixmap.height, 1, pixmap.format.GLFormat, pixmap.format.GLType, pixmap.getPixels());
 				if (disposePixmap)
 					pixmap.dispose();
 			}
@@ -94,7 +92,7 @@ public class FileTextureArrayData implements TextureArrayData {
 	public Format getFormat() {
 		return format;
 	}
-	
+
 	@Override
 	public boolean isManaged() {
 		for (TextureData data : textureDatas) {

@@ -139,16 +139,14 @@ public class SplitPane extends WidgetGroup {
 		Actor firstWidget = this.firstWidget;
 		if (firstWidget != null) {
 			Rectangle firstWidgetBounds = this.firstWidgetBounds;
-			firstWidget.setBounds(firstWidgetBounds.x, firstWidgetBounds.y, firstWidgetBounds.width,
-					firstWidgetBounds.height);
+			firstWidget.setBounds(firstWidgetBounds.x, firstWidgetBounds.y, firstWidgetBounds.width, firstWidgetBounds.height);
 			if (firstWidget instanceof Layout)
 				((Layout) firstWidget).validate();
 		}
 		Actor secondWidget = this.secondWidget;
 		if (secondWidget != null) {
 			Rectangle secondWidgetBounds = this.secondWidgetBounds;
-			secondWidget.setBounds(secondWidgetBounds.x, secondWidgetBounds.y, secondWidgetBounds.width,
-					secondWidgetBounds.height);
+			secondWidget.setBounds(secondWidgetBounds.x, secondWidgetBounds.y, secondWidgetBounds.width, secondWidgetBounds.height);
 			if (secondWidget instanceof Layout)
 				((Layout) secondWidget).validate();
 		}
@@ -156,10 +154,8 @@ public class SplitPane extends WidgetGroup {
 
 	@Override
 	public float getPrefWidth() {
-		float first = firstWidget == null ? 0
-				: (firstWidget instanceof Layout ? ((Layout) firstWidget).getPrefWidth() : firstWidget.getWidth());
-		float second = secondWidget == null ? 0
-				: (secondWidget instanceof Layout ? ((Layout) secondWidget).getPrefWidth() : secondWidget.getWidth());
+		float first = firstWidget == null ? 0 : (firstWidget instanceof Layout ? ((Layout) firstWidget).getPrefWidth() : firstWidget.getWidth());
+		float second = secondWidget == null ? 0 : (secondWidget instanceof Layout ? ((Layout) secondWidget).getPrefWidth() : secondWidget.getWidth());
 		if (vertical)
 			return Math.max(first, second);
 		return first + style.handle.getMinWidth() + second;
@@ -167,10 +163,8 @@ public class SplitPane extends WidgetGroup {
 
 	@Override
 	public float getPrefHeight() {
-		float first = firstWidget == null ? 0
-				: (firstWidget instanceof Layout ? ((Layout) firstWidget).getPrefHeight() : firstWidget.getHeight());
-		float second = secondWidget == null ? 0
-				: (secondWidget instanceof Layout ? ((Layout) secondWidget).getPrefHeight() : secondWidget.getHeight());
+		float first = firstWidget == null ? 0 : (firstWidget instanceof Layout ? ((Layout) firstWidget).getPrefHeight() : firstWidget.getHeight());
+		float second = secondWidget == null ? 0 : (secondWidget instanceof Layout ? ((Layout) secondWidget).getPrefHeight() : secondWidget.getHeight());
 		if (!vertical)
 			return Math.max(first, second);
 		return first + style.handle.getMinHeight() + second;
@@ -288,19 +282,15 @@ public class SplitPane extends WidgetGroup {
 		if (vertical) {
 			float availableHeight = getHeight() - style.handle.getMinHeight();
 			if (firstWidget instanceof Layout)
-				effectiveMinAmount = Math.max(effectiveMinAmount,
-						Math.min(((Layout) firstWidget).getMinHeight() / availableHeight, 1));
+				effectiveMinAmount = Math.max(effectiveMinAmount, Math.min(((Layout) firstWidget).getMinHeight() / availableHeight, 1));
 			if (secondWidget instanceof Layout)
-				effectiveMaxAmount = Math.min(effectiveMaxAmount,
-						1 - Math.min(((Layout) secondWidget).getMinHeight() / availableHeight, 1));
+				effectiveMaxAmount = Math.min(effectiveMaxAmount, 1 - Math.min(((Layout) secondWidget).getMinHeight() / availableHeight, 1));
 		} else {
 			float availableWidth = getWidth() - style.handle.getMinWidth();
 			if (firstWidget instanceof Layout)
-				effectiveMinAmount = Math.max(effectiveMinAmount,
-						Math.min(((Layout) firstWidget).getMinWidth() / availableWidth, 1));
+				effectiveMinAmount = Math.max(effectiveMinAmount, Math.min(((Layout) firstWidget).getMinWidth() / availableWidth, 1));
 			if (secondWidget instanceof Layout)
-				effectiveMaxAmount = Math.min(effectiveMaxAmount,
-						1 - Math.min(((Layout) secondWidget).getMinWidth() / availableWidth, 1));
+				effectiveMaxAmount = Math.min(effectiveMaxAmount, 1 - Math.min(((Layout) secondWidget).getMinWidth() / availableWidth, 1));
 		}
 		if (effectiveMinAmount > effectiveMaxAmount) // Locked handle. Average the position.
 			splitAmount = 0.5f * (effectiveMinAmount + effectiveMaxAmount);

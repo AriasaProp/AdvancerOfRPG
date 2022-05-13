@@ -5,12 +5,12 @@ import com.ariasaproject.advancerofrpg.physics.box2d.Body;
 import com.ariasaproject.advancerofrpg.physics.box2d.JointDef;
 
 public class DistanceJointDef extends JointDef {
-	public DistanceJointDef () {
+	public DistanceJointDef() {
 		type = JointType.DistanceJoint;
 	}
 
 	/** Initialize the bodies, anchors, and length using the world anchors. */
-	public void initialize (Body bodyA, Body bodyB, Vector2 anchorA, Vector2 anchorB) {
+	public void initialize(Body bodyA, Body bodyB, Vector2 anchorA, Vector2 anchorB) {
 		this.bodyA = bodyA;
 		this.bodyB = bodyB;
 		this.localAnchorA.set(bodyA.getLocalPoint(anchorA));

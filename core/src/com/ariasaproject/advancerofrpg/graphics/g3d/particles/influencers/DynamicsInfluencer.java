@@ -85,14 +85,10 @@ public class DynamicsInfluencer extends Influencer {
 			// Previous position is the current position
 			// Attention, this requires that some other influencer setting the position
 			// channel must execute before this influencer.
-			for (int i = startIndex * positionChannel.strideSize, c = i
-					+ count * positionChannel.strideSize; i < c; i += positionChannel.strideSize) {
-				previousPositionChannel.data[i + ParticleChannels.XOffset] = positionChannel.data[i
-						+ ParticleChannels.XOffset];
-				previousPositionChannel.data[i + ParticleChannels.YOffset] = positionChannel.data[i
-						+ ParticleChannels.YOffset];
-				previousPositionChannel.data[i + ParticleChannels.ZOffset] = positionChannel.data[i
-						+ ParticleChannels.ZOffset];
+			for (int i = startIndex * positionChannel.strideSize, c = i + count * positionChannel.strideSize; i < c; i += positionChannel.strideSize) {
+				previousPositionChannel.data[i + ParticleChannels.XOffset] = positionChannel.data[i + ParticleChannels.XOffset];
+				previousPositionChannel.data[i + ParticleChannels.YOffset] = positionChannel.data[i + ParticleChannels.YOffset];
+				previousPositionChannel.data[i + ParticleChannels.ZOffset] = positionChannel.data[i + ParticleChannels.ZOffset];
 				/*
 				 * //Euler intialization
 				 * previousPositionChannel.data[i+ParticleChannels.XOffset] =
@@ -103,15 +99,13 @@ public class DynamicsInfluencer extends Influencer {
 		}
 		if (has2dAngularVelocity) {
 			// Rotation back to 0
-			for (int i = startIndex * rotationChannel.strideSize, c = i
-					+ count * rotationChannel.strideSize; i < c; i += rotationChannel.strideSize) {
+			for (int i = startIndex * rotationChannel.strideSize, c = i + count * rotationChannel.strideSize; i < c; i += rotationChannel.strideSize) {
 				rotationChannel.data[i + ParticleChannels.CosineOffset] = 1;
 				rotationChannel.data[i + ParticleChannels.SineOffset] = 0;
 			}
 		} else if (has3dAngularVelocity) {
 			// Rotation back to 0
-			for (int i = startIndex * rotationChannel.strideSize, c = i
-					+ count * rotationChannel.strideSize; i < c; i += rotationChannel.strideSize) {
+			for (int i = startIndex * rotationChannel.strideSize, c = i + count * rotationChannel.strideSize; i < c; i += rotationChannel.strideSize) {
 				rotationChannel.data[i + ParticleChannels.XOffset] = 0;
 				rotationChannel.data[i + ParticleChannels.YOffset] = 0;
 				rotationChannel.data[i + ParticleChannels.ZOffset] = 0;
@@ -129,8 +123,7 @@ public class DynamicsInfluencer extends Influencer {
 		if (hasAcceleration)
 			Arrays.fill(accellerationChannel.data, 0, controller.particles.size * accellerationChannel.strideSize, 0);
 		if (has2dAngularVelocity || has3dAngularVelocity)
-			Arrays.fill(angularVelocityChannel.data, 0, controller.particles.size * angularVelocityChannel.strideSize,
-					0);
+			Arrays.fill(angularVelocityChannel.data, 0, controller.particles.size * angularVelocityChannel.strideSize, 0);
 		// Sum all the forces/accelerations
 		for (int k = 0; k < velocities.size; ++k) {
 			velocities.items[k].update();
@@ -163,15 +156,9 @@ public class DynamicsInfluencer extends Influencer {
 				float x = positionChannel.data[offset + ParticleChannels.XOffset],
 						y = positionChannel.data[offset + ParticleChannels.YOffset],
 						z = positionChannel.data[offset + ParticleChannels.ZOffset];
-				positionChannel.data[offset + ParticleChannels.XOffset] = 2 * x
-						- previousPositionChannel.data[offset + ParticleChannels.XOffset]
-						+ accellerationChannel.data[offset + ParticleChannels.XOffset] * controller.deltaTimeSqr;
-				positionChannel.data[offset + ParticleChannels.YOffset] = 2 * y
-						- previousPositionChannel.data[offset + ParticleChannels.YOffset]
-						+ accellerationChannel.data[offset + ParticleChannels.YOffset] * controller.deltaTimeSqr;
-				positionChannel.data[offset + ParticleChannels.ZOffset] = 2 * z
-						- previousPositionChannel.data[offset + ParticleChannels.ZOffset]
-						+ accellerationChannel.data[offset + ParticleChannels.ZOffset] * controller.deltaTimeSqr;
+				positionChannel.data[offset + ParticleChannels.XOffset] = 2 * x - previousPositionChannel.data[offset + ParticleChannels.XOffset] + accellerationChannel.data[offset + ParticleChannels.XOffset] * controller.deltaTimeSqr;
+				positionChannel.data[offset + ParticleChannels.YOffset] = 2 * y - previousPositionChannel.data[offset + ParticleChannels.YOffset] + accellerationChannel.data[offset + ParticleChannels.YOffset] * controller.deltaTimeSqr;
+				positionChannel.data[offset + ParticleChannels.ZOffset] = 2 * z - previousPositionChannel.data[offset + ParticleChannels.ZOffset] + accellerationChannel.data[offset + ParticleChannels.ZOffset] * controller.deltaTimeSqr;
 				previousPositionChannel.data[offset + ParticleChannels.XOffset] = x;
 				previousPositionChannel.data[offset + ParticleChannels.YOffset] = y;
 				previousPositionChannel.data[offset + ParticleChannels.ZOffset] = z;

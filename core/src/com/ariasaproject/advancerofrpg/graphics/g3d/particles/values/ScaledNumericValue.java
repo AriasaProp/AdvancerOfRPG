@@ -87,8 +87,7 @@ public class ScaledNumericValue extends RangedNumericValue {
 		int startIndex = endIndex - 1;
 		float startValue = scaling[startIndex];
 		float startTime = timeline[startIndex];
-		return startValue
-				+ (scaling[endIndex] - startValue) * ((percent - startTime) / (timeline[endIndex] - startTime));
+		return startValue + (scaling[endIndex] - startValue) * ((percent - startTime) / (timeline[endIndex] - startTime));
 	}
 
 	public void load(ScaledNumericValue value) {

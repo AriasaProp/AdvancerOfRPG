@@ -68,20 +68,17 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 		if (bufferBuilder.hasDepthRenderBuffer) {
 			depthbufferHandle = tgf.glGenRenderbuffer();
 			tgf.glBindRenderbuffer(TGF.GL_RENDERBUFFER, depthbufferHandle);
-			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER, bufferBuilder.depthRenderBufferSpec.internalFormat, width,
-					height);
+			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER, bufferBuilder.depthRenderBufferSpec.internalFormat, width, height);
 		}
 		if (bufferBuilder.hasStencilRenderBuffer) {
 			stencilbufferHandle = tgf.glGenRenderbuffer();
 			tgf.glBindRenderbuffer(TGF.GL_RENDERBUFFER, stencilbufferHandle);
-			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER, bufferBuilder.stencilRenderBufferSpec.internalFormat, width,
-					height);
+			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER, bufferBuilder.stencilRenderBufferSpec.internalFormat, width, height);
 		}
 		if (bufferBuilder.hasPackedStencilDepthRenderBuffer) {
 			depthStencilPackedBufferHandle = tgf.glGenRenderbuffer();
 			tgf.glBindRenderbuffer(TGF.GL_RENDERBUFFER, depthStencilPackedBufferHandle);
-			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER,
-					bufferBuilder.packedStencilDepthRenderBufferSpec.internalFormat, width, height);
+			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER, bufferBuilder.packedStencilDepthRenderBufferSpec.internalFormat, width, height);
 		}
 		isMRT = bufferBuilder.textureAttachmentSpecs.size > 1;
 		int colorTextureCounter = 0;
@@ -90,15 +87,12 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 				T texture = createTexture(attachmentSpec);
 				textureAttachments.add(texture);
 				if (attachmentSpec.isColorTexture()) {
-					tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_COLOR_ATTACHMENT0 + colorTextureCounter,
-							TGF.GL_TEXTURE_2D, texture.getTextureObjectHandle(), 0);
+					tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_COLOR_ATTACHMENT0 + colorTextureCounter, TGF.GL_TEXTURE_2D, texture.getTextureObjectHandle(), 0);
 					colorTextureCounter++;
 				} else if (attachmentSpec.isDepth) {
-					tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, TGF.GL_TEXTURE_2D,
-							texture.getTextureObjectHandle(), 0);
+					tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, TGF.GL_TEXTURE_2D, texture.getTextureObjectHandle(), 0);
 				} else if (attachmentSpec.isStencil) {
-					tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_STENCIL_ATTACHMENT, TGF.GL_TEXTURE_2D,
-							texture.getTextureObjectHandle(), 0);
+					tgf.glFramebufferTexture2D(TGF.GL_FRAMEBUFFER, TGF.GL_STENCIL_ATTACHMENT, TGF.GL_TEXTURE_2D, texture.getTextureObjectHandle(), 0);
 				}
 			}
 		} else {
@@ -117,26 +111,20 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 			attachFrameBufferColorTexture(textureAttachments.first());
 		}
 		if (bufferBuilder.hasDepthRenderBuffer) {
-			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, TGF.GL_RENDERBUFFER,
-					depthbufferHandle);
+			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, TGF.GL_RENDERBUFFER, depthbufferHandle);
 		}
 		if (bufferBuilder.hasStencilRenderBuffer) {
-			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_STENCIL_ATTACHMENT, TGF.GL_RENDERBUFFER,
-					stencilbufferHandle);
+			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_STENCIL_ATTACHMENT, TGF.GL_RENDERBUFFER, stencilbufferHandle);
 		}
 		if (bufferBuilder.hasPackedStencilDepthRenderBuffer) {
-			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_STENCIL_ATTACHMENT, TGF.GL_RENDERBUFFER,
-					depthStencilPackedBufferHandle);
+			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_STENCIL_ATTACHMENT, TGF.GL_RENDERBUFFER, depthStencilPackedBufferHandle);
 		}
 		tgf.glBindRenderbuffer(TGF.GL_RENDERBUFFER, 0);
 		for (T texture : textureAttachments) {
 			tgf.glBindTexture(texture.glTarget, 0);
 		}
 		int result = tgf.glCheckFramebufferStatus(TGF.GL_FRAMEBUFFER);
-		if (result == TGF.GL_FRAMEBUFFER_UNSUPPORTED && bufferBuilder.hasDepthRenderBuffer
-				&& bufferBuilder.hasStencilRenderBuffer
-				&& (GraphFunc.tgf.supportsExtension("GL_OES_packed_depth_stencil")
-						|| GraphFunc.tgf.supportsExtension("GL_Ext_packed_depth_stencil"))) {
+		if (result == TGF.GL_FRAMEBUFFER_UNSUPPORTED && bufferBuilder.hasDepthRenderBuffer && bufferBuilder.hasStencilRenderBuffer && (GraphFunc.tgf.supportsExtension("GL_OES_packed_depth_stencil") || GraphFunc.tgf.supportsExtension("GL_Ext_packed_depth_stencil"))) {
 			if (bufferBuilder.hasDepthRenderBuffer) {
 				tgf.glDeleteRenderbuffer(depthbufferHandle);
 				depthbufferHandle = 0;
@@ -154,10 +142,8 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 			tgf.glBindRenderbuffer(TGF.GL_RENDERBUFFER, depthStencilPackedBufferHandle);
 			tgf.glRenderbufferStorage(TGF.GL_RENDERBUFFER, GL_DEPTH24_STENCIL8_OES, width, height);
 			tgf.glBindRenderbuffer(TGF.GL_RENDERBUFFER, 0);
-			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, TGF.GL_RENDERBUFFER,
-					depthStencilPackedBufferHandle);
-			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_STENCIL_ATTACHMENT, TGF.GL_RENDERBUFFER,
-					depthStencilPackedBufferHandle);
+			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, TGF.GL_RENDERBUFFER, depthStencilPackedBufferHandle);
+			tgf.glFramebufferRenderbuffer(TGF.GL_FRAMEBUFFER, TGF.GL_STENCIL_ATTACHMENT, TGF.GL_RENDERBUFFER, depthStencilPackedBufferHandle);
 			result = tgf.glCheckFramebufferStatus(TGF.GL_FRAMEBUFFER);
 		}
 		tgf.glBindFramebuffer(TGF.GL_FRAMEBUFFER, 0);
@@ -181,8 +167,7 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 			if (result == TGF.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)
 				throw new IllegalStateException("Frame buffer couldn't be constructed: missing attachment");
 			if (result == TGF.GL_FRAMEBUFFER_UNSUPPORTED)
-				throw new IllegalStateException(
-						"Frame buffer couldn't be constructed: unsupported combination of formats");
+				throw new IllegalStateException("Frame buffer couldn't be constructed: unsupported combination of formats");
 			throw new IllegalStateException("Frame buffer couldn't be constructed: unknown error " + result);
 		}
 		buffers.add(this);
@@ -315,16 +300,14 @@ public abstract class GLFrameBuffer<T extends GLTexture> implements Disposable {
 		}
 
 		public GLFrameBufferBuilder<U> addDepthTextureAttachment(int internalFormat, int type) {
-			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat,
-					TGF.GL_DEPTH_COMPONENT, type);
+			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, TGF.GL_DEPTH_COMPONENT, type);
 			spec.isDepth = true;
 			textureAttachmentSpecs.add(spec);
 			return this;
 		}
 
 		public GLFrameBufferBuilder<U> addStencilTextureAttachment(int internalFormat, int type) {
-			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat,
-					TGF.GL_STENCIL_ATTACHMENT, type);
+			FrameBufferTextureAttachmentSpec spec = new FrameBufferTextureAttachmentSpec(internalFormat, TGF.GL_STENCIL_ATTACHMENT, type);
 			spec.isStencil = true;
 			textureAttachmentSpecs.add(spec);
 			return this;

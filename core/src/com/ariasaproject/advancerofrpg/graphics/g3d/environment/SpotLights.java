@@ -27,24 +27,24 @@ public class SpotLights implements Iterable<SpotLights.SpotLight>, Disposable {
 	}
 
 	public void prepare() {
-		if (size == 0)
-			return;
-		for (int i = 0; i < size; i++) {
-			SpotLight l = items[i];
-			/*
-			 * final float r = Math.max(cam.far - cam.near, Math.max(cam.viewportHeight,
-			 * cam.viewportWidth)) * 0.7f; l.d.nor(); l.s.set(l.u).crs(l.d).nor();
-			 * l.u.set(l.d).crs(l.s).nor(); l.s.set(l.u).crs(l.d).nor();
-			 * l.pos.set(cam.position).mulAdd(cam.direction, cam.far / 2).mulAdd(l.d, -r);
-			 * l.proj[0] = l.s.x / r; l.proj[4] = l.s.y / r; l.proj[8] = l.s.z / r;
-			 * l.proj[12] = (-l.s.x * l.pos.x - l.s.y * l.pos.y - l.s.z * l.pos.z) / r;
-			 * l.proj[1] = l.u.x / r; l.proj[5] = l.u.y / r; l.proj[9] = l.u.z / r;
-			 * l.proj[13] = (-l.u.x * l.pos.x - l.u.y * l.pos.y - l.u.z * l.pos.z) / r;
-			 * l.proj[2] = l.d.x / r; l.proj[6] = l.d.y / r; l.proj[10] = l.d.y / r;
-			 * l.proj[14] = ((-l.d.x * l.pos.x - l.d.y * l.pos.y - l.d.z * l.pos.z) / r) -
-			 * 1; l.proj[3] = 0; l.proj[7] = 0; l.proj[11] = 0; l.proj[15] = 1;
-			 */
-		}
+		/*
+		 * if (size == 0) return; for (int i = 0; i < size; i++) {
+		 * 
+		 * SpotLight l = items[i]; final float r = Math.max(cam.far - cam.near,
+		 * Math.max(cam.viewportHeight, cam.viewportWidth)) * 0.7f; l.d.nor();
+		 * l.s.set(l.u).crs(l.d).nor(); l.u.set(l.d).crs(l.s).nor();
+		 * l.s.set(l.u).crs(l.d).nor(); l.pos.set(cam.position).mulAdd(cam.direction,
+		 * cam.far / 2).mulAdd(l.d, -r); l.proj[0] = l.s.x / r; l.proj[4] = l.s.y / r;
+		 * l.proj[8] = l.s.z / r; l.proj[12] = (-l.s.x * l.pos.x - l.s.y * l.pos.y -
+		 * l.s.z * l.pos.z) / r; l.proj[1] = l.u.x / r; l.proj[5] = l.u.y / r; l.proj[9]
+		 * = l.u.z / r; l.proj[13] = (-l.u.x * l.pos.x - l.u.y * l.pos.y - l.u.z *
+		 * l.pos.z) / r; l.proj[2] = l.d.x / r; l.proj[6] = l.d.y / r; l.proj[10] =
+		 * l.d.y / r; l.proj[14] = ((-l.d.x * l.pos.x - l.d.y * l.pos.y - l.d.z *
+		 * l.pos.z) / r) - 1; l.proj[3] = 0; l.proj[7] = 0; l.proj[11] = 0; l.proj[15] =
+		 * 1;
+		 * 
+		 * }
+		 */
 	}
 
 	public float[] getProjection(int index) {
@@ -221,7 +221,7 @@ public class SpotLights implements Iterable<SpotLights.SpotLight>, Disposable {
 		public SpotLight() {
 		}
 
-		public SpotLight(Color color, Vector3 position, Vector3 direction, float near, float far, float cutOffAngle,float exponent) {
+		public SpotLight(Color color, Vector3 position, Vector3 direction, float near, float far, float cutOffAngle, float exponent) {
 			this.pos.set(position);
 			BaseLight.color.set(color);
 			this.d.set(direction);

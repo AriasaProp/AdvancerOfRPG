@@ -17,8 +17,7 @@ public final class VertexAttribute {
 	}
 
 	public VertexAttribute(int usage, int numComponents, String alias, int unit) {
-		this(usage, numComponents, usage == Usage.ColorPacked ? TGF.GL_UNSIGNED_BYTE : TGF.GL_FLOAT,
-				usage == Usage.ColorPacked, alias, unit);
+		this(usage, numComponents, usage == Usage.ColorPacked ? TGF.GL_UNSIGNED_BYTE : TGF.GL_FLOAT, usage == Usage.ColorPacked, alias, unit);
 	}
 
 	public VertexAttribute(int usage, int numComponents, int type, boolean normalized, String alias) {
@@ -79,8 +78,7 @@ public final class VertexAttribute {
 	}
 
 	public boolean equals(final VertexAttribute other) {
-		return other != null && usage == other.usage && numComponents == other.numComponents && type == other.type
-				&& normalized == other.normalized && alias.equals(other.alias) && unit == other.unit;
+		return other != null && usage == other.usage && numComponents == other.numComponents && type == other.type && normalized == other.normalized && alias.equals(other.alias) && unit == other.unit;
 	}
 
 	public int getKey() {

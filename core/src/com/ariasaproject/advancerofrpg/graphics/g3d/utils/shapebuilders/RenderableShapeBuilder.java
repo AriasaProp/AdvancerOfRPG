@@ -31,8 +31,7 @@ public class RenderableShapeBuilder extends BaseShapeBuilder {
 	 * @param vectorSize         Size of the normal vector
 	 */
 	public static void buildNormals(MeshPartBuilder builder, RenderableProvider renderableProvider, float vectorSize) {
-		buildNormals(builder, renderableProvider, vectorSize, tmpColor0.set(0, 0, 1, 1), tmpColor1.set(1, 0, 0, 1),
-				tmpColor2.set(0, 1, 0, 1));
+		buildNormals(builder, renderableProvider, vectorSize, tmpColor0.set(0, 0, 1, 1), tmpColor1.set(1, 0, 0, 1), tmpColor2.set(0, 1, 0, 1));
 	}
 
 	/**
@@ -45,8 +44,7 @@ public class RenderableShapeBuilder extends BaseShapeBuilder {
 	 * @param tangentColor       Tangent vector's color
 	 * @param binormalColor      Binormal vector's color
 	 */
-	public static void buildNormals(MeshPartBuilder builder, RenderableProvider renderableProvider, float vectorSize,
-			Color normalColor, Color tangentColor, Color binormalColor) {
+	public static void buildNormals(MeshPartBuilder builder, RenderableProvider renderableProvider, float vectorSize, Color normalColor, Color tangentColor, Color binormalColor) {
 		renderableProvider.getRenderables(renderables, renderablesPool);
 		for (Renderable renderable : renderables) {
 			buildNormals(builder, renderable, vectorSize, normalColor, tangentColor, binormalColor);
@@ -65,8 +63,7 @@ public class RenderableShapeBuilder extends BaseShapeBuilder {
 	 * @param tangentColor  Tangent vector's color
 	 * @param binormalColor Binormal vector's color
 	 */
-	public static void buildNormals(MeshPartBuilder builder, Renderable renderable, float vectorSize, Color normalColor,
-			Color tangentColor, Color binormalColor) {
+	public static void buildNormals(MeshPartBuilder builder, Renderable renderable, float vectorSize, Color normalColor, Color tangentColor, Color binormalColor) {
 		Mesh mesh = renderable.meshPart.mesh;
 		// Position
 		int positionOffset = -1;
@@ -104,22 +101,18 @@ public class RenderableShapeBuilder extends BaseShapeBuilder {
 		for (int i = verticesOffset; i < verticesQuantity; i++) {
 			int id = i * attributesSize;
 			// Vertex position
-			tmpV0.set(vertices[id + positionOffset], vertices[id + positionOffset + 1],
-					vertices[id + positionOffset + 2]);
+			tmpV0.set(vertices[id + positionOffset], vertices[id + positionOffset + 1], vertices[id + positionOffset + 2]);
 			// Vertex normal, tangent, binormal
 			if (normalOffset != -1) {
-				tmpV1.set(vertices[id + normalOffset], vertices[id + normalOffset + 1],
-						vertices[id + normalOffset + 2]);
+				tmpV1.set(vertices[id + normalOffset], vertices[id + normalOffset + 1], vertices[id + normalOffset + 2]);
 				tmpV2.set(tmpV0).add(tmpV1.scl(vectorSize));
 			}
 			if (tangentOffset != -1) {
-				tmpV3.set(vertices[id + tangentOffset], vertices[id + tangentOffset + 1],
-						vertices[id + tangentOffset + 2]);
+				tmpV3.set(vertices[id + tangentOffset], vertices[id + tangentOffset + 1], vertices[id + tangentOffset + 2]);
 				tmpV4.set(tmpV0).add(tmpV3.scl(vectorSize));
 			}
 			if (binormalOffset != -1) {
-				tmpV5.set(vertices[id + binormalOffset], vertices[id + binormalOffset + 1],
-						vertices[id + binormalOffset + 2]);
+				tmpV5.set(vertices[id + binormalOffset], vertices[id + binormalOffset + 1], vertices[id + binormalOffset + 2]);
 				tmpV6.set(tmpV0).add(tmpV5.scl(vectorSize));
 			}
 			// World transform

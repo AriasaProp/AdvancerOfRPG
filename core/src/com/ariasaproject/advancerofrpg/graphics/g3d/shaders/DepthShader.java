@@ -1,5 +1,6 @@
 package com.ariasaproject.advancerofrpg.graphics.g3d.shaders;
 
+import com.ariasaproject.advancerofrpg.Files;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.graphics.GLTexture;
 import com.ariasaproject.advancerofrpg.graphics.Mesh;
@@ -32,7 +33,7 @@ public class DepthShader implements Disposable {
 	private final int[] locations;
 	private Mesh currentMesh;
 
-	private static String defaultShaderProgram = null;
+	static final String defaultShaderProgram = Files.readFileAsString("shader/depth.shaderprogram", Files.FileType.Internal);
 	// Global uniform locations
 	private final int u_projViewTrans;
 	// Object uniforms locations
@@ -54,9 +55,6 @@ public class DepthShader implements Disposable {
 		if (renderable.material != null)
 			combinedAttributes.set(renderable.material);
 
-		if (defaultShaderProgram == null)
-			defaultShaderProgram = GraphFunc.app.getFiles().internal("shader/depth.shaderprogram").readString();
-		String shaderProgram = defaultShaderProgram;
 		// create prefix based attribute local, global etc.
 		// prepared with light uniform to
 		String prefix = "";
@@ -87,7 +85,7 @@ public class DepthShader implements Disposable {
 		if (this.numBones > 0) {
 			prefix += "#define numBones " + this.numBones + "\n";
 		}
-		this.program = new ShaderProgram(shaderProgram, prefix);
+		this.program = new ShaderProgram(defaultShaderProgram, prefix);
 
 		// Global Uniforms
 		u_projViewTrans = program.fetchUniformLocation("u_projViewTrans", true);
@@ -168,12 +166,10 @@ public class DepthShader implements Disposable {
 		if (attrs.has(BlendingAttribute.Type)) {
 			if ((attributesMask & BlendingAttribute.Type) != BlendingAttribute.Type)
 				return false;
-			if (attrs.has(TextureAttribute.Diffuse) != ((attributesMask
-					& TextureAttribute.Diffuse) == TextureAttribute.Diffuse))
+			if (attrs.has(TextureAttribute.Diffuse) != ((attributesMask & TextureAttribute.Diffuse) == TextureAttribute.Diffuse))
 				return false;
 		}
-		final boolean skinned = ((renderable.meshPart.mesh.getVertexAttributes().getMask()
-				& Usage.BoneWeight) == Usage.BoneWeight);
+		final boolean skinned = ((renderable.meshPart.mesh.getVertexAttributes().getMask() & Usage.BoneWeight) == Usage.BoneWeight);
 		if (skinned != (numBones > 0))
 			return false;
 		if (!skinned)
@@ -280,8 +276,7 @@ public class DepthShader implements Disposable {
 	}
 
 	public interface Setter {
-		void set(final DepthShader shader, final int inputID, final Renderable renderable,
-				final Attributes combinedAttributes);
+		void set(final DepthShader shader, final int inputID, final Renderable renderable, final Attributes combinedAttributes);
 	}
 
 	public static class Uniform implements Validator {
@@ -299,8 +294,7 @@ public class DepthShader implements Disposable {
 
 		@Override
 		public boolean validate(final DepthShader depthshader, final int inputID, final Renderable renderable) {
-			final long matFlags = (renderable != null && renderable.material != null) ? renderable.material.getMask()
-					: 0;
+			final long matFlags = (renderable != null && renderable.material != null) ? renderable.material.getMask() : 0;
 			return ((matFlags & materialMask) == materialMask);
 		}
 	}
@@ -332,9 +326,7 @@ public class DepthShader implements Disposable {
 			public void set(DepthShader shader, int inputID, Renderable renderable, Attributes combinedAttributes) {
 				for (int i = 0; i < bones.length; i++) {
 					final int idx = i / 16;
-					bones[i] = (renderable.bones == null || idx >= renderable.bones.length
-							|| renderable.bones[idx] == null) ? idtMatrix.val[i % 16]
-									: renderable.bones[idx].val[i % 16];
+					bones[i] = (renderable.bones == null || idx >= renderable.bones.length || renderable.bones[idx] == null) ? idtMatrix.val[i % 16] : renderable.bones[idx].val[i % 16];
 				}
 				shader.program.setUniformMatrix4fv(shader.loc(inputID), bones, 0, numBones);
 			}

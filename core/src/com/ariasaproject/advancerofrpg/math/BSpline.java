@@ -33,8 +33,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T cubic(final T out, final float t, final T[] points, final boolean continuous,
-			final T tmp) {
+	public static <T extends Vector<T>> T cubic(final T out, final float t, final T[] points, final boolean continuous, final T tmp) {
 		final int n = continuous ? points.length : points.length - 3;
 		float u = t * n;
 		int i = (t >= 1f) ? (n - 1) : (int) u;
@@ -52,8 +51,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T cubic_derivative(final T out, final float t, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T cubic_derivative(final T out, final float t, final T[] points, final boolean continuous, final T tmp) {
 		final int n = continuous ? points.length : points.length - 3;
 		float u = t * n;
 		int i = (t >= 1f) ? (n - 1) : (int) u;
@@ -74,8 +72,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T cubic(final T out, final int i, final float u, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T cubic(final T out, final int i, final float u, final T[] points, final boolean continuous, final T tmp) {
 		final int n = points.length;
 		final float dt = 1f - u;
 		final float t2 = u * u;
@@ -90,12 +87,11 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 		return out;
 	}
 
-	public static <T extends Vector<T>> T cubic_derivative(final T out, final int i, final float u, final T[] points,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T cubic_derivative(final T out, final int i, final float u, final T[] points, final boolean continuous, final T tmp) {
 		final int n = points.length;
 		final float dt = 1f - u;
 		final float t2 = u * u;
-		//final float t3 = t2 * u;
+		// final float t3 = t2 * u;
 		out.set(points[i]).scl(1.5f * t2 - 2 * u);
 		if (continuous || i > 0)
 			out.add(tmp.set(points[(n + i - 1) % n]).scl(-0.5f * dt * dt));
@@ -117,8 +113,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T calculate(final T out, final float t, final T[] points, final int degree,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T calculate(final T out, final float t, final T[] points, final int degree, final boolean continuous, final T tmp) {
 		final int n = continuous ? points.length : points.length - degree;
 		float u = t * n;
 		int i = (t >= 1f) ? (n - 1) : (int) u;
@@ -137,8 +132,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T derivative(final T out, final float t, final T[] points, final int degree,
-			final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T derivative(final T out, final float t, final T[] points, final int degree, final boolean continuous, final T tmp) {
 		final int n = continuous ? points.length : points.length - degree;
 		float u = t * n;
 		int i = (t >= 1f) ? (n - 1) : (int) u;
@@ -160,8 +154,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T calculate(final T out, final int i, final float u, final T[] points,
-			final int degree, final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T calculate(final T out, final int i, final float u, final T[] points, final int degree, final boolean continuous, final T tmp) {
 		switch (degree) {
 		case 3:
 			return cubic(out, i, u, points, continuous, tmp);
@@ -183,8 +176,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @param tmp        A temporary vector used for the calculation
 	 * @return The value of out
 	 */
-	public static <T extends Vector<T>> T derivative(final T out, final int i, final float u, final T[] points,
-			final int degree, final boolean continuous, final T tmp) {
+	public static <T extends Vector<T>> T derivative(final T out, final int i, final float u, final T[] points, final int degree, final boolean continuous, final T tmp) {
 		switch (degree) {
 		case 3:
 			return cubic_derivative(out, i, u, points, continuous, tmp);
@@ -210,8 +202,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 			knots.ensureCapacity(spanCount);
 		}
 		for (int i = 0; i < spanCount; i++)
-			knots.add(calculate(controlPoints[0].cpy(), continuous ? i : (int) (i + 0.5f * degree), 0f, controlPoints,
-					degree, continuous, tmp));
+			knots.add(calculate(controlPoints[0].cpy(), continuous ? i : (int) (i + 0.5f * degree), 0f, controlPoints, degree, continuous, tmp));
 		return this;
 	}
 
@@ -228,8 +219,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @return The value of the spline at position u of the specified span
 	 */
 	public T valueAt(final T out, final int span, final float u) {
-		return calculate(out, continuous ? span : (span + (int) (degree * 0.5f)), u, controlPoints, degree, continuous,
-				tmp);
+		return calculate(out, continuous ? span : (span + (int) (degree * 0.5f)), u, controlPoints, degree, continuous, tmp);
 	}
 
 	@Override
@@ -245,8 +235,7 @@ public class BSpline<T extends Vector<T>> implements Path<T> {
 	 * @return The derivative of the spline at position u of the specified span
 	 */
 	public T derivativeAt(final T out, final int span, final float u) {
-		return derivative(out, continuous ? span : (span + (int) (degree * 0.5f)), u, controlPoints, degree, continuous,
-				tmp);
+		return derivative(out, continuous ? span : (span + (int) (degree * 0.5f)), u, controlPoints, degree, continuous, tmp);
 	}
 
 	/**

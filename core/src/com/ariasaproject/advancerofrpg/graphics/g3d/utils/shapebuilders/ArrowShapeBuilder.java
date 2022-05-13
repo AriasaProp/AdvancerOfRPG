@@ -5,8 +5,7 @@ import com.ariasaproject.advancerofrpg.math.Matrix4;
 import com.ariasaproject.advancerofrpg.math.Vector3;
 
 public class ArrowShapeBuilder extends BaseShapeBuilder {
-	public static void build(MeshPartBuilder builder, float x1, float y1, float z1, float x2, float y2, float z2,
-							 float capLength, float stemThickness, int divisions) {
+	public static void build(MeshPartBuilder builder, float x1, float y1, float z1, float x2, float y2, float z2, float capLength, float stemThickness, int divisions) {
 		Vector3 begin = obtainV3().set(x1, y1, z1), end = obtainV3().set(x2, y2, z2);
 		float length = begin.dst(end);
 		float coneHeight = length * capLength;

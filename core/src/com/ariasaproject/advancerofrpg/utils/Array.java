@@ -55,6 +55,14 @@ public class Array<T> implements Iterable<T> {
 		System.arraycopy(array, start, items, 0, size);
 	}
 
+	@Null
+	public void add(T value) {
+		T[] items = this.items;
+		if (size >= items.length)
+			items = resize(Math.max(8, (int) (size * 1.75f)));
+		items[size++] = value;
+	}
+
 	public void add(T... values) {
 		T[] items = this.items;
 		if (size + values.length - 1 >= items.length)
@@ -69,8 +77,7 @@ public class Array<T> implements Iterable<T> {
 
 	public void addAll(Array<? extends T> array, int start, int count) {
 		if (start + count > array.size)
-			throw new IllegalArgumentException(
-					"start + count must be <= size: " + start + " + " + count + " <= " + array.size);
+			throw new IllegalArgumentException("start + count must be <= size: " + start + " + " + count + " <= " + array.size);
 		addAll(array.items, start, count);
 	}
 

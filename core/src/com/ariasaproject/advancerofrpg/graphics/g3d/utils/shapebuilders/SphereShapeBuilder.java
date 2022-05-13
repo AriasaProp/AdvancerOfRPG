@@ -8,13 +8,11 @@ import com.ariasaproject.advancerofrpg.utils.ShortArray;
 public class SphereShapeBuilder extends BaseShapeBuilder {
 	private final static ShortArray tmpIndices = new ShortArray();
 
-	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisionsU,
-							 int divisionsV) {
+	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisionsU, int divisionsV) {
 		build(builder, width, height, depth, divisionsU, divisionsV, 0, 360, 0, 180);
 	}
 
-	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisionsU,
-							 int divisionsV, float angleUFrom, float angleUTo, float angleVFrom, float angleVTo) {
+	public static void build(MeshPartBuilder builder, float width, float height, float depth, int divisionsU, int divisionsV, float angleUFrom, float angleUTo, float angleVFrom, float angleVTo) {
 		final boolean closedVFrom = MathUtils.isEqual(angleVFrom, 0f);
 		final boolean closedVTo = MathUtils.isEqual(angleVTo, 180f);
 		final float hw = width * 0.5f;
@@ -58,14 +56,11 @@ public class SphereShapeBuilder extends BaseShapeBuilder {
 				final int o = tempOffset + s;
 				if ((iv > 0) && (iu > 0)) { // FIXME don't duplicate lines and points
 					if (iv == 1 && closedVFrom) {
-						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s),
-										 tmpIndices.get((o - (divisionsU + 1)) % s));
+						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s), tmpIndices.get((o - (divisionsU + 1)) % s));
 					} else if (iv == divisionsV && closedVTo) {
-						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - (divisionsU + 2)) % s),
-										 tmpIndices.get((o - (divisionsU + 1)) % s));
+						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - (divisionsU + 2)) % s), tmpIndices.get((o - (divisionsU + 1)) % s));
 					} else {
-						builder.rect(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s),
-									 tmpIndices.get((o - (divisionsU + 2)) % s), tmpIndices.get((o - (divisionsU + 1)) % s));
+						builder.rect(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s), tmpIndices.get((o - (divisionsU + 2)) % s), tmpIndices.get((o - (divisionsU + 1)) % s));
 					}
 				}
 				tempOffset = (tempOffset + 1) % tmpIndices.size;
@@ -73,10 +68,10 @@ public class SphereShapeBuilder extends BaseShapeBuilder {
 		}
 	}
 
-	//octahedron sphere lvl 5
+	// octahedron sphere lvl 5
 	static final ShortArray ind = new ShortArray();
 
-    public static void build(MeshPartBuilder builder, final float width, final float height, final float depth, final int subdivisions) {
+	public static void build(MeshPartBuilder builder, final float width, final float height, final float depth, final int subdivisions) {
 		ind.clear();
 
 		vertTmp0.set(null);
@@ -91,7 +86,7 @@ public class SphereShapeBuilder extends BaseShapeBuilder {
 		final float hD = depth * 0.5f;
 
 		for (int d = 0; d < 4; d++) {
-			//float dirRad = MathUtils.PI / 2 * d;
+			// float dirRad = MathUtils.PI / 2 * d;
 			float step = MathUtils.PI / 2 / (subdivisions + 1);
 			for (float v = MathUtils.PI / 2 * d; v < MathUtils.PI / 2 * (d + 1); v += step) {
 				vertTmp0.position.set(MathUtils.sin(v) * hW, 0, MathUtils.cos(v) * hD);
@@ -101,14 +96,14 @@ public class SphereShapeBuilder extends BaseShapeBuilder {
 				vertTmp1.position.set(MathUtils.sin(v) * hW, 0, MathUtils.cos(v) * hD);
 				vertTmp1.normal.set(vertTmp1.position).nor();
 				vertTmp1.uv.set(d / 4, 0.5f + 0.5f * vertTmp1.normal.y);
-				
+
 				vertTmp2.position.set(MathUtils.sin(v + step) * hW, 0, MathUtils.cos(v + step) * hD);
 				vertTmp2.normal.set(vertTmp2.position).nor();
 				vertTmp2.uv.set(d / 4, 0.5f + 0.5f * vertTmp2.normal.y);
-				
+
 				builder.triangle(vertTmp0, vertTmp1, vertTmp2);
 			}
 		}
-    }
+	}
 
 }

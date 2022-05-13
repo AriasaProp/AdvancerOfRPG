@@ -369,8 +369,7 @@ public class Json {
 				writer.name(field.getName());
 				writeValue(value, field.getType(), metadata.elementType);
 			} catch (ReflectionException ex) {
-				throw new SerializationException(
-						"Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
+				throw new SerializationException("Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
 			} catch (SerializationException ex) {
 				ex.addTrace(field + " (" + type.getName() + ")");
 				throw ex;
@@ -407,8 +406,7 @@ public class Json {
 			try {
 				values[defaultIndex++] = field.get(object);
 			} catch (ReflectionException ex) {
-				throw new SerializationException(
-						"Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
+				throw new SerializationException("Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
 			} catch (SerializationException ex) {
 				ex.addTrace(field + " (" + type.getName() + ")");
 				throw ex;
@@ -460,8 +458,7 @@ public class Json {
 			writer.name(jsonName);
 			writeValue(field.get(object), field.getType(), elementType);
 		} catch (ReflectionException ex) {
-			throw new SerializationException("Error accessing field: " + field.getName() + " (" + type.getName() + ")",
-					ex);
+			throw new SerializationException("Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
 		} catch (SerializationException ex) {
 			ex.addTrace(field + " (" + type.getName() + ")");
 			throw ex;
@@ -564,18 +561,12 @@ public class Json {
 				writer.value(null);
 				return;
 			}
-			if ((knownType != null && knownType.isPrimitive()) || knownType == String.class
-					|| knownType == Integer.class || knownType == Boolean.class || knownType == Float.class
-					|| knownType == Long.class || knownType == Double.class || knownType == Short.class
-					|| knownType == Byte.class || knownType == Character.class) {
+			if ((knownType != null && knownType.isPrimitive()) || knownType == String.class || knownType == Integer.class || knownType == Boolean.class || knownType == Float.class || knownType == Long.class || knownType == Double.class || knownType == Short.class || knownType == Byte.class || knownType == Character.class) {
 				writer.value(value);
 				return;
 			}
 			Class actualType = value.getClass();
-			if (actualType.isPrimitive() || actualType == String.class || actualType == Integer.class
-					|| actualType == Boolean.class || actualType == Float.class || actualType == Long.class
-					|| actualType == Double.class || actualType == Short.class || actualType == Byte.class
-					|| actualType == Character.class) {
+			if (actualType.isPrimitive() || actualType == String.class || actualType == Integer.class || actualType == Boolean.class || actualType == Float.class || actualType == Long.class || actualType == Double.class || actualType == Short.class || actualType == Byte.class || actualType == Character.class) {
 				writeObjectStart(actualType, null);
 				writeValue("value", value);
 				writeObjectEnd();
@@ -595,9 +586,7 @@ public class Json {
 			// JSON array special cases.
 			if (value instanceof Array) {
 				if (knownType != null && actualType != knownType && actualType != Array.class)
-					throw new SerializationException(
-							"Serialization of an Array other than the known type is not supported.\n" + "Known type: "
-									+ knownType + "\nActual type: " + actualType);
+					throw new SerializationException("Serialization of an Array other than the known type is not supported.\n" + "Known type: " + knownType + "\nActual type: " + actualType);
 				writeArrayStart();
 				Array array = (Array) value;
 				for (int i = 0, n = array.size; i < n; i++)
@@ -607,9 +596,7 @@ public class Json {
 			}
 			if (value instanceof Queue) {
 				if (knownType != null && actualType != knownType && actualType != Queue.class)
-					throw new SerializationException(
-							"Serialization of a Queue other than the known type is not supported.\n" + "Known type: "
-									+ knownType + "\nActual type: " + actualType);
+					throw new SerializationException("Serialization of a Queue other than the known type is not supported.\n" + "Known type: " + knownType + "\nActual type: " + actualType);
 				writeArrayStart();
 				Queue queue = (Queue) value;
 				for (int i = 0, n = queue.size; i < n; i++)
@@ -618,8 +605,7 @@ public class Json {
 				return;
 			}
 			if (value instanceof Collection) {
-				if (typeName != null && actualType != ArrayList.class
-						&& (knownType == null || knownType != actualType)) {
+				if (typeName != null && actualType != ArrayList.class && (knownType == null || knownType != actualType)) {
 					writeObjectStart(actualType, knownType);
 					writeArrayStart("items");
 					for (Object item : (Collection) value)
@@ -990,8 +976,7 @@ public class Json {
 		try {
 			field.set(object, readValue(field.getType(), elementType, jsonValue));
 		} catch (ReflectionException ex) {
-			throw new SerializationException(
-					"Error accessing field: " + field.getName() + " (" + field.getDeclaringClass().getName() + ")", ex);
+			throw new SerializationException("Error accessing field: " + field.getName() + " (" + field.getDeclaringClass().getName() + ")", ex);
 		} catch (SerializationException ex) {
 			ex.addTrace(field.getName() + " (" + field.getDeclaringClass().getName() + ")");
 			throw ex;
@@ -1014,8 +999,7 @@ public class Json {
 				if (ignoreUnknownFields || ignoreUnknownField(type, child.name)) {
 					continue;
 				} else {
-					SerializationException ex = new SerializationException(
-							"Field not found: " + child.name + " (" + type.getName() + ")");
+					SerializationException ex = new SerializationException("Field not found: " + child.name + " (" + type.getName() + ")");
 					ex.addTrace(child.trace());
 					throw ex;
 				}
@@ -1027,8 +1011,7 @@ public class Json {
 			try {
 				field.set(object, readValue(field.getType(), metadata.elementType, child));
 			} catch (ReflectionException ex) {
-				throw new SerializationException(
-						"Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
+				throw new SerializationException("Error accessing field: " + field.getName() + " (" + type.getName() + ")", ex);
 			} catch (SerializationException ex) {
 				ex.addTrace(field.getName() + " (" + type.getName() + ")");
 				throw ex;
@@ -1137,15 +1120,12 @@ public class Json {
 				// JSON object wrapper to specify type.
 				jsonData = jsonData.get("items");
 				if (jsonData == null)
-					throw new SerializationException(
-							"Unable to convert object to collection: " + jsonData + " (" + type.getName() + ")");
+					throw new SerializationException("Unable to convert object to collection: " + jsonData + " (" + type.getName() + ")");
 			} else {
 				Serializer serializer = classToSerializer.get(type);
 				if (serializer != null)
 					return (T) serializer.read(this, jsonData, type);
-				if (type == String.class || type == Integer.class || type == Boolean.class || type == Float.class
-						|| type == Long.class || type == Double.class || type == Short.class || type == Byte.class
-						|| type == Character.class || ClassReflection.isAssignableFrom(Enum.class, type)) {
+				if (type == String.class || type == Integer.class || type == Boolean.class || type == Float.class || type == Long.class || type == Double.class || type == Short.class || type == Byte.class || type == Character.class || ClassReflection.isAssignableFrom(Enum.class, type)) {
 					return readValue("value", type, jsonData);
 				}
 				Object object = newInstance(type);
@@ -1259,8 +1239,7 @@ public class Json {
 					ArrayReflection.set(result, i++, readValue(elementType, null, child));
 				return (T) result;
 			}
-			throw new SerializationException(
-					"Unable to convert value to required type: " + jsonData + " (" + type.getName() + ")");
+			throw new SerializationException("Unable to convert value to required type: " + jsonData + " (" + type.getName() + ")");
 		}
 		if (jsonData.isNumber()) {
 			try {
@@ -1323,8 +1302,7 @@ public class Json {
 			}
 			if (type == CharSequence.class)
 				return (T) string;
-			throw new SerializationException(
-					"Unable to convert value to required type: " + jsonData + " (" + type.getName() + ")");
+			throw new SerializationException("Unable to convert value to required type: " + jsonData + " (" + type.getName() + ")");
 		}
 		return null;
 	}
@@ -1379,14 +1357,11 @@ public class Json {
 					return type.getEnumConstants()[0];
 				}
 				if (type.isArray())
-					throw new SerializationException(
-							"Encountered JSON object when expected array of type: " + type.getName(), ex);
+					throw new SerializationException("Encountered JSON object when expected array of type: " + type.getName(), ex);
 				else if (ClassReflection.isMemberClass(type) && !ClassReflection.isStaticClass(type))
-					throw new SerializationException(
-							"Class cannot be created (non-static member class): " + type.getName(), ex);
+					throw new SerializationException("Class cannot be created (non-static member class): " + type.getName(), ex);
 				else
-					throw new SerializationException(
-							"Class cannot be created (missing no-arg constructor): " + type.getName(), ex);
+					throw new SerializationException("Class cannot be created (missing no-arg constructor): " + type.getName(), ex);
 			} catch (Exception privateConstructorException) {
 				ex = privateConstructorException;
 			}
@@ -1437,8 +1412,7 @@ public class Json {
 
 		public FieldMetadata(Field field) {
 			this.field = field;
-			int index = (ClassReflection.isAssignableFrom(ObjectMap.class, field.getType())
-					|| ClassReflection.isAssignableFrom(Map.class, field.getType())) ? 1 : 0;
+			int index = (ClassReflection.isAssignableFrom(ObjectMap.class, field.getType()) || ClassReflection.isAssignableFrom(Map.class, field.getType())) ? 1 : 0;
 			this.elementType = field.getElementType(index);
 			deprecated = field.isAnnotationPresent(Deprecated.class);
 		}

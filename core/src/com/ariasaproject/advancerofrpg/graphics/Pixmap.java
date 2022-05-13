@@ -7,27 +7,26 @@ import com.ariasaproject.advancerofrpg.utils.Disposable;
 
 public class Pixmap implements Disposable {
 	static final long[] nativeData = new long[4];
-	int color = 0;
-	private Format format;
+	public Format format;
 	private Filter filter = Filter.Linear;
 	private boolean disposed;
 	private final long basePtr;
 	private final ByteBuffer pixels;
-	private final int width, height;
-	
+	public final int width, height;
+
+	static final native void initialize();
+
 	static {
 		initialize();
 	}
-	
-	private static native void initialize();
 
 	public Pixmap(int width, int height, Format format) {
 		this.pixels = newPixmap(nativeData, width, height, format.ordinal());
 		this.basePtr = nativeData[0];
 		this.width = (int) nativeData[1];
 		this.height = (int) nativeData[2];
-		this.format = Format.values()[(int) nativeData[3]-1];
-		fill();
+		this.format = Format.values()[(int) nativeData[3] - 1];
+		clear(0xffffffff);
 	}
 
 	public Pixmap(byte[] encodedData, int offset, int len) {
@@ -37,7 +36,7 @@ public class Pixmap implements Disposable {
 		this.basePtr = nativeData[0];
 		this.width = (int) nativeData[1];
 		this.height = (int) nativeData[2];
-		this.format = Format.values()[(int) nativeData[3]-1];
+		this.format = Format.values()[(int) nativeData[3] - 1];
 	}
 
 	public Pixmap(FileHandle file) {
@@ -48,20 +47,19 @@ public class Pixmap implements Disposable {
 		basePtr = nativeData[0];
 		this.width = (int) nativeData[1];
 		this.height = (int) nativeData[2];
-		this.format = Format.values()[(int) nativeData[3]-1];
+		this.format = Format.values()[(int) nativeData[3] - 1];
 	}
 
 	private static native ByteBuffer load(long[] nativeData, byte[] buffer, int offset, int len);
 
 	private static native ByteBuffer newPixmap(long[] nativeData, int width, int height, int format);
 
-	private static native void drawPixmap(long src, long dst, int srcX, int srcY, int srcWidth, int srcHeight, int dstX,
-			int dstY, int dstWidth, int dstHeight);
+	private native void drawPixmap(long src, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight);
 
 	private native void free();
 
 	public native void clear(int color);
-	
+
 	public native void setPixel(int x, int y, int color);
 
 	public native int getPixel(int x, int y);
@@ -71,36 +69,11 @@ public class Pixmap implements Disposable {
 	public static native String getFailureReason();
 
 	public void drawPixmap(Pixmap pixmap, int srcX, int srcY, int dstX, int dstY, int width, int height) {
-		drawPixmap(pixmap.basePtr, basePtr, srcX, srcY, width, height, dstX, dstY, width, height);
+		drawPixmap(pixmap.basePtr, srcX, srcY, width, height, dstX, dstY, width, height);
 	}
 
-	public void drawPixmap(Pixmap pixmap, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY,
-			int dstWidth, int dstHeight) {
-		drawPixmap(pixmap.basePtr, basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
-	}
-
-	public void setColor(int color) {
-		this.color = color;
-	}
-
-	public void setColor(float r, float g, float b, float a) {
-		color = Color.rgba8888(r, g, b, a);
-	}
-
-	public void setColor(Color color) {
-		this.color = Color.rgba8888(color.r, color.g, color.b, color.a);
-	}
-
-	public void fill() {
-		clear(color);
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
+	public void drawPixmap(Pixmap pixmap, int srcX, int srcY, int srcWidth, int srcHeight, int dstX, int dstY, int dstWidth, int dstHeight) {
+		drawPixmap(pixmap.basePtr, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
 	}
 
 	@Override
@@ -121,10 +94,6 @@ public class Pixmap implements Disposable {
 		return pixels;
 	}
 
-	public Format getFormat() {
-		return format;
-	}
-
 	public Filter getFilter() {
 		return filter;
 	}
@@ -135,27 +104,18 @@ public class Pixmap implements Disposable {
 	}
 
 	public static enum Format {
-		Alpha(TGF.GL_ALPHA, TGF.GL_ALPHA, TGF.GL_UNSIGNED_BYTE),
-		LuminanceAlpha(TGF.GL_LUMINANCE_ALPHA, TGF.GL_LUMINANCE_ALPHA, TGF.GL_UNSIGNED_BYTE),
-		RGB888(TGF.GL_RGB8, TGF.GL_RGB, TGF.GL_UNSIGNED_BYTE),
-		RGBA8888(TGF.GL_RGBA8, TGF.GL_RGBA, TGF.GL_UNSIGNED_BYTE),
-		RGB565(TGF.GL_RGB565, TGF.GL_RGB, TGF.GL_UNSIGNED_SHORT_5_6_5),
-		RGBA4444(TGF.GL_RGBA4, TGF.GL_RGBA, TGF.GL_UNSIGNED_SHORT_4_4_4_4);
-		
-		public final int InternalGLFormat, GLFormat, GLType;
-		/* GL Format should be one of them
-		 Red?(?, TGF.GL_RED, ?),
-		 RG?(?, TGF.GL_RG, ?),
-		 RGB?(?, TGF.GL_RGB, ?),
-		 BGR?(?, TGF.GL_BGR, ?),
-		 RGBA?(?, TGF.GL_RGBA, ?),
-		 BGRA?(?, TGF.GL_BGRA, ?),
-		 Stencil?(?, TGF.GL_STENCIL_INDEX, ?),
-		 Depth?(?, TGF.GL_DEPTH_COMPONENT, ?),
-		 DepthStencil?(?, TGF.GL_DEPTH_STENCIL, ?),
+		Alpha(TGF.GL_ALPHA, TGF.GL_ALPHA, TGF.GL_UNSIGNED_BYTE), LuminanceAlpha(TGF.GL_LUMINANCE_ALPHA, TGF.GL_LUMINANCE_ALPHA, TGF.GL_UNSIGNED_BYTE), RGB888(TGF.GL_RGB8, TGF.GL_RGB, TGF.GL_UNSIGNED_BYTE), RGBA8888(TGF.GL_RGBA8, TGF.GL_RGBA, TGF.GL_UNSIGNED_BYTE), RGB565(TGF.GL_RGB565, TGF.GL_RGB, TGF.GL_UNSIGNED_SHORT_5_6_5), RGBA4444(TGF.GL_RGBA4, TGF.GL_RGBA, TGF.GL_UNSIGNED_SHORT_4_4_4_4);
 
-		 GL_RED_INTEGER, GL_RG_INTEGER, GL_RGB_INTEGER, GL_BGR_INTEGER, GL_RGBA_INTEGER, GL_BGRA_INTEGER,
-		*/
+		public final int InternalGLFormat, GLFormat, GLType;
+		/*
+		 * GL Format should be one of them Red?(?, TGF.GL_RED, ?), RG?(?, TGF.GL_RG, ?),
+		 * RGB?(?, TGF.GL_RGB, ?), BGR?(?, TGF.GL_BGR, ?), RGBA?(?, TGF.GL_RGBA, ?),
+		 * BGRA?(?, TGF.GL_BGRA, ?), Stencil?(?, TGF.GL_STENCIL_INDEX, ?), Depth?(?,
+		 * TGF.GL_DEPTH_COMPONENT, ?), DepthStencil?(?, TGF.GL_DEPTH_STENCIL, ?),
+		 * 
+		 * GL_RED_INTEGER, GL_RG_INTEGER, GL_RGB_INTEGER, GL_BGR_INTEGER,
+		 * GL_RGBA_INTEGER, GL_BGRA_INTEGER,
+		 */
 
 		Format(final int a, final int b, final int c) {
 			InternalGLFormat = a;
@@ -165,7 +125,7 @@ public class Pixmap implements Disposable {
 	}
 
 	public static enum Filter {
-		Neares(false), Linear(true);
+		Nearest(false), Linear(true);
 		final boolean nativeFormat;
 
 		Filter(final boolean n) {

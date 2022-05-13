@@ -45,8 +45,7 @@ public class ParticleChannels {
 	public static final ChannelDescriptor Rotation3D = new ChannelDescriptor(newGlobalId(), float.class, 4);
 	public static final ChannelDescriptor Scale = new ChannelDescriptor(newGlobalId(), float.class, 1);
 	public static final ChannelDescriptor ModelInstance = new ChannelDescriptor(newGlobalId(), ModelInstance.class, 1);
-	public static final ChannelDescriptor ParticleController = new ChannelDescriptor(newGlobalId(),
-			ParticleController.class, 1);
+	public static final ChannelDescriptor ParticleController = new ChannelDescriptor(newGlobalId(), ParticleController.class, 1);
 	public static final ChannelDescriptor Acceleration = new ChannelDescriptor(newGlobalId(), float.class, 3); // gl
 																												// units/s2
 	public static final ChannelDescriptor AngularVelocity2D = new ChannelDescriptor(newGlobalId(), float.class, 1);
@@ -153,8 +152,7 @@ public class ParticleChannels {
 		@Override
 		public void init(FloatChannel channel) {
 			for (int i = 0, c = channel.data.length; i < c; i += channel.strideSize) {
-				channel.data[i + ParticleChannels.XOffset] = channel.data[i
-						+ ParticleChannels.YOffset] = channel.data[i + ParticleChannels.ZOffset] = 0;
+				channel.data[i + ParticleChannels.XOffset] = channel.data[i + ParticleChannels.YOffset] = channel.data[i + ParticleChannels.ZOffset] = 0;
 				channel.data[i + ParticleChannels.WOffset] = 1;
 			}
 		}

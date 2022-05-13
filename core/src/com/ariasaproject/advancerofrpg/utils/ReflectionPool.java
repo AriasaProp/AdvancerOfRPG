@@ -53,8 +53,7 @@ public class ReflectionPool<T> extends Pool<T> {
 		try {
 			return (T) constructor.newInstance((Object[]) null);
 		} catch (Exception ex) {
-			throw new RuntimeException("Unable to create new instance: " + constructor.getDeclaringClass().getName(),
-					ex);
+			throw new RuntimeException("Unable to create new instance: " + constructor.getDeclaringClass().getName(), ex);
 		}
 	}
 }

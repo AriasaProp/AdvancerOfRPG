@@ -260,8 +260,7 @@ public class StrBuilder implements Appendable, CharSequence {
 				}
 				return;
 			}
-			throw new StringIndexOutOfBoundsException(
-					"offset " + start + ", length " + length + ", char[].length " + value.length);
+			throw new StringIndexOutOfBoundsException("offset " + start + ", length " + length + ", char[].length " + value.length);
 		}
 		throw new StringIndexOutOfBoundsException(index);
 	}
@@ -367,13 +366,11 @@ public class StrBuilder implements Appendable, CharSequence {
 		for (int i = 0, mid = length / 2; i < mid; i++, --end) {
 			char frontLow = chars[i + 1];
 			char endHigh = chars[end - 1];
-			boolean surAtFront = allowFrontSur && frontLow >= 0xdc00 && frontLow <= 0xdfff && frontHigh >= 0xd800
-					&& frontHigh <= 0xdbff;
+			boolean surAtFront = allowFrontSur && frontLow >= 0xdc00 && frontLow <= 0xdfff && frontHigh >= 0xd800 && frontHigh <= 0xdbff;
 			if (surAtFront && length < 3) {
 				return;
 			}
-			boolean surAtEnd = allowEndSur && endHigh >= 0xd800 && endHigh <= 0xdbff && endLow >= 0xdc00
-					&& endLow <= 0xdfff;
+			boolean surAtEnd = allowEndSur && endHigh >= 0xd800 && endHigh <= 0xdbff && endLow >= 0xdc00 && endLow <= 0xdfff;
 			allowFrontSur = allowEndSur = true;
 			if (surAtFront == surAtEnd) {
 				if (surAtFront) {

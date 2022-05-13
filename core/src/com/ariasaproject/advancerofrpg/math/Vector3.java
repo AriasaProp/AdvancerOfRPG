@@ -89,8 +89,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	/**
 	 * @return The euclidean distance between the two specified vectors
 	 */
-	public static float dst(final float x1, final float y1, final float z1, final float x2, final float y2,
-			final float z2) {
+	public static float dst(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2) {
 		final float a = x2 - x1;
 		final float b = y2 - y1;
 		final float c = z2 - z1;
@@ -100,8 +99,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	/**
 	 * @return the squared distance between the given points
 	 */
-	public static float dst2(final float x1, final float y1, final float z1, final float x2, final float y2,
-			final float z2) {
+	public static float dst2(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2) {
 		final float a = x2 - x1;
 		final float b = y2 - y1;
 		final float c = z2 - z1;
@@ -384,9 +382,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 * @return This vector for chaining
 	 */
 	public Vector3 mul4x3(float[] matrix) {
-		return set(x * matrix[0] + y * matrix[3] + z * matrix[6] + matrix[9],
-				x * matrix[1] + y * matrix[4] + z * matrix[7] + matrix[10],
-				x * matrix[2] + y * matrix[5] + z * matrix[8] + matrix[11]);
+		return set(x * matrix[0] + y * matrix[3] + z * matrix[6] + matrix[9], x * matrix[1] + y * matrix[4] + z * matrix[7] + matrix[10], x * matrix[2] + y * matrix[5] + z * matrix[8] + matrix[11]);
 	}
 
 	/**
@@ -398,9 +394,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 mul(final Matrix4 matrix) {
 		final float[] l_mat = matrix.val;
-		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02] + l_mat[Matrix4.M03],
-				x * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13],
-				x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]);
+		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02] + l_mat[Matrix4.M03], x * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13], x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]);
 	}
 
 	/**
@@ -412,9 +406,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 traMul(final Matrix4 matrix) {
 		final float[] l_mat = matrix.val;
-		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20] + l_mat[Matrix4.M30],
-				x * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21] + l_mat[Matrix4.M31],
-				x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M32]);
+		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20] + l_mat[Matrix4.M30], x * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21] + l_mat[Matrix4.M31], x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M32]);
 	}
 
 	/**
@@ -425,9 +417,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 mul(Matrix3 matrix) {
 		final float[] l_mat = matrix.val;
-		return set(x * l_mat[Matrix3.M00] + y * l_mat[Matrix3.M01] + z * l_mat[Matrix3.M02],
-				x * l_mat[Matrix3.M10] + y * l_mat[Matrix3.M11] + z * l_mat[Matrix3.M12],
-				x * l_mat[Matrix3.M20] + y * l_mat[Matrix3.M21] + z * l_mat[Matrix3.M22]);
+		return set(x * l_mat[Matrix3.M00] + y * l_mat[Matrix3.M01] + z * l_mat[Matrix3.M02], x * l_mat[Matrix3.M10] + y * l_mat[Matrix3.M11] + z * l_mat[Matrix3.M12], x * l_mat[Matrix3.M20] + y * l_mat[Matrix3.M21] + z * l_mat[Matrix3.M22]);
 	}
 
 	/**
@@ -438,9 +428,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 traMul(Matrix3 matrix) {
 		final float[] l_mat = matrix.val;
-		return set(x * l_mat[Matrix3.M00] + y * l_mat[Matrix3.M10] + z * l_mat[Matrix3.M20],
-				x * l_mat[Matrix3.M01] + y * l_mat[Matrix3.M11] + z * l_mat[Matrix3.M21],
-				x * l_mat[Matrix3.M02] + y * l_mat[Matrix3.M12] + z * l_mat[Matrix3.M22]);
+		return set(x * l_mat[Matrix3.M00] + y * l_mat[Matrix3.M10] + z * l_mat[Matrix3.M20], x * l_mat[Matrix3.M01] + y * l_mat[Matrix3.M11] + z * l_mat[Matrix3.M21], x * l_mat[Matrix3.M02] + y * l_mat[Matrix3.M12] + z * l_mat[Matrix3.M22]);
 	}
 
 	/**
@@ -462,12 +450,8 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 prj(final Matrix4 matrix) {
 		final float[] l_mat = matrix.val;
-		final float l_w = 1f
-				/ (x * l_mat[Matrix4.M30] + y * l_mat[Matrix4.M31] + z * l_mat[Matrix4.M32] + l_mat[Matrix4.M33]);
-		return this.set(
-				(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02] + l_mat[Matrix4.M03]) * l_w,
-				(x * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13]) * l_w,
-				(x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]) * l_w);
+		final float l_w = 1f / (x * l_mat[Matrix4.M30] + y * l_mat[Matrix4.M31] + z * l_mat[Matrix4.M32] + l_mat[Matrix4.M33]);
+		return this.set((x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02] + l_mat[Matrix4.M03]) * l_w, (x * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12] + l_mat[Matrix4.M13]) * l_w, (x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22] + l_mat[Matrix4.M23]) * l_w);
 	}
 
 	/**
@@ -479,9 +463,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 rot(final Matrix4 matrix) {
 		final float[] l_mat = matrix.val;
-		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02],
-				x * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12],
-				x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22]);
+		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M01] + z * l_mat[Matrix4.M02], x * l_mat[Matrix4.M10] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M12], x * l_mat[Matrix4.M20] + y * l_mat[Matrix4.M21] + z * l_mat[Matrix4.M22]);
 	}
 
 	/**
@@ -494,9 +476,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 	 */
 	public Vector3 unrotate(final Matrix4 matrix) {
 		final float[] l_mat = matrix.val;
-		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20],
-				x * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21],
-				x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22]);
+		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20], x * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21], x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22]);
 	}
 
 	/**
@@ -514,9 +494,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 		x -= l_mat[Matrix4.M03];
 		y -= l_mat[Matrix4.M03];
 		z -= l_mat[Matrix4.M03];
-		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20],
-				x * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21],
-				x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22]);
+		return this.set(x * l_mat[Matrix4.M00] + y * l_mat[Matrix4.M10] + z * l_mat[Matrix4.M20], x * l_mat[Matrix4.M01] + y * l_mat[Matrix4.M11] + z * l_mat[Matrix4.M21], x * l_mat[Matrix4.M02] + y * l_mat[Matrix4.M12] + z * l_mat[Matrix4.M22]);
 	}
 
 	/**
@@ -596,8 +574,7 @@ public class Vector3 implements Serializable, Vector<Vector3> {
 
 	@Override
 	public boolean isOnLine(Vector3 other) {
-		return len2(y * other.z - z * other.y, z * other.x - x * other.z,
-				x * other.y - y * other.x) <= MathUtils.FLOAT_ROUNDING_ERROR;
+		return len2(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x) <= MathUtils.FLOAT_ROUNDING_ERROR;
 	}
 
 	@Override

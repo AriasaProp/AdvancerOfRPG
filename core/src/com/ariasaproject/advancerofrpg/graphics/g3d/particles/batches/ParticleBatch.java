@@ -10,8 +10,7 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.renderers.Particle
  *
  * @author Inferno
  */
-public interface ParticleBatch<T extends ParticleControllerRenderData>
-		extends RenderableProvider, ResourceData.Configurable {
+public interface ParticleBatch<T extends ParticleControllerRenderData> extends RenderableProvider, ResourceData.Configurable {
 
 	/**
 	 * Must be called once before any drawing operation

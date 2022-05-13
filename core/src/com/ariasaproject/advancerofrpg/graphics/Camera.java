@@ -83,8 +83,7 @@ public abstract class Camera {
 		position.add(vec);
 	}
 
-	public Vector3 unproject(Vector3 screenCoords, float viewportX, float viewportY, float viewportWidth,
-			float viewportHeight) {
+	public Vector3 unproject(Vector3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight) {
 		float x = screenCoords.x, y = screenCoords.y;
 		x = x - viewportX;
 		y = GraphFunc.app.getGraphics().getHeight() - y;
@@ -106,8 +105,7 @@ public abstract class Camera {
 		return worldCoords;
 	}
 
-	public Vector3 project(Vector3 worldCoords, float viewportX, float viewportY, float viewportWidth,
-			float viewportHeight) {
+	public Vector3 project(Vector3 worldCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight) {
 		worldCoords.prj(combined);
 		worldCoords.x = viewportWidth * (worldCoords.x + 1) / 2 + viewportX;
 		worldCoords.y = viewportHeight * (worldCoords.y + 1) / 2 + viewportY;
@@ -115,8 +113,7 @@ public abstract class Camera {
 		return worldCoords;
 	}
 
-	public Ray getPickRay(float screenX, float screenY, float viewportX, float viewportY, float viewportWidth,
-			float viewportHeight) {
+	public Ray getPickRay(float screenX, float screenY, float viewportX, float viewportY, float viewportWidth, float viewportHeight) {
 		unproject(ray.origin.set(screenX, screenY, 0), viewportX, viewportY, viewportWidth, viewportHeight);
 		unproject(ray.direction.set(screenX, screenY, 1), viewportX, viewportY, viewportWidth, viewportHeight);
 		ray.direction.sub(ray.origin).nor();
@@ -124,7 +121,6 @@ public abstract class Camera {
 	}
 
 	public Ray getPickRay(float screenX, float screenY) {
-		return getPickRay(screenX, screenY, 0, 0, GraphFunc.app.getGraphics().getWidth(),
-				GraphFunc.app.getGraphics().getHeight());
+		return getPickRay(screenX, screenY, 0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight());
 	}
 }

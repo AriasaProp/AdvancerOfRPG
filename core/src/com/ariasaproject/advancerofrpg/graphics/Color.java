@@ -193,8 +193,7 @@ public class Color {
 	}
 
 	public static int rgba4444(Color color) {
-		return ((int) (color.r * 15) << 12) | ((int) (color.g * 15) << 8) | ((int) (color.b * 15) << 4)
-				| (int) (color.a * 15);
+		return ((int) (color.r * 15) << 12) | ((int) (color.g * 15) << 8) | ((int) (color.b * 15) << 4) | (int) (color.a * 15);
 	}
 
 	public static int rgb888(Color color) {
@@ -202,13 +201,11 @@ public class Color {
 	}
 
 	public static int rgba8888(Color color) {
-		return ((int) (color.r * 255) << 24) | ((int) (color.g * 255) << 16) | ((int) (color.b * 255) << 8)
-				| (int) (color.a * 255);
+		return ((int) (color.r * 255) << 24) | ((int) (color.g * 255) << 16) | ((int) (color.b * 255) << 8) | (int) (color.a * 255);
 	}
 
 	public static int argb8888(Color color) {
-		return ((int) (color.a * 255) << 24) | ((int) (color.r * 255) << 16) | ((int) (color.g * 255) << 8)
-				| (int) (color.b * 255);
+		return ((int) (color.a * 255) << 24) | ((int) (color.r * 255) << 16) | ((int) (color.g * 255) << 8) | (int) (color.b * 255);
 	}
 
 	/**
@@ -557,8 +554,7 @@ public class Color {
 	 */
 	@Override
 	public String toString() {
-		String value = Integer.toHexString(
-				((int) (255 * r) << 24) | ((int) (255 * g) << 16) | ((int) (255 * b) << 8) | ((int) (255 * a)));
+		String value = Integer.toHexString(((int) (255 * r) << 24) | ((int) (255 * g) << 16) | ((int) (255 * b) << 8) | ((int) (255 * a)));
 		while (value.length() < 8)
 			value = "0" + value;
 		return value;

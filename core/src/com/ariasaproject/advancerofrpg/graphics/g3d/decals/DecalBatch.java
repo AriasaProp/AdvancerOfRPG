@@ -39,10 +39,7 @@ public class DecalBatch implements Disposable {
 
 	public void initialize(int size) {
 		vertices = new float[size * Decal.SIZE];
-		mesh = new Mesh(false, size * 4, size * 6,
-						new VertexAttribute(VertexAttributes.Usage.Position, 3, "a_position"),
-						new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, "a_color"),
-						new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoord0"));
+		mesh = new Mesh(false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 3, "a_position"), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, "a_color"), new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoord0"));
 		short[] indices = new short[size * 6];
 		int v = 0;
 		for (int i = 0; i < indices.length; i += 6, v += 4) {

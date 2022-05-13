@@ -69,22 +69,20 @@ public abstract class Net {
 		void handle(long time, HttpURLConnection connection);
 	}
 
-	final ExecutorService executorService = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60000L, TimeUnit.MILLISECONDS,
-			new SynchronousQueue<Runnable>(), new ThreadFactory() {
-				final AtomicInteger threadID = new AtomicInteger();
+	final ExecutorService executorService = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60000L, TimeUnit.MILLISECONDS, new SynchronousQueue<Runnable>(), new ThreadFactory() {
+		final AtomicInteger threadID = new AtomicInteger();
 
-				@Override
-				public Thread newThread(Runnable r) {
-					Thread thread = new Thread(r, "NetThread" + threadID.getAndIncrement());
-					thread.setDaemon(true);
-					return thread;
-				}
-			});
+		@Override
+		public Thread newThread(Runnable r) {
+			Thread thread = new Thread(r, "NetThread" + threadID.getAndIncrement());
+			thread.setDaemon(true);
+			return thread;
+		}
+	});
 	final HttpRequestPool connectorPool = new HttpRequestPool();
 	final Map<String, HttpRequest> connector = new HashMap<String, HttpRequest>();
 
-	public synchronized void sendHttpRequest(final String sUrl, String methods,
-			final HttpResponseListener responseListener, int timeout, final Map<String, String> headerReq) {
+	public synchronized void sendHttpRequest(final String sUrl, String methods, final HttpResponseListener responseListener, int timeout, final Map<String, String> headerReq) {
 		if (sUrl == null) {
 			responseListener.handle(-1, null);
 			return;

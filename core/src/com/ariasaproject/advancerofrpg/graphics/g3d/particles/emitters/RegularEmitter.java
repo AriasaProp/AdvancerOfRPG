@@ -87,8 +87,7 @@ public class RegularEmitter extends Emitter implements Json.Serializable {
 			currentLife -= offsetTime;
 		}
 		float lifePercent = 1 - currentLife / (float) currentTotaLife;
-		for (int i = startIndex * lifeChannel.strideSize, c = i
-				+ count * lifeChannel.strideSize; i < c; i += lifeChannel.strideSize) {
+		for (int i = startIndex * lifeChannel.strideSize, c = i + count * lifeChannel.strideSize; i < c; i += lifeChannel.strideSize) {
 			lifeChannel.data[i + ParticleChannels.CurrentLifeOffset] = currentLife;
 			lifeChannel.data[i + ParticleChannels.TotalLifeOffset] = currentTotaLife;
 			lifeChannel.data[i + ParticleChannels.LifePercentOffset] = lifePercent;
@@ -137,9 +136,7 @@ public class RegularEmitter extends Emitter implements Json.Serializable {
 				controller.particles.removeElement(i);
 				continue;
 			} else {
-				lifeChannel.data[k + ParticleChannels.LifePercentOffset] = 1
-						- lifeChannel.data[k + ParticleChannels.CurrentLifeOffset]
-								/ lifeChannel.data[k + ParticleChannels.TotalLifeOffset];
+				lifeChannel.data[k + ParticleChannels.LifePercentOffset] = 1 - lifeChannel.data[k + ParticleChannels.CurrentLifeOffset] / lifeChannel.data[k + ParticleChannels.TotalLifeOffset];
 			}
 			++i;
 			k += lifeChannel.strideSize;

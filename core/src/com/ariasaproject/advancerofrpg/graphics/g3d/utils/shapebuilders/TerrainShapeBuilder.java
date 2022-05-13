@@ -52,8 +52,7 @@ public class TerrainShapeBuilder extends BaseShapeBuilder {
 			heightmap[xm][yh] = 0.5f * (heightmap[xl][yh] + heightmap[xh][yh]);
 			heightmap[xl][ym] = 0.5f * (heightmap[xl][yl] + heightmap[xl][yh]);
 			heightmap[xh][ym] = 0.5f * (heightmap[xh][yl] + heightmap[xh][yh]);
-			heightmap[xm][ym] = (0.5f * (heightmap[xm][yl] + heightmap[xm][yh]))
-					+ (roughness * (float) (random.nextGaussian() * ((xh + yh) - (xl + yl))));
+			heightmap[xm][ym] = (0.5f * (heightmap[xm][yl] + heightmap[xm][yh])) + (roughness * (float) (random.nextGaussian() * ((xh + yh) - (xl + yl))));
 			heightmap[xm][yl] += roughness * (float) (random.nextGaussian() * (xh - xl));
 			heightmap[xm][yh] += roughness * (float) (random.nextGaussian() * (xh - xl));
 			heightmap[xl][ym] += roughness * (float) (random.nextGaussian() * (yh - yl));
@@ -67,14 +66,12 @@ public class TerrainShapeBuilder extends BaseShapeBuilder {
 	}
 
 	// noise terrain smooth normal
-	public static void buildNoise(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV,
-			float roughness) {
+	public static void buildNoise(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV, float roughness) {
 		build(builder, center, gSize, divU, divV, noiseHeightmap(divU, divV, roughness));
 	}
 
 	// terain with hightmap and smooth
-	public static void build(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV,
-			float[][] heightmap) {
+	public static void build(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV, float[][] heightmap) {
 		tmpV0.set(center).sub(gSize * divU / 2f, 0, gSize * divV / 2f);
 		vertTmp0.hasUV = vertTmp0.hasPosition = vertTmp0.hasColor = vertTmp0.hasNormal = true;
 		vertTmp0.setCol(Color.WHITE);
@@ -98,14 +95,12 @@ public class TerrainShapeBuilder extends BaseShapeBuilder {
 	}
 
 	// noise terrain fract normal
-	public static void buildNoiseN(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV,
-			float roughness) {
+	public static void buildNoiseN(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV, float roughness) {
 		buildN(builder, center, gSize, divU, divV, noiseHeightmap(divU, divV, roughness));
 	}
 
 	// noise terrain fract normal
-	public static void buildN(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV,
-			float[][] heightmap) {
+	public static void buildN(MeshPartBuilder builder, Vector3 center, float gSize, int divU, int divV, float[][] heightmap) {
 		tmpV0.set(center).sub(gSize * divU / 2f, 0, gSize * divV / 2f);
 		vertTmp0.set(null, null, null, null);
 		vertTmp0.hasPosition = vertTmp0.hasNormal = vertTmp0.hasColor = vertTmp0.hasUV = true;
@@ -127,8 +122,7 @@ public class TerrainShapeBuilder extends BaseShapeBuilder {
 				// normal 1
 				tmpV2.set(vertTmp2.position).sub(vertTmp0.position);// u
 				tmpV3.set(vertTmp1.position).sub(vertTmp0.position);// v
-				tmpV1.set(tmpV2.y * tmpV3.z - tmpV2.z * tmpV2.y, tmpV2.z * tmpV3.x - tmpV2.x * tmpV3.z,
-						tmpV2.x * tmpV3.y - tmpV2.y * tmpV3.x);
+				tmpV1.set(tmpV2.y * tmpV3.z - tmpV2.z * tmpV2.y, tmpV2.z * tmpV3.x - tmpV2.x * tmpV3.z, tmpV2.x * tmpV3.y - tmpV2.y * tmpV3.x);
 				tmpV1.nor();
 				vertTmp0.setNor(tmpV1);
 				vertTmp1.setNor(tmpV1);
@@ -140,8 +134,7 @@ public class TerrainShapeBuilder extends BaseShapeBuilder {
 				// normal 2
 				tmpV2.set(vertTmp1.position).sub(vertTmp0.position);// u
 				tmpV3.set(vertTmp2.position).sub(vertTmp0.position);// v
-				tmpV1.set(tmpV2.y * tmpV3.z - tmpV2.z * tmpV2.y, tmpV2.z * tmpV3.x - tmpV2.x * tmpV3.z,
-						tmpV2.x * tmpV3.y - tmpV2.y * tmpV3.x);
+				tmpV1.set(tmpV2.y * tmpV3.z - tmpV2.z * tmpV2.y, tmpV2.z * tmpV3.x - tmpV2.x * tmpV3.z, tmpV2.x * tmpV3.y - tmpV2.y * tmpV3.x);
 				tmpV1.nor();
 				vertTmp0.setNor(tmpV1);
 				vertTmp1.setNor(tmpV1);

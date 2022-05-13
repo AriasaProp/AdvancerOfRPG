@@ -16,8 +16,7 @@ import com.ariasaproject.advancerofrpg.utils.Array;
  * images. Per default images are loaded from the directory in which the effect
  * file is found.
  */
-public class ParticleEffectLoader
-		extends SynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectParameter> {
+public class ParticleEffectLoader extends SynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectParameter> {
 	public ParticleEffectLoader(FileHandleResolver resolver) {
 		super(resolver);
 	}

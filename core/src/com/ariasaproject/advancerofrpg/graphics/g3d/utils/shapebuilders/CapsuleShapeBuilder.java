@@ -52,11 +52,9 @@ public class CapsuleShapeBuilder extends BaseShapeBuilder {
 				final int o = tempOffset + s;
 				if (iv > 0 && iu > 0) { // FIXME don't duplicate lines and points
 					if (iv == 1) {
-						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s),
-								tmpIndices.get((o - (divisions + 1)) % s));
+						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s), tmpIndices.get((o - (divisions + 1)) % s));
 					} else {
-						builder.rect(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s),
-								tmpIndices.get((o - (divisions + 2)) % s), tmpIndices.get((o - (divisions + 1)) % s));
+						builder.rect(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s), tmpIndices.get((o - (divisions + 2)) % s), tmpIndices.get((o - (divisions + 1)) % s));
 					}
 				}
 				tempOffset = (tempOffset + 1) % tmpIndices.size;
@@ -117,11 +115,9 @@ public class CapsuleShapeBuilder extends BaseShapeBuilder {
 				final int o = tempOffset + s;
 				if ((iv > 0) && (iu > 0)) { // FIXME don't duplicate lines and points
 					if (iv == divisions) {
-						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - (divisions + 2)) % s),
-								tmpIndices.get((o - (divisions + 1)) % s));
+						builder.triangle(tmpIndices.get(tempOffset), tmpIndices.get((o - (divisions + 2)) % s), tmpIndices.get((o - (divisions + 1)) % s));
 					} else {
-						builder.rect(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s),
-								tmpIndices.get((o - (divisions + 2)) % s), tmpIndices.get((o - (divisions + 1)) % s));
+						builder.rect(tmpIndices.get(tempOffset), tmpIndices.get((o - 1) % s), tmpIndices.get((o - (divisions + 2)) % s), tmpIndices.get((o - (divisions + 1)) % s));
 					}
 				}
 				tempOffset = (tempOffset + 1) % tmpIndices.size;

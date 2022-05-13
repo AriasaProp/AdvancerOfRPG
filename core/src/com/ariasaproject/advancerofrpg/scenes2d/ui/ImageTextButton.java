@@ -97,8 +97,7 @@ public class ImageTextButton extends Button {
 		else if (isPressed() && style.downFontColor != null)
 			fontColor = style.downFontColor;
 		else if (isChecked && style.checkedFontColor != null)
-			fontColor = (isOver() && style.checkedOverFontColor != null) ? style.checkedOverFontColor
-					: style.checkedFontColor;
+			fontColor = (isOver() && style.checkedOverFontColor != null) ? style.checkedOverFontColor : style.checkedFontColor;
 		else if (isOver() && style.overFontColor != null)
 			fontColor = style.overFontColor;
 		else
@@ -146,8 +145,7 @@ public class ImageTextButton extends Button {
 		int dotIndex = className.lastIndexOf('.');
 		if (dotIndex != -1)
 			className = className.substring(dotIndex + 1);
-		return (className.indexOf('$') != -1 ? "ImageTextButton " : "") + className + ": " + image.getDrawable() + " "
-				+ label.getText();
+		return (className.indexOf('$') != -1 ? "ImageTextButton " : "") + className + ": " + image.getDrawable() + " " + label.getText();
 	}
 
 	/**

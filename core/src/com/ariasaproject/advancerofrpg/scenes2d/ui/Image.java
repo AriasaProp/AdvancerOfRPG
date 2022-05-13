@@ -132,8 +132,7 @@ public class Image extends Widget {
 		if (drawable instanceof TransformDrawable) {
 			float rotation = getRotation();
 			if (scaleX != 1 || scaleY != 1 || rotation != 0) {
-				((TransformDrawable) drawable).draw(batch, x + imageX, y + imageY, getOriginX() - imageX,
-						getOriginY() - imageY, imageWidth, imageHeight, scaleX, scaleY, rotation);
+				((TransformDrawable) drawable).draw(batch, x + imageX, y + imageY, getOriginX() - imageX, getOriginY() - imageY, imageWidth, imageHeight, scaleX, scaleY, rotation);
 				return;
 			}
 		}

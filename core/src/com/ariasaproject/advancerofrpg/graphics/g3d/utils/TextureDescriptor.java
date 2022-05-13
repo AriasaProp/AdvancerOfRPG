@@ -10,8 +10,7 @@ public class TextureDescriptor<T extends GLTexture> implements Comparable<Textur
 	public Texture.TextureWrap uWrap;
 	public Texture.TextureWrap vWrap;
 
-	public TextureDescriptor(final T texture, final Texture.TextureFilter minFilter,
-			final Texture.TextureFilter magFilter, final Texture.TextureWrap uWrap, final Texture.TextureWrap vWrap) {
+	public TextureDescriptor(final T texture, final Texture.TextureFilter minFilter, final Texture.TextureFilter magFilter, final Texture.TextureWrap uWrap, final Texture.TextureWrap vWrap) {
 		set(texture, minFilter, magFilter, uWrap, vWrap);
 	}
 
@@ -22,8 +21,7 @@ public class TextureDescriptor<T extends GLTexture> implements Comparable<Textur
 	public TextureDescriptor() {
 	}
 
-	public void set(final T texture, final Texture.TextureFilter minFilter, final Texture.TextureFilter magFilter,
-			final Texture.TextureWrap uWrap, final Texture.TextureWrap vWrap) {
+	public void set(final T texture, final Texture.TextureFilter minFilter, final Texture.TextureFilter magFilter, final Texture.TextureWrap uWrap, final Texture.TextureWrap vWrap) {
 		this.texture = texture;
 		this.minFilter = minFilter;
 		this.magFilter = magFilter;
@@ -48,8 +46,7 @@ public class TextureDescriptor<T extends GLTexture> implements Comparable<Textur
 		if (!(obj instanceof TextureDescriptor))
 			return false;
 		final TextureDescriptor other = (TextureDescriptor) obj;
-		return other.texture == texture && other.minFilter == minFilter && other.magFilter == magFilter
-				&& other.uWrap == uWrap && other.vWrap == vWrap;
+		return other.texture == texture && other.minFilter == minFilter && other.magFilter == magFilter && other.uWrap == uWrap && other.vWrap == vWrap;
 	}
 
 	@Override

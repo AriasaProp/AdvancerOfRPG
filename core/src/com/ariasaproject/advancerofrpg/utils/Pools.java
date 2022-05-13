@@ -3,7 +3,9 @@ package com.ariasaproject.advancerofrpg.utils;
 public class Pools {
 	static private final ObjectMap<Class<?>, Pool<?>> typePools = new ObjectMap<Class<?>, Pool<?>>();
 
-	private Pools() {}
+	private Pools() {
+	}
+
 	static public <T> Pool<T> get(Class<T> type, int max) {
 		Pool<T> pool = (Pool<T>) typePools.get(type);
 		if (pool == null) {
@@ -33,6 +35,7 @@ public class Pools {
 			return; // Ignore freeing an object that was never retained.
 		pool.free(object);
 	}
+
 	static public void freeAll(Array objects) {
 		freeAll(objects, false);
 	}

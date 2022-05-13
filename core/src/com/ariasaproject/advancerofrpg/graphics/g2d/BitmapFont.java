@@ -35,6 +35,7 @@ public class BitmapFont implements Disposable {
 			defaultFnt = GraphFunc.app.getFiles().internal("fonts/arial-15.fnt");
 		return defaultFnt;
 	}
+
 	private static FileHandle getDefaultRegion() {
 		if (defaultRegion == null)
 			defaultRegion = GraphFunc.app.getFiles().internal("fonts/arial-15.png");
@@ -71,8 +72,7 @@ public class BitmapFont implements Disposable {
 		this.integer = integer;
 		if (pageRegions == null || pageRegions.size == 0) {
 			if (data.imagePaths == null)
-				throw new IllegalArgumentException(
-					"If no regions are specified, the font data must have an images path.");
+				throw new IllegalArgumentException("If no regions are specified, the font data must have an images path.");
 			// Load each path.
 			int n = data.imagePaths.length;
 			regions = new Array<TextureRegion>(n);
@@ -131,8 +131,7 @@ public class BitmapFont implements Disposable {
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float,
 	 *      int, boolean, String)
 	 */
-	public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, float targetWidth, int halign,
-							boolean wrap) {
+	public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y, targetWidth, halign, wrap);
 		cache.draw(batch);
@@ -145,8 +144,7 @@ public class BitmapFont implements Disposable {
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float,
 	 *      int, boolean, String)
 	 */
-	public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, int start, int end, float targetWidth,
-							int halign, boolean wrap) {
+	public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y, start, end, targetWidth, halign, wrap);
 		cache.draw(batch);
@@ -159,8 +157,7 @@ public class BitmapFont implements Disposable {
 	 * @see BitmapFontCache#addText(CharSequence, float, float, int, int, float,
 	 *      int, boolean, String)
 	 */
-	public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, int start, int end, float targetWidth,
-							int halign, boolean wrap, String truncate) {
+	public GlyphLayout draw(Batch batch, CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) {
 		cache.clear();
 		GlyphLayout layout = cache.addText(str, x, y, start, end, targetWidth, halign, wrap, truncate);
 		cache.draw(batch);
@@ -511,8 +508,7 @@ public class BitmapFont implements Disposable {
 		 */
 		public char[] breakChars;
 		public char[] xChars = { 'x', 'e', 'a', 'o', 'n', 's', 'r', 'c', 'u', 'm', 'v', 'w', 'z' };
-		public char[] capChars = { 'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J', 'L', 'O', 'P', 'Q',
-			'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+		public char[] capChars = { 'M', 'N', 'B', 'D', 'C', 'E', 'F', 'K', 'A', 'G', 'H', 'I', 'J', 'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 		public BitmapFontData() {
 		}
@@ -730,10 +726,7 @@ public class BitmapFont implements Disposable {
 				ascent = baseLine - capHeight;
 				down = -lineHeight;
 				/*
-				 if (flip) {
-				 ascent = -ascent;
-				 down = -down;
-				 }
+				 * if (flip) { ascent = -ascent; down = -down; }
 				 */
 				if (hasMetricsOverride) {
 					this.ascent = overrideAscent;
@@ -810,8 +803,9 @@ public class BitmapFont implements Disposable {
 			glyph.u2 = u + x2 * invTexWidth;
 			glyph.v2 = v + y * invTexHeight;
 			glyph.v = v + y2 * invTexHeight;
-			
+
 		}
+
 		public void setLineHeight(float height) {
 			lineHeight = height * scaleY;
 			down = -lineHeight;
@@ -899,8 +893,7 @@ public class BitmapFont implements Disposable {
 					start++;
 			}
 			if (lastGlyph != null) {
-				float lastGlyphWidth = lastGlyph.fixedWidth ? lastGlyph.xadvance * scaleX
-					: (lastGlyph.width + lastGlyph.xoffset) * scaleX - padRight;
+				float lastGlyphWidth = lastGlyph.fixedWidth ? lastGlyph.xadvance * scaleX : (lastGlyph.width + lastGlyph.xoffset) * scaleX - padRight;
 				xAdvances.add(lastGlyphWidth);
 			}
 		}
@@ -938,13 +931,13 @@ public class BitmapFont implements Disposable {
 
 		public boolean isWhitespace(char c) {
 			switch (c) {
-				case '\n':
-				case '\r':
-				case '\t':
-				case ' ':
-					return true;
-				default:
-					return false;
+			case '\n':
+			case '\r':
+			case '\t':
+			case ' ':
+				return true;
+			default:
+				return false;
 			}
 		}
 

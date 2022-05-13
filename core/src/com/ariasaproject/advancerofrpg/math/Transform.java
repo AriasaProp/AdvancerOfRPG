@@ -33,8 +33,7 @@ public class Transform implements Pool.Poolable {
 		return lerp(target.translation, target.rotation, target.scale, alpha);
 	}
 
-	public Transform lerp(final Vector3 targetT, final Quaternion targetR, final Vector3 targetS,
-						  final float alpha) {
+	public Transform lerp(final Vector3 targetT, final Quaternion targetR, final Vector3 targetS, final float alpha) {
 		translation.lerp(targetT, alpha);
 		rotation.slerp(targetR, alpha);
 		scale.lerp(targetS, alpha);

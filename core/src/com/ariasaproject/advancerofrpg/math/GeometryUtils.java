@@ -108,8 +108,7 @@ public final class GeometryUtils {
 		return Math.abs(det) < MathUtils.FLOAT_ROUNDING_ERROR;
 	}
 
-	static public Vector2 triangleCentroid(float x1, float y1, float x2, float y2, float x3, float y3,
-			Vector2 centroid) {
+	static public Vector2 triangleCentroid(float x1, float y1, float x2, float y2, float x3, float y3, Vector2 centroid) {
 		centroid.x = (x1 + x2 + x3) / 3;
 		centroid.y = (y1 + y2 + y3) / 3;
 		return centroid;
@@ -119,8 +118,7 @@ public final class GeometryUtils {
 	 * Returns the circumcenter of the triangle. The input points must not be
 	 * colinear.
 	 */
-	static public Vector2 triangleCircumcenter(float x1, float y1, float x2, float y2, float x3, float y3,
-			Vector2 circumcenter) {
+	static public Vector2 triangleCircumcenter(float x1, float y1, float x2, float y2, float x3, float y3, Vector2 circumcenter) {
 		float dx21 = x2 - x1, dy21 = y2 - y1;
 		float dx32 = x3 - x2, dy32 = y3 - y2;
 		float dx13 = x1 - x3, dy13 = y1 - y3;
@@ -129,8 +127,7 @@ public final class GeometryUtils {
 			throw new IllegalArgumentException("Triangle points must not be colinear.");
 		det *= 2;
 		float sqr1 = x1 * x1 + y1 * y1, sqr2 = x2 * x2 + y2 * y2, sqr3 = x3 * x3 + y3 * y3;
-		circumcenter.set((sqr1 * dy32 + sqr2 * dy13 + sqr3 * dy21) / det,
-				-(sqr1 * dx32 + sqr2 * dx13 + sqr3 * dx21) / det);
+		circumcenter.set((sqr1 * dy32 + sqr2 * dy13 + sqr3 * dy21) / det, -(sqr1 * dx32 + sqr2 * dx13 + sqr3 * dx21) / det);
 		return circumcenter;
 	}
 
@@ -180,8 +177,7 @@ public final class GeometryUtils {
 		return Math.abs((x1 - x3) * (y2 - y1) - (x1 - x2) * (y3 - y1)) * 0.5f;
 	}
 
-	static public Vector2 quadrilateralCentroid(float x1, float y1, float x2, float y2, float x3, float y3, float x4,
-			float y4, Vector2 centroid) {
+	static public Vector2 quadrilateralCentroid(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Vector2 centroid) {
 		float avgX1 = (x1 + x2 + x3) / 3;
 		float avgY1 = (y1 + y2 + y3) / 3;
 		float avgX2 = (x1 + x4 + x3) / 3;

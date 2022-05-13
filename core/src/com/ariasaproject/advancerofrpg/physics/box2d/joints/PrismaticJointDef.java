@@ -5,12 +5,15 @@ import com.ariasaproject.advancerofrpg.physics.box2d.Body;
 import com.ariasaproject.advancerofrpg.physics.box2d.JointDef;
 
 public class PrismaticJointDef extends JointDef {
-	public PrismaticJointDef () {
+	public PrismaticJointDef() {
 		type = JointType.PrismaticJoint;
 	}
 
-	/** Initialize the bodies, anchors, axis, and reference angle using the world anchor and world axis. */
-	public void initialize (Body bodyA, Body bodyB, Vector2 anchor, Vector2 axis) {
+	/**
+	 * Initialize the bodies, anchors, axis, and reference angle using the world
+	 * anchor and world axis.
+	 */
+	public void initialize(Body bodyA, Body bodyB, Vector2 anchor, Vector2 axis) {
 		this.bodyA = bodyA;
 		this.bodyB = bodyB;
 		localAnchorA.set(bodyA.getLocalPoint(anchor));

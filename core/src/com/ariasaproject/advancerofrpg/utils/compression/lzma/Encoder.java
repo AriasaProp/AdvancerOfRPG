@@ -161,8 +161,7 @@ public class Encoder {
 		if (_numDistancePairs > 0) {
 			lenRes = _matchDistances[_numDistancePairs - 2];
 			if (lenRes == _numFastBytes)
-				lenRes += _matchFinder.GetMatchLen(lenRes - 1, _matchDistances[_numDistancePairs - 1],
-						Base.kMatchMaxLen - lenRes);
+				lenRes += _matchFinder.GetMatchLen(lenRes - 1, _matchDistances[_numDistancePairs - 1], Base.kMatchMaxLen - lenRes);
 		}
 		_additionalOffset++;
 		return lenRes;
@@ -176,27 +175,21 @@ public class Encoder {
 	}
 
 	int GetRepLen1Price(int state, int posState) {
-		return com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRepG0[state])
-				+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-						.GetPrice0(_isRep0Long[(state << Base.kNumPosStatesBitsMax) + posState]);
+		return com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRepG0[state]) + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRep0Long[(state << Base.kNumPosStatesBitsMax) + posState]);
 	}
 
 	int GetPureRepPrice(int repIndex, int state, int posState) {
 		int price;
 		if (repIndex == 0) {
 			price = com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRepG0[state]);
-			price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-					.GetPrice1(_isRep0Long[(state << Base.kNumPosStatesBitsMax) + posState]);
+			price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep0Long[(state << Base.kNumPosStatesBitsMax) + posState]);
 		} else {
 			price = com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRepG0[state]);
 			if (repIndex == 1)
-				price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-						.GetPrice0(_isRepG1[state]);
+				price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRepG1[state]);
 			else {
-				price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-						.GetPrice1(_isRepG1[state]);
-				price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice(_isRepG2[state],
-						repIndex - 2);
+				price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRepG1[state]);
+				price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice(_isRepG2[state], repIndex - 2);
 			}
 		}
 		return price;
@@ -213,8 +206,7 @@ public class Encoder {
 		if (pos < Base.kNumFullDistances)
 			price = _distancesPrices[(lenToPosState * Base.kNumFullDistances) + pos];
 		else
-			price = _posSlotPrices[(lenToPosState << Base.kNumPosSlotBits) + GetPosSlot2(pos)]
-					+ _alignPrices[pos & Base.kAlignMask];
+			price = _posSlotPrices[(lenToPosState << Base.kNumPosSlotBits) + GetPosSlot2(pos)] + _alignPrices[pos & Base.kAlignMask];
 		return price + _lenEncoder.GetPrice(len - Base.kMatchMinLen, posState);
 	}
 
@@ -295,15 +287,10 @@ public class Encoder {
 		}
 		_optimum[0].State = _state;
 		int posState = (position & _posStateMask);
-		_optimum[1].Price = com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-				.GetPrice0(_isMatch[(_state << Base.kNumPosStatesBitsMax) + posState])
-				+ _literalEncoder.GetSubCoder(position, _previousByte).GetPrice(!Base.StateIsCharState(_state),
-						matchByte, currentByte);
+		_optimum[1].Price = com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isMatch[(_state << Base.kNumPosStatesBitsMax) + posState]) + _literalEncoder.GetSubCoder(position, _previousByte).GetPrice(!Base.StateIsCharState(_state), matchByte, currentByte);
 		_optimum[1].MakeAsChar();
-		int matchPrice = com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-				.GetPrice1(_isMatch[(_state << Base.kNumPosStatesBitsMax) + posState]);
-		int repMatchPrice = matchPrice
-				+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[_state]);
+		int matchPrice = com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isMatch[(_state << Base.kNumPosStatesBitsMax) + posState]);
+		int repMatchPrice = matchPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[_state]);
 		if (matchByte == currentByte) {
 			int shortRepPrice = repMatchPrice + GetRepLen1Price(_state, posState);
 			if (shortRepPrice < _optimum[1].Price) {
@@ -341,8 +328,7 @@ public class Encoder {
 				}
 			} while (--repLen >= 2);
 		}
-		int normalMatchPrice = matchPrice
-				+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRep[_state]);
+		int normalMatchPrice = matchPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRep[_state]);
 		len = ((repLens[0] >= 2) ? repLens[0] + 1 : 2);
 		if (len <= lenMain) {
 			int offs = 0;
@@ -450,11 +436,7 @@ public class Encoder {
 			currentByte = _matchFinder.GetIndexByte(0 - 1);
 			matchByte = _matchFinder.GetIndexByte(0 - reps[0] - 1 - 1);
 			posState = (position & _posStateMask);
-			int curAnd1Price = curPrice
-					+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-							.GetPrice0(_isMatch[(state << Base.kNumPosStatesBitsMax) + posState])
-					+ _literalEncoder.GetSubCoder(position, _matchFinder.GetIndexByte(0 - 2))
-							.GetPrice(!Base.StateIsCharState(state), matchByte, currentByte);
+			int curAnd1Price = curPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isMatch[(state << Base.kNumPosStatesBitsMax) + posState]) + _literalEncoder.GetSubCoder(position, _matchFinder.GetIndexByte(0 - 2)).GetPrice(!Base.StateIsCharState(state), matchByte, currentByte);
 			Optimal nextOptimum = _optimum[cur + 1];
 			boolean nextIsChar = false;
 			if (curAnd1Price < nextOptimum.Price) {
@@ -463,10 +445,8 @@ public class Encoder {
 				nextOptimum.MakeAsChar();
 				nextIsChar = true;
 			}
-			matchPrice = curPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-					.GetPrice1(_isMatch[(state << Base.kNumPosStatesBitsMax) + posState]);
-			repMatchPrice = matchPrice
-					+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[state]);
+			matchPrice = curPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isMatch[(state << Base.kNumPosStatesBitsMax) + posState]);
+			repMatchPrice = matchPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[state]);
 			if (matchByte == currentByte && !(nextOptimum.PosPrev < cur && nextOptimum.BackPrev == 0)) {
 				int shortRepPrice = repMatchPrice + GetRepLen1Price(state, posState);
 				if (shortRepPrice <= nextOptimum.Price) {
@@ -490,11 +470,7 @@ public class Encoder {
 				if (lenTest2 >= 2) {
 					int state2 = Base.StateUpdateChar(state);
 					int posStateNext = (position + 1) & _posStateMask;
-					int nextRepMatchPrice = curAnd1Price
-							+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-									.GetPrice1(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext])
-							+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-									.GetPrice1(_isRep[state2]);
+					int nextRepMatchPrice = curAnd1Price + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]) + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[state2]);
 					{
 						int offset = cur + 1 + lenTest2;
 						while (lenEnd < offset)
@@ -539,21 +515,11 @@ public class Encoder {
 					if (lenTest2 >= 2) {
 						int state2 = Base.StateUpdateRep(state);
 						int posStateNext = (position + lenTest) & _posStateMask;
-						int curAndLenCharPrice = repMatchPrice + GetRepPrice(repIndex, lenTest, state, posState)
-								+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-										.GetPrice0(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext])
-								+ _literalEncoder
-										.GetSubCoder(position + lenTest, _matchFinder.GetIndexByte(lenTest - 1 - 1))
-										.GetPrice(true, _matchFinder.GetIndexByte(lenTest - 1 - (reps[repIndex] + 1)),
-												_matchFinder.GetIndexByte(lenTest - 1));
+						int curAndLenCharPrice = repMatchPrice + GetRepPrice(repIndex, lenTest, state, posState) + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]) + _literalEncoder.GetSubCoder(position + lenTest, _matchFinder.GetIndexByte(lenTest - 1 - 1)).GetPrice(true, _matchFinder.GetIndexByte(lenTest - 1 - (reps[repIndex] + 1)), _matchFinder.GetIndexByte(lenTest - 1));
 						state2 = Base.StateUpdateChar(state2);
 						posStateNext = (position + lenTest + 1) & _posStateMask;
-						int nextMatchPrice = curAndLenCharPrice
-								+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-										.GetPrice1(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]);
-						int nextRepMatchPrice = nextMatchPrice
-								+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-										.GetPrice1(_isRep[state2]);
+						int nextMatchPrice = curAndLenCharPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]);
+						int nextRepMatchPrice = nextMatchPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[state2]);
 						// for(; lenTest2 >= 2; lenTest2--)
 						{
 							int offset = lenTest + 1 + lenTest2;
@@ -582,8 +548,7 @@ public class Encoder {
 				numDistancePairs += 2;
 			}
 			if (newLen >= startLen) {
-				normalMatchPrice = matchPrice
-						+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRep[state]);
+				normalMatchPrice = matchPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isRep[state]);
 				while (lenEnd < cur + newLen)
 					_optimum[++lenEnd].Price = kIfinityPrice;
 				int offs = 0;
@@ -606,23 +571,11 @@ public class Encoder {
 							if (lenTest2 >= 2) {
 								int state2 = Base.StateUpdateMatch(state);
 								int posStateNext = (position + lenTest) & _posStateMask;
-								int curAndLenCharPrice = curAndLenPrice
-										+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-												.GetPrice0(
-														_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext])
-										+ _literalEncoder.GetSubCoder(position + lenTest,
-												_matchFinder.GetIndexByte(lenTest - 1 - 1)).GetPrice(true,
-														_matchFinder.GetIndexByte(lenTest - (curBack + 1) - 1),
-														_matchFinder.GetIndexByte(lenTest - 1));
+								int curAndLenCharPrice = curAndLenPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice0(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]) + _literalEncoder.GetSubCoder(position + lenTest, _matchFinder.GetIndexByte(lenTest - 1 - 1)).GetPrice(true, _matchFinder.GetIndexByte(lenTest - (curBack + 1) - 1), _matchFinder.GetIndexByte(lenTest - 1));
 								state2 = Base.StateUpdateChar(state2);
 								posStateNext = (position + lenTest + 1) & _posStateMask;
-								int nextMatchPrice = curAndLenCharPrice
-										+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-												.GetPrice1(
-														_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]);
-								int nextRepMatchPrice = nextMatchPrice
-										+ com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-												.GetPrice1(_isRep[state2]);
+								int nextMatchPrice = curAndLenCharPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isMatch[(state2 << Base.kNumPosStatesBitsMax) + posStateNext]);
+								int nextRepMatchPrice = nextMatchPrice + com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice1(_isRep[state2]);
 								int offset = lenTest + 1 + lenTest2;
 								while (lenEnd < cur + offset)
 									_optimum[++lenEnd].Price = kIfinityPrice;
@@ -770,11 +723,9 @@ public class Encoder {
 						int baseVal = ((2 | (posSlot & 1)) << footerBits);
 						int posReduced = pos - baseVal;
 						if (posSlot < Base.kEndPosModelIndex)
-							BitTreeEncoder.ReverseEncode(_posEncoders, baseVal - posSlot - 1, _rangeEncoder, footerBits,
-									posReduced);
+							BitTreeEncoder.ReverseEncode(_posEncoders, baseVal - posSlot - 1, _rangeEncoder, footerBits, posReduced);
 						else {
-							_rangeEncoder.EncodeDirectBits(posReduced >> Base.kNumAlignBits,
-									footerBits - Base.kNumAlignBits);
+							_rangeEncoder.EncodeDirectBits(posReduced >> Base.kNumAlignBits, footerBits - Base.kNumAlignBits);
 							_posAlignEncoder.ReverseEncode(_rangeEncoder, posReduced & Base.kAlignMask);
 							_alignPriceCount++;
 						}
@@ -848,8 +799,7 @@ public class Encoder {
 		nowPos64 = 0;
 	}
 
-	public void Code(java.io.InputStream inStream, java.io.OutputStream outStream, long inSize, long outSize,
-			ICodeProgress progress) throws IOException {
+	public void Code(java.io.InputStream inStream, java.io.OutputStream outStream, long inSize, long outSize, ICodeProgress progress) throws IOException {
 		_needReleaseMFStream = false;
 		try {
 			SetStreams(inStream, outStream, inSize, outSize);
@@ -878,8 +828,7 @@ public class Encoder {
 			int posSlot = GetPosSlot(i);
 			int footerBits = (posSlot >> 1) - 1;
 			int baseVal = ((2 | (posSlot & 1)) << footerBits);
-			tempPrices[i] = BitTreeEncoder.ReverseGetPrice(_posEncoders, baseVal - posSlot - 1, footerBits,
-					i - baseVal);
+			tempPrices[i] = BitTreeEncoder.ReverseGetPrice(_posEncoders, baseVal - posSlot - 1, footerBits, i - baseVal);
 		}
 		for (int lenToPosState = 0; lenToPosState < Base.kNumLenToPosStates; lenToPosState++) {
 			int posSlot;
@@ -888,8 +837,7 @@ public class Encoder {
 			for (posSlot = 0; posSlot < _distTableSize; posSlot++)
 				_posSlotPrices[st + posSlot] = encoder.GetPrice(posSlot);
 			for (posSlot = Base.kEndPosModelIndex; posSlot < _distTableSize; posSlot++)
-				_posSlotPrices[st + posSlot] += ((((posSlot >> 1) - 1)
-						- Base.kNumAlignBits) << com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.kNumBitPriceShiftBits);
+				_posSlotPrices[st + posSlot] += ((((posSlot >> 1) - 1) - Base.kNumAlignBits) << com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.kNumBitPriceShiftBits);
 			int st2 = lenToPosState * Base.kNumFullDistances;
 			int i;
 			for (i = 0; i < Base.kStartPosModelIndex; i++)
@@ -945,8 +893,7 @@ public class Encoder {
 	}
 
 	public boolean SetLcLpPb(int lc, int lp, int pb) {
-		if (lp < 0 || lp > Base.kNumLitPosStatesBitsEncodingMax || lc < 0 || lc > Base.kNumLitContextBitsMax || pb < 0
-				|| pb > Base.kNumPosStatesBitsEncodingMax)
+		if (lp < 0 || lp > Base.kNumLitPosStatesBitsEncodingMax || lc < 0 || lc > Base.kNumLitContextBitsMax || pb < 0 || pb > Base.kNumPosStatesBitsEncodingMax)
 			return false;
 		_numLiteralPosStateBits = lp;
 		_numLiteralContextBits = lc;
@@ -994,8 +941,7 @@ public class Encoder {
 				com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.InitBitModels(m_Encoders);
 			}
 
-			public void Encode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder,
-					byte symbol) throws IOException {
+			public void Encode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder, byte symbol) throws IOException {
 				int context = 1;
 				for (int i = 7; i >= 0; i--) {
 					int bit = ((symbol >> i) & 1);
@@ -1004,8 +950,7 @@ public class Encoder {
 				}
 			}
 
-			public void EncodeMatched(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder,
-					byte matchByte, byte symbol) throws IOException {
+			public void EncodeMatched(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder, byte matchByte, byte symbol) throws IOException {
 				int context = 1;
 				boolean same = true;
 				for (int i = 7; i >= 0; i--) {
@@ -1029,8 +974,7 @@ public class Encoder {
 					for (; i >= 0; i--) {
 						int matchBit = (matchByte >> i) & 1;
 						int bit = (symbol >> i) & 1;
-						price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-								.GetPrice(m_Encoders[((1 + matchBit) << 8) + context], bit);
+						price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice(m_Encoders[((1 + matchBit) << 8) + context], bit);
 						context = (context << 1) | bit;
 						if (matchBit != bit) {
 							i--;
@@ -1040,8 +984,7 @@ public class Encoder {
 				}
 				for (; i >= 0; i--) {
 					int bit = (symbol >> i) & 1;
-					price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder
-							.GetPrice(m_Encoders[context], bit);
+					price += com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder.GetPrice(m_Encoders[context], bit);
 					context = (context << 1) | bit;
 				}
 				return price;
@@ -1071,8 +1014,7 @@ public class Encoder {
 			_highCoder.Init();
 		}
 
-		public void Encode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder,
-				int symbol, int posState) throws IOException {
+		public void Encode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder, int symbol, int posState) throws IOException {
 			if (symbol < Base.kNumLowLenSymbols) {
 				rangeEncoder.Encode(_choice, 0, 0);
 				_lowCoder[posState].Encode(rangeEncoder, symbol);
@@ -1134,8 +1076,7 @@ public class Encoder {
 		}
 
 		@Override
-		public void Encode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder,
-				int symbol, int posState) throws IOException {
+		public void Encode(com.ariasaproject.advancerofrpg.utils.compression.rangecoder.Encoder rangeEncoder, int symbol, int posState) throws IOException {
 			super.Encode(rangeEncoder, symbol, posState);
 			if (--_counters[posState] == 0)
 				UpdateTable(posState);

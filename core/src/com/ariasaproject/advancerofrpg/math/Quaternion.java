@@ -65,8 +65,7 @@ public class Quaternion implements Serializable {
 	 * @param w2 the w component of the second quaternion
 	 * @return the dot product between the first and second quaternion.
 	 */
-	public final static float dot(final float x1, final float y1, final float z1, final float w1, final float x2,
-			final float y2, final float z2, final float w2) {
+	public final static float dot(final float x1, final float y1, final float z1, final float w1, final float x2, final float y2, final float z2, final float w2) {
 		return x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
 	}
 
@@ -137,8 +136,7 @@ public class Quaternion implements Serializable {
 	 * @return this quaternion
 	 */
 	public Quaternion setEulerAngles(float yaw, float pitch, float roll) {
-		return setEulerAnglesRad(yaw * MathUtils.degreesToRadians, pitch * MathUtils.degreesToRadians,
-				roll * MathUtils.degreesToRadians);
+		return setEulerAnglesRad(yaw * MathUtils.degreesToRadians, pitch * MathUtils.degreesToRadians, roll * MathUtils.degreesToRadians);
 	}
 
 	/**
@@ -193,8 +191,7 @@ public class Quaternion implements Serializable {
 	 */
 	public float getRollRad() {
 		final int pole = getGimbalPole();
-		return pole == 0 ? MathUtils.atan2(2f * (w * z + y * x), 1f - 2f * (x * x + z * z))
-				: pole * 2f * MathUtils.atan2(y, w);
+		return pole == 0 ? MathUtils.atan2(2f * (w * z + y * x), 1f - 2f * (x * x + z * z)) : pole * 2f * MathUtils.atan2(y, w);
 	}
 
 	/**
@@ -216,8 +213,7 @@ public class Quaternion implements Serializable {
 	 */
 	public float getPitchRad() {
 		final int pole = getGimbalPole();
-		return pole == 0 ? (float) Math.asin(MathUtils.clamp(2f * (w * x - z * y), -1f, 1f))
-				: pole * MathUtils.PI * 0.5f;
+		return pole == 0 ? (float) Math.asin(MathUtils.clamp(2f * (w * x - z * y), -1f, 1f)) : pole * MathUtils.PI * 0.5f;
 	}
 
 	/**
@@ -467,8 +463,7 @@ public class Quaternion implements Serializable {
 	 * @return If this quaternion is an identity Quaternion
 	 */
 	public boolean isIdentity(final float tolerance) {
-		return MathUtils.isZero(x, tolerance) && MathUtils.isZero(y, tolerance) && MathUtils.isZero(z, tolerance)
-				&& MathUtils.isEqual(w, 1f, tolerance);
+		return MathUtils.isZero(x, tolerance) && MathUtils.isZero(y, tolerance) && MathUtils.isZero(z, tolerance) && MathUtils.isEqual(w, 1f, tolerance);
 	}
 
 	/**
@@ -533,9 +528,7 @@ public class Quaternion implements Serializable {
 	 * Sets the Quaternion from the given matrix, optionally removing any scaling.
 	 */
 	public Quaternion setFromMatrix(boolean normalizeAxes, Matrix4 matrix) {
-		return setFromAxes(normalizeAxes, matrix.val[Matrix4.M00], matrix.val[Matrix4.M01], matrix.val[Matrix4.M02],
-				matrix.val[Matrix4.M10], matrix.val[Matrix4.M11], matrix.val[Matrix4.M12], matrix.val[Matrix4.M20],
-				matrix.val[Matrix4.M21], matrix.val[Matrix4.M22]);
+		return setFromAxes(normalizeAxes, matrix.val[Matrix4.M00], matrix.val[Matrix4.M01], matrix.val[Matrix4.M02], matrix.val[Matrix4.M10], matrix.val[Matrix4.M11], matrix.val[Matrix4.M12], matrix.val[Matrix4.M20], matrix.val[Matrix4.M21], matrix.val[Matrix4.M22]);
 	}
 
 	/**
@@ -550,9 +543,7 @@ public class Quaternion implements Serializable {
 	 * Sets the Quaternion from the given matrix, optionally removing any scaling.
 	 */
 	public Quaternion setFromMatrix(boolean normalizeAxes, Matrix3 matrix) {
-		return setFromAxes(normalizeAxes, matrix.val[Matrix3.M00], matrix.val[Matrix3.M01], matrix.val[Matrix3.M02],
-				matrix.val[Matrix3.M10], matrix.val[Matrix3.M11], matrix.val[Matrix3.M12], matrix.val[Matrix3.M20],
-				matrix.val[Matrix3.M21], matrix.val[Matrix3.M22]);
+		return setFromAxes(normalizeAxes, matrix.val[Matrix3.M00], matrix.val[Matrix3.M01], matrix.val[Matrix3.M02], matrix.val[Matrix3.M10], matrix.val[Matrix3.M11], matrix.val[Matrix3.M12], matrix.val[Matrix3.M20], matrix.val[Matrix3.M21], matrix.val[Matrix3.M22]);
 	}
 
 	/**
@@ -585,8 +576,7 @@ public class Quaternion implements Serializable {
 	 * @param zy z-axis y-coordinate
 	 * @param zz z-axis z-coordinate
 	 */
-	public Quaternion setFromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy,
-			float zz) {
+	public Quaternion setFromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz) {
 		return setFromAxes(false, xx, xy, xz, yx, yy, yz, zx, zy, zz);
 	}
 
@@ -613,8 +603,7 @@ public class Quaternion implements Serializable {
 	 * @param zy            z-axis y-coordinate
 	 * @param zz            z-axis z-coordinate
 	 */
-	public Quaternion setFromAxes(boolean normalizeAxes, float xx, float xy, float xz, float yx, float yy, float yz,
-			float zx, float zy, float zz) {
+	public Quaternion setFromAxes(boolean normalizeAxes, float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz) {
 		if (normalizeAxes) {
 			final float lx = 1f / Vector3.len(xx, xy, xz);
 			final float ly = 1f / Vector3.len(yx, yy, yz);
@@ -689,8 +678,7 @@ public class Quaternion implements Serializable {
 	 * @param z2 The target vector z value, which should be normalized.
 	 * @return This quaternion for chaining
 	 */
-	public Quaternion setFromCross(final float x1, final float y1, final float z1, final float x2, final float y2,
-			final float z2) {
+	public Quaternion setFromCross(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2) {
 		final float dot = MathUtils.clamp(Vector3.dot(x1, y1, z1, x2, y2, z2), -1f, 1f);
 		final float angle = (float) Math.acos(dot);
 		return setFromAxisRad(y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2, angle);
@@ -826,10 +814,7 @@ public class Quaternion implements Serializable {
 			return false;
 		}
 		Quaternion other = (Quaternion) obj;
-		return (NumberUtils.floatToRawIntBits(w) == NumberUtils.floatToRawIntBits(other.w))
-				&& (NumberUtils.floatToRawIntBits(x) == NumberUtils.floatToRawIntBits(other.x))
-				&& (NumberUtils.floatToRawIntBits(y) == NumberUtils.floatToRawIntBits(other.y))
-				&& (NumberUtils.floatToRawIntBits(z) == NumberUtils.floatToRawIntBits(other.z));
+		return (NumberUtils.floatToRawIntBits(w) == NumberUtils.floatToRawIntBits(other.w)) && (NumberUtils.floatToRawIntBits(x) == NumberUtils.floatToRawIntBits(other.x)) && (NumberUtils.floatToRawIntBits(y) == NumberUtils.floatToRawIntBits(other.y)) && (NumberUtils.floatToRawIntBits(z) == NumberUtils.floatToRawIntBits(other.z));
 	}
 
 	/**
@@ -975,8 +960,7 @@ public class Quaternion implements Serializable {
 	 * @see <a href=
 	 *      "http://www.euclideanspace.com/maths/geometry/rotations/for/decomposition">calculation</a>
 	 */
-	public void getSwingTwist(final float axisX, final float axisY, final float axisZ, final Quaternion swing,
-			final Quaternion twist) {
+	public void getSwingTwist(final float axisX, final float axisY, final float axisZ, final Quaternion swing, final Quaternion twist) {
 		final float d = Vector3.dot(this.x, this.y, this.z, axisX, axisY, axisZ);
 		twist.set(axisX * d, axisY * d, axisZ * d, this.w).nor();
 		if (d < 0)
@@ -1021,9 +1005,7 @@ public class Quaternion implements Serializable {
 	public float getAngleAroundRad(final float axisX, final float axisY, final float axisZ) {
 		final float d = Vector3.dot(this.x, this.y, this.z, axisX, axisY, axisZ);
 		final float l2 = Quaternion.len2(axisX * d, axisY * d, axisZ * d, this.w);
-		return MathUtils.isZero(l2) ? 0f
-				: (float) (2.0
-						* Math.acos(MathUtils.clamp((float) ((d < 0 ? -this.w : this.w) / Math.sqrt(l2)), -1f, 1f)));
+		return MathUtils.isZero(l2) ? 0f : (float) (2.0 * Math.acos(MathUtils.clamp((float) ((d < 0 ? -this.w : this.w) / Math.sqrt(l2)), -1f, 1f)));
 	}
 
 	/**

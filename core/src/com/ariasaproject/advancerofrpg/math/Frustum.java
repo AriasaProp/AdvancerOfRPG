@@ -13,8 +13,8 @@ import com.ariasaproject.advancerofrpg.math.collision.BoundingBox;
  * @see Camera#frustum
  */
 public class Frustum {
-	protected static final Vector3[] clipSpacePlanePoints = { new Vector3(-1, -1, -1), new Vector3(1, -1, -1),
-			new Vector3(1, 1, -1), new Vector3(-1, 1, -1), // near clip
+	protected static final Vector3[] clipSpacePlanePoints = { new Vector3(-1, -1, -1), new Vector3(1, -1, -1), new Vector3(1, 1, -1), new Vector3(-1, 1, -1), // near
+																																								// clip
 			new Vector3(-1, -1, 1), new Vector3(1, -1, 1), new Vector3(1, 1, 1), new Vector3(-1, 1, 1) }; // far clip
 	protected static final float[] clipSpacePlanePointsArray = new float[8 * 3];
 	private final static Vector3 tmpV = new Vector3();
@@ -37,8 +37,7 @@ public class Frustum {
 	 * eight points making up the near and far clipping "rectangles". order is
 	 * counter clockwise, starting at bottom left
 	 **/
-	public final Vector3[] planePoints = { new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(),
-			new Vector3(), new Vector3(), new Vector3() };
+	public final Vector3[] planePoints = { new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3() };
 	protected final float[] planePointsArray = new float[8 * 3];
 
 	public Frustum() {
@@ -112,8 +111,7 @@ public class Frustum {
 	 */
 	public boolean sphereInFrustum(Vector3 center, float radius) {
 		for (int i = 0; i < 6; i++)
-			if ((planes[i].normal.x * center.x + planes[i].normal.y * center.y
-					+ planes[i].normal.z * center.z) < (-radius - planes[i].d))
+			if ((planes[i].normal.x * center.x + planes[i].normal.y * center.y + planes[i].normal.z * center.z) < (-radius - planes[i].d))
 				return false;
 		return true;
 	}
@@ -144,8 +142,7 @@ public class Frustum {
 	 */
 	public boolean sphereInFrustumWithoutNearFar(Vector3 center, float radius) {
 		for (int i = 2; i < 6; i++)
-			if ((planes[i].normal.x * center.x + planes[i].normal.y * center.y
-					+ planes[i].normal.z * center.z) < (-radius - planes[i].d))
+			if ((planes[i].normal.x * center.x + planes[i].normal.y * center.y + planes[i].normal.z * center.z) < (-radius - planes[i].d))
 				return false;
 		return true;
 	}

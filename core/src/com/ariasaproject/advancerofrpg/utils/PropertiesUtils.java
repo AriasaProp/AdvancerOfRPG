@@ -182,8 +182,7 @@ public final class PropertiesUtils {
 		storeImpl(properties, writer, comment, false);
 	}
 
-	private static void storeImpl(ObjectMap<String, String> properties, Writer writer, String comment,
-			boolean escapeUnicode) throws IOException {
+	private static void storeImpl(ObjectMap<String, String> properties, Writer writer, String comment, boolean escapeUnicode) throws IOException {
 		if (comment != null) {
 			writeComment(writer, comment);
 		}
@@ -275,8 +274,7 @@ public final class PropertiesUtils {
 					if (c == '\r' && curIndex != len - 1 && comment.charAt(curIndex + 1) == '\n') {
 						curIndex++;
 					}
-					if (curIndex == len - 1
-							|| (comment.charAt(curIndex + 1) != '#' && comment.charAt(curIndex + 1) != '!'))
+					if (curIndex == len - 1 || (comment.charAt(curIndex + 1) != '#' && comment.charAt(curIndex + 1) != '!'))
 						writer.write("#");
 				}
 				lastIndex = curIndex + 1;

@@ -324,8 +324,7 @@ public class DragAndDrop {
 		 * @param payload null if dragStart returned null.
 		 * @param target  null if not dropped on a valid target.
 		 */
-		public void dragStop(InputEvent event, float x, float y, int pointer, @Null Payload payload,
-				@Null Target target) {
+		public void dragStop(InputEvent event, float x, float y, int pointer, @Null Payload payload, @Null Target target) {
 		}
 
 		public Actor getActor() {

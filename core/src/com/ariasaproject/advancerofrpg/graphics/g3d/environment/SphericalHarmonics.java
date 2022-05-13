@@ -4,8 +4,7 @@ import com.ariasaproject.advancerofrpg.graphics.Color;
 
 public class SphericalHarmonics {
 	// <kalle_h> last term is no x*x * y*y but x*x - y*y
-	private final static float[] coeff = { 0.282095f, 0.488603f, 0.488603f, 0.488603f, 1.092548f, 1.092548f, 1.092548f,
-			0.315392f, 0.546274f };
+	private final static float[] coeff = { 0.282095f, 0.488603f, 0.488603f, 0.488603f, 1.092548f, 1.092548f, 1.092548f, 0.315392f, 0.546274f };
 	public final float[] data;
 
 	public SphericalHarmonics() {
