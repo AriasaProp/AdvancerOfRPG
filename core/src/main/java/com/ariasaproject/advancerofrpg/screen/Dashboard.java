@@ -2,7 +2,6 @@ package com.ariasaproject.advancerofrpg.screen;
 
 import com.ariasaproject.advancerofrpg.ApplicationListener;
 import com.ariasaproject.advancerofrpg.GraphFunc;
-import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.scenes2d.Actor;
 import com.ariasaproject.advancerofrpg.scenes2d.InputEvent;
 import com.ariasaproject.advancerofrpg.scenes2d.InputListener;
@@ -39,7 +38,6 @@ public class Dashboard extends Scene {
 
 	@Override
 	public void render(float delta) {
-		GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, 0.5f, 0.5f, 0.5f, 1);
 		appl.stage.act(delta);
 		appl.stage.draw();
 	}

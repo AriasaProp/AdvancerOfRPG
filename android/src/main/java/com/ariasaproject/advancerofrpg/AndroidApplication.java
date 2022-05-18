@@ -18,8 +18,6 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.ariasaproject.advancerofrpg.audio.Audio;
 import com.ariasaproject.advancerofrpg.graphics.Graphics;
@@ -60,9 +58,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     protected void onCreate(Bundle savedInstanceState) {
         // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
-        final Window w = getWindow();
-        w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        final View d = w.getDecorView();
+        final View d = getWindow().getDecorView();
         final int uiHide = getResources().getInteger(R.integer.ui_hide);
         d.setSystemUiVisibility(uiHide);
         d.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
@@ -352,7 +348,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
-        ApplicationListener appl = new ApplicationListener();
+        ApplicationListener appl = ApplicationListener.getApplicationListener();
         try {
             byte eglDestroyRequest = 0;// to destroy egl surface, egl contex, egl display, ?....
             boolean wantRender = false, newContext = true, // indicator
@@ -499,6 +495,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext);
                     appl.resize(width, height);
                 }
+
                 long time = System.currentTimeMillis();
 
                 if (lresume) {

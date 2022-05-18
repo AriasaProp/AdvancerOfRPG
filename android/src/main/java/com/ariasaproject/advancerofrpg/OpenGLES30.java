@@ -1848,21 +1848,18 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public boolean glIsTexture(int handler) {
-
         return GLES20.glIsTexture(handler);
     }
 
     // extra function
     @Override
     public void glClearColorMask(int mask, float red, float green, float blue, float alpha) {
-
         GLES20.glClearColor(red, green, blue, alpha);
         GLES20.glClear(mask);
     }
 
     @Override
     public void glViewport(int x, int y, int width, int height) {
-
         GLES20.glViewport(x, y, width, height);
     }
 

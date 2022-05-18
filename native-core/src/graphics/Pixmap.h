@@ -3,6 +3,7 @@
 
 #include <jni.h>
 
+extern "C" {
 struct PixmapData {
 public:
     enum Format {
@@ -28,7 +29,6 @@ public:
     uint8_t pixel_size() const;
 };
 
-extern "C" {
 #define Pixmap_M(R, M) JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_graphics_Pixmap_##M
 Pixmap_M(void, initialize)(JNIEnv *, jclass);
 Pixmap_M(jobject, loadFromInternalFilePath)(JNIEnv *, jclass, jlongArray, jstring);

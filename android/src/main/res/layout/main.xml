@@ -8,6 +8,7 @@
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:keepScreenOn="true"
     tools:context="com.ariasaproject.advancerofrpg.AndroidApplication">
 
 </android.view.SurfaceView>
