@@ -1,0 +1,2 @@
+include ':core', ':android'
+rootProject.name='Advancer Of RPG'
