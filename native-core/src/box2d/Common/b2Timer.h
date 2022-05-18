@@ -5,8 +5,7 @@
 
 /// Timer for profiling. This has platform specific code and may
 /// not work on every platform.
-class b2Timer
-{
+class b2Timer {
 public:
 
     /// Constructor

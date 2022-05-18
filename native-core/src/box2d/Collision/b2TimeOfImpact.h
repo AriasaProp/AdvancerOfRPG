@@ -5,20 +5,17 @@
 #include "b2Distance.h"
 
 /// Input parameters for b2TimeOfImpact
-struct b2TOIInput
-{
+struct b2TOIInput {
     b2DistanceProxy proxyA;
     b2DistanceProxy proxyB;
     b2Sweep sweepA;
     b2Sweep sweepB;
-    float32 tMax;		// defines sweep interval [0, tMax]
+    float32 tMax;        // defines sweep interval [0, tMax]
 };
 
 // Output parameters for b2TimeOfImpact.
-struct b2TOIOutput
-{
-    enum State
-    {
+struct b2TOIOutput {
+    enum State {
         e_unknown,
         e_failed,
         e_overlapped,
@@ -30,6 +27,6 @@ struct b2TOIOutput
     float32 t;
 };
 
-void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input);
+void b2TimeOfImpact(b2TOIOutput *output, const b2TOIInput *input);
 
 #endif

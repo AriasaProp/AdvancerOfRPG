@@ -7,36 +7,40 @@
 #include "../b2Fixture.h"
 
 class b2Body;
+
 class b2Contact;
+
 class b2Fixture;
+
 class b2World;
+
 class b2BlockAllocator;
+
 class b2StackAllocator;
+
 class b2ContactListener;
 
 /// Friction mixing law. The idea is to allow either fixture to drive the restitution to zero.
 /// For example, anything slides on ice.
-inline float32 b2MixFriction(float32 friction1, float32 friction2)
-{
+inline float32 b2MixFriction(float32 friction1, float32 friction2) {
     return b2Sqrt(friction1 * friction2);
 }
 
 /// Restitution mixing law. The idea is allow for anything to bounce off an inelastic surface.
 /// For example, a superball bounces on anything.
-inline float32 b2MixRestitution(float32 restitution1, float32 restitution2)
-{
+inline float32 b2MixRestitution(float32 restitution1, float32 restitution2) {
     return restitution1 > restitution2 ? restitution1 : restitution2;
 }
 
-typedef b2Contact* b2ContactCreateFcn(	b2Fixture* fixtureA, int32 indexA,
-                                        b2Fixture* fixtureB, int32 indexB,
-                                        b2BlockAllocator* allocator);
-typedef void b2ContactDestroyFcn(b2Contact* contact, b2BlockAllocator* allocator);
+typedef b2Contact *b2ContactCreateFcn(b2Fixture *fixtureA, int32 indexA,
+                                      b2Fixture *fixtureB, int32 indexB,
+                                      b2BlockAllocator *allocator);
 
-struct b2ContactRegister
-{
-    b2ContactCreateFcn* createFcn;
-    b2ContactDestroyFcn* destroyFcn;
+typedef void b2ContactDestroyFcn(b2Contact *contact, b2BlockAllocator *allocator);
+
+struct b2ContactRegister {
+    b2ContactCreateFcn *createFcn;
+    b2ContactDestroyFcn *destroyFcn;
     bool primary;
 };
 
@@ -45,28 +49,27 @@ struct b2ContactRegister
 /// is an edge. A contact edge belongs to a doubly linked list
 /// maintained in each attached body. Each contact has two contact
 /// nodes, one for each attached body.
-struct b2ContactEdge
-{
-    b2Body* other;			///< provides quick access to the other body attached.
-    b2Contact* contact;		///< the contact
-    b2ContactEdge* prev;	///< the previous contact edge in the body's contact list
-    b2ContactEdge* next;	///< the next contact edge in the body's contact list
+struct b2ContactEdge {
+    b2Body *other;            ///< provides quick access to the other body attached.
+    b2Contact *contact;        ///< the contact
+    b2ContactEdge *prev;    ///< the previous contact edge in the body's contact list
+    b2ContactEdge *next;    ///< the next contact edge in the body's contact list
 };
 
 /// The class manages contact between two shapes. A contact exists for each overlapping
 /// AABB in the broad-phase (except if filtered). Therefore a contact object may exist
 /// that has no contact points.
-class b2Contact
-{
+class b2Contact {
 public:
 
     /// Get the contact manifold. Do not modify the manifold unless you understand the
     /// internals of box2d.
-    b2Manifold* GetManifold();
-    const b2Manifold* GetManifold() const;
+    b2Manifold *GetManifold();
+
+    const b2Manifold *GetManifold() const;
 
     /// Get the world manifold.
-    void GetWorldManifold(b2WorldManifold* worldManifold) const;
+    void GetWorldManifold(b2WorldManifold *worldManifold) const;
 
     /// Is this contact touching?
     bool IsTouching() const;
@@ -80,19 +83,22 @@ public:
     bool IsEnabled() const;
 
     /// Get the next contact in the world's contact list.
-    b2Contact* GetNext();
-    const b2Contact* GetNext() const;
+    b2Contact *GetNext();
+
+    const b2Contact *GetNext() const;
 
     /// Get fixture A in this contact.
-    b2Fixture* GetFixtureA();
-    const b2Fixture* GetFixtureA() const;
+    b2Fixture *GetFixtureA();
+
+    const b2Fixture *GetFixtureA() const;
 
     /// Get the child primitive index for fixture A.
     int32 GetChildIndexA() const;
 
     /// Get fixture B in this contact.
-    b2Fixture* GetFixtureB();
-    const b2Fixture* GetFixtureB() const;
+    b2Fixture *GetFixtureB();
+
+    const b2Fixture *GetFixtureB() const;
 
     /// Get the child primitive index for fixture B.
     int32 GetChildIndexB() const;
@@ -124,52 +130,63 @@ public:
     float32 GetTangentSpeed() const;
 
     /// Evaluate this contact with your own manifold and transforms.
-    virtual void Evaluate(b2Manifold* manifold, const b2Transform& xfA, const b2Transform& xfB) = 0;
+    virtual void Evaluate(b2Manifold *manifold, const b2Transform &xfA, const b2Transform &xfB) = 0;
 
 protected:
     friend class b2ContactManager;
+
     friend class b2World;
+
     friend class b2ContactSolver;
+
     friend class b2Body;
+
     friend class b2Fixture;
 
     // Flags stored in m_flags
-    enum
-    {
+    enum {
         // Used when crawling contact graph when forming islands.
-        e_islandFlag		= 0x0001,
+                e_islandFlag = 0x0001,
 
         // Set when the shapes are touching.
-        e_touchingFlag		= 0x0002,
+                e_touchingFlag = 0x0002,
 
         // This contact can be disabled (by user)
-        e_enabledFlag		= 0x0004,
+                e_enabledFlag = 0x0004,
 
         // This contact needs filtering because a fixture filter was changed.
-        e_filterFlag		= 0x0008,
+                e_filterFlag = 0x0008,
 
         // This bullet contact had a TOI event
-        e_bulletHitFlag		= 0x0010,
+                e_bulletHitFlag = 0x0010,
 
         // This contact has a valid TOI in m_toi
-        e_toiFlag			= 0x0020
+                e_toiFlag = 0x0020
     };
 
     /// Flag this contact for filtering. Filtering will occur the next time step.
     void FlagForFiltering();
 
-    static void AddType(b2ContactCreateFcn* createFcn, b2ContactDestroyFcn* destroyFcn,
+    static void AddType(b2ContactCreateFcn *createFcn, b2ContactDestroyFcn *destroyFcn,
                         b2Shape::Type typeA, b2Shape::Type typeB);
+
     static void InitializeRegisters();
-    static b2Contact* Create(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB, b2BlockAllocator* allocator);
-    static void Destroy(b2Contact* contact, b2Shape::Type typeA, b2Shape::Type typeB, b2BlockAllocator* allocator);
-    static void Destroy(b2Contact* contact, b2BlockAllocator* allocator);
+
+    static b2Contact *Create(b2Fixture *fixtureA, int32 indexA, b2Fixture *fixtureB, int32 indexB,
+                             b2BlockAllocator *allocator);
+
+    static void Destroy(b2Contact *contact, b2Shape::Type typeA, b2Shape::Type typeB,
+                        b2BlockAllocator *allocator);
+
+    static void Destroy(b2Contact *contact, b2BlockAllocator *allocator);
 
     b2Contact() : m_fixtureA(NULL), m_fixtureB(NULL) {}
-    b2Contact(b2Fixture* fixtureA, int32 indexA, b2Fixture* fixtureB, int32 indexB);
+
+    b2Contact(b2Fixture *fixtureA, int32 indexA, b2Fixture *fixtureB, int32 indexB);
+
     virtual ~b2Contact() {}
 
-    void Update(b2ContactListener* listener);
+    void Update(b2ContactListener *listener);
 
     static b2ContactRegister s_registers[b2Shape::e_typeCount][b2Shape::e_typeCount];
     static bool s_initialized;
@@ -177,15 +194,15 @@ protected:
     uint32 m_flags;
 
     // World pool and list pointers.
-    b2Contact* m_prev;
-    b2Contact* m_next;
+    b2Contact *m_prev;
+    b2Contact *m_next;
 
     // Nodes for connecting bodies.
     b2ContactEdge m_nodeA;
     b2ContactEdge m_nodeB;
 
-    b2Fixture* m_fixtureA;
-    b2Fixture* m_fixtureB;
+    b2Fixture *m_fixtureA;
+    b2Fixture *m_fixtureB;
 
     int32 m_indexA;
     int32 m_indexB;
@@ -201,130 +218,105 @@ protected:
     float32 m_tangentSpeed;
 };
 
-inline b2Manifold* b2Contact::GetManifold()
-{
+inline b2Manifold *b2Contact::GetManifold() {
     return &m_manifold;
 }
 
-inline const b2Manifold* b2Contact::GetManifold() const
-{
+inline const b2Manifold *b2Contact::GetManifold() const {
     return &m_manifold;
 }
 
-inline void b2Contact::GetWorldManifold(b2WorldManifold* worldManifold) const
-{
-    const b2Body* bodyA = m_fixtureA->GetBody();
-    const b2Body* bodyB = m_fixtureB->GetBody();
-    const b2Shape* shapeA = m_fixtureA->GetShape();
-    const b2Shape* shapeB = m_fixtureB->GetShape();
+inline void b2Contact::GetWorldManifold(b2WorldManifold *worldManifold) const {
+    const b2Body *bodyA = m_fixtureA->GetBody();
+    const b2Body *bodyB = m_fixtureB->GetBody();
+    const b2Shape *shapeA = m_fixtureA->GetShape();
+    const b2Shape *shapeB = m_fixtureB->GetShape();
 
-    worldManifold->Initialize(&m_manifold, bodyA->GetTransform(), shapeA->m_radius, bodyB->GetTransform(), shapeB->m_radius);
+    worldManifold->Initialize(&m_manifold, bodyA->GetTransform(), shapeA->m_radius,
+                              bodyB->GetTransform(), shapeB->m_radius);
 }
 
-inline void b2Contact::SetEnabled(bool flag)
-{
-    if (flag)
-    {
+inline void b2Contact::SetEnabled(bool flag) {
+    if (flag) {
         m_flags |= e_enabledFlag;
-    }
-    else
-    {
+    } else {
         m_flags &= ~e_enabledFlag;
     }
 }
 
-inline bool b2Contact::IsEnabled() const
-{
+inline bool b2Contact::IsEnabled() const {
     return (m_flags & e_enabledFlag) == e_enabledFlag;
 }
 
-inline bool b2Contact::IsTouching() const
-{
+inline bool b2Contact::IsTouching() const {
     return (m_flags & e_touchingFlag) == e_touchingFlag;
 }
 
-inline b2Contact* b2Contact::GetNext()
-{
+inline b2Contact *b2Contact::GetNext() {
     return m_next;
 }
 
-inline const b2Contact* b2Contact::GetNext() const
-{
+inline const b2Contact *b2Contact::GetNext() const {
     return m_next;
 }
 
-inline b2Fixture* b2Contact::GetFixtureA()
-{
+inline b2Fixture *b2Contact::GetFixtureA() {
     return m_fixtureA;
 }
 
-inline const b2Fixture* b2Contact::GetFixtureA() const
-{
+inline const b2Fixture *b2Contact::GetFixtureA() const {
     return m_fixtureA;
 }
 
-inline b2Fixture* b2Contact::GetFixtureB()
-{
+inline b2Fixture *b2Contact::GetFixtureB() {
     return m_fixtureB;
 }
 
-inline int32 b2Contact::GetChildIndexA() const
-{
+inline int32 b2Contact::GetChildIndexA() const {
     return m_indexA;
 }
 
-inline const b2Fixture* b2Contact::GetFixtureB() const
-{
+inline const b2Fixture *b2Contact::GetFixtureB() const {
     return m_fixtureB;
 }
 
-inline int32 b2Contact::GetChildIndexB() const
-{
+inline int32 b2Contact::GetChildIndexB() const {
     return m_indexB;
 }
 
-inline void b2Contact::FlagForFiltering()
-{
+inline void b2Contact::FlagForFiltering() {
     m_flags |= e_filterFlag;
 }
 
-inline void b2Contact::SetFriction(float32 friction)
-{
+inline void b2Contact::SetFriction(float32 friction) {
     m_friction = friction;
 }
 
-inline float32 b2Contact::GetFriction() const
-{
+inline float32 b2Contact::GetFriction() const {
     return m_friction;
 }
 
-inline void b2Contact::ResetFriction()
-{
+inline void b2Contact::ResetFriction() {
     m_friction = b2MixFriction(m_fixtureA->m_friction, m_fixtureB->m_friction);
 }
 
-inline void b2Contact::SetRestitution(float32 restitution)
-{
+inline void b2Contact::SetRestitution(float32 restitution) {
     m_restitution = restitution;
 }
 
-inline float32 b2Contact::GetRestitution() const
-{
+inline float32 b2Contact::GetRestitution() const {
     return m_restitution;
 }
 
-inline void b2Contact::ResetRestitution()
-{
+inline void b2Contact::ResetRestitution() {
     m_restitution = b2MixRestitution(m_fixtureA->m_restitution, m_fixtureB->m_restitution);
 }
 
-inline void b2Contact::SetTangentSpeed(float32 speed)
-{
+inline void b2Contact::SetTangentSpeed(float32 speed) {
     m_tangentSpeed = speed;
 }
 
-inline float32 b2Contact::GetTangentSpeed() const
-{
+inline float32 b2Contact::GetTangentSpeed() const {
     return m_tangentSpeed;
 }
 

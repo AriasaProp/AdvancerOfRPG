@@ -5,10 +5,8 @@
 
 /// Mouse joint definition. This requires a world target point,
 /// tuning parameters, and the time step.
-struct b2MouseJointDef : public b2JointDef
-{
-    b2MouseJointDef()
-    {
+struct b2MouseJointDef : public b2JointDef {
+    b2MouseJointDef() {
         type = e_mouseJoint;
         target.Set(0.0f, 0.0f);
         maxForce = 0.0f;
@@ -39,8 +37,7 @@ struct b2MouseJointDef : public b2JointDef
 /// NOTE: this joint is not documented in the manual because it was
 /// developed to be used in the testbed. If you want to learn how to
 /// use the mouse joint, look at the testbed.
-class b2MouseJoint : public b2Joint
-{
+class b2MouseJoint : public b2Joint {
 public:
 
     /// Implements b2Joint.
@@ -56,38 +53,43 @@ public:
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// Use this to update the target point.
-    void SetTarget(const b2Vec2& target);
-    const b2Vec2& GetTarget() const;
+    void SetTarget(const b2Vec2 &target);
+
+    const b2Vec2 &GetTarget() const;
 
     /// Set/get the maximum force in Newtons.
     void SetMaxForce(float32 force);
+
     float32 GetMaxForce() const;
 
     /// Set/get the frequency in Hertz.
     void SetFrequency(float32 hz);
+
     float32 GetFrequency() const;
 
     /// Set/get the damping ratio (dimensionless).
     void SetDampingRatio(float32 ratio);
+
     float32 GetDampingRatio() const;
 
     /// The mouse joint does not support dumping.
-    void Dump()
-    {
+    void Dump() {
         b2Log("Mouse joint dumping is not supported.\n");
     }
 
     /// Implement b2Joint::ShiftOrigin
-    void ShiftOrigin(const b2Vec2& newOrigin);
+    void ShiftOrigin(const b2Vec2 &newOrigin);
 
 protected:
     friend class b2Joint;
 
-    b2MouseJoint(const b2MouseJointDef* def);
+    b2MouseJoint(const b2MouseJointDef *def);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     b2Vec2 m_localAnchorB;
     b2Vec2 m_targetA;

@@ -45,21 +45,18 @@ float32 b2Timer::GetMilliseconds() const
 
 #include <sys/time.h>
 
-b2Timer::b2Timer()
-{
+b2Timer::b2Timer() {
     Reset();
 }
 
-void b2Timer::Reset()
-{
+void b2Timer::Reset() {
     timeval t;
     gettimeofday(&t, 0);
     m_start_sec = t.tv_sec;
     m_start_usec = t.tv_usec;
 }
 
-float32 b2Timer::GetMilliseconds() const
-{
+float32 b2Timer::GetMilliseconds() const {
     timeval t;
     gettimeofday(&t, 0);
     return 1000.0f * (t.tv_sec - m_start_sec) + 0.001f * (t.tv_usec - m_start_usec);

@@ -9,10 +9,8 @@
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2WheelJointDef : public b2JointDef
-{
-    b2WheelJointDef()
-    {
+struct b2WheelJointDef : public b2JointDef {
+    b2WheelJointDef() {
         type = e_wheelJoint;
         localAnchorA.SetZero();
         localAnchorB.SetZero();
@@ -26,7 +24,7 @@ struct b2WheelJointDef : public b2JointDef
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor, const b2Vec2& axis);
+    void Initialize(b2Body *bodyA, b2Body *bodyB, const b2Vec2 &anchor, const b2Vec2 &axis);
 
     /// The local anchor point relative to bodyA's origin.
     b2Vec2 localAnchorA;
@@ -58,32 +56,30 @@ struct b2WheelJointDef : public b2JointDef
 /// joint limit to restrict the range of motion and a joint motor to drive
 /// the rotation or to model rotational friction.
 /// This joint is designed for vehicle suspensions.
-class b2WheelJoint : public b2Joint
-{
+class b2WheelJoint : public b2Joint {
 public:
-    void GetDefinition(b2WheelJointDef* def) const;
+    void GetDefinition(b2WheelJointDef *def) const;
 
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// The local anchor point relative to bodyA's origin.
-    const b2Vec2& GetLocalAnchorA() const
-    {
+    const b2Vec2 &GetLocalAnchorA() const {
         return m_localAnchorA;
     }
 
     /// The local anchor point relative to bodyB's origin.
-    const b2Vec2& GetLocalAnchorB() const
-    {
+    const b2Vec2 &GetLocalAnchorB() const {
         return m_localAnchorB;
     }
 
     /// The local joint axis relative to bodyA.
-    const b2Vec2& GetLocalAxisA() const
-    {
+    const b2Vec2 &GetLocalAxisA() const {
         return m_localXAxisA;
     }
 
@@ -107,6 +103,7 @@ public:
 
     /// Set/Get the maximum motor force, usually in N-m.
     void SetMaxMotorTorque(float32 torque);
+
     float32 GetMaxMotorTorque() const;
 
     /// Get the current motor torque given the inverse time step, usually in N-m.
@@ -114,10 +111,12 @@ public:
 
     /// Set/Get the spring frequency in hertz. Setting the frequency to zero disables the spring.
     void SetSpringFrequencyHz(float32 hz);
+
     float32 GetSpringFrequencyHz() const;
 
     /// Set/Get the spring damping ratio
     void SetSpringDampingRatio(float32 ratio);
+
     float32 GetSpringDampingRatio() const;
 
     /// Dump to b2Log
@@ -126,11 +125,14 @@ public:
 protected:
 
     friend class b2Joint;
-    b2WheelJoint(const b2WheelJointDef* def);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    b2WheelJoint(const b2WheelJointDef *def);
+
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     float32 m_frequencyHz;
     float32 m_dampingRatio;
@@ -171,33 +173,27 @@ protected:
     float32 m_gamma;
 };
 
-inline float32 b2WheelJoint::GetMotorSpeed() const
-{
+inline float32 b2WheelJoint::GetMotorSpeed() const {
     return m_motorSpeed;
 }
 
-inline float32 b2WheelJoint::GetMaxMotorTorque() const
-{
+inline float32 b2WheelJoint::GetMaxMotorTorque() const {
     return m_maxMotorTorque;
 }
 
-inline void b2WheelJoint::SetSpringFrequencyHz(float32 hz)
-{
+inline void b2WheelJoint::SetSpringFrequencyHz(float32 hz) {
     m_frequencyHz = hz;
 }
 
-inline float32 b2WheelJoint::GetSpringFrequencyHz() const
-{
+inline float32 b2WheelJoint::GetSpringFrequencyHz() const {
     return m_frequencyHz;
 }
 
-inline void b2WheelJoint::SetSpringDampingRatio(float32 ratio)
-{
+inline void b2WheelJoint::SetSpringDampingRatio(float32 ratio) {
     m_dampingRatio = ratio;
 }
 
-inline float32 b2WheelJoint::GetSpringDampingRatio() const
-{
+inline float32 b2WheelJoint::GetSpringDampingRatio() const {
     return m_dampingRatio;
 }
 

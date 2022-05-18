@@ -7,10 +7,8 @@ const float32 b2_minPulleyLength = 2.0f;
 
 /// Pulley joint definition. This requires two ground anchors,
 /// two dynamic body anchor points, and a pulley ratio.
-struct b2PulleyJointDef : public b2JointDef
-{
-    b2PulleyJointDef()
-    {
+struct b2PulleyJointDef : public b2JointDef {
+    b2PulleyJointDef() {
         type = e_pulleyJoint;
         groundAnchorA.Set(-1.0f, 1.0f);
         groundAnchorB.Set(1.0f, 1.0f);
@@ -23,9 +21,9 @@ struct b2PulleyJointDef : public b2JointDef
     }
 
     /// Initialize the bodies, anchors, lengths, max lengths, and ratio using the world anchors.
-    void Initialize(b2Body* bodyA, b2Body* bodyB,
-                    const b2Vec2& groundAnchorA, const b2Vec2& groundAnchorB,
-                    const b2Vec2& anchorA, const b2Vec2& anchorB,
+    void Initialize(b2Body *bodyA, b2Body *bodyB,
+                    const b2Vec2 &groundAnchorA, const b2Vec2 &groundAnchorB,
+                    const b2Vec2 &anchorA, const b2Vec2 &anchorB,
                     float32 ratio);
 
     /// The first ground anchor in world coordinates. This point never moves.
@@ -58,13 +56,14 @@ struct b2PulleyJointDef : public b2JointDef
 /// work better when combined with prismatic joints. You should also cover the
 /// the anchor points with static shapes to prevent one side from going to
 /// zero length.
-class b2PulleyJoint : public b2Joint
-{
+class b2PulleyJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// Get the first ground anchor.
@@ -92,16 +91,19 @@ public:
     void Dump();
 
     /// Implement b2Joint::ShiftOrigin
-    void ShiftOrigin(const b2Vec2& newOrigin);
+    void ShiftOrigin(const b2Vec2 &newOrigin);
 
 protected:
 
     friend class b2Joint;
-    b2PulleyJoint(const b2PulleyJointDef* data);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    b2PulleyJoint(const b2PulleyJointDef *data);
+
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     b2Vec2 m_groundAnchorA;
     b2Vec2 m_groundAnchorB;

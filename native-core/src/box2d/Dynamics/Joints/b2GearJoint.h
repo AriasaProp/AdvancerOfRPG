@@ -5,10 +5,8 @@
 
 /// Gear joint definition. This definition requires two existing
 /// revolute or prismatic joints (any combination will work).
-struct b2GearJointDef : public b2JointDef
-{
-    b2GearJointDef()
-    {
+struct b2GearJointDef : public b2JointDef {
+    b2GearJointDef() {
         type = e_gearJoint;
         joint1 = NULL;
         joint2 = NULL;
@@ -16,10 +14,10 @@ struct b2GearJointDef : public b2JointDef
     }
 
     /// The first revolute/prismatic joint attached to the gear joint.
-    b2Joint* joint1;
+    b2Joint *joint1;
 
     /// The second revolute/prismatic joint attached to the gear joint.
-    b2Joint* joint2;
+    b2Joint *joint2;
 
     /// The gear ratio.
     /// @see b2GearJoint for explanation.
@@ -35,29 +33,29 @@ struct b2GearJointDef : public b2JointDef
 /// of length or units of 1/length.
 /// @warning You have to manually destroy the gear joint if joint1 or joint2
 /// is destroyed.
-class b2GearJoint : public b2Joint
-{
+class b2GearJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// Get the first joint.
-    b2Joint* GetJoint1()
-    {
+    b2Joint *GetJoint1() {
         return m_joint1;
     }
 
     /// Get the second joint.
-    b2Joint* GetJoint2()
-    {
+    b2Joint *GetJoint2() {
         return m_joint2;
     }
 
     /// Set/Get the gear ratio.
     void SetRatio(float32 ratio);
+
     float32 GetRatio() const;
 
     /// Dump joint to dmLog
@@ -66,22 +64,25 @@ public:
 protected:
 
     friend class b2Joint;
-    b2GearJoint(const b2GearJointDef* data);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    b2GearJoint(const b2GearJointDef *data);
 
-    b2Joint* m_joint1;
-    b2Joint* m_joint2;
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
+
+    b2Joint *m_joint1;
+    b2Joint *m_joint2;
 
     b2JointType m_typeA;
     b2JointType m_typeB;
 
     // Body A is connected to body C
     // Body B is connected to body D
-    b2Body* m_bodyC;
-    b2Body* m_bodyD;
+    b2Body *m_bodyC;
+    b2Body *m_bodyD;
 
     // Solver shared
     b2Vec2 m_localAnchorA;

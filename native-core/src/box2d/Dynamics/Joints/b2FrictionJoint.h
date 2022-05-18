@@ -4,10 +4,8 @@
 #include "b2Joint.h"
 
 /// Friction joint definition.
-struct b2FrictionJointDef : public b2JointDef
-{
-    b2FrictionJointDef()
-    {
+struct b2FrictionJointDef : public b2JointDef {
+    b2FrictionJointDef() {
         type = e_frictionJoint;
         localAnchorA.SetZero();
         localAnchorB.SetZero();
@@ -17,7 +15,7 @@ struct b2FrictionJointDef : public b2JointDef
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and world axis.
-    void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
+    void Initialize(b2Body *bodyA, b2Body *bodyB, const b2Vec2 &anchor);
 
     /// The local anchor point relative to bodyA's origin.
     b2Vec2 localAnchorA;
@@ -34,24 +32,23 @@ struct b2FrictionJointDef : public b2JointDef
 
 /// Friction joint. This is used for top-down friction.
 /// It provides 2D translational friction and angular friction.
-class b2FrictionJoint : public b2Joint
-{
+class b2FrictionJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// The local anchor point relative to bodyA's origin.
-    const b2Vec2& GetLocalAnchorA() const
-    {
+    const b2Vec2 &GetLocalAnchorA() const {
         return m_localAnchorA;
     }
 
     /// The local anchor point relative to bodyB's origin.
-    const b2Vec2& GetLocalAnchorB() const
-    {
+    const b2Vec2 &GetLocalAnchorB() const {
         return m_localAnchorB;
     }
 
@@ -74,11 +71,13 @@ protected:
 
     friend class b2Joint;
 
-    b2FrictionJoint(const b2FrictionJointDef* def);
+    b2FrictionJoint(const b2FrictionJointDef *def);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     b2Vec2 m_localAnchorA;
     b2Vec2 m_localAnchorB;

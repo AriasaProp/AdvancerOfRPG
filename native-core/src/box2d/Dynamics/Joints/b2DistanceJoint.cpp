@@ -2,9 +2,8 @@
 #include "../b2Body.h"
 #include "../b2TimeStep.h"
 
-void b2DistanceJointDef::Initialize(b2Body* b1, b2Body* b2,
-                                    const b2Vec2& anchor1, const b2Vec2& anchor2)
-{
+void b2DistanceJointDef::Initialize(b2Body *b1, b2Body *b2,
+                                    const b2Vec2 &anchor1, const b2Vec2 &anchor2) {
     bodyA = b1;
     bodyB = b2;
     localAnchorA = bodyA->GetLocalPoint(anchor1);
@@ -13,9 +12,8 @@ void b2DistanceJointDef::Initialize(b2Body* b1, b2Body* b2,
     length = d.Length();
 }
 
-b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
-    : b2Joint(def)
-{
+b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef *def)
+        : b2Joint(def) {
     m_localAnchorA = def->localAnchorA;
     m_localAnchorB = def->localAnchorB;
     m_length = def->length;
@@ -26,8 +24,7 @@ b2DistanceJoint::b2DistanceJoint(const b2DistanceJointDef* def)
     m_bias = 0.0f;
 }
 
-void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
-{
+void b2DistanceJoint::InitVelocityConstraints(const b2SolverData &data) {
     m_indexA = m_bodyA->m_islandIndex;
     m_indexB = m_bodyB->m_islandIndex;
     m_localCenterA = m_bodyA->m_sweep.localCenter;
@@ -55,12 +52,9 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
     // Handle singularity.
     float32 length = m_u.Length();
-    if (length > b2_linearSlop)
-    {
+    if (length > b2_linearSlop) {
         m_u *= 1.0f / length;
-    }
-    else
-    {
+    } else {
         m_u.Set(0.0f, 0.0f);
     }
 
@@ -71,8 +65,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
     // Compute the effective mass matrix.
     m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
 
-    if (m_frequencyHz > 0.0f)
-    {
+    if (m_frequencyHz > 0.0f) {
         float32 C = length - m_length;
 
         // Frequency
@@ -92,15 +85,12 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
 
         invMass += m_gamma;
         m_mass = invMass != 0.0f ? 1.0f / invMass : 0.0f;
-    }
-    else
-    {
+    } else {
         m_gamma = 0.0f;
         m_bias = 0.0f;
     }
 
-    if (data.step.warmStarting)
-    {
+    if (data.step.warmStarting) {
         // Scale the impulse to support a variable time step.
         m_impulse *= data.step.dtRatio;
 
@@ -109,9 +99,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
         wA -= m_invIA * b2Cross(m_rA, P);
         vB += m_invMassB * P;
         wB += m_invIB * b2Cross(m_rB, P);
-    }
-    else
-    {
+    } else {
         m_impulse = 0.0f;
     }
 
@@ -121,8 +109,7 @@ void b2DistanceJoint::InitVelocityConstraints(const b2SolverData& data)
     data.velocities[m_indexB].w = wB;
 }
 
-void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
-{
+void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData &data) {
     b2Vec2 vA = data.velocities[m_indexA].v;
     float32 wA = data.velocities[m_indexA].w;
     b2Vec2 vB = data.velocities[m_indexB].v;
@@ -148,10 +135,8 @@ void b2DistanceJoint::SolveVelocityConstraints(const b2SolverData& data)
     data.velocities[m_indexB].w = wB;
 }
 
-bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
-{
-    if (m_frequencyHz > 0.0f)
-    {
+bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData &data) {
+    if (m_frequencyHz > 0.0f) {
         // There is no position correction for soft distance constraints.
         return true;
     }
@@ -187,30 +172,25 @@ bool b2DistanceJoint::SolvePositionConstraints(const b2SolverData& data)
     return b2Abs(C) < b2_linearSlop;
 }
 
-b2Vec2 b2DistanceJoint::GetAnchorA() const
-{
+b2Vec2 b2DistanceJoint::GetAnchorA() const {
     return m_bodyA->GetWorldPoint(m_localAnchorA);
 }
 
-b2Vec2 b2DistanceJoint::GetAnchorB() const
-{
+b2Vec2 b2DistanceJoint::GetAnchorB() const {
     return m_bodyB->GetWorldPoint(m_localAnchorB);
 }
 
-b2Vec2 b2DistanceJoint::GetReactionForce(float32 inv_dt) const
-{
+b2Vec2 b2DistanceJoint::GetReactionForce(float32 inv_dt) const {
     b2Vec2 F = (inv_dt * m_impulse) * m_u;
     return F;
 }
 
-float32 b2DistanceJoint::GetReactionTorque(float32 inv_dt) const
-{
+float32 b2DistanceJoint::GetReactionTorque(float32 inv_dt) const {
     B2_NOT_USED(inv_dt);
     return 0.0f;
 }
 
-void b2DistanceJoint::Dump()
-{
+void b2DistanceJoint::Dump() {
     int32 indexA = m_bodyA->m_islandIndex;
     int32 indexB = m_bodyB->m_islandIndex;
 
