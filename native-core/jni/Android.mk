@@ -67,4 +67,6 @@ LOCAL_SRC_FILES := ../src/GraphFunc.cpp\
 	../src/box2d/Dynamics/b2WorldCallbacks.cpp\
 	../src/box2d/Rope/b2Rope.cpp
 
+LOCAL_CPPFLAGS += -std=c++11
+
 include $(BUILD_SHARED_LIBRARY)

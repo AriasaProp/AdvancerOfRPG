@@ -10022,13 +10022,15 @@ static inline void clear_RGBA4444(const PixmapData *pixmap, uint32_t col) {
 
 Pixmap_M(jobject, loadFromInternalFilePath)(JNIEnv *env, jclass clazz, jlongArray nativeData,
                                             jstring internalPath) {
-    /*
+
     int width, height, format;
     const char *path = env->GetStringUTFChars(internalPath, 0);
-    FILE file(path);
-    const unsigned char *pixels = stbi::stbi_load_from_file(&file, 0, 0, 0, 0);
+
+    const unsigned char *pixels = stbi::stbi_load_from_file(fopen(path, "r"), (int *) &width, (int *) &height,
+                                                            (int *) &format, 0);
     if (pixels == NULL)
         pixels = jpgd::decompress_jpeg_image_from_file(path, &width, &height, &format, 0);
+
     if (pixels == NULL)
         return 0;
     PixmapData *pixmap = new PixmapData(width, height, (PixmapData::Format) format, pixels, true);
@@ -10044,25 +10046,23 @@ Pixmap_M(jobject, loadFromInternalFilePath)(JNIEnv *env, jclass clazz, jlongArra
     env->ReleasePrimitiveArrayCritical(nativeData, p_native_data, 0);
     env->ReleaseStringUTFChars(internalPath, path);
     return pixel_buffer;
-     */
-    return 0;
 }
 
 Pixmap_M(jobject, load)(JNIEnv *env, jclass clazz, jlongArray nativeData, jbyteArray buffer,
                         jint offset, jint len) {
     const unsigned char *p_buffer = (const unsigned char *) env->GetPrimitiveArrayCritical(buffer,
                                                                                            0);
-    p_buffer += offset;
     uint32_t width, height, format;
-    const unsigned char *pixels = stbi::stbi_load_from_memory(p_buffer, len, (int *) &width,
+    const unsigned char *pixels = stbi::stbi_load_from_memory(p_buffer + offset, len,
+                                                              (int *) &width,
                                                               (int *) &height, (int *) &format, 0);
     if (pixels == NULL)
-        pixels = jpgd::decompress_jpeg_image_from_memory(p_buffer, len, (int *) &width,
+        pixels = jpgd::decompress_jpeg_image_from_memory(p_buffer + offset, len, (int *) &width,
                                                          (int *) &height, (int *) &format, 3);
+    env->ReleasePrimitiveArrayCritical(buffer, (char *) p_buffer, 0);
     if (pixels == NULL)
         return 0;
     PixmapData *pixmap = new PixmapData(width, height, (PixmapData::Format) format, pixels, true);
-    env->ReleasePrimitiveArrayCritical(buffer, (char *) p_buffer, 0);
     jobject pixel_buffer = env->NewDirectByteBuffer((void *) pixmap->pixels,
                                                     pixmap->width * pixmap->height *
                                                     pixmap->pixel_size());
