@@ -52,7 +52,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 		try {
 			System.loadLibrary("ext");
 		} catch (Exception e) {
-			System.out.println("failed to load library : " + osName);
+			System.out.println("failed to load library : ext");
 			System.err.println("failed load library");
 			System.exit(0);
 		}

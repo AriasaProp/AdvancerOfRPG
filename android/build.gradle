@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 32
-    buildToolsVersion '32.1.0 rc1'
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.ariasaproject.advancerofrpg"
         minSdkVersion 18
