@@ -30,11 +30,6 @@ import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
 //AndroidApplication include graphics and Application
 public class AndroidApplication extends Activity implements Application, Runnable, Graphics, Callback {
     public static final String TAG = "MainActivity";
-
-    static {
-        OSInitializer.init();
-    }
-
     protected final Array<Runnable> runnables = new Array<Runnable>();
     protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(
             LifecycleListener.class);
