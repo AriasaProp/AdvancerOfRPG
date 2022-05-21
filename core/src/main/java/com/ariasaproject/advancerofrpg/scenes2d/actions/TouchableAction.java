@@ -10,19 +10,19 @@ import com.ariasaproject.advancerofrpg.scenes2d.Touchable;
  * @author Nathan Sweet
  */
 public class TouchableAction extends Action {
-	private Touchable touchable;
+    private Touchable touchable;
 
-	@Override
-	public boolean act(float delta) {
-		target.setTouchable(touchable);
-		return true;
-	}
+    @Override
+    public boolean act(float delta) {
+        target.setTouchable(touchable);
+        return true;
+    }
 
-	public Touchable getTouchable() {
-		return touchable;
-	}
+    public Touchable getTouchable() {
+        return touchable;
+    }
 
-	public void setTouchable(Touchable touchable) {
-		this.touchable = touchable;
-	}
+    public void setTouchable(Touchable touchable) {
+        this.touchable = touchable;
+    }
 }

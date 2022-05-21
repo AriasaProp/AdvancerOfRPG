@@ -67,16 +67,13 @@ float32 b2Timer::GetMilliseconds() const
 
 #else
 
-b2Timer::b2Timer()
-{
+b2Timer::b2Timer() {
 }
 
-void b2Timer::Reset()
-{
+void b2Timer::Reset() {
 }
 
-float32 b2Timer::GetMilliseconds() const
-{
+float32 b2Timer::GetMilliseconds() const {
     return 0.0f;
 }
 

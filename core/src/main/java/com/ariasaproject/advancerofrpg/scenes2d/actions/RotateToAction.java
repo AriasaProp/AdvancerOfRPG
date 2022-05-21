@@ -16,55 +16,55 @@ import com.ariasaproject.advancerofrpg.math.MathUtils;
  *
  * @author Nathan Sweet
  * @see com.ariasaproject.advancerofrpg.math.MathUtils#lerpAngleDeg(float,
- *      float, float)
+ * float, float)
  */
 public class RotateToAction extends TemporalAction {
-	private float start, end;
+    private float start, end;
 
-	private boolean useShortestDirection = false;
+    private boolean useShortestDirection = false;
 
-	public RotateToAction() {
-	}
+    public RotateToAction() {
+    }
 
-	/**
-	 * @param useShortestDirection Set to true to move directly to the closest angle
-	 */
-	public RotateToAction(boolean useShortestDirection) {
-		this.useShortestDirection = useShortestDirection;
-	}
+    /**
+     * @param useShortestDirection Set to true to move directly to the closest angle
+     */
+    public RotateToAction(boolean useShortestDirection) {
+        this.useShortestDirection = useShortestDirection;
+    }
 
-	@Override
-	protected void begin() {
-		start = target.getRotation();
-	}
+    @Override
+    protected void begin() {
+        start = target.getRotation();
+    }
 
-	@Override
-	protected void update(float percent) {
-		float rotation;
-		if (percent == 0)
-			rotation = start;
-		else if (percent == 1)
-			rotation = end;
-		else if (useShortestDirection)
-			rotation = MathUtils.lerpAngleDeg(this.start, this.end, percent);
-		else
-			rotation = start + (end - start) * percent;
-		target.setRotation(rotation);
-	}
+    @Override
+    protected void update(float percent) {
+        float rotation;
+        if (percent == 0)
+            rotation = start;
+        else if (percent == 1)
+            rotation = end;
+        else if (useShortestDirection)
+            rotation = MathUtils.lerpAngleDeg(this.start, this.end, percent);
+        else
+            rotation = start + (end - start) * percent;
+        target.setRotation(rotation);
+    }
 
-	public float getRotation() {
-		return end;
-	}
+    public float getRotation() {
+        return end;
+    }
 
-	public void setRotation(float rotation) {
-		this.end = rotation;
-	}
+    public void setRotation(float rotation) {
+        this.end = rotation;
+    }
 
-	public boolean isUseShortestDirection() {
-		return useShortestDirection;
-	}
+    public boolean isUseShortestDirection() {
+        return useShortestDirection;
+    }
 
-	public void setUseShortestDirection(boolean useShortestDirection) {
-		this.useShortestDirection = useShortestDirection;
-	}
+    public void setUseShortestDirection(boolean useShortestDirection) {
+        this.useShortestDirection = useShortestDirection;
+    }
 }

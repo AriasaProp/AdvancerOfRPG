@@ -12,73 +12,82 @@ import com.ariasaproject.advancerofrpg.physics.box2d.World;
  * pulley hitting the top.
  */
 public class PulleyJoint extends Joint {
-	// @off
-	/*
-	 * JNI #include <Box2D/Box2D.h>
-	 */
+    // @off
+    /*
+     * JNI #include <Box2D/Box2D.h>
+     */
 
-	public PulleyJoint(World world, long addr) {
-		super(world, addr);
-	}
+    /**
+     * Get the first ground anchor.
+     */
+    private final float[] tmp = new float[2];
+    private final Vector2 groundAnchorA = new Vector2();
+    /**
+     * Get the second ground anchor.
+     */
+    private final Vector2 groundAnchorB = new Vector2();
 
-	/** Get the first ground anchor. */
-	private final float[] tmp = new float[2];
-	private final Vector2 groundAnchorA = new Vector2();
+    public PulleyJoint(World world, long addr) {
+        super(world, addr);
+    }
 
-	public Vector2 getGroundAnchorA() {
-		jniGetGroundAnchorA(addr, tmp);
-		groundAnchorA.set(tmp[0], tmp[1]);
-		return groundAnchorA;
-	}
+    public Vector2 getGroundAnchorA() {
+        jniGetGroundAnchorA(addr, tmp);
+        groundAnchorA.set(tmp[0], tmp[1]);
+        return groundAnchorA;
+    }
 
-	private native void jniGetGroundAnchorA(long addr, float[] anchor); /*
-																		 * b2PulleyJoint* joint = (b2PulleyJoint*)addr;
-																		 * anchor[0] = joint->GetGroundAnchorA().x;
-																		 * anchor[1] = joint->GetGroundAnchorA().y;
-																		 */
+    private native void jniGetGroundAnchorA(long addr, float[] anchor); /*
+     * b2PulleyJoint* joint = (b2PulleyJoint*)addr;
+     * anchor[0] = joint->GetGroundAnchorA().x;
+     * anchor[1] = joint->GetGroundAnchorA().y;
+     */
 
-	/** Get the second ground anchor. */
-	private final Vector2 groundAnchorB = new Vector2();
+    public Vector2 getGroundAnchorB() {
+        jniGetGroundAnchorB(addr, tmp);
+        groundAnchorB.set(tmp[0], tmp[1]);
+        return groundAnchorB;
+    }
 
-	public Vector2 getGroundAnchorB() {
-		jniGetGroundAnchorB(addr, tmp);
-		groundAnchorB.set(tmp[0], tmp[1]);
-		return groundAnchorB;
-	}
+    private native void jniGetGroundAnchorB(long addr, float[] anchor); /*
+     * b2PulleyJoint* joint = (b2PulleyJoint*)addr;
+     * anchor[0] = joint->GetGroundAnchorB().x;
+     * anchor[1] = joint->GetGroundAnchorB().y;
+     */
 
-	private native void jniGetGroundAnchorB(long addr, float[] anchor); /*
-																		 * b2PulleyJoint* joint = (b2PulleyJoint*)addr;
-																		 * anchor[0] = joint->GetGroundAnchorB().x;
-																		 * anchor[1] = joint->GetGroundAnchorB().y;
-																		 */
+    /**
+     * Get the current length of the segment attached to body1.
+     */
+    public float getLength1() {
+        return jniGetLength1(addr);
+    }
 
-	/** Get the current length of the segment attached to body1. */
-	public float getLength1() {
-		return jniGetLength1(addr);
-	}
+    private native float jniGetLength1(long addr); /*
+     * b2PulleyJoint* joint = (b2PulleyJoint*)addr; return
+     * joint->GetLengthA();
+     */
 
-	private native float jniGetLength1(long addr); /*
-													 * b2PulleyJoint* joint = (b2PulleyJoint*)addr; return
-													 * joint->GetLengthA();
-													 */
+    /**
+     * Get the current length of the segment attached to body2.
+     */
+    public float getLength2() {
+        return jniGetLength2(addr);
+    }
 
-	/** Get the current length of the segment attached to body2. */
-	public float getLength2() {
-		return jniGetLength2(addr);
-	}
+    private native float jniGetLength2(long addr); /*
+     * b2PulleyJoint* joint = (b2PulleyJoint*)addr; return
+     * joint->GetLengthB();
+     */
 
-	private native float jniGetLength2(long addr); /*
-													 * b2PulleyJoint* joint = (b2PulleyJoint*)addr; return
-													 * joint->GetLengthB();
-													 */
+    /**
+     * Get the pulley ratio.
+     */
+    public float getRatio() {
+        return jniGetRatio(addr);
+    }
 
-	/** Get the pulley ratio. */
-	public float getRatio() {
-		return jniGetRatio(addr);
-	}
-
-	private native float jniGetRatio(long addr); /*
-													 * b2PulleyJoint* joint = (b2PulleyJoint*)addr; return
-													 * joint->GetRatio();
-													 */
+    private native float jniGetRatio(long addr); /*
+     * b2PulleyJoint* joint = (b2PulleyJoint*)addr; return
+     * joint->GetRatio();
+     */
 }

@@ -11,8 +11,8 @@ import com.ariasaproject.advancerofrpg.utils.Null;
  * @author Nathan Sweet
  */
 public interface Cullable {
-	/**
-	 * @param cullingArea The culling area in the child actor's coordinates.
-	 */
-	void setCullingArea(@Null Rectangle cullingArea);
+    /**
+     * @param cullingArea The culling area in the child actor's coordinates.
+     */
+    void setCullingArea(@Null Rectangle cullingArea);
 }

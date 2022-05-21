@@ -9,19 +9,19 @@ import com.ariasaproject.advancerofrpg.scenes2d.Actor;
  * @author Nathan Sweet
  */
 public class VisibleAction extends Action {
-	private boolean visible;
+    private boolean visible;
 
-	@Override
-	public boolean act(float delta) {
-		target.setVisible(visible);
-		return true;
-	}
+    @Override
+    public boolean act(float delta) {
+        target.setVisible(visible);
+        return true;
+    }
 
-	public boolean isVisible() {
-		return visible;
-	}
+    public boolean isVisible() {
+        return visible;
+    }
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

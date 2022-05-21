@@ -9,10 +9,8 @@
 /// can violate the constraint slightly. The joint translation is zero
 /// when the local anchor points coincide in world space. Using local
 /// anchors and a local axis helps when saving and loading a game.
-struct b2PrismaticJointDef : public b2JointDef
-{
-    b2PrismaticJointDef()
-    {
+struct b2PrismaticJointDef : public b2JointDef {
+    b2PrismaticJointDef() {
         type = e_prismaticJoint;
         localAnchorA.SetZero();
         localAnchorB.SetZero();
@@ -28,7 +26,7 @@ struct b2PrismaticJointDef : public b2JointDef
 
     /// Initialize the bodies, anchors, axis, and reference angle using the world
     /// anchor and unit world axis.
-    void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor, const b2Vec2& axis);
+    void Initialize(b2Body *bodyA, b2Body *bodyB, const b2Vec2 &anchor, const b2Vec2 &axis);
 
     /// The local anchor point relative to bodyA's origin.
     b2Vec2 localAnchorA;
@@ -65,36 +63,33 @@ struct b2PrismaticJointDef : public b2JointDef
 /// along an axis fixed in bodyA. Relative rotation is prevented. You can
 /// use a joint limit to restrict the range of motion and a joint motor to
 /// drive the motion or to model joint friction.
-class b2PrismaticJoint : public b2Joint
-{
+class b2PrismaticJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// The local anchor point relative to bodyA's origin.
-    const b2Vec2& GetLocalAnchorA() const
-    {
+    const b2Vec2 &GetLocalAnchorA() const {
         return m_localAnchorA;
     }
 
     /// The local anchor point relative to bodyB's origin.
-    const b2Vec2& GetLocalAnchorB() const
-    {
+    const b2Vec2 &GetLocalAnchorB() const {
         return m_localAnchorB;
     }
 
     /// The local joint axis relative to bodyA.
-    const b2Vec2& GetLocalAxisA() const
-    {
+    const b2Vec2 &GetLocalAxisA() const {
         return m_localXAxisA;
     }
 
     /// Get the reference angle.
-    float32 GetReferenceAngle() const
-    {
+    float32 GetReferenceAngle() const {
         return m_referenceAngle;
     }
 
@@ -133,8 +128,8 @@ public:
 
     /// Set the maximum motor force, usually in N.
     void SetMaxMotorForce(float32 force);
-    float32 GetMaxMotorForce() const
-    {
+
+    float32 GetMaxMotorForce() const {
         return m_maxMotorForce;
     }
 
@@ -146,12 +141,16 @@ public:
 
 protected:
     friend class b2Joint;
-    friend class b2GearJoint;
-    b2PrismaticJoint(const b2PrismaticJointDef* def);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    friend class b2GearJoint;
+
+    b2PrismaticJoint(const b2PrismaticJointDef *def);
+
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     // Solver shared
     b2Vec2 m_localAnchorA;
@@ -185,8 +184,7 @@ protected:
     float32 m_motorMass;
 };
 
-inline float32 b2PrismaticJoint::GetMotorSpeed() const
-{
+inline float32 b2PrismaticJoint::GetMotorSpeed() const {
     return m_motorSpeed;
 }
 

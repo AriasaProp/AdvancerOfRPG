@@ -8,7 +8,7 @@ import com.ariasaproject.advancerofrpg.utils.Array;
  * GroupStrategies}.
  */
 public interface GroupPlug {
-	void beforeGroup(Array<Decal> contents);
+    void beforeGroup(Array<Decal> contents);
 
-	void afterGroup();
+    void afterGroup();
 }

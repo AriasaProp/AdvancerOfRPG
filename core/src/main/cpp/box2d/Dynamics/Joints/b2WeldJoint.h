@@ -6,10 +6,8 @@
 /// Weld joint definition. You need to specify local anchor points
 /// where they are attached and the relative body angle. The position
 /// of the anchor points is important for computing the reaction torque.
-struct b2WeldJointDef : public b2JointDef
-{
-    b2WeldJointDef()
-    {
+struct b2WeldJointDef : public b2JointDef {
+    b2WeldJointDef() {
         type = e_weldJoint;
         localAnchorA.Set(0.0f, 0.0f);
         localAnchorB.Set(0.0f, 0.0f);
@@ -20,7 +18,7 @@ struct b2WeldJointDef : public b2JointDef
 
     /// Initialize the bodies, anchors, and reference angle using a world
     /// anchor point.
-    void Initialize(b2Body* bodyA, b2Body* bodyB, const b2Vec2& anchor);
+    void Initialize(b2Body *bodyA, b2Body *bodyB, const b2Vec2 &anchor);
 
     /// The local anchor point relative to bodyA's origin.
     b2Vec2 localAnchorA;
@@ -41,50 +39,46 @@ struct b2WeldJointDef : public b2JointDef
 
 /// A weld joint essentially glues two bodies together. A weld joint may
 /// distort somewhat because the island constraint solver is approximate.
-class b2WeldJoint : public b2Joint
-{
+class b2WeldJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// The local anchor point relative to bodyA's origin.
-    const b2Vec2& GetLocalAnchorA() const
-    {
+    const b2Vec2 &GetLocalAnchorA() const {
         return m_localAnchorA;
     }
 
     /// The local anchor point relative to bodyB's origin.
-    const b2Vec2& GetLocalAnchorB() const
-    {
+    const b2Vec2 &GetLocalAnchorB() const {
         return m_localAnchorB;
     }
 
     /// Get the reference angle.
-    float32 GetReferenceAngle() const
-    {
+    float32 GetReferenceAngle() const {
         return m_referenceAngle;
     }
 
     /// Set/get frequency in Hz.
-    void SetFrequency(float32 hz)
-    {
+    void SetFrequency(float32 hz) {
         m_frequencyHz = hz;
     }
-    float32 GetFrequency() const
-    {
+
+    float32 GetFrequency() const {
         return m_frequencyHz;
     }
 
     /// Set/get damping ratio.
-    void SetDampingRatio(float32 ratio)
-    {
+    void SetDampingRatio(float32 ratio) {
         m_dampingRatio = ratio;
     }
-    float32 GetDampingRatio() const
-    {
+
+    float32 GetDampingRatio() const {
         return m_dampingRatio;
     }
 
@@ -95,11 +89,13 @@ protected:
 
     friend class b2Joint;
 
-    b2WeldJoint(const b2WeldJointDef* def);
+    b2WeldJoint(const b2WeldJointDef *def);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     float32 m_frequencyHz;
     float32 m_dampingRatio;

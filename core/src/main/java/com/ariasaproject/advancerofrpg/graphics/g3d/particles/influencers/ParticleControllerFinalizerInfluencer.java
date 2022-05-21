@@ -14,49 +14,49 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleController
  * @author Inferno
  */
 public class ParticleControllerFinalizerInfluencer extends Influencer {
-	FloatChannel positionChannel, scaleChannel, rotationChannel;
-	ObjectChannel<ParticleController> controllerChannel;
-	boolean hasScale, hasRotation;
+    FloatChannel positionChannel, scaleChannel, rotationChannel;
+    ObjectChannel<ParticleController> controllerChannel;
+    boolean hasScale, hasRotation;
 
-	public ParticleControllerFinalizerInfluencer() {
-	}
+    public ParticleControllerFinalizerInfluencer() {
+    }
 
-	@Override
-	public void init() {
-		controllerChannel = controller.particles.getChannel(ParticleChannels.ParticleController);
-		if (controllerChannel == null)
-			throw new RuntimeException("ParticleController channel not found, specify an influencer which will allocate it please.");
-		scaleChannel = controller.particles.getChannel(ParticleChannels.Scale);
-		rotationChannel = controller.particles.getChannel(ParticleChannels.Rotation3D);
-		hasScale = scaleChannel != null;
-		hasRotation = rotationChannel != null;
-	}
+    @Override
+    public void init() {
+        controllerChannel = controller.particles.getChannel(ParticleChannels.ParticleController);
+        if (controllerChannel == null)
+            throw new RuntimeException("ParticleController channel not found, specify an influencer which will allocate it please.");
+        scaleChannel = controller.particles.getChannel(ParticleChannels.Scale);
+        rotationChannel = controller.particles.getChannel(ParticleChannels.Rotation3D);
+        hasScale = scaleChannel != null;
+        hasRotation = rotationChannel != null;
+    }
 
-	@Override
-	public void allocateChannels() {
-		positionChannel = controller.particles.addChannel(ParticleChannels.Position);
-	}
+    @Override
+    public void allocateChannels() {
+        positionChannel = controller.particles.addChannel(ParticleChannels.Position);
+    }
 
-	@Override
-	public void update() {
-		for (int i = 0, positionOffset = 0, c = controller.particles.size; i < c; ++i, positionOffset += positionChannel.strideSize) {
-			ParticleController particleController = controllerChannel.data[i];
-			float scale = hasScale ? scaleChannel.data[i] : 1;
-			float qx = 0, qy = 0, qz = 0, qw = 1;
-			if (hasRotation) {
-				int rotationOffset = i * rotationChannel.strideSize;
-				qx = rotationChannel.data[rotationOffset + ParticleChannels.XOffset];
-				qy = rotationChannel.data[rotationOffset + ParticleChannels.YOffset];
-				qz = rotationChannel.data[rotationOffset + ParticleChannels.ZOffset];
-				qw = rotationChannel.data[rotationOffset + ParticleChannels.WOffset];
-			}
-			particleController.setTransform(positionChannel.data[positionOffset + ParticleChannels.XOffset], positionChannel.data[positionOffset + ParticleChannels.YOffset], positionChannel.data[positionOffset + ParticleChannels.ZOffset], qx, qy, qz, qw, scale);
-			particleController.update();
-		}
-	}
+    @Override
+    public void update() {
+        for (int i = 0, positionOffset = 0, c = controller.particles.size; i < c; ++i, positionOffset += positionChannel.strideSize) {
+            ParticleController particleController = controllerChannel.data[i];
+            float scale = hasScale ? scaleChannel.data[i] : 1;
+            float qx = 0, qy = 0, qz = 0, qw = 1;
+            if (hasRotation) {
+                int rotationOffset = i * rotationChannel.strideSize;
+                qx = rotationChannel.data[rotationOffset + ParticleChannels.XOffset];
+                qy = rotationChannel.data[rotationOffset + ParticleChannels.YOffset];
+                qz = rotationChannel.data[rotationOffset + ParticleChannels.ZOffset];
+                qw = rotationChannel.data[rotationOffset + ParticleChannels.WOffset];
+            }
+            particleController.setTransform(positionChannel.data[positionOffset + ParticleChannels.XOffset], positionChannel.data[positionOffset + ParticleChannels.YOffset], positionChannel.data[positionOffset + ParticleChannels.ZOffset], qx, qy, qz, qw, scale);
+            particleController.update();
+        }
+    }
 
-	@Override
-	public ParticleControllerFinalizerInfluencer copy() {
-		return new ParticleControllerFinalizerInfluencer();
-	}
+    @Override
+    public ParticleControllerFinalizerInfluencer copy() {
+        return new ParticleControllerFinalizerInfluencer();
+    }
 }

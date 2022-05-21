@@ -1,9 +1,9 @@
 package com.ariasaproject.advancerofrpg;
 
 public interface LifecycleListener {
-	void pause();
+    void pause();
 
-	void resume();
+    void resume();
 
-	void dispose();
+    void dispose();
 }

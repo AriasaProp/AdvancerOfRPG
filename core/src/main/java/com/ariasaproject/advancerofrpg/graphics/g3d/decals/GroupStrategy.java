@@ -34,46 +34,46 @@ import com.ariasaproject.advancerofrpg.utils.Array;
  * </p>
  */
 public interface GroupStrategy {
-	/**
-	 * Returns the shader to be used for the group. Can be null in which case the
-	 * GroupStrategy doesn't support GLES 2.0
-	 *
-	 * @param group the group
-	 * @return the {@link ShaderProgram}
-	 */
-	ShaderProgram getGroupShader(int group);
+    /**
+     * Returns the shader to be used for the group. Can be null in which case the
+     * GroupStrategy doesn't support GLES 2.0
+     *
+     * @param group the group
+     * @return the {@link ShaderProgram}
+     */
+    ShaderProgram getGroupShader(int group);
 
-	/**
-	 * Assigns a group to a decal
-	 *
-	 * @param decal Decal to assign group to
-	 * @return group assigned
-	 */
-	int decideGroup(Decal decal);
+    /**
+     * Assigns a group to a decal
+     *
+     * @param decal Decal to assign group to
+     * @return group assigned
+     */
+    int decideGroup(Decal decal);
 
-	/**
-	 * Invoked directly before rendering the contents of a group
-	 *
-	 * @param group    Group that will be rendered
-	 * @param contents Array of entries of arrays containing all the decals in the
-	 *                 group
-	 */
-	void beforeGroup(int group, Array<Decal> contents);
+    /**
+     * Invoked directly before rendering the contents of a group
+     *
+     * @param group    Group that will be rendered
+     * @param contents Array of entries of arrays containing all the decals in the
+     *                 group
+     */
+    void beforeGroup(int group, Array<Decal> contents);
 
-	/**
-	 * Invoked directly after rendering of a group has completed
-	 *
-	 * @param group Group which completed rendering
-	 */
-	void afterGroup(int group);
+    /**
+     * Invoked directly after rendering of a group has completed
+     *
+     * @param group Group which completed rendering
+     */
+    void afterGroup(int group);
 
-	/**
-	 * Invoked before rendering any group
-	 */
-	void beforeGroups();
+    /**
+     * Invoked before rendering any group
+     */
+    void beforeGroups();
 
-	/**
-	 * Invoked after having rendered all groups
-	 */
-	void afterGroups();
+    /**
+     * Invoked after having rendered all groups
+     */
+    void afterGroups();
 }

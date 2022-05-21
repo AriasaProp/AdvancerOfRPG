@@ -1,2 +1,2 @@
 include ':core', ':android'
-rootProject.name='Advancer Of RPG'
+rootProject.name = 'Advancer Of RPG'

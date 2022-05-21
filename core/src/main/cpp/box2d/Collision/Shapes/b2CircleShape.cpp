@@ -1,22 +1,20 @@
 #include "b2CircleShape.h"
 #include <new>
+
 using namespace std;
 
-b2Shape* b2CircleShape::Clone(b2BlockAllocator* allocator) const
-{
-    void* mem = allocator->Allocate(sizeof(b2CircleShape));
-    b2CircleShape* clone = new (mem) b2CircleShape;
+b2Shape *b2CircleShape::Clone(b2BlockAllocator *allocator) const {
+    void *mem = allocator->Allocate(sizeof(b2CircleShape));
+    b2CircleShape *clone = new(mem) b2CircleShape;
     *clone = *this;
     return clone;
 }
 
-int32 b2CircleShape::GetChildCount() const
-{
+int32 b2CircleShape::GetChildCount() const {
     return 1;
 }
 
-bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) const
-{
+bool b2CircleShape::TestPoint(const b2Transform &transform, const b2Vec2 &p) const {
     b2Vec2 center = transform.p + b2Mul(transform.q, m_p);
     b2Vec2 d = p - center;
     return b2Dot(d, d) <= m_radius * m_radius;
@@ -26,9 +24,8 @@ bool b2CircleShape::TestPoint(const b2Transform& transform, const b2Vec2& p) con
 // From Section 3.1.2
 // x = s + a * r
 // norm(x) = radius
-bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-                            const b2Transform& transform, int32 childIndex) const
-{
+bool b2CircleShape::RayCast(b2RayCastOutput *output, const b2RayCastInput &input,
+                            const b2Transform &transform, int32 childIndex) const {
     B2_NOT_USED(childIndex);
 
     b2Vec2 position = transform.p + b2Mul(transform.q, m_p);
@@ -37,13 +34,12 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
 
     // Solve quadratic equation.
     b2Vec2 r = input.p2 - input.p1;
-    float32 c =  b2Dot(s, r);
+    float32 c = b2Dot(s, r);
     float32 rr = b2Dot(r, r);
     float32 sigma = c * c - rr * b;
 
     // Check for negative discriminant and short segment.
-    if (sigma < 0.0f || rr < b2_epsilon)
-    {
+    if (sigma < 0.0f || rr < b2_epsilon) {
         return false;
     }
 
@@ -51,8 +47,7 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
     float32 a = -(c + b2Sqrt(sigma));
 
     // Is the intersection point on the segment?
-    if (0.0f <= a && a <= input.maxFraction * rr)
-    {
+    if (0.0f <= a && a <= input.maxFraction * rr) {
         a /= rr;
         output->fraction = a;
         output->normal = s + a * r;
@@ -63,8 +58,8 @@ bool b2CircleShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& input
     return false;
 }
 
-void b2CircleShape::ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const
-{
+void
+b2CircleShape::ComputeAABB(b2AABB *aabb, const b2Transform &transform, int32 childIndex) const {
     B2_NOT_USED(childIndex);
 
     b2Vec2 p = transform.p + b2Mul(transform.q, m_p);
@@ -72,8 +67,7 @@ void b2CircleShape::ComputeAABB(b2AABB* aabb, const b2Transform& transform, int3
     aabb->upperBound.Set(p.x + m_radius, p.y + m_radius);
 }
 
-void b2CircleShape::ComputeMass(b2MassData* massData, float32 density) const
-{
+void b2CircleShape::ComputeMass(b2MassData *massData, float32 density) const {
     massData->mass = density * b2_pi * m_radius * m_radius;
     massData->center = m_p;
 

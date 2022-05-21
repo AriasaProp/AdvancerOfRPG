@@ -39,18 +39,8 @@ public class Pixmap implements Disposable {
     }
 
     public Pixmap(FileHandle file) {
-        switch (file.type()) {
-            case Internal:
-            case Local:
-                this.pixels = loadFromInternalFilePath(nativeData, file.path());
-
-                break;
-            default:
-                final byte[] bytes = file.readBytes();
-                this.pixels = load(nativeData, bytes, 0, bytes.length);
-                break;
-        }
-
+        final byte[] bytes = file.readBytes();
+        this.pixels = load(nativeData, bytes, 0, bytes.length);
         if (pixels == null)
             throw new RuntimeException("Couldn't load file: " + file + " " + getFailureReason());
         basePtr = nativeData[0];
@@ -58,10 +48,21 @@ public class Pixmap implements Disposable {
         this.height = (int) nativeData[2];
         this.format = Format.values()[(int) nativeData[3] - 1];
     }
+	/*
+	public Pixmap(String internalPath) {
+		this.pixels = loadFromInternalFilePath(nativeData, internalPath);
+        if (pixels == null)
+            throw new RuntimeException("Couldn't load file: " + internalPath + " " + getFailureReason());
+        basePtr = nativeData[0];
+        this.width = (int) nativeData[1];
+        this.height = (int) nativeData[2];
+        this.format = Format.values()[(int) nativeData[3] - 1];
+    }
+	*/
 
     static native void initialize();
 
-    private static native ByteBuffer loadFromInternalFilePath(long[] nativeData, String internalPath);
+    //private static native ByteBuffer loadFromInternalFilePath(long[] nativeData, String internalPath);
 
     private static native ByteBuffer load(long[] nativeData, byte[] buffer, int offset, int len);
 

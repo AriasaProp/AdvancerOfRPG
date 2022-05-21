@@ -8,37 +8,37 @@ import com.ariasaproject.advancerofrpg.net.Net;
 
 public interface Application {
 
-	public Graphics getGraphics();
+    public Graphics getGraphics();
 
-	public Audio getAudio();
+    public Audio getAudio();
 
-	public Input getInput();
+    public Input getInput();
 
-	public Files getFiles();
+    public Files getFiles();
 
-	public Net getNet();
+    public Net getNet();
 
-	public Clipboard getClipboard();
+    public Clipboard getClipboard();
 
-	public void log(String tag, String message);
+    public void log(String tag, String message);
 
-	public void log(String tag, String message, Throwable exception);
+    public void log(String tag, String message, Throwable exception);
 
-	public void error(String tag, String message);
+    public void error(String tag, String message);
 
-	public void error(String tag, String message, Throwable exception);
+    public void error(String tag, String message, Throwable exception);
 
-	public void debug(String tag, String message);
+    public void debug(String tag, String message);
 
-	public void debug(String tag, String message, Throwable exception);
+    public void debug(String tag, String message, Throwable exception);
 
-	public void postRunnable(Runnable runnable);
+    public void postRunnable(Runnable runnable);
 
-	public void restart();
+    public void restart();
 
-	public void exit();
+    public void exit();
 
-	public void addLifecycleListener(LifecycleListener listener);
+    public void addLifecycleListener(LifecycleListener listener);
 
-	public void removeLifecycleListener(LifecycleListener listener);
+    public void removeLifecycleListener(LifecycleListener listener);
 }

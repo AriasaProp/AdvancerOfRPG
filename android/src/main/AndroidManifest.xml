@@ -4,14 +4,6 @@
     package="com.ariasaproject.advancerofrpg">
 
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-
-    <uses-feature
-        android:glEsVersion="0x00030000"
-        android:required="true" />
-
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -27,10 +19,20 @@
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
                 <data android:name="android.content.intent.FLAG_ACTIVITY_NO_ANIMATION" />
             </intent-filter>
         </activity>
     </application>
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

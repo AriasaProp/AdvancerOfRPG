@@ -4,8 +4,7 @@
 #include "../Common/b2Math.h"
 
 /// Profiling data. Times are in milliseconds.
-struct b2Profile
-{
+struct b2Profile {
     float32 step;
     float32 collide;
     float32 solve;
@@ -17,36 +16,32 @@ struct b2Profile
 };
 
 /// This is an internal structure.
-struct b2TimeStep
-{
-    float32 dt;			// time step
-    float32 inv_dt;		// inverse time step (0 if dt == 0).
-    float32 dtRatio;	// dt * inv_dt0
+struct b2TimeStep {
+    float32 dt;            // time step
+    float32 inv_dt;        // inverse time step (0 if dt == 0).
+    float32 dtRatio;    // dt * inv_dt0
     int32 velocityIterations;
     int32 positionIterations;
     bool warmStarting;
 };
 
 /// This is an internal structure.
-struct b2Position
-{
+struct b2Position {
     b2Vec2 c;
     float32 a;
 };
 
 /// This is an internal structure.
-struct b2Velocity
-{
+struct b2Velocity {
     b2Vec2 v;
     float32 w;
 };
 
 /// Solver Data
-struct b2SolverData
-{
+struct b2SolverData {
     b2TimeStep step;
-    b2Position* positions;
-    b2Velocity* velocities;
+    b2Position *positions;
+    b2Velocity *velocities;
 };
 
 #endif

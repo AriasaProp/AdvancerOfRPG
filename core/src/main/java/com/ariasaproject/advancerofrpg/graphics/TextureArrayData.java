@@ -5,28 +5,28 @@ import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.glutils.FileTextureArrayData;
 
 public interface TextureArrayData {
-	boolean isPrepared();
+    boolean isPrepared();
 
-	void prepare();
+    void prepare();
 
-	void consumeTextureArrayData();
+    void consumeTextureArrayData();
 
-	int getWidth();
+    int getWidth();
 
-	int getHeight();
+    int getHeight();
 
-	int getDepth();
+    int getDepth();
 
-	boolean isManaged();
+    boolean isManaged();
 
-	Format getFormat();
+    Format getFormat();
 
-	class Factory {
+    class Factory {
 
-		public static TextureArrayData loadFromFiles(Format format, boolean useMipMaps, FileHandle... files) {
-			return new FileTextureArrayData(format, useMipMaps, files);
-		}
+        public static TextureArrayData loadFromFiles(Format format, boolean useMipMaps, FileHandle... files) {
+            return new FileTextureArrayData(format, useMipMaps, files);
+        }
 
-	}
+    }
 
 }

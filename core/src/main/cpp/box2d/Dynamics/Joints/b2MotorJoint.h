@@ -4,10 +4,8 @@
 #include "b2Joint.h"
 
 /// Motor joint definition.
-struct b2MotorJointDef : public b2JointDef
-{
-    b2MotorJointDef()
-    {
+struct b2MotorJointDef : public b2JointDef {
+    b2MotorJointDef() {
         type = e_motorJoint;
         linearOffset.SetZero();
         angularOffset = 0.0f;
@@ -17,7 +15,7 @@ struct b2MotorJointDef : public b2JointDef
     }
 
     /// Initialize the bodies and offsets using the current transforms.
-    void Initialize(b2Body* bodyA, b2Body* bodyB);
+    void Initialize(b2Body *bodyA, b2Body *bodyB);
 
     /// Position of bodyB minus the position of bodyA, in bodyA's frame, in meters.
     b2Vec2 linearOffset;
@@ -38,21 +36,24 @@ struct b2MotorJointDef : public b2JointDef
 /// A motor joint is used to control the relative motion
 /// between two bodies. A typical usage is to control the movement
 /// of a dynamic body with respect to the ground.
-class b2MotorJoint : public b2Joint
-{
+class b2MotorJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// Set/get the target linear offset, in frame A, in meters.
-    void SetLinearOffset(const b2Vec2& linearOffset);
-    const b2Vec2& GetLinearOffset() const;
+    void SetLinearOffset(const b2Vec2 &linearOffset);
+
+    const b2Vec2 &GetLinearOffset() const;
 
     /// Set/get the target angular offset, in radians.
     void SetAngularOffset(float32 angularOffset);
+
     float32 GetAngularOffset() const;
 
     /// Set the maximum friction force in N.
@@ -80,11 +81,13 @@ protected:
 
     friend class b2Joint;
 
-    b2MotorJoint(const b2MotorJointDef* def);
+    b2MotorJoint(const b2MotorJointDef *def);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     // Solver shared
     b2Vec2 m_linearOffset;

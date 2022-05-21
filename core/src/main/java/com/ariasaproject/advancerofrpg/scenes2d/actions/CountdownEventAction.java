@@ -9,16 +9,16 @@ import com.ariasaproject.advancerofrpg.scenes2d.Event;
  * @author Nathan Sweet
  */
 public class CountdownEventAction<T extends Event> extends EventAction<T> {
-	int count, current;
+    int count, current;
 
-	public CountdownEventAction(Class<? extends T> eventClass, int count) {
-		super(eventClass);
-		this.count = count;
-	}
+    public CountdownEventAction(Class<? extends T> eventClass, int count) {
+        super(eventClass);
+        this.count = count;
+    }
 
-	@Override
-	public boolean handle(T event) {
-		current++;
-		return current >= count;
-	}
+    @Override
+    public boolean handle(T event) {
+        current++;
+        return current >= count;
+    }
 }

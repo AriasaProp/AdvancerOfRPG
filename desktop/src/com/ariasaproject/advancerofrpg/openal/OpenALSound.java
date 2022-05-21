@@ -1,5 +1,10 @@
 package com.ariasaproject.advancerofrpg.openal;
 
+import com.ariasaproject.advancerofrpg.audio.Sound;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 import static org.lwjgl.openal.AL10.AL_BUFFER;
 import static org.lwjgl.openal.AL10.AL_FALSE;
 import static org.lwjgl.openal.AL10.AL_FORMAT_MONO16;
@@ -14,153 +19,151 @@ import static org.lwjgl.openal.AL10.alSourcePlay;
 import static org.lwjgl.openal.AL10.alSourcef;
 import static org.lwjgl.openal.AL10.alSourcei;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import com.ariasaproject.advancerofrpg.audio.Sound;
-
 public class OpenALSound implements Sound {
-	private int bufferID = -1;
-	private final OpenALAudio audio;
-	private float duration;
+    private final OpenALAudio audio;
+    private int bufferID = -1;
+    private float duration;
 
-	public OpenALSound (OpenALAudio audio) {
-		this.audio = audio;
-	}
+    public OpenALSound(OpenALAudio audio) {
+        this.audio = audio;
+    }
 
-	void setup (byte[] pcm, int channels, int sampleRate) {
-		int bytes = pcm.length - (pcm.length % (channels > 1 ? 4 : 2));
-		int samples = bytes / (2 * channels);
-		duration = samples / (float)sampleRate;
+    void setup(byte[] pcm, int channels, int sampleRate) {
+        int bytes = pcm.length - (pcm.length % (channels > 1 ? 4 : 2));
+        int samples = bytes / (2 * channels);
+        duration = samples / (float) sampleRate;
 
-		ByteBuffer buffer = ByteBuffer.allocateDirect(bytes);
-		buffer.order(ByteOrder.nativeOrder());
-		buffer.put(pcm, 0, bytes);
-		buffer.flip();
+        ByteBuffer buffer = ByteBuffer.allocateDirect(bytes);
+        buffer.order(ByteOrder.nativeOrder());
+        buffer.put(pcm, 0, bytes);
+        buffer.flip();
 
-		if (bufferID == -1) {
-			bufferID = alGenBuffers();
-			alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, buffer.asShortBuffer(), sampleRate);
-		}
-	}
+        if (bufferID == -1) {
+            bufferID = alGenBuffers();
+            alBufferData(bufferID, channels > 1 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, buffer.asShortBuffer(), sampleRate);
+        }
+    }
 
-	public long play () {
-		return play(1);
-	}
+    public long play() {
+        return play(1);
+    }
 
-	public long play (float volume) {
-		if (audio.noDevice) return 0;
-		int sourceID = audio.obtainSource(false);
-		if (sourceID == -1) return -1;
-		long soundId = audio.getSoundId(sourceID);
-		alSourcei(sourceID, AL_BUFFER, bufferID);
-		alSourcei(sourceID, AL_LOOPING, AL_FALSE);
-		alSourcef(sourceID, AL_GAIN, volume);
-		alSourcePlay(sourceID);
-		return soundId;
-	}
+    public long play(float volume) {
+        if (audio.noDevice) return 0;
+        int sourceID = audio.obtainSource(false);
+        if (sourceID == -1) return -1;
+        long soundId = audio.getSoundId(sourceID);
+        alSourcei(sourceID, AL_BUFFER, bufferID);
+        alSourcei(sourceID, AL_LOOPING, AL_FALSE);
+        alSourcef(sourceID, AL_GAIN, volume);
+        alSourcePlay(sourceID);
+        return soundId;
+    }
 
-	public long loop () {
-		return loop(1);
-	}
+    public long loop() {
+        return loop(1);
+    }
 
-	@Override
-	public long loop (float volume) {
-		if (audio.noDevice) return 0;
-		int sourceID = audio.obtainSource(false);
-		if (sourceID == -1) return -1;
-		long soundId = audio.getSoundId(sourceID);
-		alSourcei(sourceID, AL_BUFFER, bufferID);
-		alSourcei(sourceID, AL_LOOPING, AL_TRUE);
-		alSourcef(sourceID, AL_GAIN, volume);
-		alSourcePlay(sourceID);
-		return soundId;
-	}
+    @Override
+    public long loop(float volume) {
+        if (audio.noDevice) return 0;
+        int sourceID = audio.obtainSource(false);
+        if (sourceID == -1) return -1;
+        long soundId = audio.getSoundId(sourceID);
+        alSourcei(sourceID, AL_BUFFER, bufferID);
+        alSourcei(sourceID, AL_LOOPING, AL_TRUE);
+        alSourcef(sourceID, AL_GAIN, volume);
+        alSourcePlay(sourceID);
+        return soundId;
+    }
 
-	public void stop () {
-		if (audio.noDevice) return;
-		audio.stopSourcesWithBuffer(bufferID);
-	}
+    public void stop() {
+        if (audio.noDevice) return;
+        audio.stopSourcesWithBuffer(bufferID);
+    }
 
-	public void dispose () {
-		if (audio.noDevice) return;
-		if (bufferID == -1) return;
-		audio.freeBuffer(bufferID);
-		alDeleteBuffers(bufferID);
-		bufferID = -1;
-	}
+    public void dispose() {
+        if (audio.noDevice) return;
+        if (bufferID == -1) return;
+        audio.freeBuffer(bufferID);
+        alDeleteBuffers(bufferID);
+        bufferID = -1;
+    }
 
-	@Override
-	public void stop (long soundId) {
-		if (audio.noDevice) return;
-		audio.stopSound(soundId);
-	}
+    @Override
+    public void stop(long soundId) {
+        if (audio.noDevice) return;
+        audio.stopSound(soundId);
+    }
 
-	@Override
-	public void setPitch (long soundId, float pitch) {
-		if (audio.noDevice) return;
-		audio.setSoundPitch(soundId, pitch);
-	}
+    @Override
+    public void setPitch(long soundId, float pitch) {
+        if (audio.noDevice) return;
+        audio.setSoundPitch(soundId, pitch);
+    }
 
-	@Override
-	public void setVolume (long soundId, float volume) {
-		if (audio.noDevice) return;
-		audio.setSoundGain(soundId, volume);
-	}
+    @Override
+    public void setVolume(long soundId, float volume) {
+        if (audio.noDevice) return;
+        audio.setSoundGain(soundId, volume);
+    }
 
-	@Override
-	public void setLooping (long soundId, boolean looping) {
-		if (audio.noDevice) return;
-		audio.setSoundLooping(soundId, looping);
-	}
+    @Override
+    public void setLooping(long soundId, boolean looping) {
+        if (audio.noDevice) return;
+        audio.setSoundLooping(soundId, looping);
+    }
 
-	@Override
-	public void setPan (long soundId, float pan, float volume) {
-		if (audio.noDevice) return;
-		audio.setSoundPan(soundId, pan, volume);
-	}
+    @Override
+    public void setPan(long soundId, float pan, float volume) {
+        if (audio.noDevice) return;
+        audio.setSoundPan(soundId, pan, volume);
+    }
 
-	@Override
-	public long play (float volume, float pitch, float pan) {
-		long id = play();
-		setPitch(id, pitch);
-		setPan(id, pan, volume);
-		return id;
-	}
+    @Override
+    public long play(float volume, float pitch, float pan) {
+        long id = play();
+        setPitch(id, pitch);
+        setPan(id, pan, volume);
+        return id;
+    }
 
-	@Override
-	public long loop (float volume, float pitch, float pan) {
-		long id = loop();
-		setPitch(id, pitch);
-		setPan(id, pan, volume);
-		return id;
-	}
+    @Override
+    public long loop(float volume, float pitch, float pan) {
+        long id = loop();
+        setPitch(id, pitch);
+        setPan(id, pan, volume);
+        return id;
+    }
 
-	/** Returns the length of the sound in seconds. */
-	public float duration () {
-		return duration;
-	}
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * Returns the length of the sound in seconds.
+     */
+    public float duration() {
+        return duration;
+    }
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void pause() {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void pause(long soundId) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-	@Override
-	public void resume(long soundId) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void resume() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void pause(long soundId) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void resume(long soundId) {
+        // TODO Auto-generated method stub
+
+    }
 }

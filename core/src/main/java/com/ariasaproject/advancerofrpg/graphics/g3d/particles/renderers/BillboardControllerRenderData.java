@@ -8,5 +8,5 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParallelArray.Floa
  * @author Inferno
  */
 public class BillboardControllerRenderData extends ParticleControllerRenderData {
-	public FloatChannel regionChannel, colorChannel, scaleChannel, rotationChannel;
+    public FloatChannel regionChannel, colorChannel, scaleChannel, rotationChannel;
 }

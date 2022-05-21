@@ -3,7 +3,6 @@ package com.ariasaproject.advancerofrpg.screen;
 import com.ariasaproject.advancerofrpg.ApplicationListener;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
-import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.g3d.Model;
 import com.ariasaproject.advancerofrpg.math.Interpolation;
 import com.ariasaproject.advancerofrpg.scenes2d.Action;
@@ -82,9 +81,11 @@ public class SplashScreen extends Scene {
         appl.stage.addAction(Actions.sequence(Actions.run(new Runnable() {
             @Override
             public void run() {
-                ApplicationListener.asset.load(new AssetDescriptor<Texture>("texture/badlogic.jpg", Texture.class), new AssetDescriptor<Texture>("texture/android.jpg", Texture.class), new AssetDescriptor<Model>("model/KnightCharacter.g3db", Model.class));
+                ApplicationListener.asset.load(new AssetDescriptor<Model>("model/KnightCharacter.g3db", Model.class));
             }
         }), new Action() {
+            ProgressBar p = table.findActor("bar");
+            Label l = table.findActor("load");
             private boolean began = false, complete = false;
 
             @Override
@@ -100,22 +101,20 @@ public class SplashScreen extends Scene {
                 Pool pool = getPool();
                 setPool(null); // Ensure this action can't be returned to the pool while executing.
                 try {
-                    ProgressBar p = table.findActor("bar");
                     if (!began) {
                         p.setValue(0);
                         began = true;
                     }
                     if ((p.getVisualValue() >= 1) & ApplicationListener.asset.update()) {
-                        ((Label) table.findActor("load")).setText("Loading Is Done!");
+                        l.setText("Loading Is Done!");
                         return true;
                     }
-                    final String status = String.format(Locale.getDefault(), "Loading data [ %02d queued -> %02d loaded ] ", ApplicationListener.asset.getQueuedAssets(), ApplicationListener.asset.getLoadedAssets());
                     final float prog = ApplicationListener.asset.getProgress();
                     if (p.getValue() < prog) {
                         p.setValue(prog);
                     }
 
-                    ((Label) table.findActor("load")).setText(status);
+                    l.setText(String.format(Locale.getDefault(), "Loading data [ %02d queued -> %02d loaded ] ", ApplicationListener.asset.getQueuedAssets(), ApplicationListener.asset.getLoadedAssets()));
 
                     return false;
                 } catch (Exception e) {

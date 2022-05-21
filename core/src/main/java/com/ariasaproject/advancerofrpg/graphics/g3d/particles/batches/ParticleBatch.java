@@ -12,21 +12,21 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.renderers.Particle
  */
 public interface ParticleBatch<T extends ParticleControllerRenderData> extends RenderableProvider, ResourceData.Configurable {
 
-	/**
-	 * Must be called once before any drawing operation
-	 */
-	void begin();
+    /**
+     * Must be called once before any drawing operation
+     */
+    void begin();
 
-	void draw(T controller);
+    void draw(T controller);
 
-	/**
-	 * Must be called after all the drawing operations
-	 */
-	void end();
+    /**
+     * Must be called after all the drawing operations
+     */
+    void end();
 
-	@Override
-	void save(AssetContainer manager, ResourceData assetDependencyData);
+    @Override
+    void save(AssetContainer manager, ResourceData assetDependencyData);
 
-	@Override
-	void load(AssetContainer manager, ResourceData assetDependencyData);
+    @Override
+    void load(AssetContainer manager, ResourceData assetDependencyData);
 }

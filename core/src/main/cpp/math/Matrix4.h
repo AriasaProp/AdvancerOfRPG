@@ -42,24 +42,26 @@ extern "C" {
 
 #define Matrix4_M(R, M) JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_math_Matrix4_##M
 
-    Matrix4_M(void, initialize)(JNIEnv *, jclass);
-    Matrix4_M(jobject, set)(JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
-    Matrix4_M(void, mul)(JNIEnv *, jclass clazz, jfloatArray, jfloatArray);
-    Matrix4_M(void, mulVec___3F)(JNIEnv *, jobject, jfloatArray);
-    Matrix4_M(void, mulVec___3FIII)(JNIEnv *, jobject, jfloatArray, jint, jint, jint);
-    Matrix4_M(void, lerp)(JNIEnv *, jobject, jfloatArray, jfloat);
-    Matrix4_M(jobject, translate)(JNIEnv *, jobject, jfloat, jfloat, jfloat);
-    Matrix4_M(jobject, rotate)(JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat);
-    Matrix4_M(jobject, scale)(JNIEnv *, jobject, jfloat, jfloat, jfloat);
-    Matrix4_M(void, prj___3F)(JNIEnv *, jobject, jfloatArray);
-    Matrix4_M(void, prj___3FIII)(JNIEnv *, jobject, jfloatArray, jint, jint, jint);
-    Matrix4_M(void, rot___3F)(JNIEnv *, jobject, jfloatArray);
-    Matrix4_M(void, rot___3FIII)(JNIEnv *, jobject, jfloatArray, jint, jint, jint);
-    Matrix4_M(jobject, setToProjection__FFFF)(JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat);
-    Matrix4_M(jobject, setToProjection__FFFFFF)(JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
-    Matrix4_M(jobject, setToOrtho)(JNIEnv *, jobject, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
-    Matrix4_M(jobject, inv)(JNIEnv *, jobject);
-    Matrix4_M(jfloat, det)(JNIEnv *, jobject);
+Matrix4_M(void, initialize)(JNIEnv * , jclass ) ;
+Matrix4_M(jobject, set)(JNIEnv * , jobject, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat,
+                        jfloat, jfloat, jfloat);
+Matrix4_M(void, mul)(JNIEnv * , jclass clazz, jfloatArray, jfloatArray ) ;
+Matrix4_M(void, mulVec___3F)(JNIEnv * , jobject , jfloatArray ) ;
+Matrix4_M(void, mulVec___3FIII)(JNIEnv * , jobject , jfloatArray , jint , jint , jint ) ;
+Matrix4_M(void, lerp)(JNIEnv * , jobject , jfloatArray , jfloat ) ;
+Matrix4_M(jobject, translate)(JNIEnv * , jobject, jfloat, jfloat, jfloat);
+Matrix4_M(jobject, rotate)(JNIEnv * , jobject, jfloat, jfloat, jfloat, jfloat);
+Matrix4_M(jobject, scale)(JNIEnv * , jobject, jfloat, jfloat, jfloat);
+Matrix4_M(void, prj___3F)(JNIEnv * , jobject , jfloatArray ) ;
+Matrix4_M(void, prj___3FIII)(JNIEnv * , jobject , jfloatArray , jint , jint , jint ) ;
+Matrix4_M(void, rot___3F)(JNIEnv * , jobject , jfloatArray ) ;
+Matrix4_M(void, rot___3FIII)(JNIEnv * , jobject , jfloatArray , jint , jint , jint ) ;
+Matrix4_M(jobject, setToProjection__FFFF)(JNIEnv * , jobject, jfloat, jfloat, jfloat, jfloat);
+Matrix4_M(jobject, setToProjection__FFFFFF)(JNIEnv * , jobject, jfloat, jfloat, jfloat, jfloat,
+                                            jfloat, jfloat);
+Matrix4_M(jobject, setToOrtho)(JNIEnv * , jobject, jfloat, jfloat, jfloat, jfloat, jfloat, jfloat);
+Matrix4_M(jobject, inv)(JNIEnv * , jobject);
+Matrix4_M(jfloat, det)(JNIEnv * , jobject);
 
 }
 #endif //Included_Matrix4

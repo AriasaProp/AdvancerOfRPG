@@ -13,70 +13,70 @@ import com.ariasaproject.advancerofrpg.utils.JsonValue;
  */
 public abstract class SpawnShapeValue extends ParticleValue implements ResourceData.Configurable, Json.Serializable {
 
-	public RangedNumericValue xOffsetValue, yOffsetValue, zOffsetValue;
+    public RangedNumericValue xOffsetValue, yOffsetValue, zOffsetValue;
 
-	public SpawnShapeValue() {
-		xOffsetValue = new RangedNumericValue();
-		yOffsetValue = new RangedNumericValue();
-		zOffsetValue = new RangedNumericValue();
-	}
+    public SpawnShapeValue() {
+        xOffsetValue = new RangedNumericValue();
+        yOffsetValue = new RangedNumericValue();
+        zOffsetValue = new RangedNumericValue();
+    }
 
-	public SpawnShapeValue(SpawnShapeValue spawnShapeValue) {
-		this();
-	}
+    public SpawnShapeValue(SpawnShapeValue spawnShapeValue) {
+        this();
+    }
 
-	public abstract void spawnAux(Vector3 vector, float percent);
+    public abstract void spawnAux(Vector3 vector, float percent);
 
-	public final Vector3 spawn(Vector3 vector, float percent) {
-		spawnAux(vector, percent);
-		if (xOffsetValue.active)
-			vector.x += xOffsetValue.newLowValue();
-		if (yOffsetValue.active)
-			vector.y += yOffsetValue.newLowValue();
-		if (zOffsetValue.active)
-			vector.z += zOffsetValue.newLowValue();
-		return vector;
-	}
+    public final Vector3 spawn(Vector3 vector, float percent) {
+        spawnAux(vector, percent);
+        if (xOffsetValue.active)
+            vector.x += xOffsetValue.newLowValue();
+        if (yOffsetValue.active)
+            vector.y += yOffsetValue.newLowValue();
+        if (zOffsetValue.active)
+            vector.z += zOffsetValue.newLowValue();
+        return vector;
+    }
 
-	public void init() {
-	}
+    public void init() {
+    }
 
-	public void start() {
-	}
+    public void start() {
+    }
 
-	@Override
-	public void load(ParticleValue value) {
-		super.load(value);
-		SpawnShapeValue shape = (SpawnShapeValue) value;
-		xOffsetValue.load(shape.xOffsetValue);
-		yOffsetValue.load(shape.yOffsetValue);
-		zOffsetValue.load(shape.zOffsetValue);
-	}
+    @Override
+    public void load(ParticleValue value) {
+        super.load(value);
+        SpawnShapeValue shape = (SpawnShapeValue) value;
+        xOffsetValue.load(shape.xOffsetValue);
+        yOffsetValue.load(shape.yOffsetValue);
+        zOffsetValue.load(shape.zOffsetValue);
+    }
 
-	public abstract SpawnShapeValue copy();
+    public abstract SpawnShapeValue copy();
 
-	@Override
-	public void write(Json json) {
-		super.write(json);
-		json.writeValue("xOffsetValue", xOffsetValue);
-		json.writeValue("yOffsetValue", yOffsetValue);
-		json.writeValue("zOffsetValue", zOffsetValue);
-	}
+    @Override
+    public void write(Json json) {
+        super.write(json);
+        json.writeValue("xOffsetValue", xOffsetValue);
+        json.writeValue("yOffsetValue", yOffsetValue);
+        json.writeValue("zOffsetValue", zOffsetValue);
+    }
 
-	@Override
-	public void read(Json json, JsonValue jsonData) {
-		super.read(json, jsonData);
-		xOffsetValue = json.readValue("xOffsetValue", RangedNumericValue.class, jsonData);
-		yOffsetValue = json.readValue("yOffsetValue", RangedNumericValue.class, jsonData);
-		zOffsetValue = json.readValue("zOffsetValue", RangedNumericValue.class, jsonData);
-	}
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+        super.read(json, jsonData);
+        xOffsetValue = json.readValue("xOffsetValue", RangedNumericValue.class, jsonData);
+        yOffsetValue = json.readValue("yOffsetValue", RangedNumericValue.class, jsonData);
+        zOffsetValue = json.readValue("zOffsetValue", RangedNumericValue.class, jsonData);
+    }
 
-	@Override
-	public void save(AssetContainer manager, ResourceData data) {
-	}
+    @Override
+    public void save(AssetContainer manager, ResourceData data) {
+    }
 
-	@Override
-	public void load(AssetContainer manager, ResourceData data) {
-	}
+    @Override
+    public void load(AssetContainer manager, ResourceData data) {
+    }
 
 }

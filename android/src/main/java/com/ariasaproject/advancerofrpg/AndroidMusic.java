@@ -3,19 +3,20 @@ package com.ariasaproject.advancerofrpg;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 
+import com.ariasaproject.advancerofrpg.audio.Audio;
 import com.ariasaproject.advancerofrpg.audio.Music;
 
 import java.io.IOException;
 
 public class AndroidMusic implements Music, OnCompletionListener {
-    private final AndroidAudio audio;
+    private final Audio audio;
     protected boolean wasPlaying = false;
     protected Runnable onCompletionListener;
     private MediaPlayer player;
     private boolean isPrepared = true;
     private float volume = 1f;
 
-    public AndroidMusic(AndroidAudio audio, MediaPlayer player) {
+    public AndroidMusic(Audio audio, MediaPlayer player) {
         this.audio = audio;
         this.player = player;
         this.onCompletionListener = null;
@@ -33,7 +34,7 @@ public class AndroidMusic implements Music, OnCompletionListener {
         } finally {
             player = null;
             onCompletionListener = null;
-            audio.notifyMusicDisposed(this);
+            audio.disposeMusic(this);
         }
     }
 

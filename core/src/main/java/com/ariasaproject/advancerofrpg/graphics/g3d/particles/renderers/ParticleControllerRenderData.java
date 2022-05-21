@@ -9,6 +9,6 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleController
  * @author Inferno
  */
 public abstract class ParticleControllerRenderData {
-	public ParticleController controller;
-	public FloatChannel positionChannel;
+    public ParticleController controller;
+    public FloatChannel positionChannel;
 }

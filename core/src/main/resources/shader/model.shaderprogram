@@ -1,6 +1,9 @@
-in vec3 a_position;
-uniform mat4 u_projViewTrans;
-out vec4 v_pos;
+in vec3
+a_position;
+uniform mat4
+u_projViewTrans;
+out vec4
+v_pos;
 
 #if defined(specularTextureFlag) || defined(specularColorFlag) || defined(fogFlag)
 uniform vec4 u_cameraPosition;
@@ -91,7 +94,8 @@ in vec2 a_boneWeight7;
 #endif
 #endif
 
-uniform mat4 u_worldTrans;
+uniform mat4
+u_worldTrans;
 
 #if defined(numBones)
 #if numBones > 0
@@ -139,7 +143,8 @@ void main() {
     v_color = a_color;
 #endif // colorFlag
 
-    mat4 skinning = mat4(1.0,0.0,0.0,0.0,  0.0,1.0,0.0,0.0,  0.0,0.0,1.0,0.0,  0.0,0.0,0.0,1.0);
+    mat4 skinning = mat4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0,
+                         1.0);
 #ifdef skinningFlag
     skinning = mat4(0.0);
 #ifdef boneWeight0Flag
@@ -169,7 +174,7 @@ void main() {
 #endif //skinningFlag
     v_pos = u_worldTrans * skinning * vec4(a_position, 1.0);
     gl_Position = u_projViewTrans * v_pos;
-    
+
 #ifdef fogFlag
     vec3 flen = u_cameraPosition.xyz - pos.xyz;
     float fog = dot(flen, flen) * u_cameraPosition.w;
@@ -205,11 +210,15 @@ void main() {
 #endif // specularTextureFlag or specularColorFlag
 #endif // has an light
 }
-<break>
-in vec4 gl_FragCoord;
-out vec4 gl_FragColor;
 
-in vec4 v_pos;
+<break>
+in vec4
+gl_FragCoord;
+out vec4
+gl_FragColor;
+
+in vec4
+v_pos;
 
 #if defined(specularTextureFlag) || defined(specularColorFlag)
 in vec3 v_viewVec;
@@ -308,7 +317,7 @@ void main() {
 #if (numDirectionalLights + numPointLights + numSpotLights > 0) && defined(normalFlag)
     light = v_lightDiffuse;
     vec3 normal = v_normal;
-	vec4 specular = vec4(0.0);
+    vec4 specular = vec4(0.0);
 #if (numDirectionalLights > 0)
     for(int i = 0; i < numDirectionalLights; i++) {
         vec3 lightDir = -u_dirLights_direction[i];
@@ -406,7 +415,7 @@ void main() {
 
     vec4 emissive = vec4(0.0);
 #if defined(emissiveTextureFlag) || defined(emissiveColorFlag)
-	emissive = vec4(1.0);
+    emissive = vec4(1.0);
 #if defined(emissiveTextureFlag)
     emissive *= texture(u_emissiveTexture, v_emissiveUV);
 #endif //emissiveTextureFlag
@@ -429,7 +438,7 @@ void main() {
 #endif //colorFlag
 #endif //has diffuse color
     gl_FragColor += light * (diffuse + emissive);
-    
+
 #ifdef fogFlag
     gl_FragColor.rgb = mix(gl_FragColor.rgb, u_fogColor.rgb, v_fog);
 #endif // end fogFlag

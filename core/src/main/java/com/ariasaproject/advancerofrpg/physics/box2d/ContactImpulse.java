@@ -1,24 +1,24 @@
 package com.ariasaproject.advancerofrpg.physics.box2d;
 
 public class ContactImpulse {
-	final World world;
-	long addr;
-	float[] tmp = new float[2];
+    static {
+        initialize();
+    }
 
-	private static native void initialize();
+    final World world;
+    long addr;
+    float[] tmp = new float[2];
 
-	static {
-		initialize();
-	}
+    protected ContactImpulse(World world, long addr) {
+        this.world = world;
+        this.addr = addr;
+    }
 
-	protected ContactImpulse(World world, long addr) {
-		this.world = world;
-		this.addr = addr;
-	}
+    private static native void initialize();
 
-	public native float[] getNormalImpulses();
+    public native float[] getNormalImpulses();
 
-	public native float[] getTangentImpulses();
+    public native float[] getTangentImpulses();
 
-	public native int getCount();
+    public native int getCount();
 }

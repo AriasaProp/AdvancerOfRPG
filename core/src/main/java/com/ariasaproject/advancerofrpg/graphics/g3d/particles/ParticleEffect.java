@@ -16,197 +16,197 @@ import com.ariasaproject.advancerofrpg.utils.Disposable;
  * @author inferno
  */
 public class ParticleEffect implements Disposable, ResourceData.Configurable {
-	private final Array<ParticleController> controllers;
-	private BoundingBox bounds;
+    private final Array<ParticleController> controllers;
+    private BoundingBox bounds;
 
-	public ParticleEffect() {
-		controllers = new Array<ParticleController>(true, 3, ParticleController.class);
-	}
+    public ParticleEffect() {
+        controllers = new Array<ParticleController>(true, 3, ParticleController.class);
+    }
 
-	public ParticleEffect(ParticleEffect effect) {
-		controllers = new Array<ParticleController>(true, effect.controllers.size);
-		for (int i = 0, n = effect.controllers.size; i < n; i++)
-			controllers.add(effect.controllers.get(i).copy());
-	}
+    public ParticleEffect(ParticleEffect effect) {
+        controllers = new Array<ParticleController>(true, effect.controllers.size);
+        for (int i = 0, n = effect.controllers.size; i < n; i++)
+            controllers.add(effect.controllers.get(i).copy());
+    }
 
-	public ParticleEffect(ParticleController... emitters) {
-		this.controllers = new Array<ParticleController>(emitters);
-	}
+    public ParticleEffect(ParticleController... emitters) {
+        this.controllers = new Array<ParticleController>(emitters);
+    }
 
-	public void init() {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).init();
-	}
+    public void init() {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).init();
+    }
 
-	public void start() {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).start();
-	}
+    public void start() {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).start();
+    }
 
-	public void end() {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).end();
-	}
+    public void end() {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).end();
+    }
 
-	public void reset() {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).reset();
-	}
+    public void reset() {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).reset();
+    }
 
-	public void update() {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).update();
-	}
+    public void update() {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).update();
+    }
 
-	public void update(float deltaTime) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).update(deltaTime);
-	}
+    public void update(float deltaTime) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).update(deltaTime);
+    }
 
-	public void draw() {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).draw();
-	}
+    public void draw() {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).draw();
+    }
 
-	public boolean isComplete() {
-		for (int i = 0, n = controllers.size; i < n; i++) {
-			if (!controllers.get(i).isComplete()) {
-				return false;
-			}
-		}
-		return true;
-	}
+    public boolean isComplete() {
+        for (int i = 0, n = controllers.size; i < n; i++) {
+            if (!controllers.get(i).isComplete()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	/**
-	 * Sets the given transform matrix on each controller.
-	 */
-	public void setTransform(Matrix4 transform) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).setTransform(transform);
-	}
+    /**
+     * Sets the given transform matrix on each controller.
+     */
+    public void setTransform(Matrix4 transform) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).setTransform(transform);
+    }
 
-	/**
-	 * Applies the rotation to the current transformation matrix of each controller.
-	 */
-	public void rotate(Quaternion rotation) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).rotate(rotation);
-	}
+    /**
+     * Applies the rotation to the current transformation matrix of each controller.
+     */
+    public void rotate(Quaternion rotation) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).rotate(rotation);
+    }
 
-	/**
-	 * Applies the rotation by the given angle around the given axis to the current
-	 * transformation matrix of each controller.
-	 *
-	 * @param axis  the rotation axis
-	 * @param angle the rotation angle in degrees
-	 */
-	public void rotate(Vector3 axis, float angle) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).rotate(axis, angle);
-	}
+    /**
+     * Applies the rotation by the given angle around the given axis to the current
+     * transformation matrix of each controller.
+     *
+     * @param axis  the rotation axis
+     * @param angle the rotation angle in degrees
+     */
+    public void rotate(Vector3 axis, float angle) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).rotate(axis, angle);
+    }
 
-	/**
-	 * Applies the translation to the current transformation matrix of each
-	 * controller.
-	 */
-	public void translate(Vector3 translation) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).translate(translation);
-	}
+    /**
+     * Applies the translation to the current transformation matrix of each
+     * controller.
+     */
+    public void translate(Vector3 translation) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).translate(translation);
+    }
 
-	/**
-	 * Applies the scale to the current transformation matrix of each controller.
-	 */
-	public void scale(float scaleX, float scaleY, float scaleZ) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).scale(scaleX, scaleY, scaleZ);
-	}
+    /**
+     * Applies the scale to the current transformation matrix of each controller.
+     */
+    public void scale(float scaleX, float scaleY, float scaleZ) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).scale(scaleX, scaleY, scaleZ);
+    }
 
-	/**
-	 * Applies the scale to the current transformation matrix of each controller.
-	 */
-	public void scale(Vector3 scale) {
-		for (int i = 0, n = controllers.size; i < n; i++)
-			controllers.get(i).scale(scale.x, scale.y, scale.z);
-	}
+    /**
+     * Applies the scale to the current transformation matrix of each controller.
+     */
+    public void scale(Vector3 scale) {
+        for (int i = 0, n = controllers.size; i < n; i++)
+            controllers.get(i).scale(scale.x, scale.y, scale.z);
+    }
 
-	/**
-	 * @return all particle controllers.
-	 */
-	public Array<ParticleController> getControllers() {
-		return controllers;
-	}
+    /**
+     * @return all particle controllers.
+     */
+    public Array<ParticleController> getControllers() {
+        return controllers;
+    }
 
-	/**
-	 * Returns the controller with the specified name, or null.
-	 */
-	public ParticleController findController(String name) {
-		for (int i = 0, n = controllers.size; i < n; i++) {
-			ParticleController emitter = controllers.get(i);
-			if (emitter.name.equals(name))
-				return emitter;
-		}
-		return null;
-	}
+    /**
+     * Returns the controller with the specified name, or null.
+     */
+    public ParticleController findController(String name) {
+        for (int i = 0, n = controllers.size; i < n; i++) {
+            ParticleController emitter = controllers.get(i);
+            if (emitter.name.equals(name))
+                return emitter;
+        }
+        return null;
+    }
 
-	@Override
-	public void dispose() {
-		for (int i = 0, n = controllers.size; i < n; i++) {
-			controllers.get(i).dispose();
-		}
-	}
+    @Override
+    public void dispose() {
+        for (int i = 0, n = controllers.size; i < n; i++) {
+            controllers.get(i).dispose();
+        }
+    }
 
-	/**
-	 * @return the merged bounding box of all controllers.
-	 */
-	public BoundingBox getBoundingBox() {
-		if (bounds == null)
-			bounds = new BoundingBox();
-		BoundingBox bounds = this.bounds;
-		bounds.inf();
-		for (ParticleController emitter : controllers)
-			bounds.ext(emitter.getBoundingBox());
-		return bounds;
-	}
+    /**
+     * @return the merged bounding box of all controllers.
+     */
+    public BoundingBox getBoundingBox() {
+        if (bounds == null)
+            bounds = new BoundingBox();
+        BoundingBox bounds = this.bounds;
+        bounds.inf();
+        for (ParticleController emitter : controllers)
+            bounds.ext(emitter.getBoundingBox());
+        return bounds;
+    }
 
-	/**
-	 * Assign one batch, among those passed in, to each controller. The batch must
-	 * be compatible with the controller to be assigned.
-	 */
-	public void setBatch(Array<ParticleBatch<?>> batches) {
-		for (ParticleController controller : controllers) {
-			for (ParticleBatch<?> batch : batches)
-				if (controller.renderer.setBatch(batch))
-					break;
-		}
-	}
+    /**
+     * Assign one batch, among those passed in, to each controller. The batch must
+     * be compatible with the controller to be assigned.
+     */
+    public void setBatch(Array<ParticleBatch<?>> batches) {
+        for (ParticleController controller : controllers) {
+            for (ParticleBatch<?> batch : batches)
+                if (controller.renderer.setBatch(batch))
+                    break;
+        }
+    }
 
-	/**
-	 * @return a copy of this effect, should be used after the particle effect has
-	 *         been loaded.
-	 */
-	public ParticleEffect copy() {
-		return new ParticleEffect(this);
-	}
+    /**
+     * @return a copy of this effect, should be used after the particle effect has
+     * been loaded.
+     */
+    public ParticleEffect copy() {
+        return new ParticleEffect(this);
+    }
 
-	/**
-	 * Saves all the assets required by all the controllers inside this effect.
-	 */
-	@Override
-	public void save(AssetContainer assetManager, ResourceData data) {
-		for (ParticleController controller : controllers) {
-			controller.save(assetManager, data);
-		}
-	}
+    /**
+     * Saves all the assets required by all the controllers inside this effect.
+     */
+    @Override
+    public void save(AssetContainer assetManager, ResourceData data) {
+        for (ParticleController controller : controllers) {
+            controller.save(assetManager, data);
+        }
+    }
 
-	/**
-	 * Loads all the assets required by all the controllers inside this effect.
-	 */
-	@Override
-	public void load(AssetContainer assetManager, ResourceData data) {
-		int i = 0;
-		for (ParticleController controller : controllers) {
-			controller.load(assetManager, data);
-		}
-	}
+    /**
+     * Loads all the assets required by all the controllers inside this effect.
+     */
+    @Override
+    public void load(AssetContainer assetManager, ResourceData data) {
+        int i = 0;
+        for (ParticleController controller : controllers) {
+            controller.load(assetManager, data);
+        }
+    }
 }

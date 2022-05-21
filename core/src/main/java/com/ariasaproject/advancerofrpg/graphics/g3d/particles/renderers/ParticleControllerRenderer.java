@@ -11,36 +11,36 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.batches.ParticleBa
  * @author Inferno
  */
 public abstract class ParticleControllerRenderer<D extends ParticleControllerRenderData, T extends ParticleBatch<D>> extends ParticleControllerComponent {
-	protected T batch;
-	protected D renderData;
+    protected T batch;
+    protected D renderData;
 
-	protected ParticleControllerRenderer() {
-	}
+    protected ParticleControllerRenderer() {
+    }
 
-	protected ParticleControllerRenderer(D renderData) {
-		this.renderData = renderData;
-	}
+    protected ParticleControllerRenderer(D renderData) {
+        this.renderData = renderData;
+    }
 
-	@Override
-	public void update() {
-		batch.draw(renderData);
-	}
+    @Override
+    public void update() {
+        batch.draw(renderData);
+    }
 
-	@SuppressWarnings("unchecked")
-	public boolean setBatch(ParticleBatch<?> batch) {
-		if (isCompatible(batch)) {
-			this.batch = (T) batch;
-			return true;
-		}
-		return false;
-	}
+    @SuppressWarnings("unchecked")
+    public boolean setBatch(ParticleBatch<?> batch) {
+        if (isCompatible(batch)) {
+            this.batch = (T) batch;
+            return true;
+        }
+        return false;
+    }
 
-	public abstract boolean isCompatible(ParticleBatch<?> batch);
+    public abstract boolean isCompatible(ParticleBatch<?> batch);
 
-	@Override
-	public void set(ParticleController particleController) {
-		super.set(particleController);
-		if (renderData != null)
-			renderData.controller = controller;
-	}
+    @Override
+    public void set(ParticleController particleController) {
+        super.set(particleController);
+        if (renderData != null)
+            renderData.controller = controller;
+    }
 }

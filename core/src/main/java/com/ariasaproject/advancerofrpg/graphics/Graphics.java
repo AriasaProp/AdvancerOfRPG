@@ -1,15 +1,15 @@
 package com.ariasaproject.advancerofrpg.graphics;
 
 public interface Graphics {
-	public static final String TAG = "Graphics";
+    public static final String TAG = "Graphics";
 
-	int getWidth();
+    int getWidth();
 
-	int getHeight();
+    int getHeight();
 
-	float getDeltaTime();
+    float getDeltaTime();
 
-	int getFramesPerSecond();
+    int getFramesPerSecond();
 
-	void setVSync(boolean vsync);
+    void setVSync(boolean vsync);
 }

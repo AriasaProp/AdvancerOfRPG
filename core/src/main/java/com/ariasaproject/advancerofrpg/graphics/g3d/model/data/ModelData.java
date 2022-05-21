@@ -11,19 +11,19 @@ import com.ariasaproject.advancerofrpg.utils.Array;
  * @author badlogic
  */
 public class ModelData {
-	public final short[] version = new short[2];
-	public final Array<ModelMesh> meshes = new Array<ModelMesh>();
-	public final Array<ModelMaterial> materials = new Array<ModelMaterial>();
-	public final Array<ModelNode> nodes = new Array<ModelNode>();
-	public final Array<ModelAnimation> animations = new Array<ModelAnimation>();
-	public String id;
+    public final short[] version = new short[2];
+    public final Array<ModelMesh> meshes = new Array<ModelMesh>();
+    public final Array<ModelMaterial> materials = new Array<ModelMaterial>();
+    public final Array<ModelNode> nodes = new Array<ModelNode>();
+    public final Array<ModelAnimation> animations = new Array<ModelAnimation>();
+    public String id;
 
-	public void addMesh(ModelMesh mesh) {
-		for (ModelMesh other : meshes) {
-			if (other.id.equals(mesh.id)) {
-				throw new RuntimeException("Mesh with id '" + other.id + "' already in model");
-			}
-		}
-		meshes.add(mesh);
-	}
+    public void addMesh(ModelMesh mesh) {
+        for (ModelMesh other : meshes) {
+            if (other.id.equals(mesh.id)) {
+                throw new RuntimeException("Mesh with id '" + other.id + "' already in model");
+            }
+        }
+        meshes.add(mesh);
+    }
 }

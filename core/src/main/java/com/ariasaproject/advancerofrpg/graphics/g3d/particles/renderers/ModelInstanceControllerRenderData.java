@@ -10,7 +10,7 @@ import com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParallelArray.Obje
  * @author Inferno
  */
 public class ModelInstanceControllerRenderData extends ParticleControllerRenderData {
-	public ObjectChannel<ModelInstance> modelInstanceChannel;
-	public FloatChannel colorChannel, scaleChannel, rotationChannel;
+    public ObjectChannel<ModelInstance> modelInstanceChannel;
+    public FloatChannel colorChannel, scaleChannel, rotationChannel;
 
 }

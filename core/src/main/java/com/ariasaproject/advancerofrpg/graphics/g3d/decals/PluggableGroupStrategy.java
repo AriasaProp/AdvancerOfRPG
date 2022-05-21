@@ -9,36 +9,36 @@ import com.ariasaproject.advancerofrpg.utils.IntMap;
  * implemented.
  */
 public abstract class PluggableGroupStrategy implements GroupStrategy {
-	private final IntMap<GroupPlug> plugs = new IntMap<GroupPlug>();
+    private final IntMap<GroupPlug> plugs = new IntMap<GroupPlug>();
 
-	@Override
-	public void beforeGroup(int group, Array<Decal> contents) {
-		plugs.get(group).beforeGroup(contents);
-	}
+    @Override
+    public void beforeGroup(int group, Array<Decal> contents) {
+        plugs.get(group).beforeGroup(contents);
+    }
 
-	@Override
-	public void afterGroup(int group) {
-		plugs.get(group).afterGroup();
-	}
+    @Override
+    public void afterGroup(int group) {
+        plugs.get(group).afterGroup();
+    }
 
-	/**
-	 * Set the plug used for a specific group. The plug will automatically be
-	 * invoked.
-	 *
-	 * @param plug  Plug to use
-	 * @param group Group the plug is for
-	 */
-	public void plugIn(GroupPlug plug, int group) {
-		plugs.put(group, plug);
-	}
+    /**
+     * Set the plug used for a specific group. The plug will automatically be
+     * invoked.
+     *
+     * @param plug  Plug to use
+     * @param group Group the plug is for
+     */
+    public void plugIn(GroupPlug plug, int group) {
+        plugs.put(group, plug);
+    }
 
-	/**
-	 * Remove a plug from the strategy
-	 *
-	 * @param group Group to remove the plug from
-	 * @return removed plug, null if there was none for that group
-	 */
-	public GroupPlug unPlug(int group) {
-		return plugs.remove(group);
-	}
+    /**
+     * Remove a plug from the strategy
+     *
+     * @param group Group to remove the plug from
+     * @return removed plug, null if there was none for that group
+     */
+    public GroupPlug unPlug(int group) {
+        return plugs.remove(group);
+    }
 }

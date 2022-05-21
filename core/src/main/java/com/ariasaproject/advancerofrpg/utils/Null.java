@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
  * @author maltaisn
  */
 @Documented
-@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE })
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE})
 public @interface Null {
 }

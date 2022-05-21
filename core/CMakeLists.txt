@@ -25,7 +25,7 @@ set(CMAKE_CXX_COMPILER i586-mingw32msvc-g++)
 set(CMAKE_RC_COMPILER i586-mingw32msvc-windres)
 
 # here is the target environment located
-set(CMAKE_FIND_ROOT_PATH  /usr/bin/i586-mingw32msvc)
+set(CMAKE_FIND_ROOT_PATH /usr/bin/i586-mingw32msvc)
 
 # adjust the default behaviour of the FIND_XXX() commands:
 # search headers and libraries in the target environment, search
@@ -47,17 +47,17 @@ endif ()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-set (_classes "${PROJECT_SOURCE_DIR}/build/classes/main")
-set (_jnih "${PROJECT_SOURCE_DIR}/build/jnih")
+set(_classes "${PROJECT_SOURCE_DIR}/build/classes/main")
+set(_jnih "${PROJECT_SOURCE_DIR}/build/jnih")
 
 #
 # call javah to generate headers
 add_custom_command(
-    OUTPUT Example.h
-    COMMAND ${Java_JAVAH_EXECUTABLE} -verbose
-    -classpath ${_classes}
-    -d ${_jnih}
-    example.Example
+        OUTPUT Example.h
+        COMMAND ${Java_JAVAH_EXECUTABLE} -verbose
+        -classpath ${_classes}
+        -d ${_jnih}
+        example.Example
 )
 
 

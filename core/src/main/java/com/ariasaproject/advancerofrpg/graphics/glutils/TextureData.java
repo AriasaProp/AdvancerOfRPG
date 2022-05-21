@@ -4,29 +4,29 @@ import com.ariasaproject.advancerofrpg.graphics.Pixmap;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 
 public interface TextureData {
-	TextureDataType getType();
+    TextureDataType getType();
 
-	boolean isPrepared();
+    boolean isPrepared();
 
-	void prepare();
+    void prepare();
 
-	Pixmap consumePixmap();
+    Pixmap consumePixmap();
 
-	boolean disposePixmap();
+    boolean disposePixmap();
 
-	void consumeCustomData(int target);
+    void consumeCustomData(int target);
 
-	int getWidth();
+    int getWidth();
 
-	int getHeight();
+    int getHeight();
 
-	Format getFormat();
+    Format getFormat();
 
-	boolean useMipMaps();
+    boolean useMipMaps();
 
-	boolean isManaged();
+    boolean isManaged();
 
-	enum TextureDataType {
-		Pixmap, Custom
-	}
+    enum TextureDataType {
+        Pixmap, Custom
+    }
 }

@@ -6,18 +6,18 @@ package com.ariasaproject.advancerofrpg.scenes2d.actions;
  * @author Nathan Sweet
  */
 public class RotateByAction extends RelativeTemporalAction {
-	private float amount;
+    private float amount;
 
-	@Override
-	protected void updateRelative(float percentDelta) {
-		target.rotateBy(amount * percentDelta);
-	}
+    @Override
+    protected void updateRelative(float percentDelta) {
+        target.rotateBy(amount * percentDelta);
+    }
 
-	public float getAmount() {
-		return amount;
-	}
+    public float getAmount() {
+        return amount;
+    }
 
-	public void setAmount(float rotationAmount) {
-		amount = rotationAmount;
-	}
+    public void setAmount(float rotationAmount) {
+        amount = rotationAmount;
+    }
 }

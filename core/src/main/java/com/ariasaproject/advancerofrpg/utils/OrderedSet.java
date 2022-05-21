@@ -35,226 +35,226 @@ import java.util.NoSuchElementException;
  * @author Tommy Ettinger
  */
 public class OrderedSet<T> extends ObjectSet<T> {
-	final Array<T> items;
-	OrderedSetIterator iterator1, iterator2;
+    final Array<T> items;
+    OrderedSetIterator iterator1, iterator2;
 
-	public OrderedSet() {
-		items = new Array();
-	}
+    public OrderedSet() {
+        items = new Array();
+    }
 
-	public OrderedSet(int initialCapacity, float loadFactor) {
-		super(initialCapacity, loadFactor);
-		items = new Array(initialCapacity);
-	}
+    public OrderedSet(int initialCapacity, float loadFactor) {
+        super(initialCapacity, loadFactor);
+        items = new Array(initialCapacity);
+    }
 
-	public OrderedSet(int initialCapacity) {
-		super(initialCapacity);
-		items = new Array(initialCapacity);
-	}
+    public OrderedSet(int initialCapacity) {
+        super(initialCapacity);
+        items = new Array(initialCapacity);
+    }
 
-	public OrderedSet(OrderedSet<? extends T> set) {
-		super(set);
-		items = new Array(set.items);
-	}
+    public OrderedSet(OrderedSet<? extends T> set) {
+        super(set);
+        items = new Array(set.items);
+    }
 
-	static public <T> OrderedSet<T> with(T... array) {
-		OrderedSet<T> set = new OrderedSet<T>();
-		set.addAll(array);
-		return set;
-	}
+    static public <T> OrderedSet<T> with(T... array) {
+        OrderedSet<T> set = new OrderedSet<T>();
+        set.addAll(array);
+        return set;
+    }
 
-	@Override
-	public boolean add(T key) {
-		if (!super.add(key))
-			return false;
-		items.add(key);
-		return true;
-	}
+    @Override
+    public boolean add(T key) {
+        if (!super.add(key))
+            return false;
+        items.add(key);
+        return true;
+    }
 
-	/**
-	 * Sets the key at the specfied index. Returns true if the key was not already
-	 * in the set. If this set already contains the key, the existing key's index is
-	 * changed if needed and false is returned.
-	 */
-	public boolean add(T key, int index) {
-		if (!super.add(key)) {
-			int oldIndex = items.indexOf(key, true);
-			if (oldIndex != index)
-				items.insert(index, items.removeIndex(oldIndex));
-			return false;
-		}
-		items.insert(index, key);
-		return true;
-	}
+    /**
+     * Sets the key at the specfied index. Returns true if the key was not already
+     * in the set. If this set already contains the key, the existing key's index is
+     * changed if needed and false is returned.
+     */
+    public boolean add(T key, int index) {
+        if (!super.add(key)) {
+            int oldIndex = items.indexOf(key, true);
+            if (oldIndex != index)
+                items.insert(index, items.removeIndex(oldIndex));
+            return false;
+        }
+        items.insert(index, key);
+        return true;
+    }
 
-	public void addAll(OrderedSet<T> set) {
-		ensureCapacity(set.size);
-		T[] keys = set.items.items;
-		for (int i = 0, n = set.items.size; i < n; i++)
-			add(keys[i]);
-	}
+    public void addAll(OrderedSet<T> set) {
+        ensureCapacity(set.size);
+        T[] keys = set.items.items;
+        for (int i = 0, n = set.items.size; i < n; i++)
+            add(keys[i]);
+    }
 
-	@Override
-	public boolean remove(T key) {
-		if (!super.remove(key))
-			return false;
-		items.removeValue(key, false);
-		return true;
-	}
+    @Override
+    public boolean remove(T key) {
+        if (!super.remove(key))
+            return false;
+        items.removeValue(key, false);
+        return true;
+    }
 
-	public T removeIndex(int index) {
-		T key = items.removeIndex(index);
-		super.remove(key);
-		return key;
-	}
+    public T removeIndex(int index) {
+        T key = items.removeIndex(index);
+        super.remove(key);
+        return key;
+    }
 
-	/**
-	 * Changes the item {@code before} to {@code after} without changing its
-	 * position in the order. Returns true if {@code after} has been added to the
-	 * OrderedSet and {@code before} has been removed; returns false if
-	 * {@code after} is already present or {@code before} is not present. If you are
-	 * iterating over an OrderedSet and have an index, you should prefer
-	 * {@link #alterIndex(int, Object)}, which doesn't need to search for an index
-	 * like this does and so can be faster.
-	 *
-	 * @param before an item that must be present for this to succeed
-	 * @param after  an item that must not be in this set for this to succeed
-	 * @return true if {@code before} was removed and {@code after} was added, false
-	 *         otherwise
-	 */
-	public boolean alter(T before, T after) {
-		if (contains(after))
-			return false;
-		if (!super.remove(before))
-			return false;
-		super.add(after);
-		items.set(items.indexOf(before, false), after);
-		return true;
-	}
+    /**
+     * Changes the item {@code before} to {@code after} without changing its
+     * position in the order. Returns true if {@code after} has been added to the
+     * OrderedSet and {@code before} has been removed; returns false if
+     * {@code after} is already present or {@code before} is not present. If you are
+     * iterating over an OrderedSet and have an index, you should prefer
+     * {@link #alterIndex(int, Object)}, which doesn't need to search for an index
+     * like this does and so can be faster.
+     *
+     * @param before an item that must be present for this to succeed
+     * @param after  an item that must not be in this set for this to succeed
+     * @return true if {@code before} was removed and {@code after} was added, false
+     * otherwise
+     */
+    public boolean alter(T before, T after) {
+        if (contains(after))
+            return false;
+        if (!super.remove(before))
+            return false;
+        super.add(after);
+        items.set(items.indexOf(before, false), after);
+        return true;
+    }
 
-	/**
-	 * Changes the item at the given {@code index} in the order to {@code after},
-	 * without changing the ordering of other items. If {@code after} is already
-	 * present, this returns false; it will also return false if {@code index} is
-	 * invalid for the size of this set. Otherwise, it returns true. Unlike
-	 * {@link #alter(Object, Object)}, this operates in constant time.
-	 *
-	 * @param index the index in the order of the item to change; must be
-	 *              non-negative and less than {@link #size}
-	 * @param after the item that will replace the contents at {@code index}; this
-	 *              item must not be present for this to succeed
-	 * @return true if {@code after} successfully replaced the contents at
-	 *         {@code index}, false otherwise
-	 */
-	public boolean alterIndex(int index, T after) {
-		if (index < 0 || index >= size || contains(after))
-			return false;
-		super.remove(items.get(index));
-		super.add(after);
-		items.set(index, after);
-		return true;
-	}
+    /**
+     * Changes the item at the given {@code index} in the order to {@code after},
+     * without changing the ordering of other items. If {@code after} is already
+     * present, this returns false; it will also return false if {@code index} is
+     * invalid for the size of this set. Otherwise, it returns true. Unlike
+     * {@link #alter(Object, Object)}, this operates in constant time.
+     *
+     * @param index the index in the order of the item to change; must be
+     *              non-negative and less than {@link #size}
+     * @param after the item that will replace the contents at {@code index}; this
+     *              item must not be present for this to succeed
+     * @return true if {@code after} successfully replaced the contents at
+     * {@code index}, false otherwise
+     */
+    public boolean alterIndex(int index, T after) {
+        if (index < 0 || index >= size || contains(after))
+            return false;
+        super.remove(items.get(index));
+        super.add(after);
+        items.set(index, after);
+        return true;
+    }
 
-	@Override
-	public void clear(int maximumCapacity) {
-		items.clear();
-		super.clear(maximumCapacity);
-	}
+    @Override
+    public void clear(int maximumCapacity) {
+        items.clear();
+        super.clear(maximumCapacity);
+    }
 
-	@Override
-	public void clear() {
-		items.clear();
-		super.clear();
-	}
+    @Override
+    public void clear() {
+        items.clear();
+        super.clear();
+    }
 
-	public Array<T> orderedItems() {
-		return items;
-	}
+    public Array<T> orderedItems() {
+        return items;
+    }
 
-	@Override
-	public OrderedSetIterator<T> iterator() {
-		if (iterator1 == null) {
-			iterator1 = new OrderedSetIterator(this);
-			iterator2 = new OrderedSetIterator(this);
-		}
-		if (!iterator1.valid) {
-			iterator1.reset();
-			iterator1.valid = true;
-			iterator2.valid = false;
-			return iterator1;
-		}
-		iterator2.reset();
-		iterator2.valid = true;
-		iterator1.valid = false;
-		return iterator2;
-	}
+    @Override
+    public OrderedSetIterator<T> iterator() {
+        if (iterator1 == null) {
+            iterator1 = new OrderedSetIterator(this);
+            iterator2 = new OrderedSetIterator(this);
+        }
+        if (!iterator1.valid) {
+            iterator1.reset();
+            iterator1.valid = true;
+            iterator2.valid = false;
+            return iterator1;
+        }
+        iterator2.reset();
+        iterator2.valid = true;
+        iterator1.valid = false;
+        return iterator2;
+    }
 
-	@Override
-	public String toString() {
-		if (size == 0)
-			return "{}";
-		T[] items = this.items.items;
-		java.lang.StringBuilder buffer = new java.lang.StringBuilder(32);
-		buffer.append('{');
-		buffer.append(items[0]);
-		for (int i = 1; i < size; i++) {
-			buffer.append(", ");
-			buffer.append(items[i]);
-		}
-		buffer.append('}');
-		return buffer.toString();
-	}
+    @Override
+    public String toString() {
+        if (size == 0)
+            return "{}";
+        T[] items = this.items.items;
+        java.lang.StringBuilder buffer = new java.lang.StringBuilder(32);
+        buffer.append('{');
+        buffer.append(items[0]);
+        for (int i = 1; i < size; i++) {
+            buffer.append(", ");
+            buffer.append(items[i]);
+        }
+        buffer.append('}');
+        return buffer.toString();
+    }
 
-	@Override
-	public String toString(String separator) {
-		return items.toString(separator);
-	}
+    @Override
+    public String toString(String separator) {
+        return items.toString(separator);
+    }
 
-	static public class OrderedSetIterator<K> extends ObjectSetIterator<K> {
-		private final Array<K> items;
+    static public class OrderedSetIterator<K> extends ObjectSetIterator<K> {
+        private final Array<K> items;
 
-		public OrderedSetIterator(OrderedSet<K> set) {
-			super(set);
-			items = set.items;
-		}
+        public OrderedSetIterator(OrderedSet<K> set) {
+            super(set);
+            items = set.items;
+        }
 
-		@Override
-		public void reset() {
-			nextIndex = 0;
-			hasNext = set.size > 0;
-		}
+        @Override
+        public void reset() {
+            nextIndex = 0;
+            hasNext = set.size > 0;
+        }
 
-		@Override
-		public K next() {
-			if (!hasNext)
-				throw new NoSuchElementException();
-			if (!valid)
-				throw new RuntimeException("#iterator() cannot be used nested.");
-			K key = items.get(nextIndex);
-			nextIndex++;
-			hasNext = nextIndex < set.size;
-			return key;
-		}
+        @Override
+        public K next() {
+            if (!hasNext)
+                throw new NoSuchElementException();
+            if (!valid)
+                throw new RuntimeException("#iterator() cannot be used nested.");
+            K key = items.get(nextIndex);
+            nextIndex++;
+            hasNext = nextIndex < set.size;
+            return key;
+        }
 
-		@Override
-		public void remove() {
-			if (nextIndex < 0)
-				throw new IllegalStateException("next must be called before remove.");
-			nextIndex--;
-			((OrderedSet) set).removeIndex(nextIndex);
-		}
+        @Override
+        public void remove() {
+            if (nextIndex < 0)
+                throw new IllegalStateException("next must be called before remove.");
+            nextIndex--;
+            ((OrderedSet) set).removeIndex(nextIndex);
+        }
 
-		@Override
-		public Array<K> toArray(Array<K> array) {
-			array.addAll(items, nextIndex, items.size - nextIndex);
-			nextIndex = items.size;
-			hasNext = false;
-			return array;
-		}
+        @Override
+        public Array<K> toArray(Array<K> array) {
+            array.addAll(items, nextIndex, items.size - nextIndex);
+            nextIndex = items.size;
+            hasNext = false;
+            return array;
+        }
 
-		@Override
-		public Array<K> toArray() {
-			return toArray(new Array(true, set.size - nextIndex));
-		}
-	}
+        @Override
+        public Array<K> toArray() {
+            return toArray(new Array(true, set.size - nextIndex));
+        }
+    }
 }

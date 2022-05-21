@@ -12,12 +12,18 @@ b2CircleShape()
 );
 }
 
-CircleShape_M(void, getPosition)(JNIEnv * env, jobject
-obj,
-jfloatArray vals
+CircleShape_M(void, getPosition)(JNIEnv
+* env,
+jobject
+        obj,
+        jfloatArray
+vals
 )
 {
-jfloat *data = (jfloat *) env->GetPrimitiveArrayCritical(vals, 0);
+jfloat *data = (jfloat * )
+env->
+GetPrimitiveArrayCritical(vals,
+0);
 b2CircleShape *circle = (b2CircleShape *) env->GetLongField(obj, shapePtr);
 data[0] = circle->m_p.
 x;
@@ -27,10 +33,15 @@ env->
 ReleasePrimitiveArrayCritical(vals, data,
 0);
 }
-CircleShape_M(void, setPosition)(JNIEnv * env, jobject
-obj,
-jfloat x, jfloat
-y)
+CircleShape_M(void, setPosition)(JNIEnv
+* env,
+jobject
+        obj,
+        jfloat
+x,
+jfloat
+        y
+)
 {
 b2CircleShape *circle = (b2CircleShape *) env->GetLongField(obj, shapePtr);
 circle->m_p.

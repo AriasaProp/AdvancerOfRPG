@@ -15,69 +15,69 @@ import com.ariasaproject.advancerofrpg.utils.JsonValue;
  */
 public abstract class SimpleInfluencer extends Influencer {
 
-	public ScaledNumericValue value;
-	FloatChannel valueChannel, interpolationChannel, lifeChannel;
-	ChannelDescriptor valueChannelDescriptor;
+    public ScaledNumericValue value;
+    FloatChannel valueChannel, interpolationChannel, lifeChannel;
+    ChannelDescriptor valueChannelDescriptor;
 
-	public SimpleInfluencer() {
-		value = new ScaledNumericValue();
-		value.setHigh(1);
-	}
+    public SimpleInfluencer() {
+        value = new ScaledNumericValue();
+        value.setHigh(1);
+    }
 
-	public SimpleInfluencer(SimpleInfluencer billboardScaleinfluencer) {
-		this();
-		set(billboardScaleinfluencer);
-	}
+    public SimpleInfluencer(SimpleInfluencer billboardScaleinfluencer) {
+        this();
+        set(billboardScaleinfluencer);
+    }
 
-	private void set(SimpleInfluencer scaleInfluencer) {
-		value.load(scaleInfluencer.value);
-		valueChannelDescriptor = scaleInfluencer.valueChannelDescriptor;
-	}
+    private void set(SimpleInfluencer scaleInfluencer) {
+        value.load(scaleInfluencer.value);
+        valueChannelDescriptor = scaleInfluencer.valueChannelDescriptor;
+    }
 
-	@Override
-	public void allocateChannels() {
-		valueChannel = controller.particles.addChannel(valueChannelDescriptor);
-		ParticleChannels.Interpolation.id = controller.particleChannels.newId();
-		interpolationChannel = controller.particles.addChannel(ParticleChannels.Interpolation);
-		lifeChannel = controller.particles.addChannel(ParticleChannels.Life);
-	}
+    @Override
+    public void allocateChannels() {
+        valueChannel = controller.particles.addChannel(valueChannelDescriptor);
+        ParticleChannels.Interpolation.id = controller.particleChannels.newId();
+        interpolationChannel = controller.particles.addChannel(ParticleChannels.Interpolation);
+        lifeChannel = controller.particles.addChannel(ParticleChannels.Life);
+    }
 
-	@Override
-	public void activateParticles(int startIndex, int count) {
-		if (!value.isRelative()) {
-			for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i + count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
-				float start = value.newLowValue();
-				float diff = value.newHighValue() - start;
-				interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] = start;
-				interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] = diff;
-				valueChannel.data[i] = start + diff * value.getScale(0);
-			}
-		} else {
-			for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i + count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
-				float start = value.newLowValue();
-				float diff = value.newHighValue();
-				interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] = start;
-				interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] = diff;
-				valueChannel.data[i] = start + diff * value.getScale(0);
-			}
-		}
-	}
+    @Override
+    public void activateParticles(int startIndex, int count) {
+        if (!value.isRelative()) {
+            for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i + count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
+                float start = value.newLowValue();
+                float diff = value.newHighValue() - start;
+                interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] = start;
+                interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] = diff;
+                valueChannel.data[i] = start + diff * value.getScale(0);
+            }
+        } else {
+            for (int i = startIndex * valueChannel.strideSize, a = startIndex * interpolationChannel.strideSize, c = i + count * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize) {
+                float start = value.newLowValue();
+                float diff = value.newHighValue();
+                interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] = start;
+                interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] = diff;
+                valueChannel.data[i] = start + diff * value.getScale(0);
+            }
+        }
+    }
 
-	@Override
-	public void update() {
-		for (int i = 0, a = 0, l = ParticleChannels.LifePercentOffset, c = i + controller.particles.size * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize, l += lifeChannel.strideSize) {
-			valueChannel.data[i] = interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] + interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] * value.getScale(lifeChannel.data[l]);
-		}
-	}
+    @Override
+    public void update() {
+        for (int i = 0, a = 0, l = ParticleChannels.LifePercentOffset, c = i + controller.particles.size * valueChannel.strideSize; i < c; i += valueChannel.strideSize, a += interpolationChannel.strideSize, l += lifeChannel.strideSize) {
+            valueChannel.data[i] = interpolationChannel.data[a + ParticleChannels.InterpolationStartOffset] + interpolationChannel.data[a + ParticleChannels.InterpolationDiffOffset] * value.getScale(lifeChannel.data[l]);
+        }
+    }
 
-	@Override
-	public void write(Json json) {
-		json.writeValue("value", value);
-	}
+    @Override
+    public void write(Json json) {
+        json.writeValue("value", value);
+    }
 
-	@Override
-	public void read(Json json, JsonValue jsonData) {
-		value = json.readValue("value", ScaledNumericValue.class, jsonData);
-	}
+    @Override
+    public void read(Json json, JsonValue jsonData) {
+        value = json.readValue("value", ScaledNumericValue.class, jsonData);
+    }
 
 }

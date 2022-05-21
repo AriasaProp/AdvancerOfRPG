@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ApplicationListener {
 
+    static final Runtime r = Runtime.getRuntime();
+    static final String[] rnk = new String[]{"B", "kB", "MB", "GB", "TB"};
     protected static ExecutorService exec = Executors.newFixedThreadPool(1, new ThreadFactory() {
         @Override
         public Thread newThread(final Runnable r) {
@@ -91,13 +93,22 @@ public class ApplicationListener {
         if (screen != null)
             screen.render(delta);
         batch.begin();
-        final Runtime r = Runtime.getRuntime();
         final Graphics g = GraphFunc.app.getGraphics();
-        logUpt = String.format("used: %03.2f of RAM", (float) (r.totalMemory() - r.freeMemory()) * 100 / r.maxMemory());
-        logUp = String.format("FPS:%03d|2022/05/12_0|N{%s}\n%s", g.getFramesPerSecond(), GraphFunc.nativeLog(), logUpt);
+        logUpt = String.format("RAM used %s, allocated %s, max %s", toByt(r.totalMemory() - r.freeMemory()), toByt(r.totalMemory()), toByt(r.maxMemory()));
+        logUp = String.format("FPS:%03d|2022/05/23_1|N{%s}\n%s", g.getFramesPerSecond(), GraphFunc.nativeLog(), logUpt);
         layDebug.setText(fps, logUp);
         fps.draw(batch, layDebug, (g.getWidth() - layDebug.width) / 2, g.getHeight() - (layDebug.height / 2.25f));
         batch.end();
+    }
+
+    String toByt(long s) {
+        double size = s;
+        int rn = 0;
+        while (size > 1024.0 && rn < 4) {
+            size /= 1024.0;
+            rn++;
+        }
+        return String.format("%.1f %s", size, rnk[rn]);
     }
 
     public void pause() {

@@ -7,10 +7,8 @@
 /// a maximum lengths.
 /// Note: by default the connected objects will not collide.
 /// see collideConnected in b2JointDef.
-struct b2RopeJointDef : public b2JointDef
-{
-    b2RopeJointDef()
-    {
+struct b2RopeJointDef : public b2JointDef {
+    b2RopeJointDef() {
         type = e_ropeJoint;
         localAnchorA.Set(-1.0f, 0.0f);
         localAnchorB.Set(1.0f, 0.0f);
@@ -37,32 +35,31 @@ struct b2RopeJointDef : public b2JointDef
 /// would have some sponginess, so I chose not to implement it
 /// that way. See b2DistanceJoint if you want to dynamically
 /// control length.
-class b2RopeJoint : public b2Joint
-{
+class b2RopeJoint : public b2Joint {
 public:
     b2Vec2 GetAnchorA() const;
+
     b2Vec2 GetAnchorB() const;
 
     b2Vec2 GetReactionForce(float32 inv_dt) const;
+
     float32 GetReactionTorque(float32 inv_dt) const;
 
     /// The local anchor point relative to bodyA's origin.
-    const b2Vec2& GetLocalAnchorA() const
-    {
+    const b2Vec2 &GetLocalAnchorA() const {
         return m_localAnchorA;
     }
 
     /// The local anchor point relative to bodyB's origin.
-    const b2Vec2& GetLocalAnchorB() const
-    {
+    const b2Vec2 &GetLocalAnchorB() const {
         return m_localAnchorB;
     }
 
     /// Set/Get the maximum length of the rope.
-    void SetMaxLength(float32 length)
-    {
+    void SetMaxLength(float32 length) {
         m_maxLength = length;
     }
+
     float32 GetMaxLength() const;
 
     b2LimitState GetLimitState() const;
@@ -73,11 +70,14 @@ public:
 protected:
 
     friend class b2Joint;
-    b2RopeJoint(const b2RopeJointDef* data);
 
-    void InitVelocityConstraints(const b2SolverData& data);
-    void SolveVelocityConstraints(const b2SolverData& data);
-    bool SolvePositionConstraints(const b2SolverData& data);
+    b2RopeJoint(const b2RopeJointDef *data);
+
+    void InitVelocityConstraints(const b2SolverData &data);
+
+    void SolveVelocityConstraints(const b2SolverData &data);
+
+    bool SolvePositionConstraints(const b2SolverData &data);
 
     // Solver shared
     b2Vec2 m_localAnchorA;

@@ -5,103 +5,111 @@ import com.ariasaproject.advancerofrpg.physics.box2d.Joint;
 import com.ariasaproject.advancerofrpg.physics.box2d.World;
 
 public class DistanceJoint extends Joint {
-	private final float[] tmp = new float[2];
-	private final Vector2 localAnchorA = new Vector2();
-	private final Vector2 localAnchorB = new Vector2();
+    private final float[] tmp = new float[2];
+    private final Vector2 localAnchorA = new Vector2();
+    private final Vector2 localAnchorB = new Vector2();
 
-	public DistanceJoint(World world, long addr) {
-		super(world, addr);
-	}
+    public DistanceJoint(World world, long addr) {
+        super(world, addr);
+    }
 
-	public Vector2 getLocalAnchorA() {
-		jniGetLocalAnchorA(addr, tmp);
-		localAnchorA.set(tmp[0], tmp[1]);
-		return localAnchorA;
-	}
+    public Vector2 getLocalAnchorA() {
+        jniGetLocalAnchorA(addr, tmp);
+        localAnchorA.set(tmp[0], tmp[1]);
+        return localAnchorA;
+    }
 
-	private native void jniGetLocalAnchorA(long addr, float[] anchor); /*
-																		 * b2DistanceJoint* joint =
-																		 * (b2DistanceJoint*)addr; anchor[0] =
-																		 * joint->GetLocalAnchorA().x; anchor[1] =
-																		 * joint->GetLocalAnchorA().y;
-																		 */
+    private native void jniGetLocalAnchorA(long addr, float[] anchor); /*
+     * b2DistanceJoint* joint =
+     * (b2DistanceJoint*)addr; anchor[0] =
+     * joint->GetLocalAnchorA().x; anchor[1] =
+     * joint->GetLocalAnchorA().y;
+     */
 
-	public Vector2 getLocalAnchorB() {
-		jniGetLocalAnchorB(addr, tmp);
-		localAnchorB.set(tmp[0], tmp[1]);
-		return localAnchorB;
-	}
+    public Vector2 getLocalAnchorB() {
+        jniGetLocalAnchorB(addr, tmp);
+        localAnchorB.set(tmp[0], tmp[1]);
+        return localAnchorB;
+    }
 
-	private native void jniGetLocalAnchorB(long addr, float[] anchor); /*
-																		 * b2DistanceJoint* joint =
-																		 * (b2DistanceJoint*)addr; anchor[0] =
-																		 * joint->GetLocalAnchorB().x; anchor[1] =
-																		 * joint->GetLocalAnchorB().y;
-																		 */
+    private native void jniGetLocalAnchorB(long addr, float[] anchor); /*
+     * b2DistanceJoint* joint =
+     * (b2DistanceJoint*)addr; anchor[0] =
+     * joint->GetLocalAnchorB().x; anchor[1] =
+     * joint->GetLocalAnchorB().y;
+     */
 
-	/**
-	 * Set/get the natural length. Manipulating the length can lead to non-physical
-	 * behavior when the frequency is zero.
-	 */
-	public void setLength(float length) {
-		jniSetLength(addr, length);
-	}
+    private native void jniSetLength(long addr, float length); /*
+     * b2DistanceJoint* joint = (b2DistanceJoint*)addr;
+     * joint->SetLength( length );
+     */
 
-	private native void jniSetLength(long addr, float length); /*
-																 * b2DistanceJoint* joint = (b2DistanceJoint*)addr;
-																 * joint->SetLength( length );
-																 */
+    /**
+     * Set/get the natural length. Manipulating the length can lead to non-physical
+     * behavior when the frequency is zero.
+     */
+    public float getLength() {
+        return jniGetLength(addr);
+    }
 
-	/**
-	 * Set/get the natural length. Manipulating the length can lead to non-physical
-	 * behavior when the frequency is zero.
-	 */
-	public float getLength() {
-		return jniGetLength(addr);
-	}
+    /**
+     * Set/get the natural length. Manipulating the length can lead to non-physical
+     * behavior when the frequency is zero.
+     */
+    public void setLength(float length) {
+        jniSetLength(addr, length);
+    }
 
-	private native float jniGetLength(long addr); /*
-													 * b2DistanceJoint* joint = (b2DistanceJoint*)addr; return
-													 * joint->GetLength();
-													 */
+    private native float jniGetLength(long addr); /*
+     * b2DistanceJoint* joint = (b2DistanceJoint*)addr; return
+     * joint->GetLength();
+     */
 
-	/** Set/get frequency in Hz. */
-	public void setFrequency(float hz) {
-		jniSetFrequency(addr, hz);
-	}
+    private native void jniSetFrequency(long addr, float hz); /*
+     * b2DistanceJoint* joint = (b2DistanceJoint*)addr;
+     * joint->SetFrequency( hz );
+     */
 
-	private native void jniSetFrequency(long addr, float hz); /*
-																 * b2DistanceJoint* joint = (b2DistanceJoint*)addr;
-																 * joint->SetFrequency( hz );
-																 */
+    /**
+     * Set/get frequency in Hz.
+     */
+    public float getFrequency() {
+        return jniGetFrequency(addr);
+    }
 
-	/** Set/get frequency in Hz. */
-	public float getFrequency() {
-		return jniGetFrequency(addr);
-	}
+    /**
+     * Set/get frequency in Hz.
+     */
+    public void setFrequency(float hz) {
+        jniSetFrequency(addr, hz);
+    }
 
-	private native float jniGetFrequency(long addr); /*
-														 * b2DistanceJoint* joint = (b2DistanceJoint*)addr; return
-														 * joint->GetFrequency();
-														 */
+    private native float jniGetFrequency(long addr); /*
+     * b2DistanceJoint* joint = (b2DistanceJoint*)addr; return
+     * joint->GetFrequency();
+     */
 
-	/** Set/get damping ratio. */
-	public void setDampingRatio(float ratio) {
-		jniSetDampingRatio(addr, ratio);
-	}
+    private native void jniSetDampingRatio(long addr, float ratio); /*
+     * b2DistanceJoint* joint = (b2DistanceJoint*)addr;
+     * joint->SetDampingRatio( ratio );
+     */
 
-	private native void jniSetDampingRatio(long addr, float ratio); /*
-																	 * b2DistanceJoint* joint = (b2DistanceJoint*)addr;
-																	 * joint->SetDampingRatio( ratio );
-																	 */
+    /**
+     * Set/get damping ratio.
+     */
+    public float getDampingRatio() {
+        return jniGetDampingRatio(addr);
+    }
 
-	/** Set/get damping ratio. */
-	public float getDampingRatio() {
-		return jniGetDampingRatio(addr);
-	}
+    /**
+     * Set/get damping ratio.
+     */
+    public void setDampingRatio(float ratio) {
+        jniSetDampingRatio(addr, ratio);
+    }
 
-	private native float jniGetDampingRatio(long addr); /*
-														 * b2DistanceJoint* joint = (b2DistanceJoint*)addr; return
-														 * joint->GetDampingRatio();
-														 */
+    private native float jniGetDampingRatio(long addr); /*
+     * b2DistanceJoint* joint = (b2DistanceJoint*)addr; return
+     * joint->GetDampingRatio();
+     */
 }
