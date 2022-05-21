@@ -6,7 +6,7 @@ import com.ariasaproject.advancerofrpg.utils.Disposable;
 import java.nio.ByteBuffer;
 
 public class Pixmap implements Disposable {
-    static final long[] nativeData = new long[4];
+    private static final long[] nativeData = new long[4];
 
     static {
         initialize();
@@ -48,21 +48,8 @@ public class Pixmap implements Disposable {
         this.height = (int) nativeData[2];
         this.format = Format.values()[(int) nativeData[3] - 1];
     }
-	/*
-	public Pixmap(String internalPath) {
-		this.pixels = loadFromInternalFilePath(nativeData, internalPath);
-        if (pixels == null)
-            throw new RuntimeException("Couldn't load file: " + internalPath + " " + getFailureReason());
-        basePtr = nativeData[0];
-        this.width = (int) nativeData[1];
-        this.height = (int) nativeData[2];
-        this.format = Format.values()[(int) nativeData[3] - 1];
-    }
-	*/
 
     static native void initialize();
-
-    //private static native ByteBuffer loadFromInternalFilePath(long[] nativeData, String internalPath);
 
     private static native ByteBuffer load(long[] nativeData, byte[] buffer, int offset, int len);
 

@@ -137,9 +137,9 @@ void b2BlockAllocator::Free(void *p, int32 size) {
 
 #ifdef _DEBUG
     // Verify the memory address and size is valid.
-    int32 blockSize = s_blockSizes[index];
+    int32_t blockSize = s_blockSizes[index];
     bool found = false;
-    for (int32 i = 0; i < m_chunkCount; ++i)
+    for (int32_t i = 0; i < m_chunkCount; ++i)
     {
         b2Chunk* chunk = m_chunks + i;
         if (chunk->blockSize != blockSize)

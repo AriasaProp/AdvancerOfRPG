@@ -288,14 +288,14 @@ void b2TimeOfImpact(b2TOIOutput *output, const b2TOIInput *input) {
 #if 0
         // Dump the curve seen by the root finder
         {
-            const int32 N = 100;
+            const int32_t N = 100;
             float32 dx = 1.0f / N;
             float32 xs[N+1];
             float32 fs[N+1];
 
             float32 x = 0.0f;
 
-            for (int32 i = 0; i <= N; ++i)
+            for (int32_t i = 0; i <= N; ++i)
             {
                 sweepA.GetTransform(&xfA, x);
                 sweepB.GetTransform(&xfB, x);

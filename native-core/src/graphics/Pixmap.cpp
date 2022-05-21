@@ -9,6 +9,22 @@
 #include <assert.h>
 #include <setjmp.h>
 
+#ifdef _MSC_VER
+#pragma warning (disable : 4611) // warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable
+typedef unsigned short uint16_t;
+typedef signed short int16_t;
+typedef unsigned int uint32_t;
+typedef signed int int32_t;
+#define inline __forceinline
+#define IGNORED(v)  (void)(v)
+#else
+#define IGNORED(v)  (void)sizeof(v)
+#define _lrotl(x, y)  (((x) << (y)) | ((x) >> (32 - (y))))
+
+#include <stdint.h>
+
+#endif
+
 //private function
 #define MAX(a, b) (((a)>(b))?(a):(b))
 #define MIN(a, b) (((a)<(b))?(a):(b))
@@ -21,42 +37,8 @@ namespace stbi {
         STBI_grey = 1, STBI_grey_alpha = 2, STBI_rgb = 3, STBI_rgb_alpha = 4
     };
 
-#ifdef _MSC_VER
-                                                                                                                            #pragma warning (disable : 4611) // warning C4611: interaction between '_setjmp' and C++ object destruction is non-portable
-#define stbi_inline __forceinline
-#define STBI_NOTUSED(v)  (void)(v)
-#define stbi_lrot(x,y)  _lrotl(x,y)
-//primitive sets
-typedef unsigned short uint16;
-typedef signed short int16;
-typedef unsigned int uint32;
-typedef signed int int32;
-#else
-#define stbi_inline inline
-#define STBI_NOTUSED(v)  (void)sizeof(v)
-#define stbi_lrot(x, y)  (((x) << (y)) | ((x) >> (32 - (y))))
-//primitive sets
 
-#include <stdint.h>
-typedef uint16_t uint16;
-typedef int16_t int16;
-typedef uint32_t uint32;
-typedef int32_t int32;
-#endif
-
-typedef unsigned char validate_uint32[sizeof(uint32) == 4 ? 1 : -1];
-
-#if defined(STBI_MALLOC) && defined(STBI_FREE) && defined(STBI_REALLOC)
-#elif !defined(STBI_MALLOC) && !defined(STBI_FREE) && !defined(STBI_REALLOC)
-#else
-#error "Must define all or none of STBI_MALLOC, STBI_FREE, and STBI_REALLOC."
-#endif
-
-#ifndef STBI_MALLOC
-#define STBI_MALLOC(sz)    malloc(sz)
-#define STBI_REALLOC(p, sz) realloc(p,sz)
-#define STBI_FREE(p)       free(p)
-#endif
+    typedef unsigned char validate_uint32[sizeof(uint32_t) == 4 ? 1 : -1];
 
 // x86/x64 detection
 #if defined(__x86_64__) || defined(_M_X64)
@@ -79,35 +61,35 @@ typedef unsigned char validate_uint32[sizeof(uint32) == 4 ? 1 : -1];
 #include <emmintrin.h>
 
 #ifdef _MSC_VER
-                                                                                                                            #if _MSC_VER >= 1400  // not VC6
+#if _MSC_VER >= 1400  // not VC6
 #include <intrin.h> // __cpuid
-static int cpuid3(void)
-{
-	int info[4];
-	__cpuid(info,1);
-	return info[3];
-}
+    static int cpuid3(void)
+    {
+        int info[4];
+        __cpuid(info,1);
+        return info[3];
+    }
 #else
-static int cpuid3(void)
-{
-	int res;
-	__asm
-	{
-		mov eax,1
-		cpuid
-		mov res,edx
-	}
-	return res;
-}
+    static int cpuid3(void)
+    {
+        int res;
+        __asm
+        {
+            mov eax,1
+            cpuid
+            mov res,edx
+        }
+        return res;
+    }
 #endif
 
 #define STBI_SIMD_ALIGN(type, name) __declspec(align(16)) type name
 
-static int sse2_available()
-{
-	int info3 = cpuid3();
-	return ((info3 >> 26) & 1) != 0;
-}
+    static int sse2_available()
+    {
+        int info3 = cpuid3();
+        return ((info3 >> 26) & 1) != 0;
+    }
 #else // assume GCC-style if not VC++
 #define STBI_SIMD_ALIGN(type, name) type name __attribute__((aligned(16)))
 
@@ -131,7 +113,7 @@ static int sse2_available()
 #endif
 
 #ifdef STBI_NEON
-                                                                                                                            #include <arm_neon.h>
+#include <arm_neon.h>
 #define STBI_SIMD_ALIGN(type, name) type name __attribute__((aligned(16)))
 #endif
 
@@ -148,7 +130,7 @@ static int sse2_available()
     };
 
     struct context {
-        uint32 img_x, img_y;
+        uint32_t img_x, img_y;
         int img_n, img_out_n;
 
         stbi_io_callbacks io;
@@ -162,7 +144,18 @@ static int sse2_available()
         unsigned char *img_buffer_original, *img_buffer_original_end;
     };
 
-    static void refill_buffer(context *s);
+    static void refill_buffer(context *s) {
+        int n = (s->io.read)(s->io_user_data, (char *) s->buffer_start, s->buflen);
+        if (n == 0) {
+            s->read_from_callbacks = 0;
+            s->img_buffer = s->buffer_start;
+            s->img_buffer_end = s->buffer_start + 1;
+            *s->img_buffer = 0;
+        } else {
+            s->img_buffer = s->buffer_start;
+            s->img_buffer_end = s->buffer_start + n;
+        }
+    }
 
 // initialize a memory-decode context
     static void start_mem(context *s, unsigned char const *buffer, int len) {
@@ -197,8 +190,7 @@ static int sse2_available()
         return feof((FILE *) user);
     }
 
-    static stbi_io_callbacks stdio_callbacks = {stdio_read, stdio_skip,
-                                                stdio_eof,};
+    static stbi_io_callbacks stdio_callbacks = {stdio_read, stdio_skip, stdio_eof};
 
     static void start_file(context *s, FILE *f) {
         start_callbacks(s, &stdio_callbacks, (void *) f);
@@ -215,17 +207,12 @@ static int sse2_available()
         s->img_buffer = s->img_buffer_original;
         s->img_buffer_end = s->img_buffer_original_end;
     }
-
-#ifndef STBI_NO_JPEG
-
     static int jpeg_test(context *s);
 
     static unsigned char *
     jpeg_load(context *s, int *x, int *y, int *comp, int req_comp);
 
     static int jpeg_info(context *s, int *x, int *y, int *comp);
-
-#endif
 
 #ifndef STBI_NO_PNG
 
@@ -267,15 +254,11 @@ static int sse2_available()
 
 #endif
 
-#ifndef STBI_NO_HDR
-
     static int hdr_test(context *s);
 
     static float *hdr_load(context *s, int *x, int *y, int *comp, int req_comp);
 
     static int hdr_info(context *s, int *x, int *y, int *comp);
-
-#endif
 
 #ifndef STBI_NO_PIC
 
@@ -316,12 +299,8 @@ static int sse2_available()
         return 0;
     }
 
-    static void *malloc(size_t size) {
-        return STBI_MALLOC(size);
-    }
-
     void stbi_image_free(void *retval_from_stbi_load) {
-        STBI_FREE(retval_from_stbi_load);
+        free(retval_from_stbi_load);
     }
 
 #ifndef STBI_NO_LINEAR
@@ -330,11 +309,7 @@ static int sse2_available()
 
 #endif
 
-#ifndef STBI_NO_HDR
-
     static unsigned char *hdr_to_ldr(float *data, int x, int y, int comp);
-
-#endif
 
     static int vertically_flip_on_load = 0;
 
@@ -344,10 +319,8 @@ static int sse2_available()
 
     static unsigned char *
     load_main(context *s, int *x, int *y, int *comp, int req_comp) {
-#ifndef STBI_NO_JPEG
         if (jpeg_test(s))
             return jpeg_load(s, x, y, comp, req_comp);
-#endif
 #ifndef STBI_NO_PNG
         if (png_test(s))
             return png_load(s, x, y, comp, req_comp);
@@ -372,13 +345,10 @@ static int sse2_available()
         if (pnm_test(s))
             return pnm_load(s, x, y, comp, req_comp);
 #endif
-
-#ifndef STBI_NO_HDR
         if (hdr_test(s)) {
             float *hdr = hdr_load(s, x, y, comp, req_comp);
             return hdr_to_ldr(hdr, *x, *y, req_comp ? req_comp : *comp);
         }
-#endif
 
 #ifndef STBI_NO_TGA
         // test tga last because it's a crappy test!
@@ -416,8 +386,6 @@ static int sse2_available()
         return result;
     }
 
-#ifndef STBI_NO_HDR
-
     static void float_postprocess(float *result, int *x, int *y, int *comp, int req_comp) {
         if (vertically_flip_on_load && result != NULL) {
             int w = *x, h = *y;
@@ -438,8 +406,6 @@ static int sse2_available()
             }
         }
     }
-
-#endif
 
 #ifndef STBI_NO_STDIO
 
@@ -499,14 +465,13 @@ static int sse2_available()
 
     static float *loadf_main(context *s, int *x, int *y, int *comp, int req_comp) {
         unsigned char *data;
-#ifndef STBI_NO_HDR
         if (hdr_test(s)) {
             float *hdr_data = hdr_load(s, x, y, comp, req_comp);
             if (hdr_data)
                 float_postprocess(hdr_data, x, y, comp, req_comp);
             return hdr_data;
         }
-#endif
+
         data = load_flip(s, x, y, comp, req_comp);
         if (data)
             return ldr_to_hdr(data, *x, *y, req_comp ? req_comp : *comp);
@@ -554,28 +519,17 @@ static int sse2_available()
 #endif // !STBI_NO_LINEAR
 
     int stbi_is_hdr_from_memory(unsigned char const *buffer, int len) {
-#ifndef STBI_NO_HDR
         context s;
         start_mem(&s, buffer, len);
         return hdr_test(&s);
-#else
-                                                                                                                                STBI_NOTUSED(buffer);
-	STBI_NOTUSED(len);
-	return 0;
-#endif
     }
 
 #ifndef STBI_NO_STDIO
 
     int stbi_is_hdr_from_file(FILE *f) {
-#ifndef STBI_NO_HDR
         context s;
         start_file(&s, f);
         return hdr_test(&s);
-#else
-                                                                                                                                STBI_NOTUSED(f);
-	return 0;
-#endif
     }
 
     int stbi_is_hdr(char const *filename) {
@@ -591,35 +545,16 @@ static int sse2_available()
 #endif // !STBI_NO_STDIO
 
     int stbi_is_hdr_from_callbacks(stbi_io_callbacks const *clbk, void *user) {
-#ifndef STBI_NO_HDR
         context s;
         start_callbacks(&s, (stbi_io_callbacks *) clbk, user);
         return hdr_test(&s);
-#else
-                                                                                                                                STBI_NOTUSED(clbk);
-	STBI_NOTUSED(user);
-	return 0;
-#endif
     }
 
     enum {
         SCAN_load = 0, SCAN_type, SCAN_header
     };
 
-    static void refill_buffer(context *s) {
-        int n = (s->io.read)(s->io_user_data, (char *) s->buffer_start, s->buflen);
-        if (n == 0) {
-            s->read_from_callbacks = 0;
-            s->img_buffer = s->buffer_start;
-            s->img_buffer_end = s->buffer_start + 1;
-            *s->img_buffer = 0;
-        } else {
-            s->img_buffer = s->buffer_start;
-            s->img_buffer_end = s->buffer_start + n;
-        }
-    }
-
-    stbi_inline static unsigned char get8(context *s) {
+    inline static unsigned char get8(context *s) {
         if (s->img_buffer < s->img_buffer_end)
             return *s->img_buffer++;
         if (s->read_from_callbacks) {
@@ -629,7 +564,7 @@ static int sse2_available()
         return 0;
     }
 
-    stbi_inline static int at_eof(context *s) {
+    inline static int at_eof(context *s) {
         if (s->io.read) {
             if (!(s->io.eof)(s->io_user_data))
                 return 0;
@@ -686,8 +621,8 @@ static int sse2_available()
         return (z << 8) + get8(s);
     }
 
-    static uint32 get32be(context *s) {
-        uint32 z = get16be(s);
+    static uint32_t get32be(context *s) {
+        uint32_t z = get16be(s);
         return (z << 16) + get16be(s);
     }
 
@@ -704,8 +639,8 @@ static int sse2_available()
 
 #ifndef STBI_NO_BMP
 
-    static uint32 get32le(context *s) {
-        uint32 z = get16le(s);
+    static uint32_t get32le(context *s) {
+        uint32_t z = get16le(s);
         return z + (get16le(s) << 16);
     }
 
@@ -729,7 +664,7 @@ static int sse2_available()
 
         good = (unsigned char *) malloc(req_comp * x * y);
         if (good == NULL) {
-            STBI_FREE(data);
+            free(data);
             err("outofmem", "Out of memory");
             return 0;
         }
@@ -771,7 +706,7 @@ static int sse2_available()
 #undef CASE
         }
 
-        STBI_FREE(data);
+        free(data);
         return good;
     }
 
@@ -781,7 +716,7 @@ static int sse2_available()
         int i, k, n;
         float *output = (float *) malloc(x * y * comp * sizeof(float));
         if (output == NULL) {
-            STBI_FREE(data);
+            free(data);
             err("outofmem", "Out of memory");
             return 0;
         }
@@ -798,20 +733,19 @@ static int sse2_available()
             if (k < comp)
                 output[i * comp + k] = data[i * comp + k] / 255.0f;
         }
-        STBI_FREE(data);
+        free(data);
         return output;
     }
 
 #endif
 
-#ifndef STBI_NO_HDR
 #define float2int(x)   ((int) (x))
 
     static unsigned char *hdr_to_ldr(float *data, int x, int y, int comp) {
         int i, k, n;
         unsigned char *output = (unsigned char *) malloc(x * y * comp);
         if (output == NULL) {
-            STBI_FREE(data);
+            free(data);
             err("outofmem", "Out of memory");
             return 0;
         }
@@ -839,20 +773,16 @@ static int sse2_available()
                 output[i * comp + k] = (unsigned char) float2int(z);
             }
         }
-        STBI_FREE(data);
+        free(data);
         return output;
     }
-
-#endif
-
-#ifndef STBI_NO_JPEG
 
 #define FAST_BITS   9  // larger handles more cases; smaller stomps less cache
 
     struct huffman {
         unsigned char fast[1 << FAST_BITS];
         // weirdly, repacking this into AoS is a 10% speed loss, instead of a win
-        uint16 code[256];
+        uint16_t code[256];
         unsigned char values[256];
         unsigned char size[257];
         unsigned int maxcode[18];
@@ -864,7 +794,7 @@ static int sse2_available()
         huffman huff_dc[4];
         huffman huff_ac[4];
         unsigned char dequant[4][64];
-        int16 fast_ac[4][1 << FAST_BITS];
+        int16_t fast_ac[4][1 << FAST_BITS];
 
         // sizes for components, interleaved MCUs
         int img_h_max, img_v_max;
@@ -887,7 +817,7 @@ static int sse2_available()
             int coeff_w, coeff_h; // number of 8x8 coefficient blocks
         } img_comp[4];
 
-        uint32 code_buffer; // jpeg entropy-coded buffer
+        uint32_t code_buffer; // jpeg entropy-coded buffer
         int code_bits;   // number of valid bits
         unsigned char marker;      // marker seen while filling entropy buffer
         int nomore;      // flag if we saw a marker so must stop
@@ -929,7 +859,7 @@ static int sse2_available()
             h->delta[j] = k - code;
             if (h->size[k] == j) {
                 while (h->size[k] == j)
-                    h->code[k++] = (uint16) (code++);
+                    h->code[k++] = (uint16_t) (code++);
                 if (code - 1 >= (1 << j))
                     return err("bad code lengths", "Corrupt JPEG");
             }
@@ -956,7 +886,7 @@ static int sse2_available()
 
 // build a table that decodes both magnitude and value of small ACs in
 // one go.
-    static void build_fast_ac(int16 *fast_ac, huffman *h) {
+    static void build_fast_ac(int16_t *fast_ac, huffman *h) {
         int i;
         for (i = 0; i < (1 << FAST_BITS); ++i) {
             unsigned char fast = h->fast[i];
@@ -975,7 +905,7 @@ static int sse2_available()
                         k += (-1 << magbits) + 1;
                     // if the result is small enough, we can fit it in fast_ac table
                     if (k >= -128 && k <= 127)
-                        fast_ac[i] = (int16) ((k << 8) + (run << 4) + (len + magbits));
+                        fast_ac[i] = (int16_t) ((k << 8) + (run << 4) + (len + magbits));
                 }
             }
         }
@@ -998,11 +928,11 @@ static int sse2_available()
     }
 
 // (1 << n) - 1
-    static uint32 bmask[17] = {0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095,
-                               8191, 16383, 32767, 65535};
+    static uint32_t bmask[17] = {0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095,
+                                 8191, 16383, 32767, 65535};
 
 // decode a jpeg huffman value from the bitstream
-    stbi_inline static int jpeg_huff_decode(jpeg *j, huffman *h) {
+    inline static int jpeg_huff_decode(jpeg *j, huffman *h) {
         unsigned int temp;
         int c, k;
 
@@ -1057,14 +987,14 @@ static int sse2_available()
 
 // combined JPEG 'receive' and JPEG 'extend', since baseline
 // always extends everything it receives.
-    stbi_inline static int extend_receive(jpeg *j, int n) {
+    inline static int extend_receive(jpeg *j, int n) {
         unsigned int k;
         int sgn;
         if (j->code_bits < n)
             grow_buffer_unsafe(j);
 
-        sgn = (int32) j->code_buffer >> 31; // sign bit is always in MSB
-        k = stbi_lrot(j->code_buffer, n);
+        sgn = (int32_t) j->code_buffer >> 31; // sign bit is always in MSB
+        k = _lrotl(j->code_buffer, n);
         assert(n >= 0 && n < (int) (sizeof(bmask) / sizeof(*bmask)));
         j->code_buffer = k & ~bmask[n];
         k &= bmask[n];
@@ -1073,18 +1003,18 @@ static int sse2_available()
     }
 
 // get some unsigned bits
-    stbi_inline static int jpeg_get_bits(jpeg *j, int n) {
+    inline static int jpeg_get_bits(jpeg *j, int n) {
         unsigned int k;
         if (j->code_bits < n)
             grow_buffer_unsafe(j);
-        k = stbi_lrot(j->code_buffer, n);
+        k = _lrotl(j->code_buffer, n);
         j->code_buffer = k & ~bmask[n];
         k &= bmask[n];
         j->code_bits -= n;
         return k;
     }
 
-    stbi_inline static int jpeg_get_bit(jpeg *j) {
+    inline static int jpeg_get_bit(jpeg *j) {
         unsigned int k;
         if (j->code_bits < 1)
             grow_buffer_unsafe(j);
@@ -1107,7 +1037,7 @@ static int sse2_available()
 // decode one 64-entry block--
     static int
     jpeg_decode_block(jpeg *j, short data[64], huffman *hdc, huffman *hac,
-                      int16 *fac, int b, unsigned char *dequant) {
+                      int16_t *fac, int b, unsigned char *dequant) {
         int diff, dc, k;
         int t;
 
@@ -1194,7 +1124,7 @@ static int sse2_available()
 // @OPTIMIZE: store non-zigzagged during the decode passes,
 // and only de-zigzag when dequantizing
     static int jpeg_decode_block_prog_ac(jpeg *j, short data[64], huffman *hac,
-                                         int16 *fac) {
+                                         int16_t *fac) {
         int k;
         if (j->spec_start == 0)
             return err("can't merge dc and ac", "Corrupt JPEG");
@@ -1320,7 +1250,7 @@ static int sse2_available()
     }
 
 // take a -128..127 value and clamp it and convert to 0..255
-    stbi_inline static unsigned char clamp(int x) {
+    inline static unsigned char clamp(int x) {
         // trick to use a single test to catch both cases
         if ((unsigned int) x > 255) {
             if (x < 0)
@@ -2253,7 +2183,7 @@ static int sse2_available()
 
             if (z->img_comp[i].raw_data == NULL) {
                 for (--i; i >= 0; --i) {
-                    STBI_FREE(z->img_comp[i].raw_data);
+                    free(z->img_comp[i].raw_data);
                     z->img_comp[i].raw_data = NULL;
                 }
                 return err("outofmem", "Out of memory");
@@ -2264,7 +2194,7 @@ static int sse2_available()
             if (z->progressive) {
                 z->img_comp[i].coeff_w = (z->img_comp[i].w2 + 7) >> 3;
                 z->img_comp[i].coeff_h = (z->img_comp[i].h2 + 7) >> 3;
-                z->img_comp[i].raw_coeff = STBI_MALLOC(
+                z->img_comp[i].raw_coeff = malloc(
                         z->img_comp[i].coeff_w * z->img_comp[i].coeff_h * 64 * sizeof(short) + 15);
                 z->img_comp[i].coeff = (short *) (((size_t) z->img_comp[i].raw_coeff + 15) & ~15);
             } else {
@@ -2362,10 +2292,10 @@ static int sse2_available()
     static unsigned char *
     resample_row_1(unsigned char *out, unsigned char *in_near, unsigned char *in_far, int w,
                    int hs) {
-        STBI_NOTUSED(out);
-        STBI_NOTUSED(in_far);
-        STBI_NOTUSED(w);
-        STBI_NOTUSED(hs);
+        IGNORED(out);
+        IGNORED(in_far);
+        IGNORED(w);
+        IGNORED(hs);
         return in_near;
     }
 
@@ -2374,7 +2304,7 @@ static int sse2_available()
                      int hs) {
         // need to generate two samples vertically for every one in input
         int i;
-        STBI_NOTUSED(hs);
+        IGNORED(hs);
         for (i = 0; i < w; ++i)
             out[i] = div4(3 * in_near[i] + in_far[i] + 2);
         return out;
@@ -2403,8 +2333,8 @@ static int sse2_available()
         out[i * 2 + 0] = div4(input[w - 2] * 3 + input[w - 1] + 2);
         out[i * 2 + 1] = input[w - 1];
 
-        STBI_NOTUSED(in_far);
-        STBI_NOTUSED(hs);
+        IGNORED(in_far);
+        IGNORED(hs);
 
         return out;
     }
@@ -2431,7 +2361,7 @@ static int sse2_available()
         }
         out[w * 2 - 1] = div4(t1 + 2);
 
-        STBI_NOTUSED(hs);
+        IGNORED(hs);
 
         return out;
     }
@@ -2548,7 +2478,7 @@ static int sse2_available()
         }
         out[w * 2 - 1] = div4(t1 + 2);
 
-        STBI_NOTUSED(hs);
+        IGNORED(hs);
 
         return out;
     }
@@ -2560,7 +2490,7 @@ static int sse2_available()
                          int w, int hs) {
         // resample with nearest-neighbor
         int i, j;
-        STBI_NOTUSED(in_far);
+        IGNORED(in_far);
         for (i = 0; i < w; ++i)
             for (j = 0; j < hs; ++j)
                 out[i * hs + j] = in_near[i];
@@ -2838,17 +2768,17 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         int i;
         for (i = 0; i < j->s->img_n; ++i) {
             if (j->img_comp[i].raw_data) {
-                STBI_FREE(j->img_comp[i].raw_data);
+                free(j->img_comp[i].raw_data);
                 j->img_comp[i].raw_data = NULL;
                 j->img_comp[i].data = NULL;
             }
             if (j->img_comp[i].raw_coeff) {
-                STBI_FREE(j->img_comp[i].raw_coeff);
+                free(j->img_comp[i].raw_coeff);
                 j->img_comp[i].raw_coeff = 0;
                 j->img_comp[i].coeff = 0;
             }
             if (j->img_comp[i].linebuf) {
-                STBI_FREE(j->img_comp[i].linebuf);
+                free(j->img_comp[i].linebuf);
                 j->img_comp[i].linebuf = NULL;
             }
         }
@@ -3019,8 +2949,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         return jpeg_info_raw(&j, x, y, comp);
     }
 
-#endif
-
 // public domain zlib decode    v0.2  Sean Barrett 2006-11-18
 //    simple implementation
 //      - all input must be provided in an upfront buffer
@@ -3037,15 +2965,15 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 // zlib-style huffman encoding
 // (jpegs packs from left, zlib from right, so can't share code)
     struct zhuffman {
-        uint16 fast[1 << ZFAST_BITS];
-        uint16 firstcode[16];
+        uint16_t fast[1 << ZFAST_BITS];
+        uint16_t firstcode[16];
         int maxcode[17];
-        uint16 firstsymbol[16];
+        uint16_t firstsymbol[16];
         unsigned char size[288];
-        uint16 value[288];
+        uint16_t value[288];
     };
 
-    stbi_inline static int bitreverse16(int n) {
+    inline static int bitreverse16(int n) {
         n = ((n & 0xAAAA) >> 1) | ((n & 0x5555) << 1);
         n = ((n & 0xCCCC) >> 2) | ((n & 0x3333) << 2);
         n = ((n & 0xF0F0) >> 4) | ((n & 0x0F0F) << 4);
@@ -3053,7 +2981,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         return n;
     }
 
-    stbi_inline static int bit_reverse(int v, int bits) {
+    inline static int bit_reverse(int v, int bits) {
         assert(bits <= 16);
         // to bit reverse n bits, reverse 16 and shift
         // e.g. 11 bits, bit reverse and shift away 5
@@ -3076,8 +3004,8 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         code = 0;
         for (i = 1; i < 16; ++i) {
             next_code[i] = code;
-            z->firstcode[i] = (uint16) code;
-            z->firstsymbol[i] = (uint16) k;
+            z->firstcode[i] = (uint16_t) code;
+            z->firstsymbol[i] = (uint16_t) k;
             code = (code + sizes[i]);
             if (sizes[i])
                 if (code - 1 >= (1 << i))
@@ -3091,9 +3019,9 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             int s = sizelist[i];
             if (s) {
                 int c = next_code[s] - z->firstcode[s] + z->firstsymbol[s];
-                uint16 fastv = (uint16) ((s << 9) | i);
+                uint16_t fastv = (uint16_t) ((s << 9) | i);
                 z->size[c] = (unsigned char) s;
-                z->value[c] = (uint16) i;
+                z->value[c] = (uint16_t) i;
                 if (s <= ZFAST_BITS) {
                     int j = bit_reverse(next_code[s], s);
                     while (j < (1 << ZFAST_BITS)) {
@@ -3116,7 +3044,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     struct zbuf {
         unsigned char *zbuffer, *zbuffer_end;
         int num_bits;
-        uint32 code_buffer;
+        uint32_t code_buffer;
 
         char *zout;
         char *zout_start;
@@ -3126,7 +3054,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         zhuffman z_length, z_distance;
     };
 
-    stbi_inline static unsigned char zget8(zbuf *z) {
+    inline static unsigned char zget8(zbuf *z) {
         if (z->zbuffer >= z->zbuffer_end)
             return 0;
         return *z->zbuffer++;
@@ -3140,7 +3068,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         } while (z->num_bits <= 24);
     }
 
-    stbi_inline static unsigned int zreceive(zbuf *z, int n) {
+    inline static unsigned int zreceive(zbuf *z, int n) {
         unsigned int k;
         if (z->num_bits < n)
             fill_bits(z);
@@ -3168,7 +3096,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         return z->value[b];
     }
 
-    stbi_inline static int zhuffman_decode(zbuf *a, zhuffman *z) {
+    inline static int zhuffman_decode(zbuf *a, zhuffman *z) {
         int b, s;
         if (a->num_bits < 16)
             fill_bits(a);
@@ -3193,7 +3121,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         limit = (int) (z->zout_end - z->zout_start);
         while (cur + n > limit)
             limit *= 2;
-        q = (char *) STBI_REALLOC(z->zout_start, limit);
+        q = (char *) realloc(z->zout_start, limit);
         if (q == NULL)
             return err("outofmem", "Out of memory");
         z->zout_start = q;
@@ -3442,7 +3370,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 *outlen = (int) (a.zout - a.zout_start);
             return a.zout_start;
         } else {
-            STBI_FREE(a.zout_start);
+            free(a.zout_start);
             return NULL;
         }
     }
@@ -3465,7 +3393,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 *outlen = (int) (a.zout - a.zout_start);
             return a.zout_start;
         } else {
-            STBI_FREE(a.zout_start);
+            free(a.zout_start);
             return NULL;
         }
     }
@@ -3492,7 +3420,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 *outlen = (int) (a.zout - a.zout_start);
             return a.zout_start;
         } else {
-            STBI_FREE(a.zout_start);
+            free(a.zout_start);
             return NULL;
         }
     }
@@ -3511,8 +3439,8 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
 #ifndef STBI_NO_PNG
     struct pngchunk {
-        uint32 length;
-        uint32 type;
+        uint32_t length;
+        uint32_t type;
     };
 
     static pngchunk get_chunk_header(context *s) {
@@ -3565,11 +3493,11 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
 // create the png data from post-deflated data
     static int
-    create_png_image_raw(png *a, unsigned char *raw, uint32 raw_len, int out_n,
-                         uint32 x, uint32 y, int depth, int color) {
+    create_png_image_raw(png *a, unsigned char *raw, uint32_t raw_len, int out_n,
+                         uint32_t x, uint32_t y, int depth, int color) {
         context *s = a->s;
-        uint32 i, j, stride = x * out_n;
-        uint32 img_len, img_width_bytes;
+        uint32_t i, j, stride = x * out_n;
+        uint32_t img_len, img_width_bytes;
         int k;
         int img_n = s->img_n; // copy it into a local for later
 
@@ -3816,7 +3744,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     }
 
     static int
-    create_png_image(png *a, unsigned char *image_data, uint32 image_data_len,
+    create_png_image(png *a, unsigned char *image_data, uint32_t image_data_len,
                      int out_n, int depth, int color, int interlaced) {
         unsigned char *final;
         int p;
@@ -3836,10 +3764,10 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             x = (a->s->img_x - xorig[p] + xspc[p] - 1) / xspc[p];
             y = (a->s->img_y - yorig[p] + yspc[p] - 1) / yspc[p];
             if (x && y) {
-                uint32 img_len = ((((a->s->img_n * x * depth) + 7) >> 3) + 1) * y;
+                uint32_t img_len = ((((a->s->img_n * x * depth) + 7) >> 3) + 1) * y;
                 if (!create_png_image_raw(a, image_data, image_data_len, out_n, x, y, depth,
                                           color)) {
-                    STBI_FREE(final);
+                    free(final);
                     return 0;
                 }
                 for (j = 0; j < y; ++j) {
@@ -3850,7 +3778,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                                a->out + (j * x + i) * out_n, out_n);
                     }
                 }
-                STBI_FREE(a->out);
+                free(a->out);
                 image_data += img_len;
                 image_data_len -= img_len;
             }
@@ -3862,7 +3790,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
     static int compute_transparency(png *z, unsigned char tc[3], int out_n) {
         context *s = z->s;
-        uint32 i, pixel_count = s->img_x * s->img_y;
+        uint32_t i, pixel_count = s->img_x * s->img_y;
         unsigned char *p = z->out;
 
         // compute color-based transparency, assuming we've
@@ -3886,7 +3814,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
     static int
     expand_png_palette(png *a, unsigned char *palette, int len, int pal_img_n) {
-        uint32 i, pixel_count = a->s->img_x * a->s->img_y;
+        uint32_t i, pixel_count = a->s->img_x * a->s->img_y;
         unsigned char *p, *temp_out, *orig = a->out;
 
         p = (unsigned char *) malloc(pixel_count * pal_img_n);
@@ -3914,10 +3842,10 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 p += 4;
             }
         }
-        STBI_FREE(a->out);
+        free(a->out);
         a->out = temp_out;
 
-        STBI_NOTUSED(len);
+        IGNORED(len);
 
         return 1;
     }
@@ -3935,7 +3863,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
     static void de_iphone(png *z) {
         context *s = z->s;
-        uint32 i, pixel_count = s->img_x * s->img_y;
+        uint32_t i, pixel_count = s->img_x * s->img_y;
         unsigned char *p = z->out;
 
         if (s->img_out_n == 3)    // convert bgr to rgb
@@ -3980,7 +3908,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     static int parse_png_file(png *z, int scan, int req_comp) {
         unsigned char palette[1024], pal_img_n = 0;
         unsigned char has_trans = 0, tc[3];
-        uint32 ioff = 0, idata_limit = 0, i, pal_len = 0;
+        uint32_t ioff = 0, idata_limit = 0, i, pal_len = 0;
         int first = 1, k, interlace = 0, color = 0, depth = 0, is_iphone = 0;
         context *s = z->s;
 
@@ -4089,7 +4017,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                     } else {
                         if (!(s->img_n & 1))
                             return err("tRNS with alpha", "Corrupt PNG");
-                        if (c.length != (uint32) s->img_n * 2)
+                        if (c.length != (uint32_t) s->img_n * 2)
                             return err("bad tRNS len", "Corrupt PNG");
                         has_trans = 1;
                         for (k = 0; k < s->img_n; ++k)
@@ -4116,7 +4044,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                             idata_limit = c.length > 4096 ? c.length : 4096;
                         while (ioff + c.length > idata_limit)
                             idata_limit *= 2;
-                        p = (unsigned char *) STBI_REALLOC(z->idata, idata_limit);
+                        p = (unsigned char *) realloc(z->idata, idata_limit);
                         if (p == NULL)
                             return err("outofmem", "Out of memory");
                         z->idata = p;
@@ -4128,7 +4056,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 }
 
                 case PNG_TYPE('I', 'E', 'N', 'D'): {
-                    uint32 raw_len, bpl;
+                    uint32_t raw_len, bpl;
                     if (first)
                         return err("first not IHDR", "Corrupt PNG");
                     if (scan != SCAN_load)
@@ -4143,7 +4071,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                             (char *) z->idata, ioff, raw_len, (int *) &raw_len, !is_iphone);
                     if (z->expanded == NULL)
                         return 0; // zlib should set error
-                    STBI_FREE(z->idata);
+                    free(z->idata);
                     z->idata = NULL;
                     if ((req_comp == s->img_n + 1 && req_comp != 3 && !pal_img_n) || has_trans)
                         s->img_out_n = s->img_n + 1;
@@ -4166,7 +4094,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                         if (!expand_png_palette(z, palette, pal_len, s->img_out_n))
                             return 0;
                     }
-                    STBI_FREE(z->expanded);
+                    free(z->expanded);
                     z->expanded = NULL;
                     return 1;
                 }
@@ -4214,11 +4142,11 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             if (n)
                 *n = p->s->img_out_n;
         }
-        STBI_FREE(p->out);
+        free(p->out);
         p->out = NULL;
-        STBI_FREE(p->expanded);
+        free(p->expanded);
         p->expanded = NULL;
-        STBI_FREE(p->idata);
+        free(p->idata);
         p->idata = NULL;
 
         return result;
@@ -4450,7 +4378,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         if (bpp < 16) {
             int z = 0;
             if (psize == 0 || psize > 256) {
-                STBI_FREE(out);
+                free(out);
                 err("invalid", "Corrupt BMP");
                 return 0;
             }
@@ -4468,7 +4396,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             else if (bpp == 8)
                 width = s->img_x;
             else {
-                STBI_FREE(out);
+                free(out);
                 err("bad bpp", "Corrupt BMP");
                 return 0;
             }
@@ -4517,7 +4445,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             }
             if (!easy) {
                 if (!mr || !mg || !mb) {
-                    STBI_FREE(out);
+                    free(out);
                     err("bad masks", "Corrupt BMP");
                     return 0;
                 }
@@ -4546,8 +4474,8 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                     }
                 } else {
                     for (i = 0; i < (int) s->img_x; ++i) {
-                        uint32 v = (
-                                bpp == 16 ? (uint32) get16le(s) : get32le(s));
+                        uint32_t v = (
+                                bpp == 16 ? (uint32_t) get16le(s) : get32le(s));
                         int a;
                         out[z++] = BYTECAST(shiftsigned(v & mr, rshift, rcount));
                         out[z++] = BYTECAST(shiftsigned(v & mg, gshift, gcount));
@@ -4743,13 +4671,13 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 tga_palette = (unsigned char *) malloc(
                         tga_palette_len * tga_palette_bits / 8);
                 if (!tga_palette) {
-                    STBI_FREE(tga_data);
+                    free(tga_data);
                     err("outofmem", "Out of memory");
                     return 0;
                 }
                 if (!getn(s, tga_palette, tga_palette_len * tga_palette_bits / 8)) {
-                    STBI_FREE(tga_data);
-                    STBI_FREE(tga_palette);
+                    free(tga_data);
+                    free(tga_palette);
                     err("bad palette", "Corrupt TGA");
                     return 0;
                 }
@@ -4817,7 +4745,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             }
             //   clear my palette, if I had one
             if (tga_palette != NULL) {
-                STBI_FREE(tga_palette);
+                free(tga_palette);
             }
         }
 
@@ -5260,7 +5188,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         memset(result, 0xff, x * y * 4);
 
         if (!pic_load_core(s, x, y, comp, result)) {
-            STBI_FREE(result);
+            free(result);
             result = 0;
         }
         *px = x;
@@ -5285,7 +5213,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
 #ifndef STBI_NO_GIF
     struct gif_lzw {
-        int16 prefix;
+        int16_t prefix;
         unsigned char first;
         unsigned char suffix;
     };
@@ -5382,7 +5310,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         return 1;
     }
 
-    static void out_gif_code(gif *g, uint16 code) {
+    static void out_gif_code(gif *g, uint16_t code) {
         unsigned char *p, *c;
 
         // recurse to decode the prefixes, since the linked-list is backwards,
@@ -5418,9 +5346,9 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
     static unsigned char *process_gif_raster(context *s, gif *g) {
         unsigned char lzw_cs;
-        int32 len, init_code;
-        uint32 first;
-        int32 codesize, codemask, avail, oldcode, bits, valid_bits, clear;
+        int32_t len, init_code;
+        uint32_t first;
+        int32_t codesize, codemask, avail, oldcode, bits, valid_bits, clear;
         gif_lzw *p;
 
         lzw_cs = get8(s);
@@ -5451,10 +5379,10 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                         return g->out;
                 }
                 --len;
-                bits |= (int32) get8(s) << valid_bits;
+                bits |= (int32_t) get8(s) << valid_bits;
                 valid_bits += 8;
             } else {
-                int32 code = bits & codemask;
+                int32_t code = bits & codemask;
                 bits >>= codesize;
                 valid_bits -= codesize;
                 // @OPTIMIZE: is there some way we can accelerate the non-clear path?
@@ -5483,7 +5411,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                             err("too many codes", "Corrupt GIF");
                             return 0;
                         }
-                        p->prefix = (int16) oldcode;
+                        p->prefix = (int16_t) oldcode;
                         p->first = g->codes[oldcode].first;
                         p->suffix =
                                 (code == avail) ? p->first : g->codes[code].first;
@@ -5491,7 +5419,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                         err("illegal code in raster", "Corrupt GIF");
                         return 0;
                     }
-                    out_gif_code(g, (uint16) code);
+                    out_gif_code(g, (uint16_t) code);
 
                     if ((avail & codemask) == 0 && avail <= 0x0FFF) {
                         codesize++;
@@ -5564,7 +5492,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                 case 0x2C: /* Image Descriptor */
                 {
                     int prev_trans = -1;
-                    int32 x, y, w, h;
+                    int32_t x, y, w, h;
                     unsigned char *o;
 
                     x = get16le(s);
@@ -5646,7 +5574,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             }
         }
 
-        STBI_NOTUSED(req_comp);
+        IGNORED(req_comp);
     }
 
     static unsigned char *
@@ -5664,7 +5592,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
             if (req_comp && req_comp != 4)
                 u = convert_format(u, 4, req_comp, g.w, g.h);
         } else if (g.out)
-            STBI_FREE(g.out);
+            free(g.out);
 
         return u;
     }
@@ -5674,8 +5602,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     }
 
 #endif
-
-#ifndef STBI_NO_HDR
 
     static int hdr_test_core(context *s) {
         const char *signature = "#?RADIANCE\n";
@@ -5841,15 +5767,15 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                     hdr_convert(hdr_data, rgbe, req_comp);
                     i = 1;
                     j = 0;
-                    STBI_FREE(scanline);
+                    free(scanline);
                     goto main_decode_loop;
                     // yes, this makes no sense
                 }
                 len <<= 8;
                 len |= get8(s);
                 if (len != width) {
-                    STBI_FREE(hdr_data);
-                    STBI_FREE(scanline);
+                    free(hdr_data);
+                    free(scanline);
                     err("invalid decoded scanline length", "corrupt HDR");
                     return 0;
                 }
@@ -5877,7 +5803,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
                     hdr_convert(hdr_data + (j * width + i) * req_comp, scanline + i * 4,
                                 req_comp);
             }
-            STBI_FREE(scanline);
+            free(scanline);
         }
 
         return hdr_data;
@@ -5923,8 +5849,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         *comp = 3;
         return 1;
     }
-
-#endif // STBI_NO_HDR
 
 #ifndef STBI_NO_BMP
 
@@ -6142,23 +6066,17 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     }
 
 #endif
-
     static int info_main(context *s, int *x, int *y, int *comp) {
-#ifndef STBI_NO_JPEG
         if (jpeg_info(s, x, y, comp))
             return 1;
-#endif
-
 #ifndef STBI_NO_PNG
         if (png_info(s, x, y, comp))
             return 1;
 #endif
-
 #ifndef STBI_NO_GIF
         if (gif_info(s, x, y, comp))
             return 1;
 #endif
-
 #ifndef STBI_NO_BMP
         if (bmp_info(s, x, y, comp))
             return 1;
@@ -6178,11 +6096,8 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         if (pnm_info(s, x, y, comp))
             return 1;
 #endif
-
-#ifndef STBI_NO_HDR
         if (hdr_info(s, x, y, comp))
             return 1;
-#endif
 
         // test tga last because it's a crappy test!
 #ifndef STBI_NO_TGA
@@ -9820,16 +9735,6 @@ static inline uint32_t to_format(PixmapData::Format format, uint32_t color) {
     }
 }
 
-static inline uint32_t weight_RGBA8888(uint32_t color, float weight) {
-    uint32_t r, g, b, a;
-    r = MIN((uint32_t) (((color & 0xff000000) >> 24) * weight), 255);
-    g = MIN((uint32_t) (((color & 0xff0000) >> 16) * weight), 255);
-    b = MIN((uint32_t) (((color & 0xff00) >> 8) * weight), 255);
-    a = MIN((uint32_t) (((color & 0xff)) * weight), 255);
-
-    return (r << 24) | (g << 16) | (b << 8) | a;
-}
-
 static inline uint32_t to_RGBA8888(PixmapData::Format format, uint32_t color) {
     uint32_t r, g, b, a;
 
@@ -9870,8 +9775,8 @@ static inline void set_pixel_luminance_alpha(unsigned char *pixel_addr, uint32_t
 
 static inline void set_pixel_RGB888(unsigned char *pixel_addr, uint32_t color) {
     pixel_addr[0] = (color & 0xff0000) >> 16;
-    pixel_addr[1] = (color & 0xff00) >> 8;
-    pixel_addr[2] = (color & 0xff);
+    pixel_addr[1] = (color & 0x00ff00) >> 8;
+    pixel_addr[2] = (color & 0x0000ff);
 }
 
 static inline void set_pixel_RGBA8888(unsigned char *pixel_addr, uint32_t color) {
@@ -9934,6 +9839,7 @@ static inline uint32_t get_pixel_RGBA4444(unsigned char *pixel_addr) {
 
 static inline get_pixel_func get_pixel_func_ptr(PixmapData::Format format) {
     switch (format) {
+        default:
         case PixmapData::Format_Alpha:
             return &get_pixel_alpha;
         case PixmapData::Format_Luminance_Alpha:
@@ -9946,108 +9852,7 @@ static inline get_pixel_func get_pixel_func_ptr(PixmapData::Format format) {
             return &get_pixel_RGB565;
         case PixmapData::Format_RGBA4444:
             return &get_pixel_RGBA4444;
-        default:
-            return &get_pixel_alpha; // better idea for a default?
     }
-}
-
-static inline void clear_alpha(const PixmapData *pixmap, uint32_t col) {
-    int pixels = pixmap->width * pixmap->height;
-    memset((void *) pixmap->pixels, col, pixels);
-}
-
-static inline void clear_luminance_alpha(const PixmapData *pixmap, uint32_t col) {
-    int pixels = pixmap->width * pixmap->height;
-    unsigned short *ptr = (unsigned short *) pixmap->pixels;
-    unsigned short l = (col & 0xff) << 8 | (col >> 8);
-
-    for (; pixels > 0; pixels--) {
-        *ptr = l;
-        ptr++;
-    }
-}
-
-static inline void clear_RGB888(const PixmapData *pixmap, uint32_t col) {
-    int pixels = pixmap->width * pixmap->height;
-    unsigned char *ptr = (unsigned char *) pixmap->pixels;
-    unsigned char r = (col & 0xff0000) >> 16;
-    unsigned char g = (col & 0xff00) >> 8;
-    unsigned char b = (col & 0xff);
-
-    for (; pixels > 0; pixels--) {
-        *ptr = r;
-        ptr++;
-        *ptr = g;
-        ptr++;
-        *ptr = b;
-        ptr++;
-    }
-}
-
-static inline void clear_RGBA8888(const PixmapData *pixmap, uint32_t col) {
-    int pixels = pixmap->width * pixmap->height;
-    uint32_t *ptr = (uint32_t *) pixmap->pixels;
-    unsigned char r = (col & 0xff000000) >> 24;
-    unsigned char g = (col & 0xff0000) >> 16;
-    unsigned char b = (col & 0xff00) >> 8;
-    unsigned char a = (col & 0xff);
-    col = (a << 24) | (b << 16) | (g << 8) | r;
-
-    for (; pixels > 0; pixels--) {
-        *ptr = col;
-        ptr++;
-    }
-}
-
-static inline void clear_RGB565(const PixmapData *pixmap, uint32_t col) {
-    int pixels = pixmap->width * pixmap->height;
-    unsigned short *ptr = (unsigned short *) pixmap->pixels;
-    unsigned short l = col & 0xffff;
-
-    for (; pixels > 0; pixels--) {
-        *ptr = l;
-        ptr++;
-    }
-}
-
-static inline void clear_RGBA4444(const PixmapData *pixmap, uint32_t col) {
-    int pixels = pixmap->width * pixmap->height;
-    unsigned short *ptr = (unsigned short *) pixmap->pixels;
-    unsigned short l = col & 0xffff;
-
-    for (; pixels > 0; pixels--) {
-        *ptr = l;
-        ptr++;
-    }
-}
-
-Pixmap_M(jobject, loadFromInternalFilePath)(JNIEnv *env, jclass clazz, jlongArray nativeData,
-                                            jstring internalPath) {
-
-    int width, height, format;
-    const char *path = env->GetStringUTFChars(internalPath, 0);
-
-    const unsigned char *pixels = stbi::stbi_load_from_file(fopen(path, "r"), (int *) &width,
-                                                            (int *) &height,
-                                                            (int *) &format, 0);
-    if (pixels == NULL)
-        pixels = jpgd::decompress_jpeg_image_from_file(path, &width, &height, &format, 0);
-
-    if (pixels == NULL)
-        return 0;
-    PixmapData *pixmap = new PixmapData(width, height, (PixmapData::Format) format, pixels, true);
-
-    jobject pixel_buffer = env->NewDirectByteBuffer((void *) pixmap->pixels,
-                                                    pixmap->width * pixmap->height *
-                                                    pixmap->pixel_size());
-    jlong *p_native_data = (jlong *) env->GetPrimitiveArrayCritical(nativeData, 0);
-    p_native_data[0] = (jlong) pixmap;
-    p_native_data[1] = pixmap->width;
-    p_native_data[2] = pixmap->height;
-    p_native_data[3] = pixmap->format;
-    env->ReleasePrimitiveArrayCritical(nativeData, p_native_data, 0);
-    env->ReleaseStringUTFChars(internalPath, path);
-    return pixel_buffer;
 }
 
 Pixmap_M(jobject, load)(JNIEnv *env, jclass clazz, jlongArray nativeData, jbyteArray buffer,
@@ -10107,27 +9912,64 @@ Pixmap_M(void, free)(JNIEnv *env, jobject object) {
 Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
     PixmapData *data = (PixmapData *) env->GetLongField(object, basePtr);
     color = to_format(data->format, color);
+    int pixels = data->width * data->height;
 
     switch (data->format) {
-        case PixmapData::Format_Alpha:
-            clear_alpha(data, color);
-            break;
-        case PixmapData::Format_Luminance_Alpha:
-            clear_luminance_alpha(data, color);
-            break;
-        case PixmapData::Format_RGB888:
-            clear_RGB888(data, color);
-            break;
-        case PixmapData::Format_RGBA8888:
-            clear_RGBA8888(data, color);
-            break;
-        case PixmapData::Format_RGB565:
-            clear_RGB565(data, color);
-            break;
-        case PixmapData::Format_RGBA4444:
-            clear_RGBA4444(data, color);
-            break;
         default:
+            break;
+        case PixmapData::Format_Alpha:
+            memset((void *) data->pixels, color, pixels);
+            break;
+        case PixmapData::Format_Luminance_Alpha: {
+            unsigned short *ptr = (unsigned short *) data->pixels;
+            for (; pixels > 0; pixels--) {
+                *ptr = (color & 0xff) << 8 | (color >> 8);
+                ptr++;
+            }
+        }
+            break;
+        case PixmapData::Format_RGB888: {
+            unsigned char *ptr = (unsigned char *) data->pixels;
+            unsigned char r = (color & 0xff0000) >> 16;
+            unsigned char g = (color & 0x00ff00) >> 8;
+            unsigned char b = (color & 0x0000ff);
+            for (; pixels > 0; pixels--) {
+                *ptr = r;
+                ptr++;
+                *ptr = g;
+                ptr++;
+                *ptr = b;
+                ptr++;
+            }
+        }
+            break;
+        case PixmapData::Format_RGBA8888: {
+            uint32_t *ptr = (uint32_t *) data->pixels;
+            color = ((color & 0x000000ff) << 24) | (((color & 0x0000ff00) >> 8) << 16) |
+                    (((color & 0x00ff0000) >> 16) << 8) | ((color & 0xff000000) >> 24);
+            for (; pixels > 0; pixels--) {
+                *ptr = color;
+                ptr++;
+            }
+        }
+            break;
+        case PixmapData::Format_RGB565: {
+            unsigned short *ptr = (unsigned short *) data->pixels;
+            unsigned short l = color & 0xffff;
+            for (; pixels > 0; pixels--) {
+                *ptr = l;
+                ptr++;
+            }
+        }
+            break;
+        case PixmapData::Format_RGBA4444: {
+            unsigned short *ptr = (unsigned short *) data->pixels;
+            unsigned short l = color & 0xffff;
+            for (; pixels > 0; pixels--) {
+                *ptr = l;
+                ptr++;
+            }
+        }
             break;
     }
 }
@@ -10227,7 +10069,7 @@ Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, j
             float y_diff = 0;
 
             for (; i < dstHeight; i++) {
-                sy = (int) (i * y_ratio) + srcY;
+                sy = (unsigned int) (i * y_ratio) + srcY;
                 dy = i + dstY;
                 y_diff = (y_ratio * i + srcY) - sy;
                 if (sy < 0 || dy < 0)
@@ -10236,7 +10078,7 @@ Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, j
                     break;
 
                 for (j = 0; j < dstWidth; j++) {
-                    sx = (int) (j * x_ratio) + srcX;
+                    sx = (unsigned int) (j * x_ratio) + srcX;
                     dx = j + dstX;
                     x_diff = (x_ratio * j + srcX) - sx;
                     if (sx < 0 || dx < 0)

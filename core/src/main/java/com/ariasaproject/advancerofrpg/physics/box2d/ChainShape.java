@@ -95,10 +95,10 @@ public class ChainShape extends Shape {
 // b2Shape* Clone(b2BlockAllocator* allocator) const;
 //
 // /// @see b2Shape::GetChildCount
-// int32 GetChildCount() const;
+// int32_t GetChildCount() const;
 //
 // /// Get a child edge.
-// void GetChildEdge(b2EdgeShape* edge, int32 index) const;
+// void GetChildEdge(b2EdgeShape* edge, int32_t index) const;
 //
 // /// This always return false.
 // /// @see b2Shape::TestPoint
@@ -106,10 +106,10 @@ public class ChainShape extends Shape {
 //
 // /// Implement b2Shape.
 // bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
-// const b2Transform& transform, int32 childIndex) const;
+// const b2Transform& transform, int32_t childIndex) const;
 //
 // /// @see b2Shape::ComputeAABB
-// void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32 childIndex) const;
+// void ComputeAABB(b2AABB* aabb, const b2Transform& transform, int32_t childIndex) const;
 //
 // /// Chains have zero mass.
 // /// @see b2Shape::ComputeMass

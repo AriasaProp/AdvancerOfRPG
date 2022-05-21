@@ -119,7 +119,7 @@ public class UBJsonWriter implements Closeable {
 
     /**
      * Appends a {@code short} value to the stream. This corresponds to the
-     * {@code int16} value type in the UBJSON specification.
+     * {@code int16_t} value type in the UBJSON specification.
      *
      * @return this writer, for chaining
      */
@@ -132,7 +132,7 @@ public class UBJsonWriter implements Closeable {
 
     /**
      * Appends an {@code int} value to the stream. This corresponds to the
-     * {@code int32} value type in the UBJSON specification.
+     * {@code int32_t} value type in the UBJSON specification.
      *
      * @return this writer, for chaining
      */
@@ -196,7 +196,7 @@ public class UBJsonWriter implements Closeable {
 
     /**
      * Appends a {@code char} value to the stream. Because, in Java, a {@code char}
-     * is 16 bytes, this corresponds to the {@code int16} value type in the UBJSON
+     * is 16 bytes, this corresponds to the {@code int16_t} value type in the UBJSON
      * specification.
      *
      * @return this writer, for chaining
@@ -254,7 +254,7 @@ public class UBJsonWriter implements Closeable {
 
     /**
      * Appends an optimized {@code short array} value to the stream. As an optimized
-     * array, the {@code int16} value type marker and element count are encoded once
+     * array, the {@code int16_t} value type marker and element count are encoded once
      * at the array marker instead of repeating the type marker for each element.
      *
      * @return this writer, for chaining
@@ -274,7 +274,7 @@ public class UBJsonWriter implements Closeable {
 
     /**
      * Appends an optimized {@code int array} value to the stream. As an optimized
-     * array, the {@code int32} value type marker and element count are encoded once
+     * array, the {@code int32_t} value type marker and element count are encoded once
      * at the array marker instead of repeating the type marker for each element.
      *
      * @return this writer, for chaining
@@ -371,7 +371,7 @@ public class UBJsonWriter implements Closeable {
 
     /**
      * Appends an optimized {@code char array} value to the stream. As an optimized
-     * array, the {@code int16} value type marker and element count are encoded once
+     * array, the {@code int16_t} value type marker and element count are encoded once
      * at the array marker instead of repeating the type marker for each element.
      *
      * @return this writer, for chaining

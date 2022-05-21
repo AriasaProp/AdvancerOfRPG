@@ -372,7 +372,7 @@ void b2Island::SolveTOI(const b2TimeStep &subStep, int32 toiIndexA, int32 toiInd
 
 #if 0
     // Is the new position really safe?
-    for (int32 i = 0; i < m_contactCount; ++i)
+    for (int32_t i = 0; i < m_contactCount; ++i)
     {
         b2Contact* c = m_contacts[i];
         b2Fixture* fA = c->GetFixtureA();
@@ -381,8 +381,8 @@ void b2Island::SolveTOI(const b2TimeStep &subStep, int32 toiIndexA, int32 toiInd
         b2Body* bA = fA->GetBody();
         b2Body* bB = fB->GetBody();
 
-        int32 indexA = c->GetChildIndexA();
-        int32 indexB = c->GetChildIndexB();
+        int32_t indexA = c->GetChildIndexA();
+        int32_t indexB = c->GetChildIndexB();
 
         b2DistanceInput input;
         input.proxyA.Set(fA->GetShape(), indexA);
