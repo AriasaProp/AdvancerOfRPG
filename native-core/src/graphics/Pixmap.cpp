@@ -207,6 +207,7 @@ namespace stbi {
         s->img_buffer = s->img_buffer_original;
         s->img_buffer_end = s->img_buffer_original_end;
     }
+
     static int jpeg_test(context *s);
 
     static unsigned char *
@@ -6066,6 +6067,7 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     }
 
 #endif
+
     static int info_main(context *s, int *x, int *y, int *comp) {
         if (jpeg_info(s, x, y, comp))
             return 1;
@@ -9674,72 +9676,48 @@ PixmapData::~PixmapData() {
     free((void *) pixels);
 }
 
-static uint32_t *lu4 = 0;
-static uint32_t *lu5 = 0;
-static uint32_t *lu6 = 0;
-
 typedef void (*set_pixel_func)(unsigned char *pixel_addr, uint32_t color);
 
 typedef uint32_t (*get_pixel_func)(unsigned char *pixel_addr);
 
-static inline void generate_look_ups() {
-    uint32_t i = 0;
-    lu4 = (uint32_t *) malloc(sizeof(uint32_t) * 16);
-    lu5 = (uint32_t *) malloc(sizeof(uint32_t) * 32);
-    lu6 = (uint32_t *) malloc(sizeof(uint32_t) * 64);
-
-    for (i = 0; i < 16; i++) {
-        lu4[i] = (uint32_t) (i / 15.0f * 255);
-        lu5[i] = (uint32_t) (i / 31.0f * 255);
-        lu6[i] = (uint32_t) (i / 63.0f * 255);
-    }
-    for (i = 16; i < 32; i++) {
-        lu5[i] = (uint32_t) (i / 31.0f * 255);
-        lu6[i] = (uint32_t) (i / 63.0f * 255);
-    }
-    for (i = 32; i < 64; i++) {
-        lu6[i] = (uint32_t) (i / 63.0f * 255);
-    }
-}
-
 static inline uint32_t to_format(PixmapData::Format format, uint32_t color) {
-    uint32_t r, g, b, a, l;
-
     switch (format) {
-        case PixmapData::Format_Alpha:
+        case PixmapData::Format_Alpha: {
             return color & 0xff;
-        case PixmapData::Format_Luminance_Alpha:
-            r = (color & 0xff000000) >> 24;
-            g = (color & 0xff0000) >> 16;
-            b = (color & 0xff00) >> 8;
-            a = (color & 0xff);
-            l = ((uint32_t) (0.2126f * r + 0.7152 * g + 0.0722 * b) & 0xff) << 8;
+        }
+        case PixmapData::Format_Luminance_Alpha: {
+            uint32_t r = (color & 0xff000000) >> 24;
+            uint32_t g = (color & 0xff0000) >> 16;
+            uint32_t b = (color & 0xff00) >> 8;
+            uint32_t a = (color & 0xff);
+            uint32_t l = ((uint32_t) (0.2126f * r + 0.7152 * g + 0.0722 * b) & 0xff) << 8;
             return (l & 0xffffff00) | a;
-        case PixmapData::Format_RGB888:
+        }
+        case PixmapData::Format_RGB888: {
             return color >> 8;
-        case PixmapData::Format_RGBA8888:
+        }
+        case PixmapData::Format_RGBA8888: {
             return color;
-        case PixmapData::Format_RGB565:
-            r = (((color & 0xff000000) >> 27) << 11) & 0xf800;
-            g = (((color & 0xff0000) >> 18) << 5) & 0x7e0;
-            b = ((color & 0xff00) >> 11) & 0x1f;
+        }
+        case PixmapData::Format_RGB565: {
+            uint32_t r = (((color & 0xff000000) >> 27) << 11) & 0xf800;
+            uint32_t g = (((color & 0xff0000) >> 18) << 5) & 0x7e0;
+            uint32_t b = ((color & 0xff00) >> 11) & 0x1f;
             return r | g | b;
-        case PixmapData::Format_RGBA4444:
-            r = (((color & 0xff000000) >> 28) << 12) & 0xf000;
-            g = (((color & 0xff0000) >> 20) << 8) & 0xf00;
-            b = (((color & 0xff00) >> 12) << 4) & 0xf0;
-            a = ((color & 0xff) >> 4) & 0xf;
+        }
+        case PixmapData::Format_RGBA4444: {
+            uint32_t r = (((color & 0xff000000) >> 28) << 12) & 0xf000;
+            uint32_t g = (((color & 0xff0000) >> 20) << 8) & 0xf00;
+            uint32_t b = (((color & 0xff00) >> 12) << 4) & 0xf0;
+            uint32_t a = (((color & 0xff) >> 4)) & 0xf;
             return r | g | b | a;
+        }
         default:
             return 0;
     }
 }
 
 static inline uint32_t to_RGBA8888(PixmapData::Format format, uint32_t color) {
-    uint32_t r, g, b, a;
-
-    if (!lu5)
-        generate_look_ups();
     switch (format) {
         case PixmapData::Format_Alpha:
             return (color & 0xff) | 0xffffff00;
@@ -9749,17 +9727,19 @@ static inline uint32_t to_RGBA8888(PixmapData::Format format, uint32_t color) {
             return (color << 8) | 0x000000ff;
         case PixmapData::Format_RGBA8888:
             return color;
-        case PixmapData::Format_RGB565:
-            r = lu5[(color & 0xf800) >> 11] << 24;
-            g = lu6[(color & 0x7e0) >> 5] << 16;
-            b = lu5[(color & 0x1f)] << 8;
+        case PixmapData::Format_RGB565: {
+            uint32_t r = ((uint32_t) (((color & 0xf800) >> 11) / 31.0f) * 255) << 24;
+            uint32_t g = ((uint32_t) (((color & 0x7e0) >> 5) / 63.0f) * 255) << 16;
+            uint32_t b = ((uint32_t) ((color & 0x1f) / 31.0f) * 255) << 8;
             return r | g | b | 0xff;
-        case PixmapData::Format_RGBA4444:
-            r = lu4[(color & 0xf000) >> 12] << 24;
-            g = lu4[(color & 0xf00) >> 8] << 16;
-            b = lu4[(color & 0xf0) >> 4] << 8;
-            a = lu4[(color & 0xf)];
+        }
+        case PixmapData::Format_RGBA4444: {
+            uint32_t r = (((color & 0xf000) >> 12) * 17) << 24;
+            uint32_t g = (((color & 0xf00) >> 8) * 17) << 16;
+            uint32_t b = (((color & 0xf0) >> 4) * 17) << 8;
+            uint32_t a = (color & 0xf) * 17;
             return r | g | b | a;
+        }
         default:
             return 0;
     }
@@ -9775,8 +9755,8 @@ static inline void set_pixel_luminance_alpha(unsigned char *pixel_addr, uint32_t
 
 static inline void set_pixel_RGB888(unsigned char *pixel_addr, uint32_t color) {
     pixel_addr[0] = (color & 0xff0000) >> 16;
-    pixel_addr[1] = (color & 0x00ff00) >> 8;
-    pixel_addr[2] = (color & 0x0000ff);
+    pixel_addr[1] = (color & 0xff00) >> 8;
+    pixel_addr[2] = (color & 0xff);
 }
 
 static inline void set_pixel_RGBA8888(unsigned char *pixel_addr, uint32_t color) {
@@ -9931,8 +9911,8 @@ Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
         case PixmapData::Format_RGB888: {
             unsigned char *ptr = (unsigned char *) data->pixels;
             unsigned char r = (color & 0xff0000) >> 16;
-            unsigned char g = (color & 0x00ff00) >> 8;
-            unsigned char b = (color & 0x0000ff);
+            unsigned char g = (color & 0xff00) >> 8;
+            unsigned char b = (color & 0xff);
             for (; pixels > 0; pixels--) {
                 *ptr = r;
                 ptr++;
