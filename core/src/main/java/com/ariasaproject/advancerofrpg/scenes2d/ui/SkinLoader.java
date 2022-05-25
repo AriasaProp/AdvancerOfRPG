@@ -1,31 +1,16 @@
-package com.ariasaproject.advancerofrpg.assets.loaders;
+package com.ariasaproject.advancerofrpg.scenes2d.ui;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
-import com.ariasaproject.advancerofrpg.graphics.Texture;
-import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas;
-import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.ObjectMap;
 import com.ariasaproject.advancerofrpg.utils.ObjectMap.Entry;
 
-/**
- * {@link AssetLoader} for {@link Skin} instances. All {@link Texture} and
- * {@link BitmapFont} instances will be loaded as dependencies. Passing a
- * {@link SkinParameter} allows the exact name of the texture associated with
- * the skin to be specified. Otherwise the skin texture is looked up just as
- * with a call to
- * {@link Skin#Skin(com.ariasaproject.advancerofrpg.files.FileHandle)}. A
- * {@link SkinParameter} also allows named resources to be set that will be
- * added to the skin before loading the json file, meaning that they can be
- * referenced from inside the json file itself. This is useful for dynamic
- * resources such as a BitmapFont generated through FreeTypeFontGenerator.
- *
- * @author Nathan Sweet
- */
 public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinParameter> {
     public SkinLoader(FileHandleResolver resolver) {
         super(resolver);
@@ -33,11 +18,11 @@ public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinPar
 
     @Override
     public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, SkinParameter parameter) {
-        Array<AssetDescriptor> deps = new Array();
+        Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
         if (parameter == null || parameter.textureAtlasPath == null)
-            deps.add(new AssetDescriptor(file.pathWithoutExtension() + ".atlas", TextureAtlas.class));
+            deps.add(new AssetDescriptor<TextureAtlas>(file.pathWithoutExtension() + ".atlas", TextureAtlas.class));
         else if (parameter.textureAtlasPath != null)
-            deps.add(new AssetDescriptor(parameter.textureAtlasPath, TextureAtlas.class));
+            deps.add(new AssetDescriptor<TextureAtlas>(parameter.textureAtlasPath, TextureAtlas.class));
         return deps;
     }
 
@@ -68,14 +53,6 @@ public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinLoader.SkinPar
         return skin;
     }
 
-    /**
-     * Override to allow subclasses of Skin to be loaded or the skin instance to be
-     * configured.
-     *
-     * @param atlas The TextureAtlas that the skin will use.
-     * @return A new Skin (or subclass of Skin) instance based on the provided
-     * TextureAtlas.
-     */
     protected Skin newSkin(TextureAtlas atlas) {
         return new Skin(atlas);
     }

@@ -1,6 +1,5 @@
 package com.ariasaproject.advancerofrpg.graphics.g3d;
 
-import com.ariasaproject.advancerofrpg.assets.loaders.ModelLoader;
 import com.ariasaproject.advancerofrpg.graphics.Mesh;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.graphics.Texture;

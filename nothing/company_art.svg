@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="500" height="500" viewBox="0 0 500 500" xml:space="preserve">
+<svg height="500" version="1.1" viewBox="0 0 500 500" width="500" xmlns="http://www.w3.org/2000/svg"
+    xml:space="preserve">
 <desc>Created with Fabric.js 4.6.0</desc>
 <defs>
 </defs>
@@ -35,7 +36,10 @@
 <stop offset="50%" style="stop-color:#7e7e7e;stop-opacity: 1"/>
 <stop offset="100%" style="stop-color:#000000;stop-opacity: 1"/>
 </linearGradient>
-<path style="stroke: rgb(0,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_25); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(0, 0)" d="M 14.00589 -17.85526 L 13.50589 8.802629999999997 C 13.50589 8.802629999999997 11.731280000000002 17.855259999999998 5.152340000000001 17.855259999999998 C -1.4266099999999993 17.855259999999998 -6.360819999999999 17.855259999999998 -6.360819999999999 17.855259999999998 C -6.360819999999999 17.855259999999998 -14.91345 16.368419999999997 -13.926609999999998 8.802629999999997 C -12.939769999999998 1.2368399999999973 -13.926609999999998 1.5657899999999971 -13.926609999999998 1.5657899999999971 L -4.058189999999998 1.5657899999999971 L -4.058189999999998 8.802629999999997 L 5.152340000000002 8.802629999999997 L 5.152340000000002 -17.85526 z" stroke-linecap="round" />
+    <path
+        style="stroke: rgb(1,0,0); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_25); fill-rule: nonzero; opacity: 1;"
+        d="M 14.00589 -17.85526 L 13.50589 8.802629999999997 C 13.50589 8.802629999999997 11.731280000000002 17.855259999999998 5.152340000000001 17.855259999999998 C -1.4266099999999993 17.855259999999998 -6.360819999999999 17.855259999999998 -6.360819999999999 17.855259999999998 C -6.360819999999999 17.855259999999998 -14.91345 16.368419999999997 -13.926609999999998 8.802629999999997 C -12.939769999999998 1.2368399999999973 -13.926609999999998 1.5657899999999971 -13.926609999999998 1.5657899999999971 L -4.058189999999998 1.5657899999999971 L -4.058189999999998 8.802629999999997 L 5.152340000000002 8.802629999999997 L 5.152340000000002 -17.85526 z"
+        stroke-linecap="round" transform=" translate(0, 0)" vector-effect="non-scaling-stroke" />
 </g>
 <g transform="matrix(2.5 0 0 2.5 335.62 205.41)" id="0bzjTQIuqkeCIAR-f_0Ds"  >
 <radialGradient id="SVGID_170" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 -15.63 -15.63)"  cx="15.62500037481189" cy="15.625000374811918" r="15.62500037481189" fx="15.62500037481189" fy="15.625000374811918">

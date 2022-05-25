@@ -35,7 +35,6 @@ import com.ariasaproject.advancerofrpg.audio.Sound;
 import com.ariasaproject.advancerofrpg.graphics.Graphics;
 import com.ariasaproject.advancerofrpg.input.Clipboard;
 import com.ariasaproject.advancerofrpg.input.Input;
-import com.ariasaproject.advancerofrpg.net.Net;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
 

@@ -1,21 +1,13 @@
-package com.ariasaproject.advancerofrpg.assets.loaders;
+package com.ariasaproject.advancerofrpg.graphics.g2d;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
-import com.ariasaproject.advancerofrpg.graphics.g2d.ParticleEffect;
-import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
+import com.ariasaproject.advancerofrpg.assets.loaders.SynchronousAssetLoader;
 import com.ariasaproject.advancerofrpg.utils.Array;
 
-/**
- * {@link AssetLoader} to load {@link ParticleEffect} instances. Passing a
- * {@link ParticleEffectParameter} to
- * {@link AssetManager#load(String, Class, AssetLoaderParameters)} allows to
- * specify an atlas file or an image directory to be used for the effect's
- * images. Per default images are loaded from the directory in which the effect
- * file is found.
- */
 public class ParticleEffectLoader extends SynchronousAssetLoader<ParticleEffect, ParticleEffectLoader.ParticleEffectParameter> {
     public ParticleEffectLoader(FileHandleResolver resolver) {
         super(resolver);
@@ -43,23 +35,9 @@ public class ParticleEffectLoader extends SynchronousAssetLoader<ParticleEffect,
         return deps;
     }
 
-    /**
-     * Parameter to be passed to
-     * {@link AssetManager#load(String, Class, AssetLoaderParameters)} if additional
-     * configuration is necessary for the {@link ParticleEffect}.
-     */
     public static class ParticleEffectParameter extends AssetLoaderParameters<ParticleEffect> {
-        /**
-         * Atlas file name.
-         */
         public String atlasFile;
-        /**
-         * Optional prefix to image names
-         **/
         public String atlasPrefix;
-        /**
-         * Image directory.
-         */
         public FileHandle imagesDir;
     }
 }

@@ -1,6 +1,6 @@
 package com.ariasaproject.advancerofrpg.graphics.g3d.model.data;
 
-import com.ariasaproject.advancerofrpg.assets.loaders.ModelLoader;
+import com.ariasaproject.advancerofrpg.graphics.g3d.ModelLoader;
 import com.ariasaproject.advancerofrpg.utils.Array;
 
 /**

@@ -6,7 +6,7 @@ import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters.LoadedCallback;
-import com.ariasaproject.advancerofrpg.assets.loaders.CubemapLoader.CubemapParameter;
+import com.ariasaproject.advancerofrpg.graphics.CubemapLoader.CubemapParameter;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureWrap;

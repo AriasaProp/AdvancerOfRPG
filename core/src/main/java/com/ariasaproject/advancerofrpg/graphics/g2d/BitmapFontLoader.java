@@ -1,20 +1,18 @@
-package com.ariasaproject.advancerofrpg.assets.loaders;
+package com.ariasaproject.advancerofrpg.graphics.g2d;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
-import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;
+import com.ariasaproject.advancerofrpg.graphics.Texture.TextureParameter;
 import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont.BitmapFontData;
-import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas;
 import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.ariasaproject.advancerofrpg.graphics.g2d.TextureRegion;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
 import com.ariasaproject.advancerofrpg.utils.Array;
-import com.ariasaproject.advancerofrpg.graphics.Texture.TextureLoader;
-import com.ariasaproject.advancerofrpg.graphics.Texture.TextureParameter;
 
 public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter> {
     BitmapFontData data;

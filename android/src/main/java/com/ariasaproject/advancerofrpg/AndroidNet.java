@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
-import com.ariasaproject.advancerofrpg.net.Net;
-
 public class AndroidNet extends Net {
     final AndroidApplication app;
 

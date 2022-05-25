@@ -1,4 +1,4 @@
-package com.ariasaproject.advancerofrpg.net;
+package com.ariasaproject.advancerofrpg;
 
 import com.ariasaproject.advancerofrpg.utils.Pool;
 import com.ariasaproject.advancerofrpg.utils.Pool.Poolable;
@@ -100,7 +100,7 @@ public abstract class Net {
 
     public abstract boolean openURI(String URI);
 
-    public static interface HttpResponseListener {
+    public interface HttpResponseListener {
         void handle(long time, HttpURLConnection connection);
     }
 
@@ -128,9 +128,7 @@ public abstract class Net {
             HttpRequest r = (HttpRequest) obj;
             if (!r.connection.equals(connection))
                 return false;
-            if (r.listener != listener)
-                return false;
-            return true;
+            return r.listener == listener;
         }
     }
 
