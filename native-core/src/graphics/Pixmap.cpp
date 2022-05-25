@@ -9655,8 +9655,8 @@ uint8_t PixmapData::pixel_size() const {
             return 2;
         case Format_RGB888:
             return 3;
-        case Format_RGBA8888:
         default:
+        case Format_RGBA8888:
             return 4;
     }
 }
@@ -9681,68 +9681,75 @@ typedef void (*set_pixel_func)(unsigned char *pixel_addr, uint32_t color);
 typedef uint32_t (*get_pixel_func)(unsigned char *pixel_addr);
 
 static inline uint32_t to_format(PixmapData::Format format, uint32_t color) {
+	uint32_t result;
     switch (format) {
-        case PixmapData::Format_Alpha: {
-            return color & 0xff;
-        }
-        case PixmapData::Format_Luminance_Alpha: {
-            uint32_t r = (color & 0xff000000) >> 24;
-            uint32_t g = (color & 0xff0000) >> 16;
-            uint32_t b = (color & 0xff00) >> 8;
-            uint32_t a = (color & 0xff);
-            uint32_t l = ((uint32_t) (0.2126f * r + 0.7152 * g + 0.0722 * b) & 0xff) << 8;
-            return (l & 0xffffff00) | a;
-        }
-        case PixmapData::Format_RGB888: {
-            return color >> 8;
-        }
-        case PixmapData::Format_RGBA8888: {
-            return color;
-        }
-        case PixmapData::Format_RGB565: {
-            uint32_t r = (((color & 0xff000000) >> 27) << 11) & 0xf800;
-            uint32_t g = (((color & 0xff0000) >> 18) << 5) & 0x7e0;
-            uint32_t b = ((color & 0xff00) >> 11) & 0x1f;
-            return r | g | b;
-        }
-        case PixmapData::Format_RGBA4444: {
-            uint32_t r = (((color & 0xff000000) >> 28) << 12) & 0xf000;
-            uint32_t g = (((color & 0xff0000) >> 20) << 8) & 0xf00;
-            uint32_t b = (((color & 0xff00) >> 12) << 4) & 0xf0;
-            uint32_t a = (((color & 0xff) >> 4)) & 0xf;
-            return r | g | b | a;
-        }
+        case PixmapData::Format_Alpha:
+            result = color & 0xff;
+            break;
+        case PixmapData::Format_Luminance_Alpha:
+            //54.213 + 182.376 + 18.411 = 255
+            result = (uint32_t) (0.2126f * ((color & 0xff000000) >> 24) + 0.7152f * ((color & 0xff0000) >> 16) + 0.0722f * ((color & 0xff00) >> 8)) & 0xff;
+            result |= (color & 0xff) << 8; //A
+            break;
+        case PixmapData::Format_RGB888:
+            result = color >> 8;
+            break;
+        case PixmapData::Format_RGBA8888:
+        	result = color;
+        	break;
+        case PixmapData::Format_RGB565:
+        	result = ((color & 0xff000000) >> 16) & 0xf800;
+        	result |= ((color & 0xff0000) >> 13) & 0x7e0;
+        	result |= ((color & 0xff00) >> 11) & 0x1f;
+            break;
+        case PixmapData::Format_RGBA4444:
+        	result = ((color & 0xff000000) >> 16) & 0xf000;
+        	result |= ((color & 0xff0000) >> 12) & 0xf00;
+        	result |= ((color & 0xff00) >> 8) & 0xf0;
+        	result |= ((color & 0xff) >> 4) & 0xf;
+            break;
         default:
-            return 0;
+            break;
     }
+    return result;
 }
 
 static inline uint32_t to_RGBA8888(PixmapData::Format format, uint32_t color) {
+	uint32_t result;
     switch (format) {
         case PixmapData::Format_Alpha:
-            return (color & 0xff) | 0xffffff00;
+        	result = 0xffffff00;
+            result |= color & 0xff;
+            break;
         case PixmapData::Format_Luminance_Alpha:
-            return ((color & 0xff00) << 16) | ((color & 0xff00) << 8) | (color & 0xffff);
+        	result = (color & 0xff) << 24; //luminance r
+        	result |= (color & 0xff) << 16; //luminance g
+        	result |= (color & 0xff) << 8; //luminance b
+        	result |= (color & 0xff00) >> 8;//luminance a
+            break;
         case PixmapData::Format_RGB888:
-            return (color << 8) | 0x000000ff;
+        	result = 0x000000ff; //Alpha nothing
+            result |= color << 8; //rrggbb
+        	break;
         case PixmapData::Format_RGBA8888:
-            return color;
-        case PixmapData::Format_RGB565: {
-            uint32_t r = ((uint32_t) (((color & 0xf800) >> 11) / 31.0f) * 255) << 24;
-            uint32_t g = ((uint32_t) (((color & 0x7e0) >> 5) / 63.0f) * 255) << 16;
-            uint32_t b = ((uint32_t) ((color & 0x1f) / 31.0f) * 255) << 8;
-            return r | g | b | 0xff;
-        }
-        case PixmapData::Format_RGBA4444: {
-            uint32_t r = (((color & 0xf000) >> 12) * 17) << 24;
-            uint32_t g = (((color & 0xf00) >> 8) * 17) << 16;
-            uint32_t b = (((color & 0xf0) >> 4) * 17) << 8;
-            uint32_t a = (color & 0xf) * 17;
-            return r | g | b | a;
-        }
+            result = color; // 0xrrggbbaa
+        	break;
+        case PixmapData::Format_RGB565:
+        	result = 0xff; // A nothing
+        	result |= (uint32_t) (((color & 0xf800) >> 11) * 0xff / 0x1f) << 24; // R5
+    		result |= (uint32_t) (((color & 0x7e0) >> 5) * 0xff / 0x3f) << 16; //G6
+    		result |= (uint32_t) ((color & 0x1f) * 0xff / 0x1f) << 8; //B5
+            break;
+        case PixmapData::Format_RGBA4444:
+        	result = (color & 0xf000) * 0x11000; // 0xrr000000
+        	result |= (color & 0xf00) * 0x1100; // 0x00gg0000
+        	result |= (color & 0xf0) * 0x110; // 0x0000bb00
+        	result |= (color & 0xf) * 0x11; // 0x000000aa
+            break;
         default:
-            return 0;
+        	break;
     }
+    return result;
 }
 
 static inline void set_pixel_alpha(unsigned char *pixel_addr, uint32_t color) {
@@ -9775,6 +9782,7 @@ static inline void set_pixel_RGBA4444(unsigned char *pixel_addr, uint32_t color)
 
 static inline set_pixel_func set_pixel_func_ptr(PixmapData::Format format) {
     switch (format) {
+    	default: // better idea for a default?
         case PixmapData::Format_Alpha:
             return &set_pixel_alpha;
         case PixmapData::Format_Luminance_Alpha:
@@ -9787,8 +9795,6 @@ static inline set_pixel_func set_pixel_func_ptr(PixmapData::Format format) {
             return &set_pixel_RGB565;
         case PixmapData::Format_RGBA4444:
             return &set_pixel_RGBA4444;
-        default:
-            return &set_pixel_alpha; // better idea for a default?
     }
 }
 
@@ -9900,14 +9906,6 @@ Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
         case PixmapData::Format_Alpha:
             memset((void *) data->pixels, color, pixels);
             break;
-        case PixmapData::Format_Luminance_Alpha: {
-            unsigned short *ptr = (unsigned short *) data->pixels;
-            for (; pixels > 0; pixels--) {
-                *ptr = (color & 0xff) << 8 | (color >> 8);
-                ptr++;
-            }
-        }
-            break;
         case PixmapData::Format_RGB888: {
             unsigned char *ptr = (unsigned char *) data->pixels;
             unsigned char r = (color & 0xff0000) >> 16;
@@ -9933,20 +9931,12 @@ Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
             }
         }
             break;
-        case PixmapData::Format_RGB565: {
-            unsigned short *ptr = (unsigned short *) data->pixels;
-            unsigned short l = color & 0xffff;
-            for (; pixels > 0; pixels--) {
-                *ptr = l;
-                ptr++;
-            }
-        }
-            break;
+        case PixmapData::Format_Luminance_Alpha:
+        case PixmapData::Format_RGB565: 
         case PixmapData::Format_RGBA4444: {
             unsigned short *ptr = (unsigned short *) data->pixels;
-            unsigned short l = color & 0xffff;
             for (; pixels > 0; pixels--) {
-                *ptr = l;
+                *ptr = color & 0xffff;
                 ptr++;
             }
         }
