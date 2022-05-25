@@ -13,12 +13,12 @@ import com.ariasaproject.advancerofrpg.assets.loaders.ShaderProgramLoader;
 import com.ariasaproject.advancerofrpg.assets.loaders.SkinLoader;
 import com.ariasaproject.advancerofrpg.assets.loaders.SoundLoader;
 import com.ariasaproject.advancerofrpg.assets.loaders.TextureAtlasLoader;
-import com.ariasaproject.advancerofrpg.assets.loaders.TextureLoader;
 import com.ariasaproject.advancerofrpg.audio.Music;
 import com.ariasaproject.advancerofrpg.audio.Sound;
 import com.ariasaproject.advancerofrpg.graphics.Cubemap;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
+import com.ariasaproject.advancerofrpg.graphics.Texture.TextureLoader;
 import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;
 import com.ariasaproject.advancerofrpg.graphics.g2d.ParticleEffect;
 import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas;
@@ -223,7 +223,6 @@ public class AssetContainer implements Disposable {
         // get rid of it.
         assetRef.decRefCount();
         if (assetRef.getRefCount() <= 0) {
-            // if it is disposable dispose it
             assetRef.getObject().dispose();
             // remove the asset from the manager.
             assetTypes.remove(fileName);
@@ -593,7 +592,7 @@ public class AssetContainer implements Disposable {
         return assetTypes.get(fileName);
     }
 
-    public static class RefCountedContainer {
+    static class RefCountedContainer {
         Disposable object;
         int refCount = 1;
 

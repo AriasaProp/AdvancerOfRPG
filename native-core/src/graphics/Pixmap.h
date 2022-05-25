@@ -4,7 +4,7 @@
 #include <jni.h>
 
 extern "C" {
-struct PixmapData {
+struct Pixmap {
 public:
     enum Format {
         Format_Alpha,
@@ -17,16 +17,13 @@ public:
     const unsigned int width, height;
     const Format format;
     const unsigned char *pixels;
-    bool scale;
+    bool scale; // true = Linear , false = Nearest
 
-    PixmapData(unsigned int width, unsigned int height, Format format, bool scale);
+    Pixmap(unsigned int, unsigned int, Format, bool);
 
-    PixmapData(unsigned int width, unsigned int height, Format format, const unsigned char *pixels,
-               bool scale);
+    Pixmap(unsigned int, unsigned int, Format, const unsigned char *, bool);
 
-    ~PixmapData();
-
-    uint8_t pixel_size() const;
+    ~Pixmap();
 };
 
 #define Pixmap_M(R, M) JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_graphics_Pixmap_##M

@@ -5,6 +5,8 @@ import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
+import com.ariasaproject.advancerofrpg.graphics.Texture.TextureLoader;
+import com.ariasaproject.advancerofrpg.graphics.Texture.TextureParameter;
 import com.ariasaproject.advancerofrpg.graphics.g3d.Model;
 import com.ariasaproject.advancerofrpg.graphics.g3d.model.data.ModelData;
 import com.ariasaproject.advancerofrpg.graphics.g3d.model.data.ModelMaterial;
@@ -81,7 +83,7 @@ public abstract class ModelLoader<P extends ModelLoader.ModelParameters> extends
         synchronized (items) {
             items.add(item);
         }
-        TextureLoader.TextureParameter textureParameter = (parameters != null) ? parameters.textureParameter : defaultParameters.textureParameter;
+        TextureParameter textureParameter = (parameters != null) ? parameters.textureParameter : defaultParameters.textureParameter;
         for (final ModelMaterial modelMaterial : data.materials) {
             if (modelMaterial.textures != null) {
                 for (final ModelTexture modelTexture : modelMaterial.textures)
@@ -123,10 +125,9 @@ public abstract class ModelLoader<P extends ModelLoader.ModelParameters> extends
     }
 
     static public class ModelParameters extends AssetLoaderParameters<Model> {
-        public TextureLoader.TextureParameter textureParameter;
-
+        public TextureParameter textureParameter;
         public ModelParameters() {
-            textureParameter = new TextureLoader.TextureParameter();
+            textureParameter = new TextureParameter();
             textureParameter.minFilter = textureParameter.magFilter = Texture.TextureFilter.Linear;
             textureParameter.wrapU = textureParameter.wrapV = Texture.TextureWrap.Repeat;
         }

@@ -44,10 +44,10 @@ public class AndroidInput implements Input, OnTouchListener, OnKeyListener, OnGe
     protected final float[] magneticFieldValues = new float[3];
     protected final float[] rotationVectorValues = new float[3];
     protected final Orientation nativeOrientation;
-    final boolean hasMultitouch;
-    final AndroidApplication app;
-    final float[] R = new float[9];
-    final float[] orientation = new float[3];
+    private final boolean hasMultitouch;
+    private final AndroidApplication app;
+    private final float[] R = new float[9];
+    private final float[] orientation = new float[3];
     private final boolean[] keys = new boolean[SUPPORTED_KEYS];
     private final boolean[] justPressedKeys = new boolean[SUPPORTED_KEYS];
     private final boolean[] justPressedButtons = new boolean[NUM_TOUCHES];
@@ -70,7 +70,7 @@ public class AndroidInput implements Input, OnTouchListener, OnKeyListener, OnGe
         }
     };
     ArrayList<OnKeyListener> keyListeners = new ArrayList<OnKeyListener>();
-    ArrayList<KeyEvent> keyEvents = new ArrayList<KeyEvent>();
+    private ArrayList<KeyEvent> keyEvents = new ArrayList<KeyEvent>();
     ArrayList<TouchEvent> touchEvents = new ArrayList<TouchEvent>();
     int[] touchX = new int[NUM_TOUCHES];
     int[] touchY = new int[NUM_TOUCHES];
@@ -98,15 +98,14 @@ public class AndroidInput implements Input, OnTouchListener, OnKeyListener, OnGe
     private int deltaGX = 0;
     private int deltaGY = 0;
 
-    public AndroidInput(AndroidApplication app, View view) {
+    AndroidInput(AndroidApplication app, View view) {
         this.app = app;
         this.view = view;
         view.setOnKeyListener(this);
         view.setOnTouchListener(this);
         view.requestFocus();
         view.setOnGenericMotionListener(this);
-        for (int i = 0; i < realId.length; i++)
-            realId[i] = -1;
+        Arrays.fill(realId, -1);
         handle = new Handler();
         touchHandler = new AndroidTouchHandler();
         hasMultitouch = touchHandler.supportsMultitouch(app);

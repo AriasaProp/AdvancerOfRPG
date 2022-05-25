@@ -128,6 +128,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             case 3:
                 tgf = new OpenGLES30();
                 break;
+            case 4://unknown func
+                tgf = new OpenGLES30();
+                break;
         }
         GraphFunc.app = this;
         GraphFunc.tgf = tgf;
@@ -159,9 +162,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             @Override
             public void run() {
                 finish();
-                overridePendingTransition(0, 0);
                 startActivity(getIntent());
-                overridePendingTransition(0, 0);
             }
         });
     }
@@ -172,7 +173,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             @Override
             public void run() {
                 finish();
-                overridePendingTransition(0, 0);
             }
         });
     }

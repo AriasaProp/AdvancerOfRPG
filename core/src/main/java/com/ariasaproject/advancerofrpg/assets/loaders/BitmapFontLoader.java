@@ -13,6 +13,8 @@ import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.ariasaproject.advancerofrpg.graphics.g2d.TextureRegion;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
 import com.ariasaproject.advancerofrpg.utils.Array;
+import com.ariasaproject.advancerofrpg.graphics.Texture.TextureLoader;
+import com.ariasaproject.advancerofrpg.graphics.Texture.TextureParameter;
 
 public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, BitmapFontLoader.BitmapFontParameter> {
     BitmapFontData data;
@@ -30,18 +32,18 @@ public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, Bitmap
         }
         data = new BitmapFontData(file);
         if (parameter != null && parameter.atlasName != null) {
-            deps.add(new AssetDescriptor(parameter.atlasName, TextureAtlas.class));
+            deps.add(new AssetDescriptor<TextureAtlas>(parameter.atlasName, TextureAtlas.class));
         } else {
             for (int i = 0; i < data.getImagePaths().length; i++) {
                 String path = data.getImagePath(i);
                 FileHandle resolved = resolve(path);
-                TextureLoader.TextureParameter textureParams = new TextureLoader.TextureParameter();
+                TextureParameter textureParams = new TextureParameter();
                 if (parameter != null) {
                     textureParams.genMipMaps = parameter.genMipMaps;
                     textureParams.minFilter = parameter.minFilter;
                     textureParams.magFilter = parameter.magFilter;
                 }
-                AssetDescriptor descriptor = new AssetDescriptor(resolved, Texture.class, textureParams);
+                AssetDescriptor descriptor = new AssetDescriptor<Texture>(resolved, Texture.class, textureParams);
                 deps.add(descriptor);
             }
         }

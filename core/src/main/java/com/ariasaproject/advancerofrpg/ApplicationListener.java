@@ -57,7 +57,7 @@ public class ApplicationListener {
         uiView = new Viewport(new OrthographicCamera(), 800, 600, 1920, 1080);
         stage = new Stage(uiView, batch);
         fps = new BitmapFont();
-        fps.getData().setScale(2.25f);
+        fps.getData().setScale(1.45f);
         layDebug = new GlyphLayout(fps, "FPS:000|####/##/##_#|N{c++}");
         setScene(new SplashScreen(this));
     }
@@ -94,14 +94,15 @@ public class ApplicationListener {
             screen.render(delta);
         batch.begin();
         final Graphics g = GraphFunc.app.getGraphics();
-        logUpt = String.format("RAM used %s, allocated %s, max %s", toByt(r.totalMemory() - r.freeMemory()), toByt(r.totalMemory()), toByt(r.maxMemory()));
+        //logUpt = String.format("RAM used %s, allocated %s, max %s", toByt(r.totalMemory() - r.freeMemory()), toByt(r.totalMemory()), toByt(r.maxMemory()));
         logUp = String.format("FPS:%03d|2022/05/23_1|N{%s}\n%s", g.getFramesPerSecond(), GraphFunc.nativeLog(), logUpt);
         layDebug.setText(fps, logUp);
-        fps.draw(batch, layDebug, (g.getWidth() - layDebug.width) / 2, g.getHeight() - (layDebug.height / 2.25f));
+        fps.draw(batch, layDebug, 0, g.getHeight() - (layDebug.height / 2f) - 3f);
         batch.end();
     }
 
     String toByt(long s) {
+		
         double size = s;
         int rn = 0;
         while (size > 1024.0 && rn < 4) {

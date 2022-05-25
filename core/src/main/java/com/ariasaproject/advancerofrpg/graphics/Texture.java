@@ -5,8 +5,10 @@ import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters.LoadedCallback;
-import com.ariasaproject.advancerofrpg.assets.loaders.TextureLoader.TextureParameter;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.glutils.FileTextureData;
 import com.ariasaproject.advancerofrpg.graphics.glutils.PixmapTextureData;
@@ -108,11 +110,6 @@ public class Texture extends GLTexture {
             }
         }
     }
-
-    public static int getNumManagedTextures() {
-        return managedTextures.size;
-    }
-
     public void load(TextureData data) {
         if (this.data != null && data.isManaged() != this.data.isManaged())
             throw new RuntimeException("New data must have the same managed status as the old data");
@@ -195,4 +192,71 @@ public class Texture extends GLTexture {
             this.glEnum = glEnum;
         }
     }
+	
+	public static class TextureLoader extends AsynchronousAssetLoader<Texture, TextureParameter> {
+		TextureLoaderInfo info = new TextureLoaderInfo();
+
+		public TextureLoader(FileHandleResolver resolver) {
+			super(resolver);
+		}
+
+		@Override
+		public void loadAsync(AssetContainer manager, String fileName, FileHandle file, TextureParameter parameter) {
+			info.filename = fileName;
+			if (parameter == null || parameter.textureData == null) {
+				Format format = null;
+				boolean genMipMaps = false;
+				info.texture = null;
+				if (parameter != null) {
+					format = parameter.format;
+					genMipMaps = parameter.genMipMaps;
+					info.texture = parameter.texture;
+				}
+				info.data = new FileTextureData(file, format, genMipMaps);
+			} else {
+				info.data = parameter.textureData;
+				info.texture = parameter.texture;
+			}
+			if (!info.data.isPrepared())
+				info.data.prepare();
+		}
+
+		@Override
+		public Texture loadSync(AssetContainer manager, String fileName, FileHandle file, TextureParameter parameter) {
+			if (info == null)
+				return null;
+			Texture texture = info.texture;
+			if (texture != null) {
+				texture.load(info.data);
+			} else {
+				texture = new Texture(info.data);
+			}
+			if (parameter != null) {
+				texture.setFilter(parameter.minFilter, parameter.magFilter);
+				texture.setWrap(parameter.wrapU, parameter.wrapV);
+			}
+			return texture;
+		}
+
+		@Override
+		public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, TextureParameter parameter) {
+			return null;
+		}
+	}
+
+	static public class TextureLoaderInfo {
+		String filename;
+		TextureData data;
+		Texture texture;
+	}
+	static public class TextureParameter extends AssetLoaderParameters<Texture> {
+		public Format format = null;
+		public boolean genMipMaps = false;
+		public Texture texture = null;
+		public TextureData textureData = null;
+		public TextureFilter minFilter = TextureFilter.Nearest;
+		public TextureFilter magFilter = TextureFilter.Nearest;
+		public TextureWrap wrapU = TextureWrap.ClampToEdge;
+		public TextureWrap wrapV = TextureWrap.ClampToEdge;
+	}
 }

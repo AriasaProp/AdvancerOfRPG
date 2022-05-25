@@ -29,16 +29,12 @@ typedef signed int int32_t;
 #define MAX(a, b) (((a)>(b))?(a):(b))
 #define MIN(a, b) (((a)<(b))?(a):(b))
 
+enum {
+    reqFormat_default = 0, // only used for req_comp
+    reqFormat_grey = 1, reqFormat_grey_alpha = 2, reqFormat_rgb = 3, reqFormat_rgb_alpha = 4
+};
 //begin initialize stbi decompresser
 namespace stbi {
-
-    enum {
-        STBI_default = 0, // only used for req_comp
-        STBI_grey = 1, STBI_grey_alpha = 2, STBI_rgb = 3, STBI_rgb_alpha = 4
-    };
-
-
-    typedef unsigned char validate_uint32[sizeof(uint32_t) == 4 ? 1 : -1];
 
 // x86/x64 detection
 #if defined(__x86_64__) || defined(_M_X64)
@@ -47,7 +43,7 @@ namespace stbi {
 #define X86_TARGET
 #endif
 
-#if defined(__GNUC__) && (defined(X86_TARGET) || defined(X64_TARGET)) && !defined(__SSE2__) && !defined(STBI_NO_SIMD)
+#if defined(__GNUC__) && (defined(X86_TARGET) || defined(X64_TARGET)) && !defined(__SSE2__)
 #define STBI_NO_SIMD
 #endif
 
@@ -176,8 +172,6 @@ namespace stbi {
         s->img_buffer_original_end = s->img_buffer_end;
     }
 
-#ifndef STBI_NO_STDIO
-
     static int stdio_read(void *user, char *data, int size) {
         return (int) fread(data, 1, size, (FILE *) user);
     }
@@ -198,12 +192,7 @@ namespace stbi {
 
 //static void stop_file(context *s) { }
 
-#endif // !STBI_NO_STDIO
-
     static void rewind(context *s) {
-        // conceptually rewind SHOULD rewind to the beginning of the stream,
-        // but we just rewind to the beginning of the initial buffer, because
-        // we only use it after doing 'test', which only ever looks at at most 92 bytes
         s->img_buffer = s->img_buffer_original;
         s->img_buffer_end = s->img_buffer_original_end;
     }
@@ -215,15 +204,11 @@ namespace stbi {
 
     static int jpeg_info(context *s, int *x, int *y, int *comp);
 
-#ifndef STBI_NO_PNG
-
     static int png_test(context *s);
 
     static unsigned char *png_load(context *s, int *x, int *y, int *comp, int req_comp);
 
     static int png_info(context *s, int *x, int *y, int *comp);
-
-#endif
 
 #ifndef STBI_NO_BMP
 
@@ -322,10 +307,8 @@ namespace stbi {
     load_main(context *s, int *x, int *y, int *comp, int req_comp) {
         if (jpeg_test(s))
             return jpeg_load(s, x, y, comp, req_comp);
-#ifndef STBI_NO_PNG
         if (png_test(s))
             return png_load(s, x, y, comp, req_comp);
-#endif
 #ifndef STBI_NO_BMP
         if (bmp_test(s))
             return bmp_load(s, x, y, comp, req_comp);
@@ -408,8 +391,6 @@ namespace stbi {
         }
     }
 
-#ifndef STBI_NO_STDIO
-
     static FILE *fopen(char const *filename, char const *mode) {
         FILE *f;
 #if defined(_MSC_VER) && _MSC_VER >= 1400
@@ -443,8 +424,6 @@ namespace stbi {
         fclose(f);
         return result;
     }
-
-#endif //!STBI_NO_STDIO
 
     unsigned char *
     stbi_load_from_memory(unsigned char const *buffer, int len, int *x, int *y, int *comp,
@@ -495,8 +474,6 @@ namespace stbi {
         return loadf_main(&s, x, y, comp, req_comp);
     }
 
-#ifndef STBI_NO_STDIO
-
     float *stbi_loadf_from_file(FILE *f, int *x, int *y, int *comp, int req_comp) {
         context s;
         start_file(&s, f);
@@ -515,8 +492,6 @@ namespace stbi {
         return result;
     }
 
-#endif // !STBI_NO_STDIO
-
 #endif // !STBI_NO_LINEAR
 
     int stbi_is_hdr_from_memory(unsigned char const *buffer, int len) {
@@ -524,8 +499,6 @@ namespace stbi {
         start_mem(&s, buffer, len);
         return hdr_test(&s);
     }
-
-#ifndef STBI_NO_STDIO
 
     int stbi_is_hdr_from_file(FILE *f) {
         context s;
@@ -542,8 +515,6 @@ namespace stbi {
         }
         return result;
     }
-
-#endif // !STBI_NO_STDIO
 
     int stbi_is_hdr_from_callbacks(stbi_io_callbacks const *clbk, void *user) {
         context s;
@@ -627,16 +598,12 @@ namespace stbi {
         return (z << 16) + get16be(s);
     }
 
-#if defined(STBI_NO_BMP) && defined(STBI_NO_TGA) && defined(STBI_NO_GIF)
-    // nothing
-#else
+#if !defined(STBI_NO_BMP) || !defined(STBI_NO_TGA) || !defined(STBI_NO_GIF)
 
     static int get16le(context *s) {
         int z = get8(s);
         return z + (get8(s) << 8);
     }
-
-#endif
 
 #ifndef STBI_NO_BMP
 
@@ -645,6 +612,7 @@ namespace stbi {
         return z + (get16le(s) << 16);
     }
 
+#endif
 #endif
 
 #define BYTECAST(x)  ((unsigned char) ((x) & 255))
@@ -705,6 +673,7 @@ namespace stbi {
                     assert(0);
             }
 #undef CASE
+#undef COMBO
         }
 
         free(data);
@@ -2950,13 +2919,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         return jpeg_info_raw(&j, x, y, comp);
     }
 
-// public domain zlib decode    v0.2  Sean Barrett 2006-11-18
-//    simple implementation
-//      - all input must be provided in an upfront buffer
-//      - all output is written to a single output buffer (can malloc/realloc)
-//    performance
-//      - fast huffman
-
 #ifndef STBI_NO_ZLIB
 
 // fast-way is faster to check than jpeg huffman, but slow way is slower
@@ -3438,7 +3400,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
 
 #endif
 
-#ifndef STBI_NO_PNG
     struct pngchunk {
         uint32_t length;
         uint32_t type;
@@ -4186,8 +4147,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         p.s = s;
         return png_info_raw(&p, x, y, comp);
     }
-
-#endif
 
 // Microsoft/Windows BMP image
 
@@ -6071,10 +6030,8 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
     static int info_main(context *s, int *x, int *y, int *comp) {
         if (jpeg_info(s, x, y, comp))
             return 1;
-#ifndef STBI_NO_PNG
         if (png_info(s, x, y, comp))
             return 1;
-#endif
 #ifndef STBI_NO_GIF
         if (gif_info(s, x, y, comp))
             return 1;
@@ -6109,8 +6066,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         return err("unknown image type", "Image not of any known type, or corrupt");
     }
 
-#ifndef STBI_NO_STDIO
-
     int stbi_info_from_file(FILE *f, int *x, int *y, int *comp) {
         int r;
         context s;
@@ -6130,8 +6085,6 @@ static void YCbCr_to_RGB_row(unsigned char *out, const unsigned char *y, const u
         fclose(f);
         return result;
     }
-
-#endif // !STBI_NO_STDIO
 
     int stbi_info_from_memory(unsigned char const *buffer, int len, int *x, int *y, int *comp) {
         context s;
@@ -9645,112 +9598,139 @@ Pixmap_M(void, initialize)(JNIEnv *env, jclass clazz) {
     stbi::initialize();
 }
 
-uint8_t PixmapData::pixel_size() const {
+static inline uint8_t pixel_size(Pixmap::Format format) {
     switch (format) {
-        case Format_Alpha:
+        case Pixmap::Format_Alpha:
             return 1;
-        case Format_Luminance_Alpha:
-        case Format_RGB565:
-        case Format_RGBA4444:
+        case Pixmap::Format_Luminance_Alpha:
+        case Pixmap::Format_RGB565:
+        case Pixmap::Format_RGBA4444:
             return 2;
-        case Format_RGB888:
+        case Pixmap::Format_RGB888:
             return 3;
         default:
-        case Format_RGBA8888:
+        case Pixmap::Format_RGBA8888:
             return 4;
     }
 }
 
-PixmapData::PixmapData(unsigned int width, unsigned int height, PixmapData::Format format,
-                       bool scale) :
-        width(width), height(height), format(format),
-        pixels((unsigned char *) malloc(width * height * PixmapData::pixel_size())), scale(scale) {
+Pixmap::Pixmap(unsigned int w, unsigned int h, Pixmap::Format f, bool s) :
+        width(w), height(h), format(f),
+        pixels((unsigned char *) malloc(w * h * pixel_size(f))), scale(s) {
 }
 
-PixmapData::PixmapData(unsigned int width, unsigned int height, PixmapData::Format format,
-                       const unsigned char *pixels, bool scale) :
-        width(width), height(height), format(format), pixels(pixels), scale(scale) {
+Pixmap::Pixmap(unsigned int w, unsigned int h, Pixmap::Format f, const unsigned char *p, bool s) :
+        width(w), height(h), format(f), pixels(p), scale(s) {
 }
 
-PixmapData::~PixmapData() {
+Pixmap::~Pixmap() {
     free((void *) pixels);
 }
 
-typedef void (*set_pixel_func)(unsigned char *pixel_addr, uint32_t color);
+//pixels binary function
 
-typedef uint32_t (*get_pixel_func)(unsigned char *pixel_addr);
+typedef uint32_t (*to_pixel_format_func)(uint32_t);
 
-static inline uint32_t to_format(PixmapData::Format format, uint32_t color) {
-	uint32_t result;
-    switch (format) {
-        case PixmapData::Format_Alpha:
-            result = color & 0xff;
-            break;
-        case PixmapData::Format_Luminance_Alpha:
-            //54.213 + 182.376 + 18.411 = 255
-            result = (uint32_t) (0.2126f * ((color & 0xff000000) >> 24) + 0.7152f * ((color & 0xff0000) >> 16) + 0.0722f * ((color & 0xff00) >> 8)) & 0xff;
-            result |= (color & 0xff) << 8; //A
-            break;
-        case PixmapData::Format_RGB888:
-            result = color >> 8;
-            break;
-        case PixmapData::Format_RGBA8888:
-        	result = color;
-        	break;
-        case PixmapData::Format_RGB565:
-        	result = ((color & 0xff000000) >> 16) & 0xf800;
-        	result |= ((color & 0xff0000) >> 13) & 0x7e0;
-        	result |= ((color & 0xff00) >> 11) & 0x1f;
-            break;
-        case PixmapData::Format_RGBA4444:
-        	result = ((color & 0xff000000) >> 16) & 0xf000;
-        	result |= ((color & 0xff0000) >> 12) & 0xf00;
-        	result |= ((color & 0xff00) >> 8) & 0xf0;
-        	result |= ((color & 0xff) >> 4) & 0xf;
-            break;
-        default:
-            break;
-    }
-    return result;
+static inline uint32_t RGBA8888_to_alpha(uint32_t color) {
+    return color & 0xff;
 }
 
-static inline uint32_t to_RGBA8888(PixmapData::Format format, uint32_t color) {
-	uint32_t result;
-    switch (format) {
-        case PixmapData::Format_Alpha:
-        	result = 0xffffff00;
-            result |= color & 0xff;
-            break;
-        case PixmapData::Format_Luminance_Alpha:
-        	result = (color & 0xff) << 24; //luminance r
-        	result |= (color & 0xff) << 16; //luminance g
-        	result |= (color & 0xff) << 8; //luminance b
-        	result |= (color & 0xff00) >> 8;//luminance a
-            break;
-        case PixmapData::Format_RGB888:
-        	result = 0x000000ff; //Alpha nothing
-            result |= color << 8; //rrggbb
-        	break;
-        case PixmapData::Format_RGBA8888:
-            result = color; // 0xrrggbbaa
-        	break;
-        case PixmapData::Format_RGB565:
-        	result = 0xff; // A nothing
-        	result |= (uint32_t) (((color & 0xf800) >> 11) * 0xff / 0x1f) << 24; // R5
-    		result |= (uint32_t) (((color & 0x7e0) >> 5) * 0xff / 0x3f) << 16; //G6
-    		result |= (uint32_t) ((color & 0x1f) * 0xff / 0x1f) << 8; //B5
-            break;
-        case PixmapData::Format_RGBA4444:
-        	result = (color & 0xf000) * 0x11000; // 0xrr000000
-        	result |= (color & 0xf00) * 0x1100; // 0x00gg0000
-        	result |= (color & 0xf0) * 0x110; // 0x0000bb00
-        	result |= (color & 0xf) * 0x11; // 0x000000aa
-            break;
-        default:
-        	break;
-    }
-    return result;
+static inline uint32_t RGBA8888_to_luminance_alpha(uint32_t color) {
+    //54.213 + 182.376 + 18.411 = 255 then alpha
+    return ((uint32_t) (0.2126f * ((color & 0xff000000) >> 24) + 0.7152f * ((color & 0xff0000) >> 16) + 0.0722f * ((color & 0xff00) >> 8)) & 0xff) | ((color & 0xff) << 8);
+    //0xaall
 }
+
+static inline uint32_t RGBA8888_to_RGB888(uint32_t color) {
+    return color >> 8;
+}
+
+static inline uint32_t RGBA8888_to_RGBA8888(uint32_t color) {
+    return color;
+}
+
+static inline uint32_t RGBA8888_to_RGB565(uint32_t color) {
+    return (((color & 0xff000000) >> 16) & 0xf800) | (((color & 0xff0000) >> 13) & 0x7e0) | (((color & 0xff00) >> 11) & 0x1f);
+}
+
+static inline uint32_t RGBA8888_to_RGBA4444(uint32_t color) {
+    return (((color & 0xff000000) >> 16) & 0xf000) | (((color & 0xff0000) >> 12) & 0xf00) | (((color & 0xff00) >> 8) & 0xf0) | (((color & 0xff) >> 4) & 0xf);
+}
+
+static inline to_pixel_format_func to_pixel_func_ptr(Pixmap::Format format) {
+    switch (format) {
+        case Pixmap::Format_Alpha:
+            return &RGBA8888_to_alpha;
+        case Pixmap::Format_Luminance_Alpha:
+            return &RGBA8888_to_luminance_alpha;
+        case Pixmap::Format_RGB888:
+            return &RGBA8888_to_RGB888;
+        case Pixmap::Format_RGBA8888:
+            return &RGBA8888_to_RGBA8888;
+        case Pixmap::Format_RGB565:
+            return &RGBA8888_to_RGB565;
+        case Pixmap::Format_RGBA4444:
+            return &RGBA8888_to_RGBA4444;
+        default:
+            return 0;
+    }
+}
+
+typedef uint32_t (*to_RGBA8888_func)(uint32_t);
+
+static inline uint32_t alpha_to_RGBA888(uint32_t color) {
+    return 0xffffff00 | (color & 0xff);
+}
+
+static inline uint32_t luminance_alpha_to_RGBA888(uint32_t color) {
+    return ((color & 0xff) << 24) | //luminance r
+           ((color & 0xff) << 16) | //luminance g
+           ((color & 0xff) << 8) | //luminance b
+           ((color & 0xff00) >> 8);//luminance a
+}
+
+static inline uint32_t RGB888_to_RGBA888(uint32_t color) {
+    return 0x000000ff | (color << 8); //rrggbbaa
+}
+
+static inline uint32_t RGBA8888_to_RGBA888(uint32_t color) {
+    return color;
+}
+
+static inline uint32_t RGB565_to_RGBA888(uint32_t color) {
+    return 0xff | // A nothing
+           ((uint32_t) (((color & 0xf800) >> 11) * 0xff / 0x1f) << 24) | // R5
+           ((uint32_t) (((color & 0x7e0) >> 5) * 0xff / 0x3f) << 16) | //G6
+           ((uint32_t) ((color & 0x1f) * 0xff / 0x1f) << 8); //B5
+}
+
+static inline uint32_t RGBA4444_to_RGBA888(uint32_t color) {
+    return ((color & 0xf000) * 0x11000) | // 0xrr000000
+           ((color & 0xf00) * 0x1100) | // 0x00gg0000
+           ((color & 0xf0) * 0x110) | // 0x0000bb00
+           ((color & 0xf) * 0x11); // 0x000000aa
+}
+
+static inline to_RGBA8888_func to_RGBA8888_func_ptr(Pixmap::Format format) {
+    switch (format) {
+        case Pixmap::Format_Alpha:
+            return &alpha_to_RGBA888;
+        case Pixmap::Format_Luminance_Alpha:
+            return &luminance_alpha_to_RGBA888;
+        case Pixmap::Format_RGB888:
+            return &RGB888_to_RGBA888;
+        case Pixmap::Format_RGBA8888:
+            return &RGBA8888_to_RGBA888;
+        case Pixmap::Format_RGB565:
+            return &RGB565_to_RGBA888;
+        case Pixmap::Format_RGBA4444:
+            return &RGBA4444_to_RGBA888;
+        default:
+            return 0;
+    }
+}
+
+typedef void (*set_pixel_func)(unsigned char *, uint32_t);
 
 static inline void set_pixel_alpha(unsigned char *pixel_addr, uint32_t color) {
     *pixel_addr = (unsigned char) (color & 0xff);
@@ -9780,23 +9760,25 @@ static inline void set_pixel_RGBA4444(unsigned char *pixel_addr, uint32_t color)
     *(uint16_t *) pixel_addr = (uint16_t) color;
 }
 
-static inline set_pixel_func set_pixel_func_ptr(PixmapData::Format format) {
+static inline set_pixel_func set_pixel_func_ptr(Pixmap::Format format) {
     switch (format) {
-    	default: // better idea for a default?
-        case PixmapData::Format_Alpha:
+        default: // better idea for a default?
+        case Pixmap::Format_Alpha:
             return &set_pixel_alpha;
-        case PixmapData::Format_Luminance_Alpha:
+        case Pixmap::Format_Luminance_Alpha:
             return &set_pixel_luminance_alpha;
-        case PixmapData::Format_RGB888:
+        case Pixmap::Format_RGB888:
             return &set_pixel_RGB888;
-        case PixmapData::Format_RGBA8888:
+        case Pixmap::Format_RGBA8888:
             return &set_pixel_RGBA8888;
-        case PixmapData::Format_RGB565:
+        case Pixmap::Format_RGB565:
             return &set_pixel_RGB565;
-        case PixmapData::Format_RGBA4444:
+        case Pixmap::Format_RGBA4444:
             return &set_pixel_RGBA4444;
     }
 }
+
+typedef uint32_t (*get_pixel_func)(unsigned char *);
 
 static inline uint32_t get_pixel_alpha(unsigned char *pixel_addr) {
     return *pixel_addr;
@@ -9823,42 +9805,41 @@ static inline uint32_t get_pixel_RGBA4444(unsigned char *pixel_addr) {
     return *(uint16_t *) pixel_addr;
 }
 
-static inline get_pixel_func get_pixel_func_ptr(PixmapData::Format format) {
+static inline get_pixel_func get_pixel_func_ptr(Pixmap::Format format) {
     switch (format) {
         default:
-        case PixmapData::Format_Alpha:
+        case Pixmap::Format_Alpha:
             return &get_pixel_alpha;
-        case PixmapData::Format_Luminance_Alpha:
+        case Pixmap::Format_Luminance_Alpha:
             return &get_pixel_luminance_alpha;
-        case PixmapData::Format_RGB888:
+        case Pixmap::Format_RGB888:
             return &get_pixel_RGB888;
-        case PixmapData::Format_RGBA8888:
+        case Pixmap::Format_RGBA8888:
             return &get_pixel_RGBA8888;
-        case PixmapData::Format_RGB565:
+        case Pixmap::Format_RGB565:
             return &get_pixel_RGB565;
-        case PixmapData::Format_RGBA4444:
+        case Pixmap::Format_RGBA4444:
             return &get_pixel_RGBA4444;
     }
 }
 
 Pixmap_M(jobject, load)(JNIEnv *env, jclass clazz, jlongArray nativeData, jbyteArray buffer,
                         jint offset, jint len) {
-    const unsigned char *p_buffer = (const unsigned char *) env->GetPrimitiveArrayCritical(buffer,
-                                                                                           0);
+    const unsigned char *p_buffer = (const unsigned char *) env->GetPrimitiveArrayCritical(buffer, 0);
     uint32_t width, height, format;
     const unsigned char *pixels = stbi::stbi_load_from_memory(p_buffer + offset, len,
                                                               (int *) &width,
-                                                              (int *) &height, (int *) &format, 0);
+                                                              (int *) &height, (int *) &format, reqFormat_rgb_alpha);
     if (pixels == NULL)
         pixels = jpgd::decompress_jpeg_image_from_memory(p_buffer + offset, len, (int *) &width,
-                                                         (int *) &height, (int *) &format, 3);
+                                                         (int *) &height, (int *) &format, reqFormat_rgb);
     env->ReleasePrimitiveArrayCritical(buffer, (char *) p_buffer, 0);
     if (pixels == NULL)
         return 0;
-    PixmapData *pixmap = new PixmapData(width, height, (PixmapData::Format) format, pixels, true);
+    Pixmap *pixmap = new Pixmap(width, height, (Pixmap::Format) format, pixels, true);
     jobject pixel_buffer = env->NewDirectByteBuffer((void *) pixmap->pixels,
                                                     pixmap->width * pixmap->height *
-                                                    pixmap->pixel_size());
+                                                    pixel_size(pixmap->format));
     jlong *p_native_data = (jlong *) env->GetPrimitiveArrayCritical(nativeData, 0);
     p_native_data[0] = (jlong) pixmap;
     p_native_data[1] = pixmap->width;
@@ -9871,7 +9852,7 @@ Pixmap_M(jobject, load)(JNIEnv *env, jclass clazz, jlongArray nativeData, jbyteA
 
 Pixmap_M(jobject, newPixmap)(JNIEnv *env, jclass clazz, jlongArray vals, jint width, jint height,
                              jint format) {
-    PixmapData *pixmap = new PixmapData(width, height, (PixmapData::Format) format, true);
+    Pixmap *pixmap = new Pixmap(width, height, (Pixmap::Format) format, true);
     if (!pixmap)
         return 0;
     if (!pixmap->pixels) {
@@ -9881,7 +9862,7 @@ Pixmap_M(jobject, newPixmap)(JNIEnv *env, jclass clazz, jlongArray vals, jint wi
 
     jobject pixel_buffer = env->NewDirectByteBuffer((void *) pixmap->pixels,
                                                     pixmap->width * pixmap->height *
-                                                    pixmap->pixel_size());
+                                                    pixel_size(pixmap->format));
     jlong *data = (jlong *) env->GetPrimitiveArrayCritical(vals, 0);
     data[0] = (jlong) pixmap;
     data[1] = pixmap->width;
@@ -9896,17 +9877,17 @@ Pixmap_M(void, free)(JNIEnv *env, jobject object) {
 }
 
 Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
-    PixmapData *data = (PixmapData *) env->GetLongField(object, basePtr);
-    color = to_format(data->format, color);
+    Pixmap *data = (Pixmap *) env->GetLongField(object, basePtr);
+    color = to_pixel_func_ptr(data->format)(color);
     int pixels = data->width * data->height;
 
     switch (data->format) {
         default:
             break;
-        case PixmapData::Format_Alpha:
+        case Pixmap::Format_Alpha:
             memset((void *) data->pixels, color, pixels);
             break;
-        case PixmapData::Format_RGB888: {
+        case Pixmap::Format_RGB888: {
             unsigned char *ptr = (unsigned char *) data->pixels;
             unsigned char r = (color & 0xff0000) >> 16;
             unsigned char g = (color & 0xff00) >> 8;
@@ -9921,22 +9902,23 @@ Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
             }
         }
             break;
-        case PixmapData::Format_RGBA8888: {
+        case Pixmap::Format_RGBA8888: {
             uint32_t *ptr = (uint32_t *) data->pixels;
-            color = ((color & 0x000000ff) << 24) | (((color & 0x0000ff00) >> 8) << 16) |
-                    (((color & 0x00ff0000) >> 16) << 8) | ((color & 0xff000000) >> 24);
+            color = ((color & 0x000000ff) << 24) | ((color & 0x0000ff00) << 8) |
+                    ((color & 0x00ff0000) >> 8) | ((color & 0xff000000) >> 24);
             for (; pixels > 0; pixels--) {
                 *ptr = color;
                 ptr++;
             }
         }
             break;
-        case PixmapData::Format_Luminance_Alpha:
-        case PixmapData::Format_RGB565: 
-        case PixmapData::Format_RGBA4444: {
+        case Pixmap::Format_Luminance_Alpha:
+        case Pixmap::Format_RGB565:
+        case Pixmap::Format_RGBA4444: {
             unsigned short *ptr = (unsigned short *) data->pixels;
+            unsigned short c = color & 0xffff;
             for (; pixels > 0; pixels--) {
-                *ptr = color & 0xffff;
+                *ptr = c;
                 ptr++;
             }
         }
@@ -9946,56 +9928,56 @@ Pixmap_M(void, clear)(JNIEnv *env, jobject object, jint color) {
 
 Pixmap_M(void, setPixel)(JNIEnv *env, jobject object, jint x, jint y, jint col) {
     if (x < 0 || y < 0) return;
-    PixmapData *pixmap = (PixmapData *) env->GetLongField(object, basePtr);
+    Pixmap *pixmap = (Pixmap *) env->GetLongField(object, basePtr);
     if (x >= pixmap->width || y >= pixmap->height) return;
-    pixmap->pixels += (x + pixmap->width * y) * pixmap->pixel_size();
-    col = to_format(pixmap->format, col);
+    pixmap->pixels += (x + pixmap->width * y) * pixel_size(pixmap->format);
+    col = to_pixel_func_ptr(pixmap->format)(col);
     set_pixel_func_ptr(pixmap->format)((unsigned char *) pixmap->pixels, col);
 }
 
 Pixmap_M(jint, getPixel)(JNIEnv *env, jobject object, jint x, jint y) {
-    PixmapData *pixmap = (PixmapData *) env->GetLongField(object, basePtr);
+    Pixmap *pixmap = (Pixmap *) env->GetLongField(object, basePtr);
     if (x < 0 || y < 0 || x >= pixmap->width || y >= pixmap->height)
         return 0;
     unsigned char *ptr =
-            (unsigned char *) pixmap->pixels + (x + pixmap->width * y) * pixmap->pixel_size();
-    return to_RGBA8888(pixmap->format, get_pixel_func_ptr(pixmap->format)(ptr));
+            (unsigned char *) pixmap->pixels + (x + pixmap->width * y) * pixel_size(pixmap->format);
+    return to_RGBA8888_func_ptr(pixmap->format)(get_pixel_func_ptr(pixmap->format)(ptr));
 }
 
 Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, jint srcY,
                            jint srcWidth, jint srcHeight, jint dstX, jint dstY, jint dstWidth,
                            jint dstHeight) {
-    PixmapData *src = (PixmapData *) srcP, *dst = (PixmapData *) env->GetLongField(object, basePtr);
+    Pixmap *src = (Pixmap *) srcP, *dst = (Pixmap *) env->GetLongField(object, basePtr);
 
+    //setter
     set_pixel_func pset = set_pixel_func_ptr(dst->format);
+    //formatter
+    to_RGBA8888_func pfbase = to_RGBA8888_func_ptr(src->format);
+    to_pixel_format_func pfdst = to_pixel_func_ptr(dst->format);
+    //getter
     get_pixel_func pget = get_pixel_func_ptr(src->format);
-    get_pixel_func dpget = get_pixel_func_ptr(dst->format);
-    uint32_t sbpp = src->pixel_size();
-    uint32_t dbpp = dst->pixel_size();
+
+    uint32_t sbpp = pixel_size(src->format);
+    uint32_t dbpp = pixel_size(dst->format);
     uint32_t spitch = sbpp * src->width;
     uint32_t dpitch = dbpp * dst->width;
 
-    unsigned int sx = srcX;
-    unsigned int sy = srcY;
-    unsigned int dx = dstX;
-    unsigned int dy = dstY;
+    unsigned int sx = 0;
+    unsigned int sy = 0;
+    unsigned int dx = 0;
+    unsigned int dy = 0;
 
     if (srcWidth == dstWidth && srcHeight == dstHeight) {
-        for (; sy < srcY + srcHeight; sy++, dy++) {
+        for (sy = srcY, dy = dstY; sy < srcY + srcHeight; sy++, dy++) {
             if (sy >= src->height || dy >= dst->height)
                 break;
             for (sx = srcX, dx = dstX; sx < srcX + srcWidth; sx++, dx++) {
                 if (sx >= src->width || dx >= dst->width)
                     break;
-
                 const void *src_ptr = src->pixels + sx * sbpp + sy * spitch;
                 const void *dst_ptr = dst->pixels + dx * dbpp + dy * dpitch;
-                uint32_t src_col = to_RGBA8888(src->format,
-                                               pget((unsigned char *) src_ptr));
-
-                src_col = to_format(dst->format, src_col);
-
-                pset((unsigned char *) dst_ptr, src_col);
+                uint32_t src_col = pfbase(pget((unsigned char *) src_ptr));
+                pset((unsigned char *) dst_ptr, pfdst(src_col));
             }
         }
     } else {
@@ -10026,9 +10008,8 @@ Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, j
                             (unsigned char *) src->pixels + sx * sbpp + sy * spitch;
                     unsigned char *dst_ptr =
                             (unsigned char *) dst->pixels + dx * dbpp + dy * dpitch;
-                    uint32_t src_col = to_RGBA8888(src->format, pget(src_ptr));
-                    src_col = to_format(dst->format, src_col);
-                    pset(dst_ptr, src_col);
+                    uint32_t src_col = pfbase(pget(src_ptr));
+                    pset(dst_ptr, pfdst(src_col));
                 }
             }
         } else {
@@ -10061,18 +10042,17 @@ Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, j
                     unsigned char *src_ptr = (unsigned char *) src->pixels
                                              + sx * sbpp + sy * spitch;
                     uint32_t c1 = 0, c2 = 0, c3 = 0, c4 = 0;
-                    c1 = to_RGBA8888(src->format, pget(src_ptr));
+                    c1 = pfbase(pget(src_ptr));
                     if (sx + 1 < srcWidth)
-                        c2 = to_RGBA8888(src->format, pget(src_ptr + sbpp));
+                        c2 = pfbase(pget(src_ptr + sbpp));
                     else
                         c2 = c1;
                     if (sy + 1 < srcHeight)
-                        c3 = to_RGBA8888(src->format, pget(src_ptr + spitch));
+                        c3 = pfbase(pget(src_ptr + spitch));
                     else
                         c3 = c1;
                     if (sx + 1 < srcWidth && sy + 1 < srcHeight)
-                        c4 = to_RGBA8888(src->format,
-                                         pget(src_ptr + spitch + sbpp));
+                        c4 = pfbase(pget(src_ptr + spitch + sbpp));
                     else
                         c4 = c1;
 
@@ -10098,8 +10078,7 @@ Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, j
 
                     uint32_t src_col = (r << 24) | (g << 16) | (b << 8) | a;
 
-                    src_col = to_format(dst->format, src_col);
-                    pset(dst_ptr, src_col);
+                    pset(dst_ptr, pfdst(src_col));
                 }
             }
         }
@@ -10107,7 +10086,7 @@ Pixmap_M(void, drawPixmap)(JNIEnv *env, jobject object, jlong srcP, jint srcX, j
 }
 
 Pixmap_M(void, setScaleType)(JNIEnv *env, jobject object, jboolean scale) {
-    ((PixmapData *) env->GetLongField(object, basePtr))->scale = scale;
+    ((Pixmap *) env->GetLongField(object, basePtr))->scale = scale;
 }
 
 Pixmap_M(jstring, getFailureReason)(JNIEnv *env, jclass clazz) {
