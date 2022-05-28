@@ -2,12 +2,18 @@ package com.ariasaproject.advancerofrpg.graphics.glutils;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.GraphFunc;
+import com.ariasaproject.advancerofrpg.assets.AssetContainer;
+import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.math.Matrix3;
 import com.ariasaproject.advancerofrpg.math.Matrix4;
 import com.ariasaproject.advancerofrpg.math.Vector2;
 import com.ariasaproject.advancerofrpg.math.Vector3;
+import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 import com.ariasaproject.advancerofrpg.utils.ObjectIntMap;
@@ -478,5 +484,30 @@ public class ShaderProgram implements Disposable {
 
     public String[] getUniforms() {
         return uniformNames;
+    }
+
+    static public class ShaderProgramLoader extends AsynchronousAssetLoader<ShaderProgram, AssetLoaderParameters<ShaderProgram>> {
+
+        public ShaderProgramLoader(FileHandleResolver resolver) {
+            super(resolver);
+        }
+
+        @Override
+        public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, AssetLoaderParameters<ShaderProgram> parameter) {
+            return null;
+        }
+
+        @Override
+        public void loadAsync(AssetContainer manager, String fileName, FileHandle file, AssetLoaderParameters<ShaderProgram> parameter) {
+        }
+
+        @Override
+        public ShaderProgram loadSync(AssetContainer manager, String fileName, FileHandle file, AssetLoaderParameters<ShaderProgram> parameter) {
+            try {
+                return new ShaderProgram(file);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("ShaderProgram " + fileName + " failed to compile! cause " + e);
+            }
+        }
     }
 }

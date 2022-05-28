@@ -9852,7 +9852,7 @@ Pixmap_M(jobject, load)(JNIEnv *env, jclass clazz, jlongArray nativeData, jbyteA
 
 Pixmap_M(jobject, newPixmap)(JNIEnv *env, jclass clazz, jlongArray vals, jint width, jint height,
                              jint format) {
-    Pixmap *pixmap = new Pixmap(width, height, (Pixmap::Format) format, true);
+    Pixmap *pixmap = new Pixmap(width, height, Pixmap::Format(format), true);
     if (!pixmap)
         return 0;
     if (!pixmap->pixels) {

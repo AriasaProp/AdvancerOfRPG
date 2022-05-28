@@ -1,6 +1,12 @@
 package com.ariasaproject.advancerofrpg.graphics;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.assets.AssetContainer;
+import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
+import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 
 import java.nio.ByteBuffer;
@@ -133,5 +139,29 @@ public class Pixmap implements Disposable {
             this.nativeFormat = n;
         }
     }
+    static public class PixmapLoader extends AsynchronousAssetLoader<Pixmap, AssetLoaderParameters<Pixmap>> {
+        Pixmap pixmap;
 
+        public PixmapLoader(FileHandleResolver resolver) {
+            super(resolver);
+        }
+
+        @Override
+        public void loadAsync(AssetContainer manager, String fileName, FileHandle file, AssetLoaderParameters<Pixmap> parameter) {
+            pixmap = null;
+            pixmap = new Pixmap(file);
+        }
+
+        @Override
+        public Pixmap loadSync(AssetContainer manager, String fileName, FileHandle file, AssetLoaderParameters<Pixmap> parameter) {
+            Pixmap pixmap = this.pixmap;
+            this.pixmap = null;
+            return pixmap;
+        }
+
+        @Override
+        public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, AssetLoaderParameters<Pixmap> parameter) {
+            return null;
+        }
+    }
 }

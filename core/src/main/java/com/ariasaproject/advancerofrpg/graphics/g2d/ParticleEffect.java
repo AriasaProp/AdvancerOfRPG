@@ -1,6 +1,11 @@
 package com.ariasaproject.advancerofrpg.graphics.g2d;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
+import com.ariasaproject.advancerofrpg.assets.AssetContainer;
+import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
+import com.ariasaproject.advancerofrpg.assets.loaders.SynchronousAssetLoader;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.math.collision.BoundingBox;
 import com.ariasaproject.advancerofrpg.utils.Array;
@@ -14,12 +19,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Writer;
 
-/**
- * See <a href=
- * "http://www.badlogicgames.com/wordpress/?p=1255">http://www.badlogicgames.com/wordpress/?p=1255</a>
- *
- * @author mzechner
- */
 public class ParticleEffect implements Disposable {
     private final Array<ParticleEmitter> emitters;
     protected float xSizeScale = 1f;
@@ -43,21 +42,10 @@ public class ParticleEffect implements Disposable {
             emitters.get(i).start();
     }
 
-    /**
-     * Resets the effect so it can be started again like a new effect. Any changes
-     * to scale are reverted. See {@link #reset(boolean)}.
-     */
     public void reset() {
         reset(true);
     }
 
-    /**
-     * Resets the effect so it can be started again like a new effect.
-     *
-     * @param resetScaling Whether to restore the original size and motion
-     *                     parameters if they were scaled. Repeated scaling and
-     *                     resetting may introduce error.
-     */
     public void reset(boolean resetScaling) {
         for (int i = 0, n = emitters.size; i < n; i++)
             emitters.get(i).reset();
@@ -252,9 +240,6 @@ public class ParticleEffect implements Disposable {
         return new Texture(file, false);
     }
 
-    /**
-     * Disposes the texture for each sprite for each ParticleEmitter.
-     */
     @Override
     public void dispose() {
         if (!ownsTexture)
@@ -267,10 +252,6 @@ public class ParticleEffect implements Disposable {
         }
     }
 
-    /**
-     * Returns the bounding box for all active particles. z axis will always be
-     * zero.
-     */
     public BoundingBox getBoundingBox() {
         if (bounds == null)
             bounds = new BoundingBox();
@@ -281,29 +262,14 @@ public class ParticleEffect implements Disposable {
         return bounds;
     }
 
-    /**
-     * Permanently scales all the size and motion parameters of all the emitters in
-     * this effect. If this effect originated from a {@link ParticleEffectPool}, the
-     * scale will be reset when it is returned to the pool.
-     */
     public void scaleEffect(float scaleFactor) {
         scaleEffect(scaleFactor, scaleFactor, scaleFactor);
     }
 
-    /**
-     * Permanently scales all the size and motion parameters of all the emitters in
-     * this effect. If this effect originated from a {@link ParticleEffectPool}, the
-     * scale will be reset when it is returned to the pool.
-     */
     public void scaleEffect(float scaleFactor, float motionScaleFactor) {
         scaleEffect(scaleFactor, scaleFactor, motionScaleFactor);
     }
 
-    /**
-     * Permanently scales all the size and motion parameters of all the emitters in
-     * this effect. If this effect originated from a {@link ParticleEffectPool}, the
-     * scale will be reset when it is returned to the pool.
-     */
     public void scaleEffect(float xSizeScaleFactor, float ySizeScaleFactor, float motionScaleFactor) {
         xSizeScale *= xSizeScaleFactor;
         ySizeScale *= ySizeScaleFactor;
@@ -314,22 +280,41 @@ public class ParticleEffect implements Disposable {
         }
     }
 
-    /**
-     * Sets the
-     * {@link com.ariasaproject.advancerofrpg.graphics.g2d.ParticleEmitter#setCleansUpBlendFunction(boolean)
-     * cleansUpBlendFunction} parameter on all
-     * {@link com.ariasaproject.advancerofrpg.graphics.g2d.ParticleEmitter
-     * ParticleEmitters} currently in this ParticleEffect.
-     * <p>
-     * IMPORTANT: If set to false and if the next object to use this Batch expects
-     * alpha blending, you are responsible for setting the Batch's blend function to
-     * (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) before that next object is drawn.
-     *
-     * @param cleanUpBlendFunction
-     */
     public void setEmittersCleanUpBlendFunction(boolean cleanUpBlendFunction) {
         for (int i = 0, n = emitters.size; i < n; i++) {
             emitters.get(i).setCleansUpBlendFunction(cleanUpBlendFunction);
         }
+    }
+    static public class ParticleEffectLoader extends SynchronousAssetLoader<ParticleEffect, ParticleEffectParameter> {
+        public ParticleEffectLoader(FileHandleResolver resolver) {
+            super(resolver);
+        }
+
+        @Override
+        public ParticleEffect load(AssetContainer am, String fileName, FileHandle file, ParticleEffectParameter param) {
+            ParticleEffect effect = new ParticleEffect();
+            if (param != null && param.atlasFile != null)
+                effect.load(file, am.get(param.atlasFile, TextureAtlas.class), param.atlasPrefix);
+            else if (param != null && param.imagesDir != null)
+                effect.load(file, param.imagesDir);
+            else
+                effect.load(file, file.parent());
+            return effect;
+        }
+
+        @Override
+        public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, ParticleEffectParameter param) {
+            Array<AssetDescriptor> deps = null;
+            if (param != null && param.atlasFile != null) {
+                deps = new Array();
+                deps.add(new AssetDescriptor<TextureAtlas>(param.atlasFile, TextureAtlas.class));
+            }
+            return deps;
+        }
+    }
+    public static class ParticleEffectParameter extends AssetLoaderParameters<ParticleEffect> {
+        public String atlasFile;
+        public String atlasPrefix;
+        public FileHandle imagesDir;
     }
 }

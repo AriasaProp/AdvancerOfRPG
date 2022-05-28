@@ -5,8 +5,10 @@ import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.GraphFunc;
 import com.ariasaproject.advancerofrpg.assets.AssetContainer;
 import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
 import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters.LoadedCallback;
-import com.ariasaproject.advancerofrpg.graphics.CubemapLoader.CubemapParameter;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap.Format;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureWrap;
@@ -203,5 +205,67 @@ public class Cubemap extends GLTexture {
             return out.set(direction);
         }
     }
+    static public class CubemapLoader extends AsynchronousAssetLoader<Cubemap, CubemapParameter> {
+        CubemapLoaderInfo info = new CubemapLoaderInfo();
 
+        public CubemapLoader(FileHandleResolver resolver) {
+            super(resolver);
+        }
+
+        @Override
+        public void loadAsync(AssetContainer manager, String fileName, FileHandle file, CubemapParameter parameter) {
+            info.filename = fileName;
+            if (parameter == null || parameter.cubemapData == null) {
+                Format format = null;
+                boolean genMipMaps = false;
+                info.cubemap = null;
+                if (parameter != null) {
+                    format = parameter.format;
+                    info.cubemap = parameter.cubemap;
+                }
+            } else {
+                info.data = parameter.cubemapData;
+                info.cubemap = parameter.cubemap;
+            }
+            if (!info.data.isPrepared())
+                info.data.prepare();
+        }
+
+        @Override
+        public Cubemap loadSync(AssetContainer manager, String fileName, FileHandle file, CubemapParameter parameter) {
+            if (info == null)
+                return null;
+            Cubemap cubemap = info.cubemap;
+            if (cubemap != null) {
+                cubemap.load(info.data);
+            } else {
+                cubemap = new Cubemap(info.data);
+            }
+            if (parameter != null) {
+                cubemap.setFilter(parameter.minFilter, parameter.magFilter);
+                cubemap.setWrap(parameter.wrapU, parameter.wrapV);
+            }
+            return cubemap;
+        }
+
+        @Override
+        public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, CubemapParameter parameter) {
+            return null;
+        }
+
+        static public class CubemapLoaderInfo {
+            String filename;
+            CubemapData data;
+            Cubemap cubemap;
+        }
+    }
+    static public class CubemapParameter extends AssetLoaderParameters<Cubemap> {
+        public Format format = null;
+        public Cubemap cubemap = null;
+        public CubemapData cubemapData = null;
+        public TextureFilter minFilter = TextureFilter.Nearest;
+        public TextureFilter magFilter = TextureFilter.Nearest;
+        public TextureWrap wrapU = TextureWrap.ClampToEdge;
+        public TextureWrap wrapV = TextureWrap.ClampToEdge;
+    }
 }

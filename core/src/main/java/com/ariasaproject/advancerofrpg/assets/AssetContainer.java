@@ -5,28 +5,18 @@ import com.ariasaproject.advancerofrpg.assets.loaders.AssetLoader;
 import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.assets.loaders.I18NBundleLoader;
 import com.ariasaproject.advancerofrpg.audio.Music;
-import com.ariasaproject.advancerofrpg.audio.MusicLoader;
 import com.ariasaproject.advancerofrpg.audio.Sound;
-import com.ariasaproject.advancerofrpg.audio.SoundLoader;
 import com.ariasaproject.advancerofrpg.graphics.Cubemap;
-import com.ariasaproject.advancerofrpg.graphics.CubemapLoader;
 import com.ariasaproject.advancerofrpg.graphics.Pixmap;
-import com.ariasaproject.advancerofrpg.graphics.PixmapLoader;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
-import com.ariasaproject.advancerofrpg.graphics.Texture.TextureLoader;
 import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;
-import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFontLoader;
 import com.ariasaproject.advancerofrpg.graphics.g2d.ParticleEffect;
-import com.ariasaproject.advancerofrpg.graphics.g2d.ParticleEffectLoader;
 import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas;
-import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas.TextureAtlasLoader;
 import com.ariasaproject.advancerofrpg.graphics.g3d.Model;
 import com.ariasaproject.advancerofrpg.graphics.g3d.loader.G3dModelLoader;
 import com.ariasaproject.advancerofrpg.graphics.g3d.loader.ObjLoader;
 import com.ariasaproject.advancerofrpg.graphics.glutils.ShaderProgram;
-import com.ariasaproject.advancerofrpg.graphics.glutils.ShaderProgramLoader;
 import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
-import com.ariasaproject.advancerofrpg.scenes2d.ui.SkinLoader;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 import com.ariasaproject.advancerofrpg.utils.I18NBundle;
@@ -42,59 +32,59 @@ import java.util.concurrent.ExecutorService;
 
 public class AssetContainer implements Disposable {
     protected final ObjectMap<Class, ObjectMap<String, AssetLoader>> loaders = new ObjectMap<Class, ObjectMap<String, AssetLoader>>();
-    final ObjectMap<Class, ObjectMap<String, RefCountedContainer>> assets = new ObjectMap<Class, ObjectMap<String, RefCountedContainer>>();
-    final ObjectMap<String, Class> assetTypes = new ObjectMap<String, Class>();
-    final ObjectMap<String, Array<String>> assetDependencies = new ObjectMap<String, Array<String>>();
-    final ObjectSet<String> injected = new ObjectSet<String>();
-    final Array<AssetDescriptor> loadQueue = new Array<AssetDescriptor>();
-    final ExecutorService executor;
+    private final ObjectMap<Class, ObjectMap<String, RefCountedContainer>> assets = new ObjectMap<Class, ObjectMap<String, RefCountedContainer>>();
+    private final ObjectMap<String, Class> assetTypes = new ObjectMap<String, Class>();
+    private final ObjectMap<String, Array<String>> assetDependencies = new ObjectMap<String, Array<String>>();
+    private final ObjectSet<String> injected = new ObjectSet<String>();
+    private final Array<AssetDescriptor> loadQueue = new Array<AssetDescriptor>();
+    private final ExecutorService executor;
 
-    final Stack<AssetLoadingTask> tasks = new Stack<AssetLoadingTask>();
-    final FileHandleResolver resolver;
-    int loaded = 0;
-    int toLoad = 0;
-    int peakTasks = 0;
+    private final Stack<AssetLoadingTask> tasks = new Stack<AssetLoadingTask>();
+    private final FileHandleResolver resolver;
+    private int loaded = 0;
+    private int toLoad = 0;
+    private int peakTasks = 0;
 
     public AssetContainer(final ExecutorService exec, final FileHandleResolver resolver) {
         this.resolver = resolver;
         this.loaders.put(BitmapFont.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new BitmapFontLoader(resolver));
+                put("", new BitmapFont.BitmapFontLoader(resolver));
             }
         });
         this.loaders.put(Music.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new MusicLoader(resolver));
+                put("", new Music.MusicLoader(resolver));
             }
         });
         this.loaders.put(Pixmap.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new PixmapLoader(resolver));
+                put("", new Pixmap.PixmapLoader(resolver));
             }
         });
         this.loaders.put(Sound.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new SoundLoader(resolver));
+                put("", new Sound.SoundLoader(resolver));
             }
         });
         this.loaders.put(TextureAtlas.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new TextureAtlasLoader(resolver));
+                put("", new TextureAtlas.TextureAtlasLoader(resolver));
             }
         });
         this.loaders.put(Texture.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new TextureLoader(resolver));
+                put("", new Texture.TextureLoader(resolver));
             }
         });
         this.loaders.put(Skin.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new SkinLoader(resolver));
+                put("", new Skin.SkinLoader(resolver));
             }
         });
         this.loaders.put(ParticleEffect.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new ParticleEffectLoader(resolver));
+                put("", new ParticleEffect.ParticleEffectLoader(resolver));
             }
         });
         this.loaders.put(com.ariasaproject.advancerofrpg.graphics.g3d.particles.ParticleEffect.class, new ObjectMap<String, AssetLoader>() {
@@ -116,12 +106,12 @@ public class AssetContainer implements Disposable {
         });
         this.loaders.put(ShaderProgram.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new ShaderProgramLoader(resolver));
+                put("", new ShaderProgram.ShaderProgramLoader(resolver));
             }
         });
         this.loaders.put(Cubemap.class, new ObjectMap<String, AssetLoader>() {
             {
-                put("", new CubemapLoader(resolver));
+                put("", new Cubemap.CubemapLoader(resolver));
             }
         });
         executor = exec;
@@ -242,10 +232,6 @@ public class AssetContainer implements Disposable {
         }
     }
 
-    /**
-     * @param asset the asset
-     * @return whether the asset is contained in this manager
-     */
     public synchronized <T> boolean containsAsset(T asset) {
         ObjectMap<String, RefCountedContainer> assetsByType = assets.get(asset.getClass());
         if (assetsByType == null)
@@ -427,9 +413,6 @@ public class AssetContainer implements Disposable {
         return loadQueue.size == 0 && tasks.size() == 0;
     }
 
-    /**
-     * Blocks until all assets are loaded.
-     */
     public void finishLoading() {
         while (!update())
             Thread.yield();
@@ -503,23 +486,14 @@ public class AssetContainer implements Disposable {
         }
     }
 
-    /**
-     * @return the number of loaded assets
-     */
     public synchronized int getLoadedAssets() {
         return assetTypes.size;
     }
 
-    /**
-     * @return the number of currently queued assets
-     */
     public synchronized int getQueuedAssets() {
         return loadQueue.size + tasks.size();
     }
 
-    /**
-     * @return the progress in percent of completion.
-     */
     public synchronized float getProgress() {
         if (toLoad == 0)
             return 1;

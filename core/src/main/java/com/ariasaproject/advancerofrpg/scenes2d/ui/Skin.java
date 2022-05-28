@@ -2,6 +2,11 @@ package com.ariasaproject.advancerofrpg.scenes2d.ui;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.GraphFunc;
+import com.ariasaproject.advancerofrpg.assets.AssetContainer;
+import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.g2d.BitmapFont;
@@ -32,9 +37,6 @@ import com.ariasaproject.advancerofrpg.utils.reflect.Method;
 import com.ariasaproject.advancerofrpg.utils.reflect.ReflectionException;
 
 public class Skin implements Disposable {
-    /*
-     * this skin doesn't allow flipped value to direct read
-     */
     static private final Class[] defaultTagClasses = {BitmapFont.class, Color.class, TintedDrawable.class, NinePatchDrawable.class, SpriteDrawable.class, TextureRegionDrawable.class, TiledDrawable.class, Button.ButtonStyle.class, CheckBox.CheckBoxStyle.class, ImageButton.ImageButtonStyle.class, ImageTextButton.ImageTextButtonStyle.class, Label.LabelStyle.class, List.ListStyle.class, ProgressBar.ProgressBarStyle.class, ScrollPane.ScrollPaneStyle.class, SelectBox.SelectBoxStyle.class, Slider.SliderStyle.class, SplitPane.SplitPaneStyle.class, TextButton.TextButtonStyle.class, TextField.TextFieldStyle.class, Touchpad.TouchpadStyle.class, Tree.TreeStyle.class, Window.WindowStyle.class};
     private final ObjectMap<String, Class> jsonClassTags = new ObjectMap<String, Class>(defaultTagClasses.length);
     ObjectMap<Class, ObjectMap<String, Object>> resources = new ObjectMap<Class, ObjectMap<String, Object>>();
@@ -673,5 +675,73 @@ public class Skin implements Disposable {
         public Color color;
         @Null
         public int minWidth, minHeight;
+    }
+
+    static public class SkinLoader extends AsynchronousAssetLoader<Skin, SkinParameter> {
+        public SkinLoader(FileHandleResolver resolver) {
+            super(resolver);
+        }
+
+        @Override
+        public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, SkinParameter parameter) {
+            Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
+            if (parameter == null || parameter.textureAtlasPath == null)
+                deps.add(new AssetDescriptor<TextureAtlas>(file.pathWithoutExtension() + ".atlas", TextureAtlas.class));
+            else if (parameter.textureAtlasPath != null)
+                deps.add(new AssetDescriptor<TextureAtlas>(parameter.textureAtlasPath, TextureAtlas.class));
+            return deps;
+        }
+
+        @Override
+        public void loadAsync(AssetContainer manager, String fileName, FileHandle file, SkinParameter parameter) {
+        }
+
+        @Override
+        public Skin loadSync(AssetContainer manager, String fileName, FileHandle file, SkinParameter parameter) {
+            String textureAtlasPath = file.pathWithoutExtension() + ".atlas";
+            ObjectMap<String, Object> resources = null;
+            if (parameter != null) {
+                if (parameter.textureAtlasPath != null) {
+                    textureAtlasPath = parameter.textureAtlasPath;
+                }
+                if (parameter.resources != null) {
+                    resources = parameter.resources;
+                }
+            }
+            TextureAtlas atlas = manager.get(textureAtlasPath, TextureAtlas.class);
+            Skin skin = newSkin(atlas);
+            if (resources != null) {
+                for (ObjectMap.Entry<String, Object> entry : resources.entries()) {
+                    skin.add(entry.key, entry.value);
+                }
+            }
+            skin.load(file);
+            return skin;
+        }
+
+        protected Skin newSkin(TextureAtlas atlas) {
+            return new Skin(atlas);
+        }
+    }
+    static public class SkinParameter extends AssetLoaderParameters<Skin> {
+        public final String textureAtlasPath;
+        public final ObjectMap<String, Object> resources;
+
+        public SkinParameter() {
+            this(null, null);
+        }
+
+        public SkinParameter(ObjectMap<String, Object> resources) {
+            this(null, resources);
+        }
+
+        public SkinParameter(String textureAtlasPath) {
+            this(textureAtlasPath, null);
+        }
+
+        public SkinParameter(String textureAtlasPath, ObjectMap<String, Object> resources) {
+            this.textureAtlasPath = textureAtlasPath;
+            this.resources = resources;
+        }
     }
 }

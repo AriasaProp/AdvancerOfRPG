@@ -2,11 +2,17 @@ package com.ariasaproject.advancerofrpg.graphics.g2d;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.GraphFunc;
+import com.ariasaproject.advancerofrpg.assets.AssetContainer;
+import com.ariasaproject.advancerofrpg.assets.AssetDescriptor;
+import com.ariasaproject.advancerofrpg.assets.AssetLoaderParameters;
+import com.ariasaproject.advancerofrpg.assets.loaders.AsynchronousAssetLoader;
+import com.ariasaproject.advancerofrpg.assets.loaders.FileHandleResolver;
 import com.ariasaproject.advancerofrpg.graphics.Color;
 import com.ariasaproject.advancerofrpg.graphics.Texture;
 import com.ariasaproject.advancerofrpg.graphics.Texture.TextureFilter;
 import com.ariasaproject.advancerofrpg.graphics.g2d.GlyphLayout.GlyphRun;
 import com.ariasaproject.advancerofrpg.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.ariasaproject.advancerofrpg.scenes2d.ui.Skin;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 import com.ariasaproject.advancerofrpg.utils.FloatArray;
@@ -1010,5 +1016,70 @@ public class BitmapFont implements Disposable {
         public String toString() {
             return name != null ? name : super.toString();
         }
+    }
+    static public class BitmapFontLoader extends AsynchronousAssetLoader<BitmapFont, BitmapFontParameter> {
+        BitmapFontData data;
+
+        public BitmapFontLoader(FileHandleResolver resolver) {
+            super(resolver);
+        }
+
+        @Override
+        public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, BitmapFontParameter parameter) {
+            Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
+            if (parameter != null && parameter.bitmapFontData != null) {
+                data = parameter.bitmapFontData;
+                return deps;
+            }
+            data = new BitmapFontData(file);
+            if (parameter != null && parameter.atlasName != null) {
+                deps.add(new AssetDescriptor<TextureAtlas>(parameter.atlasName, TextureAtlas.class));
+            } else {
+                for (int i = 0; i < data.getImagePaths().length; i++) {
+                    String path = data.getImagePath(i);
+                    FileHandle resolved = resolve(path);
+                    Texture.TextureParameter textureParams = new Texture.TextureParameter();
+                    if (parameter != null) {
+                        textureParams.genMipMaps = parameter.genMipMaps;
+                        textureParams.minFilter = parameter.minFilter;
+                        textureParams.magFilter = parameter.magFilter;
+                    }
+                    AssetDescriptor descriptor = new AssetDescriptor<Texture>(resolved, Texture.class, textureParams);
+                    deps.add(descriptor);
+                }
+            }
+            return deps;
+        }
+
+        @Override
+        public void loadAsync(AssetContainer manager, String fileName, FileHandle file, BitmapFontParameter parameter) {
+        }
+
+        @Override
+        public BitmapFont loadSync(AssetContainer manager, String fileName, FileHandle file, BitmapFontParameter parameter) {
+            if (parameter != null && parameter.atlasName != null) {
+                TextureAtlas atlas = manager.get(parameter.atlasName, TextureAtlas.class);
+                String name = file.sibling(data.imagePaths[0]).nameWithoutExtension();
+                AtlasRegion region = atlas.findRegion(name);
+                if (region == null)
+                    throw new RuntimeException("Could not find font region " + name + " in atlas " + parameter.atlasName);
+                return new BitmapFont(file, region);
+            } else {
+                int n = data.getImagePaths().length;
+                Array<TextureRegion> regs = new Array(n);
+                for (int i = 0; i < n; i++) {
+                    regs.add(new TextureRegion(manager.get(data.getImagePath(i), Texture.class)));
+                }
+                return new BitmapFont(data, regs, true);
+            }
+        }
+
+    }
+    static public class BitmapFontParameter extends AssetLoaderParameters<BitmapFont> {
+        public boolean genMipMaps = false;
+        public TextureFilter minFilter = TextureFilter.Nearest;
+        public TextureFilter magFilter = TextureFilter.Nearest;
+        public BitmapFontData bitmapFontData = null;
+        public String atlasName = null;
     }
 }
