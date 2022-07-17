@@ -79,6 +79,11 @@ public class OpenGLES30 implements AndroidTGF {
     }
 
     @Override
+    public void glBindVertexArray(int v) {
+        GLES30.glBindVertexArray(v);
+    }
+
+    @Override
     public void glBlendColor(float red, float green, float blue, float alpha) {
 
         GLES20.glBlendColor(red, green, blue, alpha);
@@ -113,14 +118,12 @@ public class OpenGLES30 implements AndroidTGF {
     }
 
     @Override
-    public void glClearDepthf(float depth) {
-
+    public void glClearDepth(float depth) {
         GLES20.glClearDepthf(depth);
     }
 
     @Override
     public void glClearStencil(int s) {
-
         GLES20.glClearStencil(s);
     }
 
@@ -172,12 +175,6 @@ public class OpenGLES30 implements AndroidTGF {
     }
 
     @Override
-    public void glDeleteFramebuffers(final int n, final int[] framebuffers, final int offset) {
-
-        GLES20.glDeleteFramebuffers(n, framebuffers, offset);
-    }
-
-    @Override
     public void glDeleteFramebuffer(int framebuffer) {
 
         ints[0] = framebuffer;
@@ -211,7 +208,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glDepthFunc(int func) {
-
         if (func != depthFunc)
             GLES20.glDepthFunc(func);
     }
@@ -304,22 +300,14 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glGenerateMipmap(int target) {
-
         GLES20.glGenerateMipmap(target);
     }
 
     @Override
     public void glGenFramebuffers(int n, IntBuffer framebuffers) {
-
         GLES20.glGenFramebuffers(n, framebuffers);
     }
-
-    @Override
-    public void glGenFramebuffers(final int n, final int[] framebuffers, final int offset) {
-
-        GLES20.glGenFramebuffers(n, framebuffers, offset);
-    }
-
+    
     @Override
     public int glGenFramebuffer() {
 
@@ -1017,7 +1005,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public java.nio.Buffer glGetBufferPointerv(int target, int pname) {
-
         return GLES30.glGetBufferPointerv(target, pname);
     }
 
@@ -1141,33 +1128,7 @@ public class OpenGLES30 implements AndroidTGF {
 
         GLES30.glFlushMappedBufferRange(target, offset, length);
     }
-
-    @Override
-    public void glBindVertexArray(int array) {
-
-        GLES30.glBindVertexArray(array);
-    }
-
-    @Override
-    public void glDeleteVertexArray(int h) {
-
-        ints[0] = h;
-        GLES30.glDeleteVertexArrays(1, ints, 0);
-    }
-
-    @Override
-    public int glGenVertexArray() {
-
-        GLES30.glGenVertexArrays(1, ints, 0);
-        return ints[0];
-    }
-
-    @Override
-    public boolean glIsVertexArray(int array) {
-
-        return GLES30.glIsVertexArray(array);
-    }
-
+    
     @Override
     public void glGetIntegeri_v(int target, int index, int[] data, int offset) {
 
@@ -1414,7 +1375,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glClearBufferfv(int buffer, int drawbuffer, float[] value, int offset) {
-
         GLES30.glClearBufferfv(buffer, drawbuffer, value, offset);
     }
 
@@ -1523,7 +1483,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glDrawElementsInstanced(int mode, int count, int type, java.nio.Buffer indices, int instanceCount) {
-
         GLES30.glDrawElementsInstanced(mode, count, type, indices, instanceCount);
     }
 
@@ -1541,25 +1500,21 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public boolean glIsSync(long sync) {
-
         return GLES30.glIsSync(sync);
     }
 
     @Override
     public void glDeleteSync(long sync) {
-
         GLES30.glDeleteSync(sync);
     }
 
     @Override
     public int glClientWaitSync(long sync, int flags, long timeout) {
-
         return GLES30.glClientWaitSync(sync, flags, timeout);
     }
 
     @Override
     public void glWaitSync(long sync, int flags, long timeout) {
-
         GLES30.glWaitSync(sync, flags, timeout);
     }
 

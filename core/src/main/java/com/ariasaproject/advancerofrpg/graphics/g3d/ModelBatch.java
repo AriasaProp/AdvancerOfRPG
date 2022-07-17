@@ -20,6 +20,9 @@ import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.Disposable;
 import com.ariasaproject.advancerofrpg.utils.FlushablePool;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 import java.util.Comparator;
 
 public class ModelBatch implements Disposable {
@@ -81,7 +84,7 @@ public class ModelBatch implements Disposable {
             int k = 0;
             for (int i = 0, j = dirLights.size(); i < j; i++) {
                 dirLights.setShadowIndex(i, k++);
-                g.glBindFramebuffer(TGF.GL_FRAMEBUFFER, environment.fbosBuffer[dirLights.getShadowIndex(i)]);
+                g.glBindFramebuffer(TGF.GL_FRAMEBUFFER, environment.fbosBuffer.get(dirLights.getShadowIndex(i)));
                 g.glClearColorMask(TGF.GL_DEPTH_BUFFER_BIT, 0, 0, 0, 1);
                 for (Renderable renderable : renderables) {
                     if (currentDepthShader == null || !currentDepthShader.canRender(renderable)) {
@@ -111,7 +114,7 @@ public class ModelBatch implements Disposable {
                 pLights.get(i).setShadowIndex(k);
                 k += 6;
                 for (int l = 0; l < 6; l++) {
-                    g.glBindFramebuffer(TGF.GL_FRAMEBUFFER, environment.fbosBuffer[pLights.get(i).getShadowIndex() + l]);
+                    g.glBindFramebuffer(TGF.GL_FRAMEBUFFER, environment.fbosBuffer.get(pLights.get(i).getShadowIndex() + l));
                     g.glClearColorMask(TGF.GL_DEPTH_BUFFER_BIT, 0, 0, 0, 1);
                     for (Renderable renderable : renderables) {
                         if (currentDepthShader == null || !currentDepthShader.canRender(renderable)) {
@@ -209,7 +212,7 @@ public class ModelBatch implements Disposable {
         private boolean useShadowMapping = true;
         private int shadow_quality = GraphFunc.tgf.getMaxTextureSize() >> 1;// from maximum texture divided by 2 each
         private int shadowMapArray = -1;
-        private int[] fbosBuffer;
+        private IntBuffer fbosBuffer;
 
         public Environment() {
 
@@ -241,8 +244,8 @@ public class ModelBatch implements Disposable {
             TGF g = GraphFunc.tgf;
             if (!useShadowMapping) {
                 if (fbosBuffer != null) {
-                    if (g.glIsFramebuffer(fbosBuffer[0])) {
-                        g.glDeleteFramebuffers(fbosBuffer.length, fbosBuffer, 0);
+                    if (g.glIsFramebuffer(fbosBuffer.get(0))) {
+                        g.glDeleteFramebuffers(fbosBuffer.capacity(), fbosBuffer);
                     }
                     fbosBuffer = null;
                 }
@@ -254,9 +257,9 @@ public class ModelBatch implements Disposable {
                 }
                 return;
             }
-            if ((fbosBuffer != null && fbosBuffer.length != size) || isChanged) {
-                if (fbosBuffer != null && g.glIsFramebuffer(fbosBuffer[0])) {
-                    g.glDeleteFramebuffers(fbosBuffer.length, fbosBuffer, 0);
+            if ((fbosBuffer != null && fbosBuffer.capacity() != size) || isChanged) {
+                if (fbosBuffer != null && g.glIsFramebuffer(fbosBuffer.get(0))) {
+                    g.glDeleteFramebuffers(fbosBuffer.capacity(), fbosBuffer);
                 }
                 if (g.glIsTexture(shadowMapArray)) {
                     g.glDeleteTexture(shadowMapArray);
@@ -275,14 +278,15 @@ public class ModelBatch implements Disposable {
                 g.glTexParameteri(TGF.GL_TEXTURE_2D_ARRAY, TGF.GL_TEXTURE_MAG_FILTER, TGF.GL_NEAREST);
                 g.glBindTexture(TGF.GL_TEXTURE_2D_ARRAY, 0);
             }
-            if (fbosBuffer == null || !g.glIsFramebuffer(fbosBuffer[0])) {
+            if (fbosBuffer == null || !g.glIsFramebuffer(fbosBuffer.get(0))) {
                 if (fbosBuffer == null) {
-                    fbosBuffer = new int[size];
+                    fbosBuffer = ByteBuffer.allocateDirect(size << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
+                    fbosBuffer.limit(size);
                 }
-                g.glGenFramebuffers(size, fbosBuffer, 0);
+                g.glGenFramebuffers(size, fbosBuffer);
                 g.glBindTexture(TGF.GL_TEXTURE_2D_ARRAY, shadowMapArray);
                 for (int i = 0; i < size; i++) {
-                    g.glBindFramebuffer(TGF.GL_FRAMEBUFFER, fbosBuffer[i]);
+                    g.glBindFramebuffer(TGF.GL_FRAMEBUFFER, fbosBuffer.get(i));
                     g.glFramebufferTextureLayer(TGF.GL_FRAMEBUFFER, TGF.GL_DEPTH_ATTACHMENT, shadowMapArray, 0, i);
                     g.glDrawBuffers(1, new int[]{TGF.GL_NONE}, 0);
                     g.glReadBuffer(TGF.GL_NONE);
@@ -359,8 +363,8 @@ public class ModelBatch implements Disposable {
             spotLights.dispose();
             TGF g = GraphFunc.tgf;
             if (fbosBuffer != null) {
-                if (g.glIsFramebuffer(fbosBuffer[0]))
-                    g.glDeleteFramebuffers(fbosBuffer.length, fbosBuffer, 0);
+                if (g.glIsFramebuffer(fbosBuffer.get(0)))
+                    g.glDeleteFramebuffers(fbosBuffer.capacity(), fbosBuffer);
                 fbosBuffer = null;
             }
             if (shadowMapArray >= 0) {
@@ -391,7 +395,7 @@ public class ModelBatch implements Disposable {
         final int[] texTarget, texId;
         int size = 0;
 
-        public TextureBinder() {
+        TextureBinder() {
             final int maxUnit = GraphFunc.tgf.getMaxTextureUnit();
             texTarget = new int[maxUnit];
             texId = new int[maxUnit];

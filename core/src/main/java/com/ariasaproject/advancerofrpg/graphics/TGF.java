@@ -593,6 +593,8 @@ public interface TGF {
 
     public void glBindTexture(int target, int texture);
 
+    public void glBindVertexArray(int v);
+
     public void glBlendColor(float red, float green, float blue, float alpha);
 
     public void glBlendEquation(int mode);
@@ -605,7 +607,7 @@ public interface TGF {
 
     public int glCheckFramebufferStatus(int target);
 
-    public void glClearDepthf(float depth);
+    public void glClearDepth(float depth);
 
     public void glClearStencil(int s);
 
@@ -622,8 +624,6 @@ public interface TGF {
     public void glDeleteBuffer(int buffer);
 
     public void glDeleteFramebuffers(int n, IntBuffer framebuffers);
-
-    public void glDeleteFramebuffers(final int n, final int[] framebuffers, final int offset);
 
     public void glDeleteFramebuffer(int framebuffer);
 
@@ -668,8 +668,6 @@ public interface TGF {
     public void glGenerateMipmap(int target);
 
     public void glGenFramebuffers(int n, IntBuffer framebuffers);
-
-    public void glGenFramebuffers(final int n, final int[] framebuffers, final int offset);
 
     public int glGenFramebuffer();
 
@@ -935,14 +933,6 @@ public interface TGF {
 
     public void glFlushMappedBufferRange(int target, int offset, int length);
 
-    public void glBindVertexArray(int array);
-
-    public void glDeleteVertexArray(int h);
-
-    public int glGenVertexArray();
-
-    public boolean glIsVertexArray(int array);
-
     public void glGetIntegeri_v(int target, int index, int[] data, int offset);
 
     public void glGetIntegeri_v(int target, int index, java.nio.IntBuffer data);
@@ -1175,8 +1165,6 @@ public interface TGF {
     public boolean supportsRenderer(String renderer);
 
     public String glVersion();
-
-    public boolean limitGLESContext();
 
     public float getMaxAnisotropicFilterLevel();
 
