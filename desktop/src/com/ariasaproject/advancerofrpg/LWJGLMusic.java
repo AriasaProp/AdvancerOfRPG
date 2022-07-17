@@ -1,6 +1,14 @@
 package com.ariasaproject.advancerofrpg;
 
-public class LWJGLFiles extends Files {
+import com.ariasaproject.advancerofrpg.audio.Music;
+
+public class LWJGLMusic implements Music {
+
+	@Override
+	public void play() {
+		// TODO Auto-generated method stub
+
+	}
 
 	@Override
 	public void pause() {
@@ -9,7 +17,55 @@ public class LWJGLFiles extends Files {
 	}
 
 	@Override
-	public void resume() {
+	public void stop() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isPlaying() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isLooping() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setLooping(boolean isLooping) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public float getVolume() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setVolume(float volume) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setPan(float pan, float volume) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public float getPosition() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setPosition(float position) {
 		// TODO Auto-generated method stub
 
 	}
@@ -21,57 +77,9 @@ public class LWJGLFiles extends Files {
 	}
 
 	@Override
-	public FileHandle getFileHandle(String path, FileType type) {
+	public void setOnCompletionListener(Runnable listener) {
 		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public FileHandle internal(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public FileHandle external(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public FileHandle absolute(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public FileHandle local(String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getExternalStoragePath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isExternalStorageAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public String getLocalStoragePath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isLocalStorageAvailable() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

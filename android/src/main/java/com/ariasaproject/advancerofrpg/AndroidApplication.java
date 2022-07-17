@@ -70,7 +70,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     int frames, fps, width = 0, height = 0;
     float deltaTime = 0;
     Thread mainTGFThread;
-    int numEr;
     // graphics params
     private SurfaceHolder holder;
     private AndroidTGF tgf;
