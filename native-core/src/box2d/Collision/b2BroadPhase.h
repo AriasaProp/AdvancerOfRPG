@@ -203,7 +203,7 @@ void b2BroadPhase::UpdatePairs(T *callback) {
     // Sort the pair buffer to expose duplicates.
     //std::sort(m_pairBuffer, m_pairBuffer + m_pairCount, b2PairLessThan);
 
-    qsort(m_pairBuffer, sizeof(m_pairBuffer) / sizeof(struct b2Pair), sizeof(struct b2Pair),b2PairCompareQSort);
+    qsort(m_pairBuffer, sizeof(m_pairBuffer) / sizeof(b2Pair), sizeof(b2Pair),b2PairCompareQSort);
 
     // Send the pairs back to the client.
     int32 i = 0;
