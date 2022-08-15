@@ -1,5 +1,5 @@
 #include "Fixture.h"
-#include "Dynamics\b2Fixture.h"
+#include "Dynamics/b2Fixture.h"
 
 //java value id
 static jfieldID fixturePtr;
