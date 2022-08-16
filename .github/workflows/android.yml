@@ -18,13 +18,11 @@ jobs:
       run: ./gradlew build
     - name: Build Release APK
       run: ./gradlew assembleRelease
-
     - name: Get apk path
       id: apk-path
       run: |
         path=$(find ${{ github.workspace }}/android/build/outputs/apk -name '*.apk' -type f | head -1)
         echo "::set-output name=path::$path"
-        $path ls
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
