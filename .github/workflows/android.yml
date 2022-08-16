@@ -22,12 +22,12 @@ jobs:
     - name: Get apk path
       id: apk-path
       run: |
-        path=$(find **/build/outputs/apk -name '*.apk' -type f | head -1)
+        path=$(find ${{ github.workspace }}/build/outputs/apk -name '*.apk' -type f | head -1)
         echo "::set-output name=path::$path"
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: App
-        path: ${{ steps.apk-info.outputs.result }}
+        path: ${{ steps.apk-path.outputs.result }}
 
       
