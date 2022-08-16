@@ -16,13 +16,11 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
-    - name: Generate version.txt for Hub release
-      run: ./gradlew generateVersionTxt
-    - name: Releasing using Hub
-      uses: valley-fordham/action-release-debugapk@master
-      env:
-       GITHUB_TOKEN: ${{ secrets.TOKEN }}
-       APP_FOLDER: android/release
-       RELEASE_TITLE: Output_Release
+    - name: Build Release APK
+      run: ./gradlew assembleRelease
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: App
+        path: ${{ github.workspace}} /app/build/outputs/apk/release/app-release.apk
+      
