@@ -17,10 +17,6 @@ allprojects {
     }
 }
 
-android {
-    ndkVersion "21.3.6528147"
-}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
