@@ -18,15 +18,23 @@ jobs:
       run: ./gradlew build
     - name: Build Release APK
       run: ./gradlew assembleRelease
-    - name: Get apk path
-      id: apk-path
-      run: |
-        path=$(find ${{ github.workspace }}/android/build/outputs/apk -name '*.apk' -type f | head -1)
-        echo "::set-output name=path::$path"
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+    - name: Get apk info
+      id: apk-info
+      uses: hkusu/apk-info-action@v1
       with:
-        name: App
-        path: ${{ steps.apk-path.outputs.result }}
-
-      
+        apk-path: ${{ steps.apk-path.outputs.path }}
+    - name: Show apk info
+      run: |
+        echo '${{ steps.apk-info.outputs.application-name }}'
+        echo '${{ steps.apk-info.outputs.application-id }}'
+        echo '${{ steps.apk-info.outputs.version-code }}'
+        echo '${{ steps.apk-info.outputs.version-name }}'
+        echo '${{ steps.apk-info.outputs.min-sdk-version }}'
+        echo '${{ steps.apk-info.outputs.target-sdk-version }}'
+        echo '${{ steps.apk-info.outputs.compile-sdk-version }}'
+        echo '${{ steps.apk-info.outputs.uses-permissions }}'
+        echo '${{ steps.apk-info.outputs.debuggable }}'
+        echo '${{ steps.apk-info.outputs.allow-backup }}'
+        echo '${{ steps.apk-info.outputs.supports-rtl }}'
+        echo '${{ steps.apk-info.outputs.file-size }}'
+        echo '${{ steps.apk-info.outputs.readable-file-size }}'
