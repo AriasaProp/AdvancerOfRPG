@@ -9,7 +9,7 @@ import com.ariasaproject.advancerofrpg.audio.AudioRecorder;
 public class AndroidAudioRecorder implements AudioRecorder {
     private final AudioRecord recorder;
 
-    public AndroidAudioRecorder(int samplingRate, boolean isMono) {
+    public AndroidAudioRecorder(int samplingRate, boolean isMono) throws SecurityException {
         int channelConfig = isMono ? AudioFormat.CHANNEL_IN_MONO : AudioFormat.CHANNEL_IN_STEREO;
         int minBufferSize = AudioRecord.getMinBufferSize(samplingRate, channelConfig, AudioFormat.ENCODING_PCM_16BIT);
         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, samplingRate, channelConfig,
