@@ -23,6 +23,11 @@ jobs:
       run: |
         path=$(find ${{github.workspace}}/android/build/outputs/apk -name '*.apk' -type f | head -1)
         echo "::set-output name=path::$path"
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: App
+        path: ${{ steps.apk-path.outputs.path }}
     - name: Get apk info
       id: apk-info
       uses: hkusu/apk-info-action@v1
