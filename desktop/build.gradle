@@ -1,4 +1,7 @@
-apply plugin: 'application'
+plugins {
+    id 'java'
+    id 'application'
+}
 
 application { 
     mainClassName = 'com.ariasaproject.advancerofrpg.Lwjgl3Application'
