@@ -25,9 +25,15 @@ jobs:
       run: |
         path=$(find ${{github.workspace}}/android/build/outputs/apk -name '*.apk' -type f | head -1)
         echo "::set-output name=path::$path"
-    - name: Publish APK
+    - name: Get Jar
+      id: jar-path
+      run: |
+        path=$(find ${{github.workspace}}/desktop/build/distributions/ -name '*.zip' -type f | head -1)
+        echo "::set-output name=path::$path"
+    - name: Publish Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: android-release
-        path: ${{ steps.apk-path.outputs.path }}
-
+        name: Outputs
+        path: |
+          ${{ steps.apk-path.outputs.path }}
+          ${{ steps.jar-path.outputs.path }}
