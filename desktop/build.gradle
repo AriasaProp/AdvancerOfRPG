@@ -12,6 +12,13 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': '$application.mainClassName'
+            'Class-Path': configurations.runtime.files.collect { "libs/$it.name" }.join(' ')
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":core")
