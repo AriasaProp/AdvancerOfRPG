@@ -29,5 +29,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: android-release
-        path: ${{ steps.apk-path.output.path }}
+        path: ${{ steps.apk-path.outputs.path }}
 
