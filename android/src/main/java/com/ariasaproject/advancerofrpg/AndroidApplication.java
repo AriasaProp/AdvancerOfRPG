@@ -1,6 +1,5 @@
 package com.ariasaproject.advancerofrpg;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -56,6 +55,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         }
     }
 
+    final int uiHide = 5382;//hide all system ui as possible
     protected final Array<Runnable> runnables = new Array<Runnable>();
     protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(LifecycleListener.class);
     private final List<AndroidMusic> musics = new ArrayList<AndroidMusic>();
@@ -82,14 +82,12 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
         final View d = getWindow().getDecorView();
-        final int uiHide = getResources().getInteger(R.integer.ui_hide);
         d.setSystemUiVisibility(uiHide);
         d.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int ui) {
-                if (ui == uiHide)
-                    return;
-                d.setSystemUiVisibility(uiHide);
+                if (ui != uiHide)
+                    d.setSystemUiVisibility(uiHide);
             }
         });
         setContentView(R.layout.main);
@@ -99,13 +97,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
         this.input = new AndroidInput(this, view);
         //audio preparation
-        if (Build.VERSION.SDK_INT >= 21) {
-            soundPool = Pool21();
-        } else {
-            // srcQuality: the sample-rate converter quality. Currently has no effect. Use 0
-            // for the default.
-            soundPool = PoolBase();
-        }
+        AudioAttributes audioAttrib = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+        soundPool = new SoundPool.Builder().setAudioAttributes(audioAttrib).setMaxStreams(1).build();
+
         manager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         //end audio
@@ -644,19 +639,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 notifyAll();
             }
         }
-    }
-
-    //audio implementation
-    @SuppressWarnings("deprecation")
-    private final SoundPool PoolBase() {
-        return new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-    }
-
-    @TargetApi(21)
-    private final SoundPool Pool21() {
-        AudioAttributes audioAttrib = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
-        return new SoundPool.Builder().setAudioAttributes(audioAttrib).setMaxStreams(1).build();
     }
 
     @Override

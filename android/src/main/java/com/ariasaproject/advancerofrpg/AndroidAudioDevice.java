@@ -21,17 +21,14 @@ class AndroidAudioDevice implements AudioDevice {
                 isMono ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT);
         if (Build.VERSION.SDK_INT >= 23) {
             track = forAPI23(minSize, samplingRate);
-        } else if (Build.VERSION.SDK_INT >= 21) {
-            track = forAPI21(minSize, samplingRate);
         } else {
             track = forBase(minSize, samplingRate);
         }
         track.play();
         latency = minSize / (isMono ? 1 : 2);
     }
-
-    @TargetApi(21)
-    private final AudioTrack forAPI21(final int size, final int samplingRate) {
+    
+    private final AudioTrack forBase(final int size, final int samplingRate) {
         AudioAttributes attributes = new AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_MUSIC)
                 .setUsage(AudioAttributes.USAGE_GAME).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
         AudioFormat format = new AudioFormat.Builder()
@@ -49,13 +46,6 @@ class AndroidAudioDevice implements AudioDevice {
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT).setSampleRate(samplingRate).build();
         return new AudioTrack.Builder().setAudioAttributes(attributes).setAudioFormat(format).setBufferSizeInBytes(size)
                 .setTransferMode(AudioTrack.MODE_STREAM).build();
-    }
-
-    @SuppressWarnings("deprecation")
-    private final AudioTrack forBase(final int size, final int samplingRate) {
-        return new AudioTrack(AudioManager.STREAM_MUSIC, samplingRate,
-                isMono ? AudioFormat.CHANNEL_OUT_MONO : AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT,
-                size, AudioTrack.MODE_STREAM);
     }
 
     @Override

@@ -13,7 +13,7 @@ android {
     buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.ariasaproject.advancerofrpg"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
