@@ -1,4 +1,4 @@
-apply plugins: 'application'
+apply plugin: 'application'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -6,5 +6,5 @@ dependencies {
 }
 
 application { 
-    application.mainClass = 'com.ariasaproject.advancerofrpg.Lwjgl3Application'
+    mainClass = 'com.ariasaproject.advancerofrpg.Lwjgl3Application'
 }
