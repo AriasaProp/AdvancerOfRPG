@@ -205,12 +205,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         }
         super.onPause();
     }
-
-    @Override
-    protected synchronized void onStop() {
-        super.onStop();
-    }
-
+    
     @Override
     protected synchronized void onDestroy() {
         net.destroy();
@@ -222,7 +217,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             }
         }
         soundPool.release();
-
         super.onDestroy();
     }
 
