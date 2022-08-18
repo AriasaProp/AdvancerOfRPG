@@ -63,7 +63,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     protected AndroidFiles files;
     protected AndroidNet net;
     protected AndroidClipboard clipboard;
-    int mayorV, minorV;
+    //int mayorV, minorV;
     volatile boolean resume = false, pause = false, destroy = false, resize = false, rendered = false, hasFocus = true,
             hasSurface = false, mExited = false;
     long frameStart = System.currentTimeMillis(), lastFrameTime = System.currentTimeMillis();
@@ -72,7 +72,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     Thread mainTGFThread;
     // graphics params
     private SurfaceHolder holder;
-    private AndroidTGF tgf;
+    private final AndroidTGF tgf = new OpenGLES30();
     //audio params
     private SoundPool soundPool;
     private AudioManager manager;
@@ -92,9 +92,12 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         });
         setContentView(R.layout.main);
         SurfaceView view = findViewById(R.id.root);
+        /*
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-
         ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
+        this.mayorV = (short) (configurationInfo.reqGlEsVersion >> 16);
+        this.minorV = (short) (configurationInfo.reqGlEsVersion & 0x0000ffff);
+        */
         this.input = new AndroidInput(this, view);
         //audio preparation
         AudioAttributes audioAttrib = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME)
@@ -105,7 +108,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         //end audio
         getFilesDir(); // workaround for Android bug #10515463
-
         this.files = new AndroidFiles(this);
         this.net = new AndroidNet(this);
         this.clipboard = new AndroidClipboard(this);
@@ -114,26 +116,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             input.setKeyboardAvailable(true);
         // for graphics loop
         this.holder = view.getHolder();
-        this.mayorV = (short) (configurationInfo.reqGlEsVersion >> 16);
-        this.minorV = (short) (configurationInfo.reqGlEsVersion & 0x0000ffff);
-        switch (Math.min(3, mayorV)) {
-            default:
-            case 3:
-                tgf = new OpenGLES30();
-                break;
-            case 4://unknown func
-                tgf = new OpenGLES30();
-                break;
-        }
         GraphFunc.app = this;
         GraphFunc.tgf = tgf;
         mainTGFThread = new Thread(this, "GLThread");
         mainTGFThread.start();
-    }
-
-    @Override
-    protected synchronized void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -142,11 +128,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         resume = true;
         notifyAll();
         input.onResume();
-    }
-
-    @Override
-    public synchronized void onBackPressed() {
-        super.onBackPressed();
     }
 
     @Override
@@ -173,8 +154,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     @Override
     public synchronized void onWindowFocusChanged(final boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        this.hasFocus = hasFocus;
-        if (hasFocus) {
+        if (this.hasFocus = hasFocus) {
             //audio onResume
             synchronized (musics) {
                 for (int i = 0; i < musics.size(); i++) {
@@ -508,7 +488,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 }
                 if (newContext || mEglSurface == null) {
                     if (newContext) {
-                        final int[] attrib_list = {EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE};
+                        final int[] attrib_list = {EGL14.EGL_CONTEXT_CLIENT_VERSION, 3/*based system rendering opengles*/, EGL14.EGL_NONE};
                         mEglContext = EGL14.eglCreateContext(mEglDisplay, mEglConfig, EGL14.EGL_NO_CONTEXT, attrib_list, 0);
                         if (mEglContext == null || mEglContext == EGL14.EGL_NO_CONTEXT) {
                             mEglContext = null;
