@@ -464,17 +464,6 @@ class Lwjgl3GL30 implements TGF {
         return GL30.glClientWaitSync(sync, flags, timeout);
     }
 
-	@Override
-	public void glColorMask (boolean red, boolean green, boolean blue, boolean alpha) {
-		GL11.glColorMask(red, green, blue, alpha);
-	}
-
-	@Override
-    public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha) {
-
-        GL11.glColorMask(red, green, blue, alpha);
-    }
-
 	public void glCompileShader (int shader) {
 		GL20.glCompileShader(shader);
 	}
