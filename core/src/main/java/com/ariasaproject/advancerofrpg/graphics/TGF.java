@@ -611,8 +611,6 @@ public interface TGF {
 
     public void glClearStencil(int s);
 
-    public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha);
-
     public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border);
 
     public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height);
