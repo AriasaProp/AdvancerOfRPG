@@ -128,12 +128,6 @@ public class OpenGLES30 implements AndroidTGF {
     }
 
     @Override
-    public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha) {
-
-        GLES20.glColorMask(red, green, blue, alpha);
-    }
-
-    @Override
     public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height,
                                  int border) {
 
