@@ -276,8 +276,6 @@ public interface TGF {
     public static final int GL_MAX_RENDERBUFFER_SIZE = 0x84E8;
     public static final int GL_INVALID_FRAMEBUFFER_OPERATION = 0x0506;
     public static final int GL_VERTEX_PROGRAM_POINT_SIZE = 0x8642;
-    // open gl3
-
     public static final int GL_READ_BUFFER = 0x0C02;
     public static final int GL_UNPACK_ROW_LENGTH = 0x0CF2;
     public static final int GL_UNPACK_SKIP_ROWS = 0x0CF3;
@@ -610,7 +608,7 @@ public interface TGF {
     public void glClearDepth(float depth);
 
     public void glClearStencil(int s);
-
+    
     public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border);
 
     public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height);
@@ -736,9 +734,7 @@ public interface TGF {
     public void glReleaseShaderCompiler();
 
     public void glRenderbufferStorage(int target, int internalformat, int width, int height);
-
-    public void glSampleCoverage(float value, boolean invert);
-
+    
     public void glScissor(int x, int y, int width, int height);
 
     public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length);
@@ -1182,13 +1178,13 @@ public interface TGF {
 
     public void destroyMesh(final int[] outHandlers);
 
-    public boolean capabilitySwitch(final boolean enable, final int cap);
+    public void capabilitySwitch(final boolean enable, final int cap);
 
-    public boolean setDepthMask(final boolean depthMask);
+    public void setDepthMask(final boolean depthMask);
 
-    public boolean setDepthTest(final int depthFunction, final float depthRangeNear, final float depthRangeFar);
+    public void setDepthTest(final int depthFunction, final float depthRangeNear, final float depthRangeFar);
 
-    public boolean setBlending(final boolean enabled, final int sFactor, final int dFactor);
+    public void setBlending(final boolean enabled, final int sFactor, final int dFactor);
 
     public void clear();
 
