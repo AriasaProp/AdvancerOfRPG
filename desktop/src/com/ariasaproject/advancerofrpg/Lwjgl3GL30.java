@@ -62,19 +62,17 @@ class Lwjgl3GL30 implements TGF {
 	private IntBuffer intBuffer = null;
 
 	@Override
-    public boolean capabilitySwitch(final boolean enable, final int cap) {
-        if (enabledCaps.contains(cap) != enable) {
-            if (enable) {
-                GL11.glEnable(cap);
-                enabledCaps.add(cap);
-            } else {
-                GL11.glDisable(cap);
-                enabledCaps.removeValue(cap);
-            }
-            return true;
-        }
-        return false;
+  public void capabilitySwitch(final boolean enable, final int cap) {
+    if (enabledCaps.contains(cap) != enable) {
+      if (enable) {
+          GL11.glEnable(cap);
+          enabledCaps.add(cap);
+      } else {
+          GL11.glDisable(cap);
+          enabledCaps.removeValue(cap);
+      }
     }
+  }
 
 	@Override
     public void clear() {
@@ -455,31 +453,18 @@ class Lwjgl3GL30 implements TGF {
 	}
 
 	@Override
-    public void glClearStencil(int s) {
-        GL11.glClearStencil(s);
-    }
+  public void glClearStencil(int s) {
+      GL11.glClearStencil(s);
+  }
 
 	@Override
-    public int glClientWaitSync(long sync, int flags, long timeout) {
-        return GL30.glClientWaitSync(sync, flags, timeout);
-    }
-
-	public void glCompileShader (int shader) {
+  public int glClientWaitSync(long sync, int flags, long timeout) {
+      return GL30.glClientWaitSync(sync, flags, timeout);
+  }
+    
+  @Override
+	void glCompileShader (int shader) {
 		GL20.glCompileShader(shader);
-	}
-
-	public void glCompressedTexImage2D (int target, int level, int internalformat, int width, int height, int border,
-		int imageSize, Buffer data) {
-		if (data instanceof ByteBuffer) {
-			GL13.glCompressedTexImage2D(target, level, internalformat, width, height, border, (ByteBuffer)data);
-		} else {
-			throw new GdxRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
-		}
-	}
-
-	public void glCompressedTexSubImage2D (int target, int level, int xoffset, int yoffset, int width, int height, int format,
-		int imageSize, Buffer data) {
-		throw new GdxRuntimeException("not implemented");
 	}
 
 	@Override
@@ -697,11 +682,11 @@ class Lwjgl3GL30 implements TGF {
 	}
 
 	@Override
-    public void glDepthRangef(float near, float far) {
+  public void glDepthRangef(float near, float far) {
 
-        if (depthRangeNear != near || depthRangeFar != far)
-            GL20.glDepthRangef(near, far);
-    }
+    if (depthRangeNear != near || depthRangeFar != far)
+        GL20.glDepthRangef(near, far);
+  }
 
 	@Override
 	public void glDetachShader (int program, int shader) {
@@ -1840,17 +1825,11 @@ class Lwjgl3GL30 implements TGF {
     public boolean glIsShader (int shader) {
 		return GL20.glIsShader(shader);
 	}
-
-    @Override
-	public boolean glIsSync(long sync) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-    @Override
-    public boolean glIsSync(long sync) {
-        return GL30.glIsSync(sync);
-    }
+    
+  @Override
+  public boolean glIsSync(long sync) {
+      return GL30.glIsSync(sync);
+  }
 
     @Override
 	public boolean glIsTexture (int texture) {
@@ -2030,23 +2009,11 @@ class Lwjgl3GL30 implements TGF {
 		GL40.glResumeTransformFeedback();
 	}
 
-    @Override
-    public void glResumeTransformFeedback() {
-
-        GL30.glResumeTransformFeedback();
-    }
-
-    @Override
-	public void glSampleCoverage (float value, boolean invert) {
-		GL13.glSampleCoverage(value, invert);
-	}
-
-    @Override
-    public void glSampleCoverage(float value, boolean invert) {
-
-        GL13.glSampleCoverage(value, invert);
-    }
-
+  @Override
+  public void glResumeTransformFeedback() {
+    GL30.glResumeTransformFeedback();
+  }
+    
     @Override
 	public void glSamplerParameterf (int sampler, int pname, float param) {
 		GL33.glSamplerParameterf(sampler, pname, param);
@@ -3306,22 +3273,15 @@ class Lwjgl3GL30 implements TGF {
     }
 
     @Override
-    public boolean setBlending(final boolean enabled, final int sFactor, final int dFactor) {
+    public void setBlending(final boolean enabled, final int sFactor, final int dFactor) {
         boolean change = capabilitySwitch(enabled, GL11.GL_BLEND);
         if (enabled && (this.blendSFactor != sFactor || this.blendDFactor != dFactor)) {
             GL11.glBlendFunc(sFactor, dFactor);
             this.blendSFactor = sFactor;
             this.blendDFactor = dFactor;
-            change |= true;
         }
-        return change;
+        }
     }
-
-    @Override
-	public void setCullFace(int mode) {
-		// TODO Auto-generated method stub
-		
-	}
 
     @Override
     public void setCullFace(int mode) {
@@ -3332,70 +3292,36 @@ class Lwjgl3GL30 implements TGF {
     }
 
     @Override
-	public boolean setDepthMask(boolean depthMask) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-    @Override
-    public boolean setDepthMask(final boolean depthMask) {
-
-        if (this.depthMask != depthMask) {
-            GL11.glDepthMask(depthMask);
-            return true;
-        }
-        return false;
+    public void setDepthMask(final boolean depthMask) {
+      if (this.depthMask != depthMask)
+        GL11.glDepthMask(depthMask);
     }
 
     @Override
-	public boolean setDepthTest(int depthFunction, float depthRangeNear, float depthRangeFar) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-    @Override
-    public boolean setDepthTest(final int depthFunction, final float depthRangeNear, final float depthRangeFar) {
-
+    public void setDepthTest(final int depthFunction, final float depthRangeNear, final float depthRangeFar) {
         final boolean enable = depthFunction != 0;
-        boolean changed = capabilitySwitch(enable, GL11.GL_DEPTH_TEST);
+        capabilitySwitch(enable, GL11.GL_DEPTH_TEST);
         if (enable && (depthFunc != depthFunction || this.depthRangeNear != depthRangeNear
                 || this.depthRangeFar != depthRangeFar)) {
             if (depthFunc != depthFunction)
                 GL11.glDepthFunc(depthFunc = depthFunction);
             if (this.depthRangeNear != depthRangeNear || this.depthRangeFar != depthRangeFar)
                 GL20.glDepthRangef(this.depthRangeNear = depthRangeNear, this.depthRangeFar = depthRangeFar);
-            changed |= true;
         }
-        return changed;
     }
 
-    @Override
-	public boolean supportsExtension(String extension) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-    @Override
-    public boolean supportsExtension(String extension) {
-
-        if (extensions == null)
-            extensions = GL11.glGetString(GL11.GL_EXTENSIONS);
-        return extensions.contains(extension);
-    }
-
-    @Override
-	public boolean supportsRenderer(String renderer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-    @Override
-    public boolean supportsRenderer(String renderer) {
-
-        if (renderers == null)
-            renderers = GL11.glGetString(GL11.GL_RENDERER);
-        return renderers.contains(renderer);
-    }
+  @Override
+  public boolean supportsExtension(String extension) {
+      if (extensions == null)
+          extensions = GL11.glGetString(GL11.GL_EXTENSIONS);
+      return extensions.contains(extension);
+  }
+  @Override
+  public boolean supportsRenderer(String renderer) {
+      if (renderers == null)
+          renderers = GL11.glGetString(GL11.GL_RENDERER);
+      return renderers.contains(renderer);
+  }
 
     private FloatBuffer toFloatBuffer (float v[], int offset, int count) {
 		ensureBufferCapacity(count << 2);
