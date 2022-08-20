@@ -1,6 +1,5 @@
 package com.ariasaproject.advancerofrpg;
 
-import android.annotation.TargetApi;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.util.Log;
@@ -19,7 +18,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 
-@TargetApi(18)
+
 public class OpenGLES30 implements AndroidTGF {
     public static final String TAG = "GLES 3.0";
     // chaced data graphic function reset when invalidate
@@ -527,37 +526,26 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glRenderbufferStorage(int target, int internalformat, int width, int height) {
-
         GLES20.glRenderbufferStorage(target, internalformat, width, height);
     }
 
     @Override
-    public void glSampleCoverage(float value, boolean invert) {
-
-        GLES20.glSampleCoverage(value, invert);
-    }
-
-    @Override
     public void glScissor(int x, int y, int width, int height) {
-
         GLES20.glScissor(x, y, width, height);
     }
 
     @Override
     public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length) {
-
         GLES20.glShaderBinary(n, shaders, binaryformat, binary, length);
     }
 
     @Override
     public void glStencilFunc(int func, int ref, int mask) {
-
         GLES20.glStencilFunc(func, ref, mask);
     }
 
     @Override
     public void glStencilFuncSeparate(int face, int func, int ref, int mask) {
-
         GLES20.glStencilFuncSeparate(face, func, ref, mask);
     }
 
@@ -2001,7 +1989,7 @@ public class OpenGLES30 implements AndroidTGF {
     }
 
     @Override
-    public boolean capabilitySwitch(final boolean enable, final int cap) {
+    public void capabilitySwitch(final boolean enable, final int cap) {
         if (enabledCaps.contains(cap) != enable) {
             if (enable) {
                 GLES20.glEnable(cap);
@@ -2010,47 +1998,37 @@ public class OpenGLES30 implements AndroidTGF {
                 GLES20.glDisable(cap);
                 enabledCaps.removeValue(cap);
             }
-            return true;
         }
-        return false;
     }
 
     @Override
-    public boolean setDepthMask(final boolean depthMask) {
-
-        if (this.depthMask != depthMask) {
+    public void setDepthMask(final boolean depthMask) {
+        if (this.depthMask != depthMask)
             GLES20.glDepthMask(depthMask);
-            return true;
-        }
-        return false;
+        
     }
 
     @Override
-    public boolean setDepthTest(final int depthFunction, final float depthRangeNear, final float depthRangeFar) {
-
+    public void setDepthTest(final int depthFunction, final float depthRangeNear, final float depthRangeFar) {
         final boolean enable = depthFunction != 0;
-        boolean changed = capabilitySwitch(enable, GLES20.GL_DEPTH_TEST);
+        capabilitySwitch(enable, GLES20.GL_DEPTH_TEST);
         if (enable && (depthFunc != depthFunction || this.depthRangeNear != depthRangeNear
                 || this.depthRangeFar != depthRangeFar)) {
             if (depthFunc != depthFunction)
                 GLES20.glDepthFunc(depthFunc = depthFunction);
             if (this.depthRangeNear != depthRangeNear || this.depthRangeFar != depthRangeFar)
                 GLES20.glDepthRangef(this.depthRangeNear = depthRangeNear, this.depthRangeFar = depthRangeFar);
-            changed |= true;
         }
-        return changed;
     }
 
     @Override
-    public boolean setBlending(final boolean enabled, final int sFactor, final int dFactor) {
-        boolean change = capabilitySwitch(enabled, GLES20.GL_BLEND);
+    public void setBlending(final boolean enabled, final int sFactor, final int dFactor) {
+        capabilitySwitch(enabled, GLES20.GL_BLEND);
         if (enabled && (this.blendSFactor != sFactor || this.blendDFactor != dFactor)) {
             GLES20.glBlendFunc(sFactor, dFactor);
             this.blendSFactor = sFactor;
             this.blendDFactor = dFactor;
-            change |= true;
         }
-        return change;
     }
 
     @Override
