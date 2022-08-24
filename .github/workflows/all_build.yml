@@ -17,7 +17,7 @@ jobs:
     - name: Gradle Build
       run: |
         chmod +x ./gradlew
-        ./gradlew build --scan
+        ./gradlew build
     - name: Get Path
       id: path
       run: |
