@@ -41,6 +41,7 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 //AndroidApplication include graphics and Application
 public class AndroidApplication extends Activity implements Application, Runnable, Graphics, Callback, Audio {
@@ -63,7 +64,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     protected AndroidFiles files;
     protected AndroidNet net;
     protected AndroidClipboard clipboard;
-    //int mayorV, minorV;
+    int mayorV, minorV;
     volatile boolean resume = false, pause = false, destroy = false, resize = false, rendered = false, hasFocus = true,
             hasSurface = false, mExited = false;
     long frameStart = System.currentTimeMillis(), lastFrameTime = System.currentTimeMillis();
@@ -92,12 +93,12 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         });
         setContentView(R.layout.main);
         SurfaceView view = findViewById(R.id.root);
-        /*
+        
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
         this.mayorV = (short) (configurationInfo.reqGlEsVersion >> 16);
         this.minorV = (short) (configurationInfo.reqGlEsVersion & 0x0000ffff);
-        */
+        
         this.input = new AndroidInput(this, view);
         //audio preparation
         AudioAttributes audioAttrib = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_GAME)
@@ -131,23 +132,28 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     }
 
     @Override
-    public void restart() {
+    public synchronized void restart() {
         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-                startActivity(getIntent());
-            }
+          @Override
+          public void run() {
+            finish();
+            try {
+                while(!mExited)
+                  wait();
+            } catch(Throwable ignore) {}
+            startActivity(getIntent());
+          }
         });
+          
     }
 
     @Override
-    public void exit() {
+    public synchronized void exit() {
         runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
+          @Override
+          public void run() {
+            finish();
+          }
         });
     }
 
@@ -386,9 +392,8 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         wantRender = false;
                         notifyAll();
                     }
-                    if (rendered) {
+                    if (rendered)
                         wantRender = true;
-                    }
                     // egl destroy request
                     if (mEglSurface != null && (eglDestroyRequest > 0 || !hasSurface)) {
                         EGL14.eglMakeCurrent(mEglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
@@ -444,12 +449,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 
                     if (mEglConfig == null) {
                         // choose best config
-                        final int[] s_configAttribs2 = {EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, // rgb color
-                                // buffer
-                                // should
-                                // exist
-                                EGL14.EGL_NONE // end config
-                        };
+                        final int[] s_configAttribs2 = {EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE };
                         EGL14.eglChooseConfig(mEglDisplay, s_configAttribs2, 0, null, 0, 0, temp, 0);
                         if (temp[0] <= 0)
                             throw new IllegalArgumentException("No configs match with configSpec");
@@ -482,7 +482,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 }
                 if (newContext || mEglSurface == null) {
                     if (newContext) {
-                        final int[] attrib_list = {EGL14.EGL_CONTEXT_CLIENT_VERSION, 3/*based system rendering opengles*/, EGL14.EGL_NONE};
+                        final int[] attrib_list = {EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE};
                         mEglContext = EGL14.eglCreateContext(mEglDisplay, mEglConfig, EGL14.EGL_NO_CONTEXT, attrib_list, 0);
                         if (mEglContext == null || mEglContext == EGL14.EGL_NO_CONTEXT) {
                             mEglContext = null;
@@ -498,13 +498,11 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         throw new RuntimeException("Make EGL failed: " + Integer.toHexString(EGL14.eglGetError()));
 
                     if (newContext) {
-
                         if (created)
                             tgf.validateAll();
-                        else {
+                        else
                             appl.create();
-                        }
-
+                       
                         appl.resize(width, height);
                         lresize = false;
                         lastFrameTime = System.currentTimeMillis();
@@ -527,7 +525,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         }
                         lifecycleListeners.end();
                     }
-                    //appl.resume();
+                    appl.resume();
                     time = frameStart = lastFrameTime = 0;
                 }
                 if (time - frameStart > 1000l) {

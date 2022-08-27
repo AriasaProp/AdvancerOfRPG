@@ -18,17 +18,17 @@ jobs:
       run: |
         chmod +x ./gradlew
         ./gradlew build
-    - name: Get Path
-      id: path
+    - name: Get Output
+      id: out-path
       run: |
         path0=$(find ${{github.workspace}}/android/build/outputs/apk -name '*.apk' -type f | head -1)
-        echo "::set-output name=path0::$path0"
         path1=$(find ${{github.workspace}}/desktop/build/distributions/ -name '*.zip' -type f | head -1)
+        echo "::set-output name=path0::$path0"
         echo "::set-output name=path1::$path1"
     - name: Publish Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: outputs
+        name: All-Output
         path: |
-          ${{ steps.path.outputs.path0 }}
-          ${{ steps.path.outputs.path1 }}
+          ${{ steps.out-path.outputs.path0 }}
+          ${{ steps.out-path.outputs.path1 }}

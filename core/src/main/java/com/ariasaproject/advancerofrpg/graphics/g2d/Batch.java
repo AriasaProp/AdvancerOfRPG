@@ -55,14 +55,16 @@ public class Batch implements Disposable {
     private int blendDstFunc = TGF.GL_ONE_MINUS_SRC_ALPHA;
 
     public Batch() {
-        this(500);
+        this(300);
     }
 
     public Batch(int size) {
         // 32767 is max vertex index, so 32767 / 4 vertices per sprite = 8191 sprites max.
         if (size > 8191)
             throw new IllegalArgumentException("Can't have more than 8191 sprites per batch: " + size);
+        GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, 1, 0, 0, 1);
         mesh = new Mesh(false, true, size * 5, size * 6, new VertexAttribute(Usage.Position, 2, "a_position"), new VertexAttribute(Usage.ColorPacked, 4, "a_color"), new VertexAttribute(Usage.TextureCoordinates, 2, "a_texCoord"));
+        
         projectionMatrix.setToOrtho2D(0, 0, GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight());
         vertices = new float[size * Sprite.SPRITE_SIZE];
         int len = size * 6;
@@ -77,7 +79,7 @@ public class Batch implements Disposable {
             indices[i + 5] = j;
         }
         mesh.setIndices(indices);
-
+        GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, 1, 1, 0, 1);
         shader = new ShaderProgram(Files.readClasspathString("shader/batch.shaderprogram"), "");
     }
 

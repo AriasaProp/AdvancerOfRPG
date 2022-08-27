@@ -30,14 +30,15 @@ public class Lwjgl3Application implements Application {
 
 	static {
 		System.setProperty("org.lwjgl.input.Mouse.allowNegativeMouseCoords", "true");
-        try {
-            System.loadLibrary("ext");
-        } catch (Exception e) {
-            System.out.println("failed to load library : ext");
-            System.exit(0);
-        }
+		try {
+		    System.loadLibrary("ext");
+		} catch (Exception e) {
+		    System.out.println("failed to load library : ext");
+		    System.exit(0);
+		}
 	}
 	public static void main(String[] args) {
+		System.out.println("Started Application");
 		new Lwjgl3Application();
 	}
 	
@@ -58,7 +59,7 @@ public class Lwjgl3Application implements Application {
 	private static GLVersion glVersion;
 	private static Callback glDebugCallback;
 
-	public Lwjgl3Application(ApplicationListener listener, Lwjgl3ApplicationConfiguration config) {
+	public Lwjgl3Application() {
 		if (errorCallback == null) {
 			errorCallback = GLFWErrorCallback.createPrint(System.err);
 			GLFW.glfwSetErrorCallback(errorCallback);
@@ -67,9 +68,9 @@ public class Lwjgl3Application implements Application {
 				throw new RuntimeException("Unable to initialize GLFW");
 			}
 		}
-		
+		ApplicationListener listener = new ApplicationListener();
+		this.config = new Lwjgl3ApplicationConfiguration();
 		if (config.title == null) config.title = listener.getClass().getSimpleName();
-		this.config = config = Lwjgl3ApplicationConfiguration.copy(config);
 		GraphFunc.app = this;
 		if (!config.disableAudio) {
 			try {
@@ -88,109 +89,92 @@ public class Lwjgl3Application implements Application {
 		Lwjgl3Window window = createWindow(config, listener, 0);
 		windows.add(window);
 		try {
-			loop();
-			cleanupWindows();
-		} catch(Throwable t) {
-			if (t instanceof RuntimeException)
-				throw (RuntimeException) t;
-			else
-				throw new RuntimeException(t);
-		} finally {
-			cleanup();
-		}
-	}
+			Array<Lwjgl3Window> closedWindows = new Array<Lwjgl3Window>();
+			while (running && windows.size > 0) {
+				// FIXME put it on a separate thread
+				audio.update();
 
-	protected void loop() {
-		Array<Lwjgl3Window> closedWindows = new Array<Lwjgl3Window>();
-		while (running && windows.size > 0) {
-			// FIXME put it on a separate thread
-			audio.update();
-
-			boolean haveWindowsRendered = false;
-			closedWindows.clear();
-			for (Lwjgl3Window window : windows) {
-				window.makeCurrent();
-				currentWindow = window;
-				synchronized (lifecycleListeners) {
-					haveWindowsRendered |= window.update();
-				}
-				if (window.shouldClose()) {
-					closedWindows.add(window);
-				}
-			}
-			GLFW.glfwPollEvents();
-
-			boolean shouldRequestRendering;
-			synchronized (runnables) {
-				shouldRequestRendering = runnables.size > 0;
-				executedRunnables.clear();
-				executedRunnables.addAll(runnables);
-				runnables.clear();
-			}
-			for (Runnable runnable : executedRunnables) {
-				runnable.run();
-			}
-			if (shouldRequestRendering){
-				// Must follow Runnables execution so changes done by Runnables are reflected
-				// in the following render.
+				boolean haveWindowsRendered = false;
+				closedWindows.clear();
 				for (Lwjgl3Window window : windows) {
-					if (!window.getGraphics().isContinuousRendering())
-						window.requestRendering();
-				}
-			}
-			
-			for (Lwjgl3Window closedWindow : closedWindows) {
-				if (windows.size == 1) {
-					// Lifecycle listener methods have to be called before ApplicationListener methods. The
-					// application will be disposed when _all_ windows have been disposed, which is the case,
-					// when there is only 1 window left, which is in the process of being disposed.
-					for (int i = lifecycleListeners.size - 1; i >= 0; i--) {
-						LifecycleListener l = lifecycleListeners.get(i);
-						l.pause();
-						l.dispose();
+					window.makeCurrent();
+					currentWindow = window;
+					synchronized (lifecycleListeners) {
+						haveWindowsRendered |= window.update();
 					}
-					lifecycleListeners.clear();
+					if (window.shouldClose()) {
+						closedWindows.add(window);
+					}
 				}
-				closedWindow.dispose();
+				GLFW.glfwPollEvents();
 
-				windows.removeValue(closedWindow, false);
-			}
+				boolean shouldRequestRendering;
+				synchronized (runnables) {
+					shouldRequestRendering = runnables.size > 0;
+					executedRunnables.clear();
+					executedRunnables.addAll(runnables);
+					runnables.clear();
+				}
+				for (Runnable runnable : executedRunnables) {
+					runnable.run();
+				}
+				if (shouldRequestRendering){
+					// Must follow Runnables execution so changes done by Runnables are reflected
+					// in the following render.
+					for (Lwjgl3Window window : windows) {
+						if (!window.getGraphics().isContinuousRendering())
+							window.requestRendering();
+					}
+				}
 
-			if (!haveWindowsRendered) {
-				// Sleep a few milliseconds in case no rendering was requested
-				// with continuous rendering disabled.
-				try {
-					Thread.sleep(1000 / config.idleFPS);
-				} catch (InterruptedException e) {
-					// ignore
+				for (Lwjgl3Window closedWindow : closedWindows) {
+					if (windows.size == 1) {
+						for (int i = lifecycleListeners.size - 1; i >= 0; i--) {
+							LifecycleListener l = lifecycleListeners.get(i);
+							l.pause();
+							l.dispose();
+						}
+						lifecycleListeners.clear();
+					}
+					closedWindow.dispose();
+
+					windows.removeValue(closedWindow, false);
+				}
+
+				if (!haveWindowsRendered) {
+					try {
+						Thread.sleep(1000 / config.idleFPS);
+					} catch (InterruptedException e) {
+						// ignore
+					}
 				}
 			}
-		}
-	}
-
-	protected void cleanupWindows() {
-		synchronized (lifecycleListeners) {
-			for(LifecycleListener lifecycleListener : lifecycleListeners){
-				lifecycleListener.pause();
-				lifecycleListener.dispose();
+			// window cleanup
+			synchronized (lifecycleListeners) {
+				for(LifecycleListener lifecycleListener : lifecycleListeners){
+					lifecycleListener.pause();
+					lifecycleListener.dispose();
+				}
 			}
+			for (Lwjgl3Window window : windows) {
+				window.dispose();
+			}
+			windows.clear();
+		} catch(Throwable e) {
+			for (StackTraceElement s : e.getStackTrace())
+				error(TAG, s.toString());
+			error(TAG, "error " + e.getMessage());
+		} finally {
+			Lwjgl3Cursor.disposeSystemCursors();
+			audio.dispose();
+			errorCallback.free();
+			errorCallback = null;
+			if (glDebugCallback != null) {
+				glDebugCallback.free();
+				glDebugCallback = null;
+			}
+			GLFW.glfwTerminate();
 		}
-		for (Lwjgl3Window window : windows) {
-			window.dispose();
-		}
-		windows.clear();
-	}
-	
-	protected void cleanup() {
-		Lwjgl3Cursor.disposeSystemCursors();
-		audio.dispose();
-		errorCallback.free();
-		errorCallback = null;
-		if (glDebugCallback != null) {
-			glDebugCallback.free();
-			glDebugCallback = null;
-		}
-		GLFW.glfwTerminate();
 	}
 
 	@Override
@@ -280,19 +264,7 @@ public class Lwjgl3Application implements Application {
 	}
 
 	void createWindow(Lwjgl3Window window, Lwjgl3ApplicationConfiguration config, long sharedContext) {
-		long windowHandle = createGlfwWindow(config, sharedContext);
-		window.create(windowHandle);
-		window.setVisible(config.initialVisible);
-
-		for (int i = 0; i < 2; i++) {
-			GL11.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b,
-					config.initialBackgroundColor.a);
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			GLFW.glfwSwapBuffers(windowHandle);
-		}
-	}
-
-	static long createGlfwWindow(Lwjgl3ApplicationConfiguration config, long sharedContextWindow) {
+		//create GLFW with spesification
 		GLFW.glfwDefaultWindowHints();
 		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, config.windowResizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
@@ -330,7 +302,6 @@ public class Lwjgl3Application implements Application {
 		}
 
 		long windowHandle = 0;
-		
 		if(config.fullscreenMode != null) {
 			GLFW.glfwWindowHint(GLFW.GLFW_REFRESH_RATE, config.fullscreenMode.refreshRate);
 			windowHandle = GLFW.glfwCreateWindow(config.fullscreenMode.width, config.fullscreenMode.height, config.title, config.fullscreenMode.getMonitor(), sharedContextWindow);
@@ -338,9 +309,8 @@ public class Lwjgl3Application implements Application {
 			GLFW.glfwWindowHint(GLFW.GLFW_DECORATED, config.windowDecorated? GLFW.GLFW_TRUE: GLFW.GLFW_FALSE);
 			windowHandle = GLFW.glfwCreateWindow(config.windowWidth, config.windowHeight, config.title, 0, sharedContextWindow);			
 		}
-		if (windowHandle == 0) {
+		if (windowHandle == 0)
 			throw new RuntimeException("Couldn't create window");
-		}
 		Lwjgl3Window.setSizeLimits(windowHandle, config.windowMinWidth, config.windowMinHeight, config.windowMaxWidth, config.windowMaxHeight);
 		if (config.fullscreenMode == null) {
 			if (config.windowX == -1 && config.windowY == -1) {
@@ -363,38 +333,37 @@ public class Lwjgl3Application implements Application {
 				GLFW.glfwSetWindowPos(windowHandle,
 					    areaXPos.get(0) + areaWidth.get(0) / 2 - windowWidth / 2,
 					    areaYPos.get(0) + areaHeight.get(0) / 2 - windowHeight / 2);
-			} else {
+			} else
 				GLFW.glfwSetWindowPos(windowHandle, config.windowX, config.windowY);
-			}
 
-			if (config.windowMaximized) {
+			if (config.windowMaximized)
 				GLFW.glfwMaximizeWindow(windowHandle);
-			}
 		}
-		if (config.windowIconPaths != null) {
+		if (config.windowIconPaths != null)
 			Lwjgl3Window.setIcon(windowHandle, config.windowIconPaths, config.windowIconFileType);
-		}
 		GLFW.glfwMakeContextCurrent(windowHandle);
 		GLFW.glfwSwapInterval(config.vSyncEnabled ? 1 : 0);
 		GL.createCapabilities();
-
-		initiateGL();
+		String versionString = GL11.glGetString(GL11.GL_VERSION);
+		String vendorString = GL11.glGetString(GL11.GL_VENDOR);
+		String rendererString = GL11.glGetString(GL11.GL_RENDERER);
 		if (!glVersion.isVersionEqualToOrHigher(3, 0))
 			throw new RuntimeException("OpenGL 2.0 or higher with the FBO extension is required. OpenGL version: "
 					+ GL11.glGetString(GL11.GL_VERSION) + "\n" + glVersion.getDebugVersionString());
-
 		if (config.debug) {
 			glDebugCallback = GLUtil.setupDebugMessageCallback(config.debugStream);
 			setGLDebugMessageControl(GLDebugMessageSeverity.NOTIFICATION, false);
 		}
+		//end
+		window.create(windowHandle);
+		window.setVisible(config.initialVisible);
 
-		return windowHandle;
-	}
-
-	private static void initiateGL () {
-		String versionString = GL11.glGetString(GL11.GL_VERSION);
-		String vendorString = GL11.glGetString(GL11.GL_VENDOR);
-		String rendererString = GL11.glGetString(GL11.GL_RENDERER);
+		for (int i = 0; i < 2; i++) {
+			GL11.glClearColor(config.initialBackgroundColor.r, config.initialBackgroundColor.g, config.initialBackgroundColor.b,
+					config.initialBackgroundColor.a);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			GLFW.glfwSwapBuffers(windowHandle);
+		}
 	}
 
 	public enum GLDebugMessageSeverity {
