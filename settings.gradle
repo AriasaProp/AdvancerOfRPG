@@ -1,2 +1,2 @@
-include ':core', ':android', ':desktop'
+include ':core', ':native-core', ':android', ':desktop'
 rootProject.name = 'Advancer Of RPG'
