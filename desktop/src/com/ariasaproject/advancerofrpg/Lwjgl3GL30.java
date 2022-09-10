@@ -3363,26 +3363,13 @@ class Lwjgl3GL30 implements TGF {
     }
 
     @Override
-	public boolean validMesh(int[] handlers) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-    @Override
     public boolean validMesh(int[] handlers) {
-
         if (meshes.contains(handlers, false))
             return true;
         meshes.removeValue(handlers, false);
         Arrays.fill(handlers, -1);
         return false;
     }
-
-    @Override
-	public boolean validShaderProgram(int[] handlers) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
     @Override
     public boolean validShaderProgram(int[] handlers) {

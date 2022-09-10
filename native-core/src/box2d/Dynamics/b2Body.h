@@ -27,7 +27,6 @@ enum b2BodyType {
 };
 
 struct b2BodyDef {
-
     b2BodyDef() {
         userData = NULL;
         position.Set(0.0f, 0.0f);
@@ -263,55 +262,37 @@ private:
         e_toiFlag = 0x0040
     };
 
-    b2Body(const b2BodyDef *bd, b2World *world);
-
+    b2Body(const b2BodyDef *, b2World *);
     ~b2Body();
 
     void SynchronizeFixtures();
-
     void SynchronizeTransform();
 
 
     bool ShouldCollide(const b2Body *other) const;
-
     void Advance(float32 t);
-
     b2BodyType m_type;
-
     uint16 m_flags;
-
     int32 m_islandIndex;
-
     b2Transform m_xf;
     b2Sweep m_sweep;
-
     b2Vec2 m_linearVelocity;
     float32 m_angularVelocity;
-
     b2Vec2 m_force;
     float32 m_torque;
-
     b2World *m_world;
     b2Body *m_prev;
     b2Body *m_next;
-
     b2Fixture *m_fixtureList;
     int32 m_fixtureCount;
-
     b2JointEdge *m_jointList;
     b2ContactEdge *m_contactList;
-
     float32 m_mass, m_invMass;
-
-
     float32 m_I, m_invI;
-
     float32 m_linearDamping;
     float32 m_angularDamping;
     float32 m_gravityScale;
-
     float32 m_sleepTime;
-
     void *m_userData;
 };
 
