@@ -1,4 +1,4 @@
-name: Build & Publish Android Artifacts
+name: Build Native-Core
 
 on: [workflow_dispatch]
 
