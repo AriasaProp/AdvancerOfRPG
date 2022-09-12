@@ -19,4 +19,4 @@ jobs:
       with:
         gradle-version: 6.1.1
     - name: Build Gradle
-      run: gradle :native-core:build
+      run: gradle :native-core:assemble
