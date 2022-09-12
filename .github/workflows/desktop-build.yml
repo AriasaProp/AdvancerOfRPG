@@ -1,11 +1,6 @@
 name: Build & Publish Dekstop Artifacts
 
-on:
- push:
-   paths:
-    - 'desktop/**'
-    - 'core/**'
-    - 'native-core/**'
+on: [workflow_dispatch]
 
 jobs:
   build:
