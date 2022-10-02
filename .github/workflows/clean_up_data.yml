@@ -6,13 +6,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - name: Purge artifacts
-        uses: kolpav/purge-artifacts-action@v1
+      - name: Clean up previous workflow runs
+        uses: egmacke/action-cleanup-workflow-runs@v1.2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          expire-in: 1days
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2.0.3
-        with:
-          retain_days: 0
-          keep_minimum_runs: 1
+          retain: 1
