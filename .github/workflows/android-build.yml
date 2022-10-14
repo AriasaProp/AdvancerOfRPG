@@ -15,7 +15,9 @@ jobs:
         distribution: 'temurin'
         cache: 'gradle'
     - name: Build Gradle
-      run: ./gradlew :android:build
+      run: |
+        chmod +x gradlew
+        ./gradlew :android:build
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
