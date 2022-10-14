@@ -23,5 +23,5 @@ jobs:
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: APK
-        path: ${{github.workspace}}/android/build/outputs/apk
+        name: buildAPK
+        path: ${{github.workspace}}/android/build/
