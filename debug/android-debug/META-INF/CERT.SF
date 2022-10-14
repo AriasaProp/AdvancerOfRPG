@@ -1,0 +1,203 @@
+Signature-Version: 1.0
+Created-By: Android Gradle 4.0.2
+SHA-256-Digest-Manifest: H3lrhNPadLfZIIbmnWcm9k6yRK1TFuVBBsAnEtK4xic=
+X-Android-APK-Signed: 2
+
+Name: AndroidManifest.xml
+SHA-256-Digest: aIvsUd5AkZ9No+9GBtdGJxuTc7SRaeulGe4pKsvZZkE=
+
+Name: assets/fonts/Fixedsys500c.fnt
+SHA-256-Digest: KLQK6Q2264pxeZfZyyK8oj+VXJlIXzPIjO1tAkgALHE=
+
+Name: assets/fonts/Fixedsys500c.png
+SHA-256-Digest: hT5hkHM6t0U5aHzO/Utys0HsVpsNWOSAaYpVcb0edJc=
+
+Name: assets/fonts/arial-15.fnt
+SHA-256-Digest: n3BQpAizuxnMEFMXrUtS//oiQccKmnctuySRCGJ/Y50=
+
+Name: assets/fonts/arial-15.png
+SHA-256-Digest: c6k+DlMi+y9149SOhgZeuvBzOAtCPVSfQmBf3Dw4MPU=
+
+Name: assets/model/KnightCharacter.g3db
+SHA-256-Digest: ddsobgDKehsNggdmeEMxiqSUvn1tL1pWNKelwT/nSMo=
+
+Name: assets/model/diffuse.png
+SHA-256-Digest: dVvg84ARgMe0/3LU3B0E/1HtDB2MdDRKZo9IJaXxfk8=
+
+Name: assets/model/model.dae
+SHA-256-Digest: v/tYrP1yxA+jd4FARzTos3V7CrFubu5ATe8d2Wqt30U=
+
+Name: assets/shader/skybox.shaderprogram
+SHA-256-Digest: mDPGAJbZXeykGWiQvuZb5f0Yd8RT09IfY8oWxAFCL3A=
+
+Name: assets/shader/skybox_unOptimized.shaderprogram
+SHA-256-Digest: sD3mnlt27bQDH3NmyLAGgCd8OCtp5vqZhrq2IhAV3H0=
+
+Name: assets/uiskin/system/arial_32px.fnt
+SHA-256-Digest: AowyByy9L98HzwWVcReHjIbvxBYUSZCg9TYTM9vrl+Y=
+
+Name: assets/uiskin/system/calibri_30px.fnt
+SHA-256-Digest: vMoUwZohpBxvRaUDfiuKzCwLZN1bJidQsIsHT7gtAnY=
+
+Name: assets/uiskin/system/game-continue_50px.fnt
+SHA-256-Digest: YlIpWzStQsQjzDU18xIkqWTXrOIzydbLRzo/MvYuKgc=
+
+Name: assets/uiskin/system/goudy-med_40px.fnt
+SHA-256-Digest: psV0Heyz24/Qbke1d9hMhH9wutiaj55OZORkJA3dG8Y=
+
+Name: assets/uiskin/system/immortal_60px.fnt
+SHA-256-Digest: rKCHC41seYDHGFNyea2bSKB6BvLFPzKYuCEEgksL/3c=
+
+Name: assets/uiskin/system/sans-serif_30px.fnt
+SHA-256-Digest: +BnR9nCcuYiuB6t54s8q7FnujlpFhLPCljl+20dCcBQ=
+
+Name: assets/uiskin/system/systemskin.atlas
+SHA-256-Digest: B506X7nb++CRxXyevOZlHNuaDLoeSFwzR98BryCV3qI=
+
+Name: assets/uiskin/system/systemskin.json
+SHA-256-Digest: Gv5Wd/x+kuEU5nnn2jOUeBwuZi+M92Tf2NsZQKMPFGs=
+
+Name: assets/uiskin/system/systemskin.png
+SHA-256-Digest: 2sC1FjkIESkXBKLlGtnIwC1elKLrHKCQAI8lh8ZqZkU=
+
+Name: assets/uiskin/visui/default.fnt
+SHA-256-Digest: 6/oHXGqxrIx8aDaFbd6uEikiI9o91jpjbeEBjbY4aRM=
+
+Name: assets/uiskin/visui/font-small.fnt
+SHA-256-Digest: 1L1TLug/uOy1hvyqdWflijYVH1O2G14AYXfApT2s21s=
+
+Name: assets/uiskin/visui/uiskin.atlas
+SHA-256-Digest: HWGUcWEJ3fZIK7b1p9mCZhrL9ASZPww1i02utL2iqAA=
+
+Name: assets/uiskin/visui/uiskin.json
+SHA-256-Digest: QakL09cRIfT2BuyySTCIz1i7M9HnCrE2GscQFDTERfs=
+
+Name: assets/uiskin/visui/uiskin.png
+SHA-256-Digest: vRGrjtZHgAjFlZVmTX7KZ/f9kKemwqW9QNQbCxmTTic=
+
+Name: classes.dex
+SHA-256-Digest: gmxhINpL6jUUAE94AvspvUiNx6eShvopKMlf2doxUGU=
+
+Name: classes2.dex
+SHA-256-Digest: LpeRgw1I5gvRYimfj1SJIsz+ERIy/2jx8U2x448KMF4=
+
+Name: fonts/Fixedsys500c.fnt
+SHA-256-Digest: bKmz/Rpd78XiWc25fG3j5fZtL7kBNi9t0uLteHYTi6s=
+
+Name: fonts/Fixedsys500c.png
+SHA-256-Digest: z9Iw98TeOCW7S/83WKbjeDiWtwKrCZ9cJcnyoPFClQA=
+
+Name: fonts/arial-15.fnt
+SHA-256-Digest: aLKVP9jdi3Vk8rfDWOAr6o/sATRbYJc6/3H9U4cRmns=
+
+Name: fonts/arial-15.png
+SHA-256-Digest: M5TIKI/ATxb4az7mhO+qYDbpsl9EPVfBhpwWnkMc8E8=
+
+Name: model/KnightCharacter.g3db
+SHA-256-Digest: 3GLa8NHbsCpjlHP19SYzUyfa3Wx/1X+eNj0cBwTSF7U=
+
+Name: model/diffuse.png
+SHA-256-Digest: HGu7FBKGlel8sFhWqRwsWLQULzsdy0rE8YeLRYhoFYk=
+
+Name: model/model.dae
+SHA-256-Digest: YfC0GB7WmvNEIdp4Xj54sEIVJhQNvvdccsFUVQRKu2A=
+
+Name: res/drawable-anydpi-v26/ic_launcher.xml
+SHA-256-Digest: fd4+ELvzlRsOPAjwBxqi1IX9N3Z9HMIS5sthnG2mzMA=
+
+Name: res/drawable-anydpi-v26/ic_launcher_foreground.xml
+SHA-256-Digest: ZcQYWO2E3axBY7G78H8RVyX63Im2SDVVv0lgr1v9gl0=
+
+Name: res/drawable-hdpi-v4/ic_launcher.png
+SHA-256-Digest: 7R6sMFiPz0gSyO+M6Yj5OUYThSpQ7ZSTqnA5Z9feFl0=
+
+Name: res/drawable-ldpi-v4/ic_launcher.png
+SHA-256-Digest: UP13gVfisQvbxKnoniHcEYIdE6dIqCLtPTvhlOANHpE=
+
+Name: res/drawable-mdpi-v4/ic_launcher.png
+SHA-256-Digest: lYwiUtzGdl1EdWe289d9kdVdFz8YfcLhvqnYYo+8yaA=
+
+Name: res/drawable-xhdpi-v4/ic_launcher.png
+SHA-256-Digest: Ls/bTSRuL7l/rzfCbYxIVuvjgCtFTGT2CM881biVpmc=
+
+Name: res/drawable-xxhdpi-v4/ic_launcher.png
+SHA-256-Digest: aZx6ItI/a7MnY44gJq4d4btzKwdm5bQZwe+lo8uEcIs=
+
+Name: res/drawable-xxxhdpi-v4/ic_launcher.png
+SHA-256-Digest: kAv/PhZDZjSWuKy3BmiJti2OP4IqCHBOcCG8h+2qJ1A=
+
+Name: res/drawable/ic_launcher.png
+SHA-256-Digest: 32h3vgzg9PjzBylvKxFcujxV7dQkO5dQ+RiycJ1Oegg=
+
+Name: res/layout/main.xml
+SHA-256-Digest: jibwrDWqZPvT1KE/0rEkncS5Al3hRP4Htpkpcf/w2zk=
+
+Name: resources.arsc
+SHA-256-Digest: SYcC2nHvt0tgM3yyWOOj4ODxIxkbSmAVSinyI0cb9w8=
+
+Name: shader/batch.shaderprogram
+SHA-256-Digest: UT/mqb/tfQsU6uhO5eygCFXiCU/CsGfptu4l4xSAQ5I=
+
+Name: shader/depth.shaderprogram
+SHA-256-Digest: AgDIQ7LRHFiWhI4X6AWHud8kOg6XcQARbUwHZ6EzYxo=
+
+Name: shader/model.shaderprogram
+SHA-256-Digest: IJx2y1ZNstOxbQ805jz8ZAbOOheFR1FDoi3dKt1lYqc=
+
+Name: shader/shape.shaderprogram
+SHA-256-Digest: 1G4gbrdS0RuENRkbKggxpnJiIKSZW2JzHXRn6R7iGVc=
+
+Name: shader/skybox.shaderprogram
+SHA-256-Digest: Apknro3nu+luYk/Ke82Mq2+uN+2uOIGb8UzyJRQu6O4=
+
+Name: shader/skybox_unOptimized.shaderprogram
+SHA-256-Digest: Ki1aPBij6i/4d2my88xqyOt4t5cRt8ZHD6SFpIi7jHQ=
+
+Name: texture/android.jpg
+SHA-256-Digest: y4KVWHcIy4Lp+Qh/fl6zldSjthNvpPm03nRVBzhtloQ=
+
+Name: texture/badlogic.jpg
+SHA-256-Digest: POIdx34ftFw6dJgJp0OG2wv/z9Wn9knrwlKJZhPt1hM=
+
+Name: uiskin/system/arial_32px.fnt
+SHA-256-Digest: sbIjMKYLxtxmsd8bKrNDBoYB+cRRznwBhMYWo591HGU=
+
+Name: uiskin/system/calibri_30px.fnt
+SHA-256-Digest: yNEhsp4mWw0xi5e2G0XDXS9lTyPdfU4+6iCi8yAaNlo=
+
+Name: uiskin/system/game-continue_50px.fnt
+SHA-256-Digest: TNxZ65I/rsC2HisNeDb48hUA+8/wMrcOsD8ErXfc7I8=
+
+Name: uiskin/system/goudy-med_40px.fnt
+SHA-256-Digest: eVdhPQK62GvXwRg6ndPosaMdksWA8UzF+aUITL2DSww=
+
+Name: uiskin/system/immortal_60px.fnt
+SHA-256-Digest: S3d2CfSUa37fr0ZwZeGOHl5mjMiHFifUJVcq4EuICa4=
+
+Name: uiskin/system/sans-serif_30px.fnt
+SHA-256-Digest: qt7OcF08Z+iwYHntVSKdkrOdlID0qyTY6Q7RdjzKPqU=
+
+Name: uiskin/system/systemskin.atlas
+SHA-256-Digest: dGWMEFy97uNPD4XN6lMjMvPegyz5+U9bFaYqudoCQOs=
+
+Name: uiskin/system/systemskin.json
+SHA-256-Digest: 6KeUTpADmFwcz+wRVPKchfkKOpSAs8DM2DVwPfBHw9Y=
+
+Name: uiskin/system/systemskin.png
+SHA-256-Digest: 7WtmO0g48bpEDgw0Lb/7LHt2Jb2pN3Hm41lvjarp8LE=
+
+Name: uiskin/visui/default.fnt
+SHA-256-Digest: DA7qLC1OexzR0NoRWJFEjciytmNZjrCIIPEncBT36lc=
+
+Name: uiskin/visui/font-small.fnt
+SHA-256-Digest: taKg/a4BUtDi307ET+oWzaDyHz5+E5WAXUBHxinkeVs=
+
+Name: uiskin/visui/uiskin.atlas
+SHA-256-Digest: D7rhSmzUBdLbygc+PMq7EfPr3yBBFj9QTjArNBNXEMA=
+
+Name: uiskin/visui/uiskin.json
+SHA-256-Digest: GVDOePzDAZaK9dyA5zfN77g1LP4RaYapNZ3ZbSLrqds=
+
+Name: uiskin/visui/uiskin.png
+SHA-256-Digest: 4pdOt1/x2OCC+ABUzTq57o+KeS30MphBOaaIfE+/tr8=
+

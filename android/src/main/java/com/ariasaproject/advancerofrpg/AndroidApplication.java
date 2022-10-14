@@ -547,8 +547,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 //appl.render(deltaTime);
                 if (getInput().justTouched())
                 {
-                		Random r = new Random();
-                		GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT | TGF.GL_DEPTH_BUFFER_BIT | TGF.GL_STENCIL_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
+                		long sed = (long) 1000l * GraphFunc.nativeFloat();
+                		Random r = new Random(sed);
+                		GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 0);
                 }
                 		
                 if (lpause) {

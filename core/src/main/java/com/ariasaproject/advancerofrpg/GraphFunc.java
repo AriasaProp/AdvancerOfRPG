@@ -15,4 +15,5 @@ public class GraphFunc implements Serializable {
     }
 
     public static native String nativeLog();
+    public static native float nativeFloat();
 }
