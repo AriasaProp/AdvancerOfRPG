@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
 project(ext)
-set_target_properties(ext PROPERTIES LINKER_LANGUAGE CXX)
 set(CMAKE_BUILD_TYPE Release)
 set(JAVA_AWT_LIBRARY NotNeeded)
 set(JAVA_JVM_LIBRARY NotNeeded)
@@ -11,3 +10,7 @@ set(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 include_directories(${JNI_INCLUDE_DIRS} "src")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -wall -std=c++11")
 add_library(ext SHARED ${SOURCE_FILES})
+
+set_target_properties(ext PROPERTIES LINKER_LANGUAGE CXX)
+
+
