@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.1)
+project(ext)
+set(CMAKE_BUILD_TYPE Release)
+find_package(JNI REQUIRED)
+include_directories(${JNI_INCLUDE_DIRS} "/src")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -wall -std=c++11")
+set(SOURCE_FILES "/src")
+add_library(ext SHARED ${SOURCE_FILES})
