@@ -1,6 +1,7 @@
-#include "Mesh.h"
+#include <jni.h>
 #include <malloc.h>
 #include <string.h>
+#define Mesh_M(R, M) extern "C" JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_graphics_Mesh_##M
 
 Mesh_M(jobject, create)(JNIEnv *env, jclass clazz, jint numBytes) {
     return env->NewDirectByteBuffer((char *) malloc(numBytes), numBytes);

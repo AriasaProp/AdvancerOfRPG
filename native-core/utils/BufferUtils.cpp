@@ -1,7 +1,9 @@
-#include "BufferUtils.h"
+#include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define BufferUtils_M(R, M) extern "C" JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_utils_BufferUtils_##M
 
 BufferUtils_M(void, freeMemory)(JNIEnv *env, jclass clazz, jobject obj_buffer) {
     if (!obj_buffer) return;

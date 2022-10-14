@@ -1,4 +1,29 @@
-#include "Pixmap.h"
+#include <jni.h>
+
+struct Pixmap {
+public:
+    enum Format {
+        Format_Alpha,
+        Format_Luminance_Alpha,
+        Format_RGB888,
+        Format_RGBA8888,
+        Format_RGB565,
+        Format_RGBA4444
+    };
+    const unsigned int width, height;
+    const Format format;
+    const unsigned char *pixels;
+    bool scale; // true = Linear , false = Nearest
+
+    Pixmap(unsigned int, unsigned int, Format, bool);
+
+    Pixmap(unsigned int, unsigned int, Format, const unsigned char *, bool);
+
+    ~Pixmap();
+};
+
+#define Pixmap_M(R, M) extern "C" JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_graphics_Pixmap_##M
+
 #include <malloc.h>// malloc
 #include <stdarg.h>
 #include <stddef.h> // ptrdiff_t on osx

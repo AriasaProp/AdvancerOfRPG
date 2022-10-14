@@ -1,4 +1,5 @@
-#include "Matrix4.h"
+#include <jni.h>
+#define Matrix4_M(R, M) extern "C" JNIEXPORT R JNICALL Java_com_ariasaproject_advancerofrpg_math_Matrix4_##M
 #include <memory.h>
 #include <stdio.h>
 #include <string.h>
