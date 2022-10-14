@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 
 import com.ariasaproject.advancerofrpg.graphics.TGF;
+import com.ariasaproject.advancerofrpg.GraphFunc;
 
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.Files.FileType;
@@ -84,6 +85,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     protected void onCreate(Bundle savedInstanceState) {
         // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
+        GraphFunc.nativeLog();
         final View d = getWindow().getDecorView();
         d.setSystemUiVisibility(uiHide);
         d.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
