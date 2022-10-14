@@ -24,6 +24,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 
+import com.ariasaproject.advancerofrpg.graphics.TGF;
+
 import com.ariasaproject.advancerofrpg.Files.FileHandle;
 import com.ariasaproject.advancerofrpg.Files.FileType;
 import com.ariasaproject.advancerofrpg.audio.Audio;
