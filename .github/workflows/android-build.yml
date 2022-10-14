@@ -14,12 +14,10 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         cache: 'gradle'
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2.3.0
     - name: Build Gradle
-      run: gradle :android:build
+      run: ./gradlew :android:build
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: Android-Output
+        name: APK
         path: ${{github.workspace}}/android/build/outputs/apk
