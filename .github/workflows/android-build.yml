@@ -14,10 +14,12 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         cache: 'gradle'
+    - name: Setup Gradle
+      uses: actions/gradle-build-action@v2.3.2
+      with:
+        gradle-version: 6.1.1
     - name: Build Gradle
-      run: |
-        chmod +x gradlew
-        ./gradlew :android:build
+      run: gradle :android:build
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
