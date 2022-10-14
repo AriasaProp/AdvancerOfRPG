@@ -34,8 +34,6 @@ android {
     externalNativeBuild {
         cmake {
             path "../native-core/CMakeLists.txt"
-            -DBUILD_JNI=TRUE
-            -DBUILD_JAVA=ON
         }
     }
 }
