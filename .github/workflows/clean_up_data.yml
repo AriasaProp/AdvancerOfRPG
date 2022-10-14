@@ -6,7 +6,9 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - name: Clean up previous workflow runs
-        uses: egmacke/action-cleanup-workflow-runs@v1.2
+      - name: GitHub Actions Cleaner
+        uses: rokibhasansagar/slimhub_actions@v3
+      - name: GitHub Actions Artifact Cleaner
+        uses: glassechidna/artifact-cleaner@v2
         with:
-          retain: 1
+          minimumAge: 360
