@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 project(ext)
+set_target_properties(ext PROPERTIES LINKER_LANGUAGE CXX)
 set(CMAKE_BUILD_TYPE Release)
 set(JAVA_AWT_LIBRARY NotNeeded)
 set(JAVA_JVM_LIBRARY NotNeeded)
