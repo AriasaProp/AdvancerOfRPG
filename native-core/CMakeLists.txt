@@ -12,8 +12,7 @@ add_library(ext SHARED
 		utils/BufferUtils.cpp
 		math/Matrix4.cpp
 		graphics/Mesh.cpp
-		graphics/Pixmap.cpp
-		box2d/*.cpp)
+		graphics/Pixmap.cpp)
 
 set_target_properties(ext PROPERTIES LINKER_LANGUAGE CXX)
 
