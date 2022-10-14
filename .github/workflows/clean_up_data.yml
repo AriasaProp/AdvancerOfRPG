@@ -10,7 +10,7 @@ jobs:
         uses: /action-cleanup-workflow-runs@v1.2
         with:
           retain: 1
-          workflow: Build & Publish Android Artifacts
+          workflow: 'Build & Publish Android Artifacts'
       - name: GitHub Actions Artifact Cleaner
         uses: glassechidna/artifact-cleaner@v2
         with:
