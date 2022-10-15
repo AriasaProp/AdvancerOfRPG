@@ -2,18 +2,16 @@ cmake_minimum_required(VERSION 3.4.1)
 
 project(ext LANGUAGES CXX)
 set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_CXX_STANDARD 11)
 
-include_directories(${JNI_INCLUDE_DIRS} "${CMAKE_SOURCE_DIR}")
-set(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/*.cpp")
+file(GLOB_RECURSE Include_Dir LIST_DIRECTORIES true ".")
+include_directories(${Include_Dir})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
-add_library(ext SHARED 
-		GraphFunc.cpp
-		utils/BufferUtils.cpp
-		math/Matrix4.cpp
-		graphics/Mesh.cpp
-		graphics/Pixmap.cpp)
+file(GLOB_RECURSE Src_Files "*.cpp")
 
-set_target_properties(ext PROPERTIES LINKER_LANGUAGE CXX)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O3")
+add_library(${PROJECT_NAME} SHARED ${Src_Files})
+
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 
