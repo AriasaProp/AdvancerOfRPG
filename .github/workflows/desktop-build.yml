@@ -19,7 +19,9 @@ jobs:
       with:
         gradle-version: 6.1.1
     - name: Gradle Build
-      run: gradle :desktop:build
+      run: |
+        gradle :desktop:build
+        gradle :desktop:run
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
