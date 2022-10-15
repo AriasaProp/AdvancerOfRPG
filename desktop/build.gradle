@@ -3,9 +3,7 @@ plugins {
     id 'application'
 }
 
-application { 
-    mainClass = 'com.ariasaproject.advancerofrpg.Lwjgl3Application'
-}
+mainClassName = "com.ariasaproject.advancerofrpg.Lwjgl3Application"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -17,6 +15,8 @@ dependencies {}
 
 jar {
     manifest {
-        attributes["Main-Class"] = application.mainClass
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version,
+                   'Main-Class': mainClassName
     }
 }
