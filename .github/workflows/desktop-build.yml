@@ -20,13 +20,8 @@ jobs:
         gradle-version: 6.1.1
     - name: Gradle Build
       run: gradle :desktop:build
-    - name: Get Jar
-      id: jar-path
-      run: |
-        path=$(find ${{github.workspace}}/desktop/build/distributions/ -name '*.zip' -type f | head -1)
-        echo "::set-output name=path::$path"
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: Desktop-Output
-        path: ${{ steps.jar-path.outputs.path }}
+        name: buildDesktop
+        path: ${{github.workspace}}/desktop/build/
