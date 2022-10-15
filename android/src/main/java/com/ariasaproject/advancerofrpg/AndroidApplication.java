@@ -85,7 +85,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     protected void onCreate(Bundle savedInstanceState) {
         // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
-        GraphFunc.nativeLog();
         final View d = getWindow().getDecorView();
         d.setSystemUiVisibility(uiHide);
         d.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
@@ -545,9 +544,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         r.run();
                     runnables.clear();
                 }
-                getInput().processEvents();
+                input.processEvents();
                 //appl.render(deltaTime);
-                if (getInput().justTouched())
+                if (input.justTouched())
                 {
                     Random r = new Random();
                     GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
