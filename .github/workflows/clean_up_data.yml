@@ -6,8 +6,10 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - name: GitHub Actions Cleaner
-        uses: rokibhasansagar/slimhub_actions@v3
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          keep_minimum_runs: 1
       - name: GitHub Actions Artifact Cleaner
         uses: glassechidna/artifact-cleaner@v2
         with:
