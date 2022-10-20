@@ -128,6 +128,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 
     @Override
     protected void onStart() {
+	super.onStart();
         holder.addCallback(this);
     }
     @Override
@@ -222,6 +223,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     @Override
     protected void onStop() {
         holder.removeCallback(this);
+	super.onStop();
     }
     
     @Override
