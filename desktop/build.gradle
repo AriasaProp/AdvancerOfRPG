@@ -3,6 +3,10 @@ plugins {
     id 'application'
 }
 
+application {
+    mainClass.set("com.ariasaproject.advancerofrpg.Lwjgl3Application")
+}
+
 mainClassName = "com.ariasaproject.advancerofrpg.Lwjgl3Application"
 
 java {

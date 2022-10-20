@@ -127,6 +127,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     }
 
     @Override
+    protected void onStart() {
+        holder.addCallback(this);
+    }
+    @Override
     protected synchronized void onResume() {
         super.onResume();
         resume = true;
@@ -213,6 +217,11 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        holder.removeCallback(this);
     }
     
     @Override
@@ -341,25 +350,15 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     @Override
     public synchronized void surfaceCreated(SurfaceHolder holder) {
         // fall thru surfaceChanged
+	hasSurface = true;
     }
 
     @Override
     public synchronized void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        if (!hasSurface) {
-            rendered = true;
-            hasSurface = true;
-        }
         width = w;
         height = h;
         resize = true;
         notifyAll();
-        while (!mExited && rendered) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
     }
 
     @Override
@@ -376,8 +375,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     // main loop
     @Override
     public void run() {
-        holder.addCallback(this);
-
         EGLDisplay mEglDisplay = null;
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
@@ -551,7 +548,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     Random r = new Random();
                     GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
                 }
-                		
                 if (lpause) {
                     LifecycleListener[] listeners = lifecycleListeners.begin();
                     for (int i = 0, n = lifecycleListeners.size; i < n; i++) {
@@ -585,40 +581,33 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             }
         } catch (Throwable e) {
             // fall thru and exit normally
-            for (StackTraceElement s : e.getStackTrace()) {
-                error(TAG, s.toString());
-            }
-            error(TAG, "error " + e.getMessage());
-        } finally {
-            // dispose all resources
-            //appl.destroy();
-            tgf.clear();
-
-            LifecycleListener[] listeners = lifecycleListeners.begin();
-            for (int i = 0, n = lifecycleListeners.size; i < n; i++) {
-                listeners[i].dispose();
-            }
-            lifecycleListeners.end();
-
-            if (mEglSurface != null) {
-                EGL14.eglMakeCurrent(mEglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
-                EGL14.eglDestroySurface(mEglDisplay, mEglSurface);
-                mEglSurface = null;
-            }
-            if (mEglContext != null) {
-                EGL14.eglDestroyContext(mEglDisplay, mEglContext);
-                mEglContext = null;
-            }
-            if (mEglDisplay != null) {
-                EGL14.eglTerminate(mEglDisplay);
-                mEglDisplay = null;
-            }
-            holder.removeCallback(this);
-            // end thread
-            synchronized (this) {
-                mExited = true;
-                notifyAll();
-            }
+            error(TAG, "error", e);
+        }
+        // dispose all resources
+        //appl.destroy();
+        tgf.clear();
+        LifecycleListener[] listeners = lifecycleListeners.begin();
+        for (int i = 0, n = lifecycleListeners.size; i < n; i++) {
+            listeners[i].dispose();
+        }
+        lifecycleListeners.end();
+        if (mEglSurface != null) {
+            EGL14.eglMakeCurrent(mEglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
+            EGL14.eglDestroySurface(mEglDisplay, mEglSurface);
+            mEglSurface = null;
+        }
+        if (mEglContext != null) {
+            EGL14.eglDestroyContext(mEglDisplay, mEglContext);
+            mEglContext = null;
+        }
+        if (mEglDisplay != null) {
+            EGL14.eglTerminate(mEglDisplay);
+            mEglDisplay = null;
+        }
+        // end thread
+        synchronized (this) {
+            mExited = true;
+            notifyAll();
         }
     }
 

@@ -20,9 +20,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationListener {
-
-    static final Runtime r = Runtime.getRuntime();
-    static final String[] rnk = new String[]{"B", "kB", "MB", "GB", "TB"};
     protected static ExecutorService exec = Executors.newFixedThreadPool(1, new ThreadFactory() {
         @Override
         public Thread newThread(final Runnable r) {
@@ -39,7 +36,6 @@ public class ApplicationListener {
     public BitmapFont fps;
     public GlyphLayout layDebug;
     public Viewport uiView;
-    public String logUpt = "";
     private Scene screen;
     private String logUp = "";
 
@@ -58,7 +54,7 @@ public class ApplicationListener {
         stage = new Stage(uiView, batch);
         fps = new BitmapFont();
         fps.getData().setScale(1.45f);
-        layDebug = new GlyphLayout(fps, "FPS:000|####/##/##_#|N{c++}");
+        layDebug = new GlyphLayout(fps, "FPS:000|N{c++}");
         setScene(new SplashScreen(this));
     }
 
@@ -94,8 +90,7 @@ public class ApplicationListener {
             screen.render(delta);
         batch.begin();
         final Graphics g = GraphFunc.app.getGraphics();
-        //logUpt = String.format("RAM used %s, allocated %s, max %s", toByt(r.totalMemory() - r.freeMemory()), toByt(r.totalMemory()), toByt(r.maxMemory()));
-        logUp = String.format("FPS:%03d|2022/05/23_1|N{%s}\n%s", g.getFramesPerSecond(), GraphFunc.nativeLog(), logUpt);
+        logUp = String.format("FPS:%03d|N{%s}", g.getFramesPerSecond(), GraphFunc.nativeLog());
         layDebug.setText(fps, logUp);
         fps.draw(batch, layDebug, 0, g.getHeight() - (layDebug.height / 2f) - 3f);
         batch.end();
@@ -121,7 +116,6 @@ public class ApplicationListener {
         fps.dispose();
         if (screen != null)
             screen.hide();
-
         stage.dispose();
         batch.dispose();
         modelBatch.dispose();
