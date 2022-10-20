@@ -31,13 +31,13 @@ public class ApplicationListener {
     });
     public static final AssetContainer asset = new AssetContainer(exec, new InternalFileHandleResolver());
     static ApplicationListener listener;
-    public Stage stage;
-    public Batch batch;
-    public ModelBatch modelBatch;
-    public BitmapFont fps;
+    //public Stage stage;
+    //public Batch batch;
+    //public ModelBatch modelBatch;
+    //public BitmapFont fps;
     public GlyphLayout layDebug;
     public Viewport uiView;
-    private Scene screen;
+    //private Scene screen;
     private String logUp = "";
 
     protected ApplicationListener() {
@@ -49,17 +49,18 @@ public class ApplicationListener {
     }
 
     public void create() {
-        batch = new Batch();
-        modelBatch = new ModelBatch();
+        //batch = new Batch();
+        //modelBatch = new ModelBatch();
         uiView = new Viewport(new OrthographicCamera(), 800, 600, 1920, 1080);
-        stage = new Stage(uiView, batch);
-        fps = new BitmapFont();
-        fps.getData().setScale(1.45f);
+        //stage = new Stage(uiView, batch);
+        //fps = new BitmapFont();
+        //fps.getData().setScale(1.45f);
         layDebug = new GlyphLayout(fps, "FPS:000|N{c++}");
-        setScene(new SplashScreen(this));
+        //setScene(new SplashScreen(this));
     }
 
     public void setScene(final Scene s) {
+/*
         if (screen != null) {
             screen.hide();
             stage.clear();
@@ -70,55 +71,53 @@ public class ApplicationListener {
             s.show();
             s.resize(GraphFunc.app.getGraphics().getWidth(), GraphFunc.app.getGraphics().getHeight());
         }
+*/
     }
 
     public void resize(int width, int height) {
         GraphFunc.tgf.glViewport(0, 0, width, height);
-        uiView.update();
-        if (screen != null)
-            screen.resize(width, height);
+        //uiView.update();
+        //if (screen != null)
+        //    screen.resize(width, height);
     }
 
     public void resume() {
-        if (screen != null)
-            screen.resume();
+        //if (screen != null)
+        //    screen.resume();
     }
 
     public void render(float delta) {
-/*
-	if (input.justTouched())
+	if (GraphFunc.app.getInput().justTouched())
 	{
 	    Random r = new Random();
 	    GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
 	}
-*/
-        GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT | TGF.GL_DEPTH_BUFFER_BIT | TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
-        asset.update();
-        if (screen != null)
-            screen.render(delta);
-        batch.begin();
-        final Graphics g = GraphFunc.app.getGraphics();
-        logUp = String.format("FPS:%03d|N{%s}", g.getFramesPerSecond(), GraphFunc.nativeLog());
-        layDebug.setText(fps, logUp);
-        fps.draw(batch, layDebug, 0, g.getHeight() - (layDebug.height / 2f) - 3f);
-        batch.end();
+        //GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT | TGF.GL_DEPTH_BUFFER_BIT | TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
+        //asset.update();
+        //if (screen != null)
+        //    screen.render(delta);
+        //batch.begin();
+        //final Graphics g = GraphFunc.app.getGraphics();
+        //logUp = String.format("FPS:%03d|N{%s}", g.getFramesPerSecond(), GraphFunc.nativeLog());
+        //layDebug.setText(fps, logUp);
+        //fps.draw(batch, layDebug, 0, g.getHeight() - (layDebug.height / 2f) - 3f);
+        //batch.end();
     }
 
     public void pause() {
-        if (screen != null)
-            screen.pause();
+        //if (screen != null)
+        //    screen.pause();
     }
 
     public void destroy() {
-        fps.dispose();
-        if (screen != null)
-            screen.hide();
-        stage.dispose();
-        batch.dispose();
-        modelBatch.dispose();
+        //fps.dispose();
+        //if (screen != null)
+        //    screen.hide();
+        //stage.dispose();
+        //batch.dispose();
+        //modelBatch.dispose();
         uiView = null;
         asset.dispose();
-
         exec.shutdown();
         try {
             exec.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
