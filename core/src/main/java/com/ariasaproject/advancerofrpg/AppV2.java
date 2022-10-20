@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class AppV2 {
 
-    public ApplicationListener() {
+    public AppV2() {
     }
 
     public void create() {
