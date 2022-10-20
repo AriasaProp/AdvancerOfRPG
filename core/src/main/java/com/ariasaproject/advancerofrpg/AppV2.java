@@ -2,16 +2,17 @@ package com.ariasaproject.advancerofrpg;
 
 import com.ariasaproject.advancerofrpg.graphics.Graphics;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
-import com.ariasaproject.advancerofrpg.utils.BufferUtils;
+//import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 
 import java.util.Random;
 import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.ByteOrder;
 
 public class AppV2 {
 
-    public AppV2() {
-    	
-    }
+    public AppV2() { }
     
     final String shaderSrc = "precision MED float;\n"+
         "void main() {\n"+
@@ -23,17 +24,22 @@ public class AppV2 {
         "  gl_Position = a_position;\n"+
         "}\n";
     int[] shaderHandlers;
-    Buffer triangleBuff;
+    FloatBuffer triangleBuff;
     int a_pos_pointer;
     public void create() {
-    		triangleBuff = BufferUtils.newDisposableByteBuffer(6 * 4);
-    		BufferUtils.copy(new float[]{0.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f}, triangleBuff, 6, 0);
+				ByteBuffer bb = ByteBuffer.allocateDirect(6 * 4);
+        bb.order(ByteOrder.nativeOrder());
+        triangleBuff = bb.asFloatBuffer();
+        triangleBuff.put(new float[]{0.0f, 300.0f, -300.0f, -300.0f, 300.0f, -300.0f});
+        triangleBuff.position(0);
     	  TGF tg = GraphFunc.tgf;
     	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
 				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
     		resume();
     }
     public void resize(int width, int height) {
+    	  TGF tg = GraphFunc.tgf;
+    		tg.glViewport(0, 0, width, height);
     }
     public void resume() {
     	  TGF tg = GraphFunc.tgf;
@@ -62,6 +68,5 @@ public class AppV2 {
   	  	TGF tg = GraphFunc.tgf;
     		tg.destroyShaderProgram(shaderHandlers);
     		shaderHandlers = null;
-    		BufferUtils.freeMemory(triangleBuff);
     }
 }
