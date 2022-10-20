@@ -28,9 +28,10 @@ public class AppV2 {
     public void create() {
     		triangleBuff = BufferUtils.newDisposableByteBuffer(6 * 4);
     		BufferUtils.copy(new float[]{0.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f}, triangleBuff, 6, 0);
+    	  TGF tg = GraphFunc.tgf;
     	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
-    		resume();
 				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
+    		resume();
     }
     public void resize(int width, int height) {
     }
