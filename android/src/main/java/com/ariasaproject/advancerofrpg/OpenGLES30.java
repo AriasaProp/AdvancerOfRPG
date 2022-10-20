@@ -381,7 +381,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public int glGetError() {
-
         return GLES20.glGetError();
     }
 

@@ -379,6 +379,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     // main loop
     @Override
     public void run() {
+		    final int[] configsEGL = new int[]{
+		  			EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE, //EGLConfig offset 0
+		  			EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE, //EGLContext offset 3
+		    }
         EGLDisplay mEglDisplay = null;
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
@@ -453,8 +457,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 
                     if (mEglConfig == null) {
                         // choose best config
-                        final int[] s_configAttribs2 = {EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE };
-                        EGL14.eglChooseConfig(mEglDisplay, s_configAttribs2, 0, null, 0, 0, temp, 0);
+                        EGL14.eglChooseConfig(mEglDisplay, configsEGL, 0, null, 0, 0, temp, 0);
                         if (temp[0] <= 0)
                             throw new IllegalArgumentException("No configs match with configSpec");
                         EGLConfig[] configs = new EGLConfig[temp[0]];
@@ -486,8 +489,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 }
                 if (newContext || mEglSurface == null) {
                     if (newContext) {
-                        final int[] attrib_list = {EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE};
-                        mEglContext = EGL14.eglCreateContext(mEglDisplay, mEglConfig, EGL14.EGL_NO_CONTEXT, attrib_list, 0);
+                        mEglContext = EGL14.eglCreateContext(mEglDisplay, mEglConfig, EGL14.EGL_NO_CONTEXT, configsEGL, 3);
                         if (mEglContext == null || mEglContext == EGL14.EGL_NO_CONTEXT) {
                             mEglContext = null;
                             throw new RuntimeException("createContext failed: " + Integer.toHexString(EGL14.eglGetError()));

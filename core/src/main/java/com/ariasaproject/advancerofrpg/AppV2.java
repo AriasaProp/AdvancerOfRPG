@@ -2,7 +2,7 @@ package com.ariasaproject.advancerofrpg;
 
 import com.ariasaproject.advancerofrpg.graphics.Graphics;
 import com.ariasaproject.advancerofrpg.graphics.TGF;
-//import com.ariasaproject.advancerofrpg.utils.BufferUtils;
+import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 
 import java.util.Random;
 import java.nio.Buffer;
@@ -25,17 +25,14 @@ public class AppV2 {
         "}\n";
         */
     int[] shaderHandlers;
-    FloatBuffer triangleBuff;
+    Buffer triangleBuff;
     int a_pos_pointer;
     public void create() {
-				ByteBuffer bb = ByteBuffer.allocateDirect(6 * 4);
-        bb.order(ByteOrder.nativeOrder());
-        triangleBuff = bb.asFloatBuffer();
-        triangleBuff.put(new float[]{0.0f, 300.0f, -300.0f, -300.0f, 300.0f, -300.0f});
-        triangleBuff.position(0);
+				triangleBuff = BufferUtils.newDisposableByteBuffer(6*4);
+				BufferUtils.copy(new float[]{0.0f, 300.0f, -300.0f, -300.0f, 300.0f, -300.0f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
     	  //shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
-				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
+				//a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
     		resume();
     }
     public void resize(int width, int height) {
@@ -58,9 +55,7 @@ public class AppV2 {
 				tg.glUseProgram(shaderHandlers[0]);
 				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleBuff);
     		tg.glEnableVertexAttribArray(a_pos_pointer);
-    		
     		tg.glDrawArrays(TGF.GL_TRIANGLES, 0, 3);
-    		
     		tg.glDisableVertexAttribArray(a_pos_pointer);
 				tg.glUseProgram(0);
 				*/
@@ -73,5 +68,6 @@ public class AppV2 {
   	  	TGF tg = GraphFunc.tgf;
     		//tg.destroyShaderProgram(shaderHandlers);
     		shaderHandlers = null;
+    		BufferUtils.freeMemory(triangleBuff);
     }
 }
