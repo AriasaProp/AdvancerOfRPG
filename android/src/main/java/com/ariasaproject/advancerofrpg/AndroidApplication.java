@@ -129,7 +129,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 
     @Override
     protected void onStart() {
-	super.onStart();
+    		super.onStart();
         holder.addCallback(this);
     }
     @Override
@@ -353,7 +353,8 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     @Override
     public synchronized void surfaceCreated(SurfaceHolder holder) {
         // fall thru surfaceChanged
-	hasSurface = true;
+        hasSurface = true;
+        notifyAll();
     }
 
     @Override
@@ -503,8 +504,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     if (newContext) {
                         if (created)
                             tgf.validateAll();
-                        else
+                        else {
                             appl.create();
+                            created = true;
+                    		}
                        
                         appl.resize(width, height);
                         lresize = false;
