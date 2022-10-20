@@ -379,7 +379,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
-        //ApplicationListener appl = ApplicationListener.getApplicationListener();
+        ApplicationListener appl = ApplicationListener.getApplicationListener();
         try {
             byte eglDestroyRequest = 0;// to destroy egl surface, egl contex, egl display, ?....
             boolean wantRender = false, newContext = true, // indicator
@@ -501,9 +501,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         if (created)
                             tgf.validateAll();
                         else
-                            //appl.create();
+                            appl.create();
                        
-                        //appl.resize(width, height);
+                        appl.resize(width, height);
                         lresize = false;
                         lastFrameTime = System.currentTimeMillis();
                         newContext = false;
@@ -512,7 +512,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 if (lresize) {
                     EGL14.eglMakeCurrent(mEglDisplay, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT);
                     EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext);
-                    //appl.resize(width, height);
+                    appl.resize(width, height);
                 }
 
                 long time = System.currentTimeMillis();
@@ -525,7 +525,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         }
                         lifecycleListeners.end();
                     }
-                    //appl.resume();
+                    appl.resume();
                     time = frameStart = lastFrameTime = 0;
                 }
                 if (time - frameStart > 1000l) {
@@ -542,19 +542,14 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     runnables.clear();
                 }
                 input.processEvents();
-                //appl.render(deltaTime);
-                if (input.justTouched())
-                {
-                    Random r = new Random();
-                    GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
-                }
+                appl.render(deltaTime);
                 if (lpause) {
                     LifecycleListener[] listeners = lifecycleListeners.begin();
                     for (int i = 0, n = lifecycleListeners.size; i < n; i++) {
                         listeners[i].pause();
                     }
                     lifecycleListeners.end();
-                    //appl.pause();
+                    appl.pause();
                     eglDestroyRequest |= (tgf.limitGLESContext() ? 2 : 1);
                 }
                 if (!EGL14.eglSwapBuffers(mEglDisplay, mEglSurface)) {
@@ -584,7 +579,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             error(TAG, "error", e);
         }
         // dispose all resources
-        //appl.destroy();
+        appl.destroy();
         tgf.clear();
         LifecycleListener[] listeners = lifecycleListeners.begin();
         for (int i = 0, n = lifecycleListeners.size; i < n; i++) {

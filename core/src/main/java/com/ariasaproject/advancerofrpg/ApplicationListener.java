@@ -84,6 +84,13 @@ public class ApplicationListener {
     }
 
     public void render(float delta) {
+/*
+	if (input.justTouched())
+	{
+	    Random r = new Random();
+	    GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
+	}
+*/
         GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT | TGF.GL_DEPTH_BUFFER_BIT | TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
         asset.update();
         if (screen != null)
