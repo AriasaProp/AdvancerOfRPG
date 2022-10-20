@@ -793,55 +793,46 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glUseProgram(int program) {
-
         GLES20.glUseProgram(program);
     }
 
     @Override
     public void glValidateProgram(int program) {
-
         GLES20.glValidateProgram(program);
     }
 
     @Override
     public void glVertexAttrib1f(int indx, float x) {
-
         GLES20.glVertexAttrib1f(indx, x);
     }
 
     @Override
     public void glVertexAttrib1fv(int indx, FloatBuffer values) {
-
         GLES20.glVertexAttrib1fv(indx, values);
     }
 
     @Override
     public void glVertexAttrib2f(int indx, float x, float y) {
-
         GLES20.glVertexAttrib2f(indx, x, y);
     }
 
     @Override
     public void glVertexAttrib2fv(int indx, FloatBuffer values) {
-
         GLES20.glVertexAttrib2fv(indx, values);
     }
 
     @Override
     public void glVertexAttrib3f(int indx, float x, float y, float z) {
-
         GLES20.glVertexAttrib3f(indx, x, y, z);
     }
 
     @Override
     public void glVertexAttrib3fv(int indx, FloatBuffer values) {
-
         GLES20.glVertexAttrib3fv(indx, values);
     }
 
     @Override
     public void glVertexAttrib4f(int indx, float x, float y, float z, float w) {
-
         GLES20.glVertexAttrib4f(indx, x, y, z, w);
     }
 

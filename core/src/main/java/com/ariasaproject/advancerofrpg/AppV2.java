@@ -7,28 +7,58 @@ import java.util.Random;
 
 public class AppV2 {
 
-    public AppV2() {
-    }
+    public AppV2() {}
 
     public void create() {
+    		resume();
     }
 
     public void resize(int width, int height) {
     }
 
+    
+    int[] shaderHandlers = null;
+    final String shaderSrc = "precision MED float;\n"+
+        "void main() {\n"+
+        "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
+        "}\n"+
+        "<break>"+
+        "in vec4 a_position;\n"+
+        "void main() {\n"+
+        "  gl_Position = a_position;\n"+
+        "}\n";
+    int a_pos_pointer;
     public void resume() {
-    }
-
-    public void render(float delta) {
-    		if (GraphFunc.app.getInput().justTouched()) {
-    				Random r = new Random();
-    				GraphFunc.tgf.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT, r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
+    	  TGF tg = GraphFunc.tgf;
+    		if (tg.validShaderProgram(shaderHandlers)) {
+    			 shaderHandlers = null;
     		}
+    	  if (shaderHandlers == null) {
+    	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+    	  }
+				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
+    }
+    final float[] triangleVert = new float[]{
+        0.0f, 1.0f,
+        -1.0f, -1.0f,
+        1.0f, -1.0f
+		};
+    public void render(float delta) {
+    	  TGF tg = GraphFunc.tgf;
+				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
+				tg.glUseProgram(shaderHandlers[0]);
+				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleVert);
+    		tg.glEnableVertexAttribArray(a_pos_pointer);
+    		tg.glDrawArrays(TGF.GL_TRIANGLES, 0, 3);
+    		
     }
 
     public void pause() {
     }
 
     public void destroy() {
+  	  	TGF tg = GraphFunc.tgf;
+    		tg.destroyShaderProgram(shaderHandlers);
+    		shaderHandlers = null;
     }
 }
