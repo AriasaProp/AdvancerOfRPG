@@ -462,7 +462,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                         if (temp[0] <= 0)
                             throw new IllegalArgumentException("No configs match with configSpec");
                         EGLConfig[] configs = new EGLConfig[temp[0]];
-                        EGL14.eglChooseConfig(mEglDisplay, s_configAttribs2, 0, configs, 0, configs.length, temp, 0);
+                        EGL14.eglChooseConfig(mEglDisplay, configsEGL, 0, configs, 0, configs.length, temp, 0);
                         int lastSc = -1, curSc;
                         mEglConfig = configs[0];
                         for (EGLConfig config : configs) {
