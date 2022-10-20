@@ -13,7 +13,7 @@ import java.nio.ByteOrder;
 public class AppV2 {
 
     public AppV2() { }
-    
+    /*
     final String shaderSrc = "precision MED float;\n"+
         "void main() {\n"+
         "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
@@ -23,6 +23,7 @@ public class AppV2 {
         "void main() {\n"+
         "  gl_Position = a_position;\n"+
         "}\n";
+        */
     int[] shaderHandlers;
     FloatBuffer triangleBuff;
     int a_pos_pointer;
@@ -33,7 +34,7 @@ public class AppV2 {
         triangleBuff.put(new float[]{0.0f, 300.0f, -300.0f, -300.0f, 300.0f, -300.0f});
         triangleBuff.position(0);
     	  TGF tg = GraphFunc.tgf;
-    	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+    	  //shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
 				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
     		resume();
     }
@@ -43,10 +44,12 @@ public class AppV2 {
     }
     public void resume() {
     	  TGF tg = GraphFunc.tgf;
+    	  /*
     		if (tg.validShaderProgram(shaderHandlers)) {
     			  shaderHandlers = null;
     	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
     		}
+    		*/
     }
     public void render(float delta) {
     	  TGF tg = GraphFunc.tgf;
@@ -68,7 +71,7 @@ public class AppV2 {
 
     public void destroy() {
   	  	TGF tg = GraphFunc.tgf;
-    		tg.destroyShaderProgram(shaderHandlers);
+    		//tg.destroyShaderProgram(shaderHandlers);
     		shaderHandlers = null;
     }
 }
