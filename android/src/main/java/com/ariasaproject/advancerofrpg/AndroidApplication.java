@@ -379,16 +379,17 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     // main loop
     @Override
     public void run() {
-		    final int[] configsEGL = new int[]{
-		  			EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE, //EGLConfig offset 0
-		  			EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE, //EGLContext offset 3
-		    }
         EGLDisplay mEglDisplay = null;
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
         AppV2 appl = new AppV2();
         try {
+				    final int[] configsEGL = new int[]{
+				  			EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE, //EGLConfig offset 0
+				  			EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE, //EGLContext offset 3
+				  			0
+				    };
             byte eglDestroyRequest = 0;// to destroy egl surface, egl contex, egl display, ?....
             boolean wantRender = false, newContext = true, // indicator
                     created = false, lrunning = true, lresize, lresume = false, lpause = false;// on running state
