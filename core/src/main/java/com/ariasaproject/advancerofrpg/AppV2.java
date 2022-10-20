@@ -12,18 +12,7 @@ public class AppV2 {
     public AppV2() {
     	
     }
-    Buffer triangleBuff;
-    public void create() {
-    		triangle = BufferUtils.newDisposableByteBuffer(6 * 4);
-    		BufferUtils.copy(new float[]{0.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f}, 6, 0);
-    		resume();
-    }
-
-    public void resize(int width, int height) {
-    }
-
     
-    int[] shaderHandlers = null;
     final String shaderSrc = "precision MED float;\n"+
         "void main() {\n"+
         "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
@@ -33,16 +22,24 @@ public class AppV2 {
         "void main() {\n"+
         "  gl_Position = a_position;\n"+
         "}\n";
+    int[] shaderHandlers;
+    Buffer triangleBuff;
     int a_pos_pointer;
+    public void create() {
+    		triangleBuff = BufferUtils.newDisposableByteBuffer(6 * 4);
+    		BufferUtils.copy(new float[]{0.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f}, triangleBuff, 6, 0);
+    	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+    		resume();
+				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
+    }
+    public void resize(int width, int height) {
+    }
     public void resume() {
     	  TGF tg = GraphFunc.tgf;
     		if (tg.validShaderProgram(shaderHandlers)) {
-    			 shaderHandlers = null;
-    		}
-    	  if (shaderHandlers == null) {
+    			  shaderHandlers = null;
     	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
-    	  }
-				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
+    		}
     }
     public void render(float delta) {
     	  TGF tg = GraphFunc.tgf;
@@ -50,8 +47,11 @@ public class AppV2 {
 				tg.glUseProgram(shaderHandlers[0]);
 				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleBuff);
     		tg.glEnableVertexAttribArray(a_pos_pointer);
+    		
     		tg.glDrawArrays(TGF.GL_TRIANGLES, 0, 3);
     		
+    		tg.glDisableVertexAttribArray(a_pos_pointer);
+				tg.glUseProgram(0);
     }
 
     public void pause() {
