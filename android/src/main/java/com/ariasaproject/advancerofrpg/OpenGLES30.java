@@ -1824,7 +1824,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public float getMaxAnisotropicFilterLevel() {
-
         if (maxAnisotropicFilterLevel == 0) {
             if (supportsExtension("GL_EXT_texture_filter_anisotropic")) {
                 final FloatBuffer buffer = BufferUtils.newFloatBuffer(1);

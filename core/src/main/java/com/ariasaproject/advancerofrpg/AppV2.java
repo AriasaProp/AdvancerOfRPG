@@ -50,7 +50,8 @@ public class AppV2 {
     }
     public void render(float delta) {
     	  TGF tg = GraphFunc.tgf;
-				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
+				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, 0, 1, 0, 1);
+				/*
 				tg.glUseProgram(shaderHandlers[0]);
 				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleBuff);
     		tg.glEnableVertexAttribArray(a_pos_pointer);
@@ -59,6 +60,7 @@ public class AppV2 {
     		
     		tg.glDisableVertexAttribArray(a_pos_pointer);
 				tg.glUseProgram(0);
+				*/
     }
 
     public void pause() {
