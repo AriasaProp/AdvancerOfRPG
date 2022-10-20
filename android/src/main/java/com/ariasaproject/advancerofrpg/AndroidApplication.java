@@ -388,6 +388,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 				    final int[] configsEGL = new int[]{
 				  			EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE, //EGLConfig offset 0
 				  			EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE, //EGLContext offset 3
+				  			EGL14.EGL_NONE, EGL14.EGL_NONE, //NULL EGL Value offset 6
 				  			0
 				    };
             byte eglDestroyRequest = 0;// to destroy egl surface, egl contex, egl display, ?....
@@ -496,7 +497,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                             throw new RuntimeException("createContext failed: " + Integer.toHexString(EGL14.eglGetError()));
                         }
                     }
-                    mEglSurface = EGL14.eglCreateWindowSurface(mEglDisplay, mEglConfig, holder, null, 0);
+                    mEglSurface = EGL14.eglCreateWindowSurface(mEglDisplay, mEglConfig, holder, configsEGL, 6);
                     if (mEglSurface == null || mEglSurface == EGL14.EGL_NO_SURFACE) {
                         mEglSurface = null;
                         throw new RuntimeException("Create EGL Surface failed: " + Integer.toHexString(EGL14.eglGetError()));
@@ -523,9 +524,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     EGL14.eglMakeCurrent(mEglDisplay, mEglSurface, mEglSurface, mEglContext);
                     appl.resize(width, height);
                 }
-
                 long time = System.currentTimeMillis();
-
                 if (lresume) {
                     synchronized (lifecycleListeners) {
                         LifecycleListener[] listeners = lifecycleListeners.begin();
@@ -544,7 +543,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 }
                 deltaTime = (time - lastFrameTime) / 1000f;
                 lastFrameTime = time;
-
                 synchronized (runnables) {
                     for (Runnable r : runnables)
                         r.run();
@@ -578,7 +576,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                             error(TAG, "eglSwapBuffers returned EGL_BAD_NATIVE_WINDOW. tid=" + Thread.currentThread().getId());
                             break;
                         default:
-                            error(TAG, "eglSwapBuffers failed: " + Integer.toHexString(EGL14.eglGetError()));
+                            error(TAG, "eglSwapBuffers failed: " + Integer.toHexString(error);
                     }
                 }
                 frames++;

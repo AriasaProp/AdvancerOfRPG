@@ -12,8 +12,7 @@ import java.nio.ByteOrder;
 
 public class AppV2 {
 
-    public AppV2() { }
-    /*
+    public AppV2() {}
     final String shaderSrc = "precision MED float;\n"+
         "void main() {\n"+
         "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
@@ -23,7 +22,7 @@ public class AppV2 {
         "void main() {\n"+
         "  gl_Position = a_position;\n"+
         "}\n";
-        */
+        
     int[] shaderHandlers;
     Buffer triangleBuff;
     int a_pos_pointer;
