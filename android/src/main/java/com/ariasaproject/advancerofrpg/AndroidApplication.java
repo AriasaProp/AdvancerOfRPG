@@ -576,7 +576,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                             error(TAG, "eglSwapBuffers returned EGL_BAD_NATIVE_WINDOW. tid=" + Thread.currentThread().getId());
                             break;
                         default:
-                            error(TAG, "eglSwapBuffers failed: " + Integer.toHexString(error);
+                            error(TAG, "eglSwapBuffers failed: " + Integer.toHexString(error));
                     }
                 }
                 frames++;
