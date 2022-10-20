@@ -39,6 +39,7 @@ import com.ariasaproject.advancerofrpg.input.Clipboard;
 import com.ariasaproject.advancerofrpg.input.Input;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
+import com.ariasaproject.advancerofrpg.AppV2;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-//AndroidApplication include graphics and Application
+//AndroidApplication include Graphics, Audio and Application
 public class AndroidApplication extends Activity implements Application, Runnable, Graphics, Callback, Audio {
     public static final String TAG = "MainActivity";
 
@@ -381,7 +382,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
-        ApplicationListener appl = ApplicationListener.getApplicationListener();
+        AppV2 appl = new AppV2();
         try {
             byte eglDestroyRequest = 0;// to destroy egl surface, egl contex, egl display, ?....
             boolean wantRender = false, newContext = true, // indicator
