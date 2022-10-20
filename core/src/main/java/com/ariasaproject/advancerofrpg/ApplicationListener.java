@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 public class ApplicationListener {
     protected static ExecutorService exec = Executors.newFixedThreadPool(1, new ThreadFactory() {
@@ -101,17 +102,6 @@ public class ApplicationListener {
         layDebug.setText(fps, logUp);
         fps.draw(batch, layDebug, 0, g.getHeight() - (layDebug.height / 2f) - 3f);
         batch.end();
-    }
-
-    String toByt(long s) {
-
-        double size = s;
-        int rn = 0;
-        while (size > 1024.0 && rn < 4) {
-            size /= 1024.0;
-            rn++;
-        }
-        return String.format("%.1f %s", size, rnk[rn]);
     }
 
     public void pause() {
