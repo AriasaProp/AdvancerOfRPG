@@ -5,6 +5,7 @@ import com.ariasaproject.advancerofrpg.graphics.TGF;
 import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 
 import java.util.Random;
+import java.nio.Buffer;
 
 public class AppV2 {
 
@@ -14,7 +15,7 @@ public class AppV2 {
     Buffer triangleBuff;
     public void create() {
     		triangle = BufferUtils.newDisposableByteBuffer(6 * 4);
-    		BufferUtils.copy(new float[]{0.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f}, 6, 0)
+    		BufferUtils.copy(new float[]{0.0f, 1.0f, -1.0f, -1.0f, 1.0f, -1.0f}, 6, 0);
     		resume();
     }
 
