@@ -23,14 +23,19 @@ public class AppV2 {
         "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
         "}\n";
         
-    //int shaderHandlers;
+    float r = 0, g = 0, b = 0;
+    int shaderHandlers;
     Buffer triangleBuff;
     //int a_pos_pointer;
     public void create() {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(6*4);
 				BufferUtils.copy(new float[]{.0f, .5f, .5f, -.5f, -.5f, -.5f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
-    	  //shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+    	  try {
+    	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+    	  } catch (Exception e) {
+    	  		b = 1;
+    	  }
 				//a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
     		resume();
     }
@@ -47,7 +52,6 @@ public class AppV2 {
     		*/
     		
     }
-    float r = 0, g = 0, b = 0;
     public void render(float delta) {
     		if (GraphFunc.app.getInput().justTouched()) {
     				Random rand = new Random();
@@ -72,10 +76,11 @@ public class AppV2 {
 
     public void destroy() {
   	  	TGF tg = GraphFunc.tgf;
-  	  	/*
-    		tg.destroyShaderProgram(shaderHandlers);
+  	  	try{
+    				tg.destroyShaderProgram(shaderHandlers);
+  	  	} catch (Exception e){}
     		shaderHandlers = -1;
-    		*/
+    		
     		BufferUtils.freeMemory(triangleBuff);
     }
 }
