@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" xml:space="preserve">
+	<defs>
+		<radialGradient id="stkGrad29" cx="50%" cy="50%" fx="50%" fy="50%" r="50%">
+			<stop offset="0%" style="stop-color:#7f7f7f;stop-opacity:1"/>
+			<stop offset="33.333%" style="stop-color:#7f7f7f;stop-opacity:1"/>
+			<stop offset="66.667%" style="stop-color:#3c3c3c;stop-opacity:1"/>
+			<stop offset="100%" style="stop-color:#a3a3a3;stop-opacity:1"/>
+		</radialGradient>
+		<linearGradient id="fillGrad29" x1="4.078%" y1="48.962%" x2="23.953%" y2="50.298%">
+			<stop offset="0%" style="stop-color:#fff;stop-opacity:1"/>
+			<stop offset="100%" style="stop-color:#001aff;stop-opacity:1"/>
+		</linearGradient>
+		<style>@font-face{font-family:&apos;righteous&apos;;src:url(./righteous.ttf)}</style>
+	</defs>
+	<path fill="#FFF" stroke-linecap="round" d="M105.05 0h289.9A105.05 105.05 0 0 1 500 105.05v289.9A105.05 105.05 0 0 1 394.95 500h-289.9A105.05 105.05 0 0 1 0 394.95v-289.9A105.05 105.05 0 0 1 105.05 0z"/>
+	<path stroke="#000" stroke-width="19.5" stroke-linejoin="round" stroke-linecap="round" d="M452.51 273.75H195.08l28.08 56.17h-42.13l-28.08-56.17H115.5l9.37-28.08h18.72l-14.04-32.77L92.1 329.92H49.97l46.81-159.14h51.49l32.76 74.89h271.48v28.08z"/>
+	<path fill="url(#fillGrad29)" stroke="url(#stkGrad29)" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" d="M437.33 273.75H179.89l28.08 56.17h-42.12l-28.09-56.17h-37.44l9.36-28.08h18.72l-14.04-32.77-37.45 117.02H34.79L81.6 170.78h51.48l32.77 74.89h271.48v28.08z"/>
+	<path fill="#818181" stroke-linecap="round" d="M191.39 231.09h266.8l7.02-67.4h-301.9l28.08 67.4z"/>
+	<text font-size="73.339" font-family="righteous" fill="#FFF" font-weight="bold" transform="scale(1.25787 1)">
+		<tspan x="157.292" y="225.463">PROJ.</tspan>
+	</text>
+	<path fill="#00F" fill-opacity="1.000" stroke-linecap="round" d="M250.1 339.28h32.76v-51.49h-60.84l28.08 51.49z"/>
+	<path fill="#00F" fill-opacity="0.800" stroke-linecap="round" d="M287.54 287.79h60.85v51.49h-60.85z"/>
+	<path fill="#00F" fill-opacity="0.600" stroke-linecap="round" d="M353.07 287.79h42.13v51.49h-42.13z"/>
+	<path fill="#00F" fill-opacity="0.400" stroke-linecap="round" d="M399.88 287.79h28.09v51.49h-28.09z"/>
+	<path fill="#00F" fill-opacity="0.200" stroke-linecap="round" d="M432.65 287.79h14.04v51.49h-14.04z"/>
+	<path fill="#00F" fill-opacity="0.006" stroke-linecap="round" d="M451.37 287.79h4.68v51.49h-4.68z"/>
+</svg>
