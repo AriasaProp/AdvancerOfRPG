@@ -385,8 +385,8 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
-        ApplicationListener appl = new ApplicationListener();
-        //AppV2 appl = new AppV2();
+        //ApplicationListener appl = new ApplicationListener();
+        AppV2 appl = new AppV2();
         try {
 				    final int[] configsEGL = new int[]{
 				  			EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE, //EGLConfig offset 0

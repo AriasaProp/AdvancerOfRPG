@@ -45,9 +45,14 @@ public class AppV2 {
     		}
     		
     }
+    float r = 0, g = 0, b = 0;
     public void render(float delta) {
+    		if (GraphFunc.app.getInput().justTouch()) {
+    				Random rand = new Random();
+    				r = rand.nextFloat(), g = rand.nextFloat(), b = rand.nextFloat();
+    		}
     	  TGF tg = GraphFunc.tgf;
-				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
+				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, r, g, b, 1);
 				
 				tg.glUseProgram(shaderHandlers);
 				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleBuff);
