@@ -23,7 +23,10 @@ public class OpenGLES30 implements AndroidTGF {
     // chaced data graphic function reset when invalidate
     public final IntArray enabledCaps = new IntArray();
     private final String shaderHeader = "#version 300 es\n" + "#define LOW lowp\n" + "#define MED mediump\n"
-            + "#ifdef GL_FRAGMENT_PRECISION_HIGH\n" + "#define HIGH highp\n" + "#else\n" + "#define HIGH mediump\n"
+            + "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
+            + "#define HIGH highp\n"
+            + "#else\n"
+            + "#define HIGH mediump\n"
             + "#endif\n";
     protected int maxTextureSize;
     protected int maxTextureUnit;
