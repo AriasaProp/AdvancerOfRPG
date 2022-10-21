@@ -1800,7 +1800,7 @@ public class OpenGLES30 implements AndroidTGF {
             shaderPrograms.add(handlers);
         } catch (RuntimeException e) {
             Arrays.fill(handlers, -1);
-						tg.glClearColorMask(GLES30.GL_COLOR_BUFFER_BIT|GLES30.GL_DEPTH_BUFFER_BIT|GLES30.GL_STENCIL_BUFFER_BIT, 0, 0, 1.0f, 1.0f);
+						glClearColorMask(GLES30.GL_COLOR_BUFFER_BIT|GLES30.GL_DEPTH_BUFFER_BIT|GLES30.GL_STENCIL_BUFFER_BIT, 0, 0, 1.0f, 1.0f);
 				
             //throw new RuntimeException("Shader program compiling, " + e);
         }
