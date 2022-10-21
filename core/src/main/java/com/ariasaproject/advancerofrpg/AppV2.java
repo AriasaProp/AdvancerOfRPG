@@ -28,7 +28,7 @@ public class AppV2 {
     int a_pos_pointer;
     public void create() {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(6*4);
-				BufferUtils.copy(new float[]{0.0f, 300.0f, -300.0f, -300.0f, 300.0f, -300.0f}, 0, triangleBuff, 6);
+				BufferUtils.copy(new float[]{.0f, .5f, -.5f, -.5f, .5f, -.5f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
     	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
 				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
@@ -47,7 +47,7 @@ public class AppV2 {
     }
     public void render(float delta) {
     	  TGF tg = GraphFunc.tgf;
-				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, 0, 1, 0, 1);
+				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, 0, 0, 0, 1);
 				
 				tg.glUseProgram(shaderHandlers);
 				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleBuff);
