@@ -28,7 +28,7 @@ public class AppV2 {
     int a_pos_pointer;
     public void create() {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(6*4);
-				BufferUtils.copy(new float[]{.0f, .5f, -.5f, -.5f, .5f, -.5f}, 0, triangleBuff, 6);
+				BufferUtils.copy(new float[]{.0f, .5f, .5f, -.5f, -.5f, -.5f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
     	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
 				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
