@@ -23,15 +23,15 @@ public class AppV2 {
         "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
         "}\n";
         
-    int shaderHandlers;
+    //int shaderHandlers;
     Buffer triangleBuff;
-    int a_pos_pointer;
+    //int a_pos_pointer;
     public void create() {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(6*4);
 				BufferUtils.copy(new float[]{.0f, .5f, .5f, -.5f, -.5f, -.5f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
-    	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
-				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
+    	  //shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+				//a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
     		resume();
     }
     public void resize(int width, int height) {
@@ -40,9 +40,11 @@ public class AppV2 {
     }
     public void resume() {
     	  TGF tg = GraphFunc.tgf;
+    	  /*
     		if (tg.validShaderProgram(shaderHandlers)) {
     	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
     		}
+    		*/
     		
     }
     float r = 0, g = 0, b = 0;
@@ -55,14 +57,14 @@ public class AppV2 {
     		}
     	  TGF tg = GraphFunc.tgf;
 				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, r, g, b, 1);
-				
+				/*
 				tg.glUseProgram(shaderHandlers);
 				tg.glVertexAttribPointer(a_pos_pointer, 2, TGF.GL_FLOAT, false, 0 ,triangleBuff);
     		tg.glEnableVertexAttribArray(a_pos_pointer);
     		tg.glDrawArrays(TGF.GL_TRIANGLES, 0, 3);
     		tg.glDisableVertexAttribArray(a_pos_pointer);
 				tg.glUseProgram(0);
-				
+				*/
     }
 
     public void pause() {
@@ -70,8 +72,10 @@ public class AppV2 {
 
     public void destroy() {
   	  	TGF tg = GraphFunc.tgf;
+  	  	/*
     		tg.destroyShaderProgram(shaderHandlers);
     		shaderHandlers = -1;
+    		*/
     		BufferUtils.freeMemory(triangleBuff);
     }
 }
