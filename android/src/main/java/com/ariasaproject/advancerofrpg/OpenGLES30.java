@@ -11,6 +11,7 @@ import com.ariasaproject.advancerofrpg.graphics.glutils.TextureData;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.BufferUtils;
 import com.ariasaproject.advancerofrpg.utils.IntArray;
+import com.ariasaproject.advancerofrpg.AppV2;
 
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
@@ -1705,7 +1706,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public boolean supportsExtension(String extension) {
-
         if (extensions == null)
             extensions = GLES30.glGetString(GLES30.GL_EXTENSIONS);
         return extensions.contains(extension);
@@ -1713,7 +1713,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public boolean supportsRenderer(String renderer) {
-
         if (renderers == null)
             renderers = GLES30.glGetString(GLES30.GL_RENDERER);
         return renderers.contains(renderer);
@@ -1750,7 +1749,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public int getMaxTextureSize() {
-
         if (maxTextureSize < 64) {
             GLES30.glGetIntegerv(GLES30.GL_MAX_TEXTURE_SIZE, ints, 0);
             maxTextureSize = ints[0];
@@ -1760,7 +1758,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public int getMaxTextureUnit() {
-
         if (maxTextureUnit <= 0) {
             GLES30.glGetIntegerv(GLES30.GL_MAX_TEXTURE_IMAGE_UNITS, ints, 0);
             maxTextureUnit = ints[0];
@@ -1776,30 +1773,54 @@ public class OpenGLES30 implements AndroidTGF {
                 throw new RuntimeException("Source is error, hasn't <break>");
             String[] so = source.split("<break>");
             handlers[0] = GLES30.glCreateProgram();
-            if (handlers[0] == 0)
+            if (handlers[0] == 0) {
+            		AppV2.r = 1;
+            		AppV2.g = 0;
+            		AppV2.b = 0;
                 throw new RuntimeException("Failed create Shader Program");
+            }
             handlers[1] = GLES30.glCreateShader(GLES30.GL_VERTEX_SHADER);
-            if (handlers[1] == 0)
+            if (handlers[1] == 0) {
+            		AppV2.r = 0.1f;
+            		AppV2.g = 0.1f;
+            		AppV2.b = 0.1f;
                 throw new RuntimeException("Failed create Vertex shader");
+            }
             GLES30.glShaderSource(handlers[1], shaderHeader + prefix + so[0]);
             GLES30.glCompileShader(handlers[1]);
             GLES30.glGetShaderiv(handlers[1], GLES30.GL_COMPILE_STATUS, ints, 0);
-            if (ints[0] == 0)
+            if (ints[0] == 0) {
+            		AppV2.r = 0.5f;
+            		AppV2.g = 0.5f;
+            		AppV2.b = 0.5f;
                 throw new RuntimeException(GLES30.glGetShaderInfoLog(handlers[1]));
+            }
             handlers[2] = GLES30.glCreateShader(GLES30.GL_FRAGMENT_SHADER);
-            if (handlers[2] == 0)
+            if (handlers[2] == 0) {
+            		AppV2.r = 1;
+            		AppV2.g = 0;
+            		AppV2.b = 1;
                 throw new RuntimeException("Failed create Fragment shader");
+            }
             GLES30.glShaderSource(handlers[2], shaderHeader + prefix + so[1]);
             GLES30.glCompileShader(handlers[2]);
             GLES30.glGetShaderiv(handlers[2], GLES30.GL_COMPILE_STATUS, ints, 0);
-            if (ints[0] == 0)
+            if (ints[0] == 0) {
+            		AppV2.r = 1;
+            		AppV2.g = 1;
+            		AppV2.b = 0;
                 throw new RuntimeException(GLES30.glGetShaderInfoLog(handlers[2]));
+            }
             GLES30.glAttachShader(handlers[0], handlers[1]);
             GLES30.glAttachShader(handlers[0], handlers[2]);
             GLES30.glLinkProgram(handlers[0]);
             GLES30.glGetProgramiv(handlers[0], GLES30.GL_LINK_STATUS, ints, 0);
-            if (ints[0] == 0)
+            if (ints[0] == 0) {
+            		AppV2.r = 1;
+            		AppV2.g = 1;
+            		AppV2.b = 1;
                 throw new RuntimeException(GLES30.glGetProgramInfoLog(handlers[0]));
+            }
             shaderPrograms.add(handlers);
         } catch (RuntimeException e) {
             Arrays.fill(handlers, -1);
