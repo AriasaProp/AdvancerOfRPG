@@ -33,7 +33,7 @@ public class ShaderProgram implements Disposable {
     private final ObjectIntMap<String> attributeTypes = new ObjectIntMap<String>();
     private final ObjectIntMap<String> attributeSizes = new ObjectIntMap<String>();
     private final String shaderSource, prefix;
-    private int[] handlers;
+    private int handlers;
     private String[] uniformNames;
     private String[] attributeNames;
 
@@ -51,26 +51,26 @@ public class ShaderProgram implements Disposable {
         final TGF tgf = GraphFunc.tgf;
         handlers = tgf.compileShaderProgram(source, prefix);
         // prepare all attribute variable name in this shader
-        tgf.glGetProgramiv(handlers[0], TGF.GL_ACTIVE_ATTRIBUTES, params);
+        tgf.glGetProgramiv(handlers, TGF.GL_ACTIVE_ATTRIBUTES, params);
         int numAttributes = params.get(0);
         attributeNames = new String[numAttributes];
         for (int i = 0; i < numAttributes; i++) {
             params.put(0, 1);
-            String name = tgf.glGetActiveAttrib(handlers[0], i, params, type);
-            int location = tgf.glGetAttribLocation(handlers[0], name);
+            String name = tgf.glGetActiveAttrib(handlers, i, params, type);
+            int location = tgf.glGetAttribLocation(handlers, name);
             attributes.put(name, location);
             attributeTypes.put(name, type.get(0));
             attributeSizes.put(name, params.get(0));
             attributeNames[i] = name;
         }
         // prepare all uniform variable name in this shader
-        tgf.glGetProgramiv(handlers[0], TGF.GL_ACTIVE_UNIFORMS, params);
+        tgf.glGetProgramiv(handlers, TGF.GL_ACTIVE_UNIFORMS, params);
         int numUniforms = params.get(0);
         uniformNames = new String[numUniforms];
         for (int i = 0; i < numUniforms; i++) {
             params.put(0, 1);
-            String name = tgf.glGetActiveUniform(handlers[0], i, params, type);
-            int location = tgf.glGetUniformLocation(handlers[0], name);
+            String name = tgf.glGetActiveUniform(handlers, i, params, type);
+            int location = tgf.glGetUniformLocation(handlers, name);
             uniforms.put(name, location);
             uniformTypes.put(name, type.get(0));
             uniformSizes.put(name, params.get(0));
@@ -82,7 +82,7 @@ public class ShaderProgram implements Disposable {
         TGF tgf = GraphFunc.tgf;
         int location;
         if ((location = attributes.get(name, -2)) == -2) {
-            location = tgf.glGetAttribLocation(handlers[0], name);
+            location = tgf.glGetAttribLocation(handlers, name);
             attributes.put(name, location);
         }
         return location;
@@ -96,7 +96,7 @@ public class ShaderProgram implements Disposable {
         TGF tgf = GraphFunc.tgf;
         int location;
         if ((location = uniforms.get(name, -2)) == -2) {
-            location = tgf.glGetUniformLocation(handlers[0], name);
+            location = tgf.glGetUniformLocation(handlers, name);
             if (location == -1 && pedantic) {
                 throw new IllegalArgumentException("no uniform with name '" + name + "' in shader");
             }
@@ -394,8 +394,8 @@ public class ShaderProgram implements Disposable {
     public void bind() {
         TGF tgf = GraphFunc.tgf;
         checkManaged();
-        tgf.glUseProgram(handlers[0]);
-        currentUsedProgram = handlers[0];
+        tgf.glUseProgram(handlers);
+        currentUsedProgram = handlers;
     }
 
     private void checkManaged() {

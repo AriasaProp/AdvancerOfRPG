@@ -1166,11 +1166,11 @@ public interface TGF {
 
     public int getMaxTextureUnit();
 
-    public int[] compileShaderProgram(String source, String prefix) throws IllegalArgumentException;
+    public int compileShaderProgram(String source, String prefix);
 
-    public boolean validShaderProgram(final int[] handlers);
+    public boolean validShaderProgram(final int handlers);
 
-    public void destroyShaderProgram(final int[] handlers);
+    public void destroyShaderProgram(final int handlers);
 
     public int[] genMesh(final int max_v_data, final boolean v_static, final int max_i_data, final boolean i_static);
 

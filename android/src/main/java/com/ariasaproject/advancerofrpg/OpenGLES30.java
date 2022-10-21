@@ -1766,7 +1766,7 @@ public class OpenGLES30 implements AndroidTGF {
     }
 
     @Override
-    public int[] compileShaderProgram(String source, String prefix) throws IllegalArgumentException {
+    public int compileShaderProgram(String source, String prefix) {
         final int[] handlers = new int[3];
         try {
             if (!source.contains("<break>"))
@@ -1800,30 +1800,34 @@ public class OpenGLES30 implements AndroidTGF {
             shaderPrograms.add(handlers);
         } catch (RuntimeException e) {
             Arrays.fill(handlers, -1);
-            throw new IllegalArgumentException("Shader program compiling, " + e);
+            
+            //throw new IllegalArgumentException("Shader program compiling, " + e);
         }
-        return handlers;
+        return handlers[0];
     }
 
     @Override
-    public boolean validShaderProgram(int[] handlers) {
-        if (shaderPrograms.contains(handlers, false))
-            return true;
-        shaderPrograms.removeValue(handlers, false);
-        Arrays.fill(handlers, -1);
+    public boolean validShaderProgram(int handlers) {
+        for (int[] s : shaderPrograms)
+        {
+        		if (s[0] == handlers)
+            		return true;
+        }
         return false;
     }
 
     @Override
-    public void destroyShaderProgram(int[] handlers) {
-        if (handlers[0] == -1)
-            return;
-        GLES30.glUseProgram(0);
-        GLES30.glDeleteProgram(handlers[0]);
-        GLES30.glDeleteShader(handlers[1]);
-        GLES30.glDeleteShader(handlers[2]);
-        shaderPrograms.removeValue(handlers, true);
-        Arrays.fill(handlers, -1);
+    public void destroyShaderProgram(int handlers) {
+        for (int[] s : shaderPrograms) {
+        		if (s[0] == handlers) {
+        				GLES30.glUseProgram(0);
+				        GLES30.glDeleteProgram(s[0]);
+				        GLES30.glDeleteShader(s[1]);
+				        GLES30.glDeleteShader(s[2]);
+        				shaderPrograms.removeValue(s, true);
+            		break;
+        		}
+        }
     }
 
     // mesh id generated and binded Vao instead
