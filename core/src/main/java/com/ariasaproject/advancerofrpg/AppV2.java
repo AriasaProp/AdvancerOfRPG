@@ -30,8 +30,8 @@ public class AppV2 {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(6*4);
 				BufferUtils.copy(new float[]{0.0f, 300.0f, -300.0f, -300.0f, 300.0f, -300.0f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
-    	  //shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
-				//a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
+    	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers[0], "a_position");
     		resume();
     }
     public void resize(int width, int height) {
@@ -40,12 +40,12 @@ public class AppV2 {
     }
     public void resume() {
     	  TGF tg = GraphFunc.tgf;
-    	  /*
+    	  
     		if (tg.validShaderProgram(shaderHandlers)) {
     			  shaderHandlers = null;
     	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
     		}
-    		*/
+    		
     }
     public void render(float delta) {
     	  TGF tg = GraphFunc.tgf;
@@ -65,7 +65,7 @@ public class AppV2 {
 
     public void destroy() {
   	  	TGF tg = GraphFunc.tgf;
-    		//tg.destroyShaderProgram(shaderHandlers);
+    		tg.destroyShaderProgram(shaderHandlers);
     		shaderHandlers = null;
     		BufferUtils.freeMemory(triangleBuff);
     }
