@@ -40,13 +40,7 @@ public class ApplicationListener {
     private Scene screen;
     private String logUp = "";
 
-    protected ApplicationListener() {
-    }
-
-    public static ApplicationListener getApplicationListener() {
-        if (listener == null) listener = new ApplicationListener();
-        return listener;
-    }
+    public ApplicationListener() {}
 
     public void create() {
         batch = new Batch();

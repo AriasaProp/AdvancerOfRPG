@@ -50,6 +50,8 @@ public class ShaderProgram implements Disposable {
         this.prefix = prefix;
         final TGF tgf = GraphFunc.tgf;
         handlers = tgf.compileShaderProgram(source, prefix);
+        if (handlers < 0)
+        		GraphFunc.app.error("SHADER PROGRAM", "failed compile!");
         // prepare all attribute variable name in this shader
         tgf.glGetProgramiv(handlers, TGF.GL_ACTIVE_ATTRIBUTES, params);
         int numAttributes = params.get(0);
@@ -400,8 +402,11 @@ public class ShaderProgram implements Disposable {
 
     private void checkManaged() {
         TGF tgf = GraphFunc.tgf;
-        if (!tgf.validShaderProgram(handlers))
+        if (!tgf.validShaderProgram(handlers)) {
             handlers = tgf.compileShaderProgram(shaderSource, prefix);
+            if (handlers < 0)
+        				GraphFunc.app.error("SHADER PROGRAM", "failed compile!");
+        }
     }
 
     @Override

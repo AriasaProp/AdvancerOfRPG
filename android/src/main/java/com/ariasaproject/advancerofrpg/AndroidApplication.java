@@ -39,7 +39,9 @@ import com.ariasaproject.advancerofrpg.input.Clipboard;
 import com.ariasaproject.advancerofrpg.input.Input;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
+
 import com.ariasaproject.advancerofrpg.AppV2;
+import com.ariasaproject.advancerofrpg.ApplicationListener;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -383,7 +385,8 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
-        AppV2 appl = new AppV2();
+        ApplicationListener appl = new ApplicationListener();
+        //AppV2 appl = new AppV2();
         try {
 				    final int[] configsEGL = new int[]{
 				  			EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE, //EGLConfig offset 0
