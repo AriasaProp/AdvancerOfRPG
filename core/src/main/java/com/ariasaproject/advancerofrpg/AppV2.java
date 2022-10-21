@@ -13,9 +13,9 @@ import java.nio.ByteOrder;
 public class AppV2 {
 
     public AppV2() {}
-    final String shaderSrc = "in vec4 a_position;\n"+
+    final String shaderSrc = "in vec2 a_position;\n"+
         "void main() {\n"+
-        "  gl_Position = a_position;\n"+
+        "  gl_Position = vec4(a_position, 0.0, 1.0);\n"+
         "}\n"+
         "<break>\n"+
         "precision MED float;\n"+
@@ -47,9 +47,11 @@ public class AppV2 {
     }
     float r = 0, g = 0, b = 0;
     public void render(float delta) {
-    		if (GraphFunc.app.getInput().justTouch()) {
+    		if (GraphFunc.app.getInput().justTouched()) {
     				Random rand = new Random();
-    				r = rand.nextFloat(), g = rand.nextFloat(), b = rand.nextFloat();
+    				r = rand.nextFloat();
+    				g = rand.nextFloat();
+    				b = rand.nextFloat();
     		}
     	  TGF tg = GraphFunc.tgf;
 				tg.glClearColorMask(TGF.GL_COLOR_BUFFER_BIT|TGF.GL_DEPTH_BUFFER_BIT|TGF.GL_STENCIL_BUFFER_BIT, r, g, b, 1);
