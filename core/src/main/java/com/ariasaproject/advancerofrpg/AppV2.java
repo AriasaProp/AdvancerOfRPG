@@ -29,7 +29,7 @@ public class AppV2 {
     int a_pos_pointer;
     public void create() {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(24);// 6 floats
-				BufferUtils.copy(new float[]{.0f, .5f, .5f, -.5f, -.5f, -.5f}, 0, triangleBuff, 6);
+				BufferUtils.copy(new float[]{.0f, .5f, -.5f, -.5f, .5f, -.5f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
     	  shaderHandlers = tg.compileShaderProgram(shaderSrc, ""); 
 				a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
@@ -71,10 +71,7 @@ public class AppV2 {
 
     public void destroy() {
   	  	TGF tg = GraphFunc.tgf;
-  	  	try{
-    				tg.destroyShaderProgram(shaderHandlers);
-  	  	} catch (Exception e){}
-    		shaderHandlers = -1;
+  	  	tg.destroyShaderProgram(shaderHandlers);
     		
     		BufferUtils.freeMemory(triangleBuff);
     }
