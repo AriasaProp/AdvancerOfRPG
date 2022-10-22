@@ -4,50 +4,24 @@ import com.ariasaproject.advancerofrpg.math.MathUtils;
 
 import java.util.Arrays;
 
-/**
- * A resizable, ordered or unordered int array. Avoids the boxing that occurs
- * with ArrayList<Integer>. If unordered, this class avoids a memory copy when
- * removing elements (the last element is moved to the removed element's
- * position).
- *
- * @author Nathan Sweet
- */
 public class IntArray {
     public int[] items;
     public int size;
     public boolean ordered;
 
-    /**
-     * Creates an ordered array with a capacity of 16.
-     */
     public IntArray() {
         this(true, 16);
     }
 
-    /**
-     * Creates an ordered array with the specified capacity.
-     */
     public IntArray(int capacity) {
         this(true, capacity);
     }
 
-    /**
-     * @param ordered  If false, methods that remove elements may change the order
-     *                 of other elements in the array, which avoids a memory copy.
-     * @param capacity Any elements added beyond this will cause the backing array
-     *                 to be grown.
-     */
     public IntArray(boolean ordered, int capacity) {
         this.ordered = ordered;
         items = new int[capacity];
     }
 
-    /**
-     * Creates a new array containing the elements in the specific array. The new
-     * array will be ordered if the specific array is ordered. The capacity is set
-     * to the number of elements, so any subsequent elements added will cause the
-     * backing array to be grown.
-     */
     public IntArray(IntArray array) {
         this.ordered = array.ordered;
         size = array.size;
@@ -55,32 +29,16 @@ public class IntArray {
         System.arraycopy(array.items, 0, items, 0, size);
     }
 
-    /**
-     * Creates a new ordered array containing the elements in the specified array.
-     * The capacity is set to the number of elements, so any subsequent elements
-     * added will cause the backing array to be grown.
-     */
     public IntArray(int[] array) {
         this(true, array, 0, array.length);
     }
 
-    /**
-     * Creates a new array containing the elements in the specified array. The
-     * capacity is set to the number of elements, so any subsequent elements added
-     * will cause the backing array to be grown.
-     *
-     * @param ordered If false, methods that remove elements may change the order of
-     *                other elements in the array, which avoids a memory copy.
-     */
     public IntArray(boolean ordered, int[] array, int startIndex, int count) {
         this(ordered, count);
         size = count;
         System.arraycopy(array, startIndex, items, 0, count);
     }
 
-    /**
-     * @see #IntArray(int[])
-     */
     static public IntArray with(int... array) {
         return new IntArray(array);
     }

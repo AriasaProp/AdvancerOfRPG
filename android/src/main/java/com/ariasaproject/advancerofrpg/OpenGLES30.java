@@ -23,7 +23,9 @@ public class OpenGLES30 implements AndroidTGF {
     public static final String TAG = "GLES 3.0";
     // chaced data graphic function reset when invalidate
     public final IntArray enabledCaps = new IntArray();
-    private final String shaderHeader = "#version 300 es\n" + "#define LOW lowp\n" + "#define MED mediump\n"
+    private final String shaderHeader = "#version 300 es\n"
+    				+ "#define LOW lowp\n"
+    				+ "#define MED mediump\n"
             + "#ifdef GL_FRAGMENT_PRECISION_HIGH\n"
             + "#define HIGH highp\n"
             + "#else\n"
@@ -40,7 +42,7 @@ public class OpenGLES30 implements AndroidTGF {
     int blendSFactor, blendDFactor, depthFunc, cullFace;
     // future for managed generate and delete texture
     Array<TextureData> textures = new Array<TextureData>();
-    Array<int[]> shaderPrograms = new Array<int[]>();
+    IntArray shaderPrograms = new IntArray();
     Array<int[]> meshes = new Array<int[]>();
 
     @Override
@@ -1767,71 +1769,62 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public int compileShaderProgram(String source, String prefix) {
-        final int[] handlers = new int[3];
+        int handlers = 0;
         try {
             if (!source.contains("<break>"))
                 throw new RuntimeException("Source is error, hasn't <break>");
             String[] so = source.split("<break>");
-            handlers[0] = GLES30.glCreateProgram();
-            if (handlers[0] == 0) {
+            handlers = GLES30.glCreateProgram();
+            if (handlers == 0) {
                 throw new RuntimeException("Failed create Shader Program");
             }
-            handlers[1] = GLES30.glCreateShader(GLES30.GL_VERTEX_SHADER);
-            if (handlers[1] == 0) {
+            int vertexId = GLES30.glCreateShader(GLES30.GL_VERTEX_SHADER);
+            if (vertexId == 0) {
                 throw new RuntimeException("Failed create Vertex shader");
             }
-            GLES30.glShaderSource(handlers[1], shaderHeader + prefix + so[0]);
-            GLES30.glCompileShader(handlers[1]);
-            GLES30.glGetShaderiv(handlers[1], GLES30.GL_COMPILE_STATUS, ints, 0);
+            GLES30.glShaderSource(vertexId, shaderHeader + prefix + so[0]);
+            GLES30.glCompileShader(vertexId);
+            GLES30.glGetShaderiv(vertexId, GLES30.GL_COMPILE_STATUS, ints, 0);
             if (ints[0] == 0) {
-                throw new RuntimeException(GLES30.glGetShaderInfoLog(handlers[1]));
+                throw new RuntimeException(GLES30.glGetShaderInfoLog(vertexId));
             }
-            handlers[2] = GLES30.glCreateShader(GLES30.GL_FRAGMENT_SHADER);
-            if (handlers[2] == 0) {
+            int fragmentId = GLES30.glCreateShader(GLES30.GL_FRAGMENT_SHADER);
+            if (fragmentId == 0) {
                 throw new RuntimeException("Failed create Fragment shader");
             }
-            GLES30.glShaderSource(handlers[2], shaderHeader + prefix + so[1]);
-            GLES30.glCompileShader(handlers[2]);
-            GLES30.glGetShaderiv(handlers[2], GLES30.GL_COMPILE_STATUS, ints, 0);
+            GLES30.glShaderSource(fragmentId, shaderHeader + prefix + so[1]);
+            GLES30.glCompileShader(fragmentId);
+            GLES30.glGetShaderiv(fragmentId, GLES30.GL_COMPILE_STATUS, ints, 0);
             if (ints[0] == 0) {
-                throw new RuntimeException(GLES30.glGetShaderInfoLog(handlers[2]));
+                throw new RuntimeException(GLES30.glGetShaderInfoLog(fragmentId));
             }
-            GLES30.glAttachShader(handlers[0], handlers[1]);
-            GLES30.glAttachShader(handlers[0], handlers[2]);
-            GLES30.glLinkProgram(handlers[0]);
-            GLES30.glGetProgramiv(handlers[0], GLES30.GL_LINK_STATUS, ints, 0);
+            GLES30.glAttachShader(handlers, vertexId);
+            GLES30.glAttachShader(handlers, fragmentId);
+            GLES30.glLinkProgram(handlers);
+            GLES30.glGetProgramiv(handlers, GLES30.GL_LINK_STATUS, ints, 0);
             if (ints[0] == 0) {
-                throw new RuntimeException(GLES30.glGetProgramInfoLog(handlers[0]));
+                throw new RuntimeException(GLES30.glGetProgramInfoLog(handlers));
             }
             shaderPrograms.add(handlers);
+		        GLES30.glDeleteShader(vertexId);
+		        GLES30.glDeleteShader(fragmentId);
         } catch (RuntimeException e) {
-            Arrays.fill(handlers, -1);
+        		handlers = -1;
             AndroidApplication.exceptout(e);
         }
-        return handlers[0];
+        return handlers;
     }
 
     @Override
     public boolean validShaderProgram(int handlers) {
-        for (int[] s : shaderPrograms)
-        {
-        		if (s[0] == handlers)
-            		return true;
-        }
-        return false;
+      return shaderPrograms.contains(handlers) && GLES30.glIsProgram(handlers);
     }
 
     @Override
     public void destroyShaderProgram(int handlers) {
-        for (int[] s : shaderPrograms) {
-        		if (s[0] == handlers) {
-        				GLES30.glUseProgram(0);
-				        GLES30.glDeleteProgram(s[0]);
-				        GLES30.glDeleteShader(s[1]);
-				        GLES30.glDeleteShader(s[2]);
-        				shaderPrograms.removeValue(s, true);
-            		break;
-        		}
+    		if (shaderPrograms.removeValue(handlers)) {
+    				GLES30.glUseProgram(0);
+		        GLES30.glDeleteProgram(handlers);
         }
     }
 
@@ -1963,10 +1956,8 @@ public class OpenGLES30 implements AndroidTGF {
     @Override
     public void clear() {
         GLES30.glUseProgram(0);
-        for (final int[] handler : shaderPrograms) {
-            GLES30.glDeleteProgram(handler[0]);
-            GLES30.glDeleteShader(handler[1]);
-            GLES30.glDeleteShader(handler[2]);
+        for (final int handler : shaderPrograms) {
+            GLES30.glDeleteProgram(handler);
         }
         shaderPrograms.clear();
         GLES30.glBindVertexArray(0);
