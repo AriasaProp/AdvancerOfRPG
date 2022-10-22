@@ -17,6 +17,7 @@ import android.opengl.EGLDisplay;
 import android.opengl.EGLSurface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -718,8 +719,8 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         writer.append(e.getMessage());
         writer.flush();
         writer.close();
-    } catch (IOException e) {
-        e.printStackTrace();
+    } catch (IOException ioe) {
+        ioe.printStackTrace();
     }
 }
 }
