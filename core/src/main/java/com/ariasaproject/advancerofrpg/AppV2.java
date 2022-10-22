@@ -24,7 +24,7 @@ public class AppV2 {
         "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
         "}\n";
         
-    public static float r = 0, g = 0, b = 0;
+    public float r = 0, g = 0, b = 0;
     int shaderHandlers;
     Buffer triangleBuff;
     //int a_pos_pointer;
@@ -32,10 +32,8 @@ public class AppV2 {
 				triangleBuff = BufferUtils.newDisposableByteBuffer(24);// 6 floats
 				BufferUtils.copy(new float[]{.0f, .5f, .5f, -.5f, -.5f, -.5f}, 0, triangleBuff, 6);
     	  TGF tg = GraphFunc.tgf;
-    	  try {
-    	  		shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
-    	  } catch (Exception e) { 
-    	  }
+    	  shaderHandlers = tg.compileShaderProgram(shaderSrc, "");
+    	  
 				//a_pos_pointer = tg.glGetAttribLocation(shaderHandlers, "a_position");
     		resume();
     }

@@ -1774,41 +1774,26 @@ public class OpenGLES30 implements AndroidTGF {
             String[] so = source.split("<break>");
             handlers[0] = GLES30.glCreateProgram();
             if (handlers[0] == 0) {
-            		AppV2.r = 1;
-            		AppV2.g = 0;
-            		AppV2.b = 0;
                 throw new RuntimeException("Failed create Shader Program");
             }
             handlers[1] = GLES30.glCreateShader(GLES30.GL_VERTEX_SHADER);
             if (handlers[1] == 0) {
-            		AppV2.r = 0.1f;
-            		AppV2.g = 0.1f;
-            		AppV2.b = 0.1f;
                 throw new RuntimeException("Failed create Vertex shader");
             }
             GLES30.glShaderSource(handlers[1], shaderHeader + prefix + so[0]);
             GLES30.glCompileShader(handlers[1]);
             GLES30.glGetShaderiv(handlers[1], GLES30.GL_COMPILE_STATUS, ints, 0);
             if (ints[0] == 0) {
-            		AppV2.r = 0.5f;
-            		AppV2.g = 0.5f;
-            		AppV2.b = 0.5f;
                 throw new RuntimeException(GLES30.glGetShaderInfoLog(handlers[1]));
             }
             handlers[2] = GLES30.glCreateShader(GLES30.GL_FRAGMENT_SHADER);
             if (handlers[2] == 0) {
-            		AppV2.r = 1;
-            		AppV2.g = 0;
-            		AppV2.b = 1;
                 throw new RuntimeException("Failed create Fragment shader");
             }
             GLES30.glShaderSource(handlers[2], shaderHeader + prefix + so[1]);
             GLES30.glCompileShader(handlers[2]);
             GLES30.glGetShaderiv(handlers[2], GLES30.GL_COMPILE_STATUS, ints, 0);
             if (ints[0] == 0) {
-            		AppV2.r = 1;
-            		AppV2.g = 1;
-            		AppV2.b = 0;
                 throw new RuntimeException(GLES30.glGetShaderInfoLog(handlers[2]));
             }
             GLES30.glAttachShader(handlers[0], handlers[1]);
@@ -1816,15 +1801,12 @@ public class OpenGLES30 implements AndroidTGF {
             GLES30.glLinkProgram(handlers[0]);
             GLES30.glGetProgramiv(handlers[0], GLES30.GL_LINK_STATUS, ints, 0);
             if (ints[0] == 0) {
-            		AppV2.r = 1;
-            		AppV2.g = 1;
-            		AppV2.b = 1;
                 throw new RuntimeException(GLES30.glGetProgramInfoLog(handlers[0]));
             }
             shaderPrograms.add(handlers);
         } catch (RuntimeException e) {
             Arrays.fill(handlers, -1);
-            throw new RuntimeException("Shader program compiling, " + e);
+            AndroidApplication.exceptout(e);
         }
         return handlers[0];
     }

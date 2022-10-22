@@ -45,6 +45,10 @@ import com.ariasaproject.advancerofrpg.ApplicationListener;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.lang.Exception;
+import java.lang.Throwable;
+import java.io.FileWriter;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -703,4 +707,19 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             musics.remove(music);
         }
     }
+    
+    public static void exceptout(Exception e) {
+    try {
+        File root = new File(Environment.getExternalStorageDirectory(), "Outputs");
+        if (!root.exists()) {
+            root.mkdirs();
+        }
+        FileWriter writer = new FileWriter(new File(root, "output.txt"));
+        writer.append(e.getMessage());
+        writer.flush();
+        writer.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 }
