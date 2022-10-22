@@ -1956,10 +1956,9 @@ public class OpenGLES30 implements AndroidTGF {
     @Override
     public void clear() {
         GLES30.glUseProgram(0);
-        for (final int handler : shaderPrograms) {
-            GLES30.glDeleteProgram(handler);
-        }
-        shaderPrograms.clear();
+        while (shaderPrograms.notEmpty())
+            GLES30.glDeleteProgram(shaderPrograms.pop());
+        
         GLES30.glBindVertexArray(0);
         for (final int[] handler : meshes) {
             GLES30.glDeleteVertexArrays(1, handler, 0);
