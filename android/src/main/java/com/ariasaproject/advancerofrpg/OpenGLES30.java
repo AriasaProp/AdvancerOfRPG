@@ -1810,7 +1810,8 @@ public class OpenGLES30 implements AndroidTGF {
         } catch (RuntimeException e) {
             AndroidApplication.exceptout(e);
             //throw new RuntimeException("Shader compile error " + e);
-        } 
+            return -1;
+        }
     }
 
     @Override
