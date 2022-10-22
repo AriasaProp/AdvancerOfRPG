@@ -65,6 +65,7 @@ public class AppV2 {
     }
 
     public void pause() {
+    	  TGF tg = GraphFunc.tgf;
     		tg.glDisableVertexAttribArray(0);
 				tg.glUseProgram(0);
 				
@@ -75,7 +76,6 @@ public class AppV2 {
     public void destroy() {
   	  	TGF tg = GraphFunc.tgf;
   	  	tg.destroyShaderProgram(shaderHandlers);
-    		
     		BufferUtils.freeMemory(triangleBuff);
     }
 }
