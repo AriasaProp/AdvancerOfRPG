@@ -69,7 +69,6 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public void glBindFramebuffer(int target, int framebuffer) {
-
         GLES30.glBindFramebuffer(target, framebuffer);
     }
 
@@ -1769,12 +1768,11 @@ public class OpenGLES30 implements AndroidTGF {
 
     @Override
     public int compileShaderProgram(String source, String prefix) {
-        int handlers = 0;
         try {
             if (!source.contains("<break>"))
                 throw new RuntimeException("Source is error, hasn't <break>");
             String[] so = source.split("<break>");
-            handlers = GLES30.glCreateProgram();
+            int handlers = GLES30.glCreateProgram();
             if (handlers == 0) {
                 throw new RuntimeException("Failed create Shader Program");
             }
@@ -1808,11 +1806,11 @@ public class OpenGLES30 implements AndroidTGF {
             shaderPrograms.add(handlers);
 		        GLES30.glDeleteShader(vertexId);
 		        GLES30.glDeleteShader(fragmentId);
+		        return handlers;
         } catch (RuntimeException e) {
-        		handlers = -1;
             AndroidApplication.exceptout(e);
-        }
-        return handlers;
+            //throw new RuntimeException("Shader compile error " + e);
+        } 
     }
 
     @Override

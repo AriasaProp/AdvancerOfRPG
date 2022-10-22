@@ -88,7 +88,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     //audio params
     private SoundPool soundPool;
     private AudioManager manager;
-
+    private static Context ctx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -130,6 +130,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         this.holder = view.getHolder();
         GraphFunc.app = this;
         GraphFunc.tgf = tgf;
+        ctx = getApplicationContext();
         mainTGFThread = new Thread(this, "GLThread");
         mainTGFThread.start();
     }
@@ -710,17 +711,20 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     }
     
     public static void exceptout(Exception e) {
-    try {
-        File root = new File(Environment.getExternalStorageDirectory(), "Outputs");
-        if (!root.exists()) {
-            root.mkdirs();
-        }
-        FileWriter writer = new FileWriter(new File(root, "output.txt"));
-        writer.append(e.getMessage());
-        writer.flush();
-        writer.close();
-    } catch (IOException ioe) {
-        ioe.printStackTrace();
-    }
-}
+		    try {
+		        File root = new File(Environment.getExternalStorageDirectory(), "Outputs");
+		        if (!root.exists()) {
+		            root.mkdirs();
+		        }
+		        FileWriter writer = new FileWriter(new File(root, "output.txt"));
+		        writer.append(e.getMessage());
+		        writer.flush();
+		        writer.close();
+		    } catch (IOException ioe) {
+		        ioe.printStackTrace();
+		    }
+		    if (ctx == null) return;
+				Toast toast = Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG);
+				toast.show();
+		}
 }
