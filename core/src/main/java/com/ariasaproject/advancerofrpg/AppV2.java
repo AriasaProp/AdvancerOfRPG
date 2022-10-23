@@ -15,12 +15,12 @@ public class AppV2 {
     public AppV2() {}
     final String shaderSrc = "layout(location = 0) in vec4 a_position;\n"+
         "void main() {\n"+
-        "  gl_Position = a_position\n"+
+        "  gl_Position = a_position;\n"+
         "}\n"+
         "<break>\n"+
-				"out vec4 fragColor;\n"+
+				"layout(location = 0) out vec4 gl_FragColor;\n"+
         "void main() {\n"+
-        "  fragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
+        "  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"+
         "}\n";
         
     public float r = 0, g = 0, b = 0;

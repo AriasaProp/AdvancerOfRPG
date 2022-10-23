@@ -660,55 +660,51 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 throw new RuntimeException("Error loading audio file: " + file, ex);
             }
         }
-
     }
 
     public Music newMusic(FileDescriptor fd) {
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(fd);
-            mediaPlayer.prepare();
-            AndroidMusic music = new AndroidMusic(this, mediaPlayer);
-            synchronized (musics) {
-                musics.add(music);
-            }
-            return music;
-        } catch (Exception ex) {
-            throw new RuntimeException("Error loading audio from FileDescriptor", ex);
-        }
+    		MediaPlayer mediaPlayer = new MediaPlayer();
+    		try {
+  					mediaPlayer.setDataSource(fd);
+  					mediaPlayer.prepare();
+  					AndroidMusic music = new AndroidMusic(this, mediaPlayer);
+  					synchronized (musics)
+  							musics.add(music);
+  					return music;
+    		} catch (Exception ex) {
+    				throw new RuntimeException("Error loading audio from FileDescriptor", ex);
+    		}
     }
 
     @Override
     public Sound newSound(FileHandle file) {
-        if (file.type() == FileType.Internal) {
-            try {
-                AssetFileDescriptor descriptor = files.descriptor(file);
-                Sound sound = new AndroidSound(soundPool, manager, soundPool.load(descriptor, 1));
-                descriptor.close();
-                return sound;
-            } catch (IOException ex) {
-                throw new RuntimeException("Error loading audio file: " + file
-                        + "\nNote: Internal audio files must be placed in the assets directory.", ex);
-            }
-        } else {
-            try {
-                return new AndroidSound(soundPool, manager, soundPool.load(file.file().getPath(), 1));
-            } catch (Exception ex) {
-                throw new RuntimeException("Error loading audio file: " + file, ex);
-            }
-        }
+    		if (file.type() == FileType.Internal) {
+    				try {
+    						AssetFileDescriptor descriptor = files.descriptor(file);
+    						Sound sound = new AndroidSound(soundPool, manager, soundPool.load(descriptor, 1));
+    						descriptor.close();
+    						return sound;
+    				} catch (IOException ex) {
+    						throw new RuntimeException("Error loading audio file: " + file + ", Internal audio files should in the assets directory.", ex);
+    				}
+    		} else {
+    				try {
+    						return new AndroidSound(soundPool, manager, soundPool.load(file.file().getPath(), 1));
+    				} catch (Exception ex) {
+    						throw new RuntimeException("Error loading audio file: " + file, ex);
+    				}
+    		}
     }
 
     @Override
     public AudioRecorder newAudioRecorder(int samplingRate, boolean isMono) {
-        return new AndroidAudioRecorder(samplingRate, isMono);
+    		return new AndroidAudioRecorder(samplingRate, isMono);
     }
 
     @Override
     public void disposeMusic(Music music) {
-        synchronized (musics) {
-            musics.remove(music);
-        }
+    		synchronized (musics)
+    				musics.remove(music);
     }
     
     public static void exceptout(Exception e) {
@@ -725,7 +721,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 		        ioe.printStackTrace();
 		    }
 		    if (ctx == null) return;
-				Toast toast = Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG);
-				toast.show();
+		    Toast toast = Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG);
+		    toast.show();
 		}
 }

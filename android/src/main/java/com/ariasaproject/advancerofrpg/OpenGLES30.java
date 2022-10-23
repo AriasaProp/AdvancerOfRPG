@@ -1772,9 +1772,6 @@ public class OpenGLES30 implements AndroidTGF {
             if (!source.contains("<break>"))
                 throw new RuntimeException("Source is error, hasn't <break>");
             String[] so = source.split("<break>");
-            if (vertexId == 0 || fragmentId == 0) {
-                throw new RuntimeException("Failed create base shader");
-            }
             GLES30.glShaderSource(vertexId, shaderHeader + prefix + so[0]);
             GLES30.glCompileShader(vertexId);
             GLES30.glGetShaderiv(vertexId, GLES30.GL_COMPILE_STATUS, ints, 0);
@@ -1798,10 +1795,9 @@ public class OpenGLES30 implements AndroidTGF {
             //throw new RuntimeException("Shader compile error " + e);
       			GLES30.glDeleteProgram(handlers);
             handlers = -1;
-        } finally {
-		        GLES30.glDeleteShader(vertexId);
-		        GLES30.glDeleteShader(fragmentId);
         }
+        GLES30.glDeleteShader(vertexId);
+        GLES30.glDeleteShader(fragmentId);
         return handlers;
     }
 
