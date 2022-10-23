@@ -592,20 +592,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 frames++;
             }
         } catch (Throwable e) {
-            // fall thru and exit normallytry {
-        		try {
-				        File root = new File(Environment.getExternalStorageDirectory(), "Outputs");
-				        if (!root.exists()) {
-				            root.mkdirs();
-				        }
-				        FileWriter writer = new FileWriter(new File(root, "output.txt"));
-				        writer.append(e.getMessage());
-				        writer.flush();
-				        writer.close(); 
-						    Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG);
-						    toast.show();
-        		} catch (Throwable t) {
-            		error(TAG, "error", t);
+            // fall thru and exit normally
+        		try (FileOutputStream fos = openFileOutput("Outputs.txt", Context.MODE_PRIVATE)) {
+        				fos.write(e.getMessage().getBytes());
+						    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         		}
             error(TAG, "error", e);
         }
@@ -635,6 +625,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
             mExited = true;
             notifyAll();
         }
+        if (!destroy) finish();
     }
 
     @Override
