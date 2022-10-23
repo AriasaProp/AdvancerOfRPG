@@ -1791,13 +1791,13 @@ public class OpenGLES30 implements AndroidTGF {
                 throw new RuntimeException(GLES30.glGetProgramInfoLog(handlers));
             shaderPrograms.add(handlers);
         } catch (RuntimeException e) {
-            AndroidApplication.exceptout(e);
-            //throw new RuntimeException("Shader compile error " + e);
       			GLES30.glDeleteProgram(handlers);
             handlers = -1;
+            throw new RuntimeException("Shader compile error " + e);
+        } finally {
+		        GLES30.glDeleteShader(vertexId);
+		        GLES30.glDeleteShader(fragmentId);
         }
-        GLES30.glDeleteShader(vertexId);
-        GLES30.glDeleteShader(fragmentId);
         return handlers;
     }
 
