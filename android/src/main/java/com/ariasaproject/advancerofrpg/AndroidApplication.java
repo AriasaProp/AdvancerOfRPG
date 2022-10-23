@@ -592,7 +592,17 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 frames++;
             }
         } catch (Throwable e) {
-            // fall thru and exit normally
+            // fall thru and exit normallytry {
+		        File root = new File(Environment.getExternalStorageDirectory(), "Outputs");
+		        if (!root.exists()) {
+		            root.mkdirs();
+		        }
+		        FileWriter writer = new FileWriter(new File(root, "output.txt"));
+		        writer.append(e.getMessage());
+		        writer.flush();
+		        writer.close(); 
+				    Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG);
+				    toast.show();
             error(TAG, "error", e);
         }
         // dispose all resources
@@ -634,8 +644,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         if (file.type() == FileType.Internal) {
             try {
                 AssetFileDescriptor descriptor = files.descriptor(file);
-                mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(),
-                        descriptor.getLength());
+                mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
                 descriptor.close();
                 mediaPlayer.prepare();
                 AndroidMusic music = new AndroidMusic(this, mediaPlayer);
@@ -644,8 +653,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 }
                 return music;
             } catch (Exception ex) {
-                throw new RuntimeException("Error loading audio file: " + file
-                        + "\nNote: Internal audio files must be placed in the assets directory.", ex);
+                throw new RuntimeException("Error loading audio file: " + file + ", internal audio files should in the assets directory.", ex);
             }
         } else {
             try {
@@ -668,8 +676,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
   					mediaPlayer.setDataSource(fd);
   					mediaPlayer.prepare();
   					AndroidMusic music = new AndroidMusic(this, mediaPlayer);
-  					synchronized (musics)
+  					synchronized (musics) {
   							musics.add(music);
+  					}
   					return music;
     		} catch (Exception ex) {
     				throw new RuntimeException("Error loading audio from FileDescriptor", ex);
@@ -703,25 +712,8 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 
     @Override
     public void disposeMusic(Music music) {
-    		synchronized (musics)
+    		synchronized (musics) {
     				musics.remove(music);
+    		}
     }
-    
-    public static void exceptout(Exception e) {
-		    try {
-		        File root = new File(Environment.getExternalStorageDirectory(), "Outputs");
-		        if (!root.exists()) {
-		            root.mkdirs();
-		        }
-		        FileWriter writer = new FileWriter(new File(root, "output.txt"));
-		        writer.append(e.getMessage());
-		        writer.flush();
-		        writer.close();
-		    } catch (IOException ioe) {
-		        ioe.printStackTrace();
-		    }
-		    if (ctx == null) return;
-		    Toast toast = Toast.makeText(ctx, e.getMessage(), Toast.LENGTH_LONG);
-		    toast.show();
-		}
 }
