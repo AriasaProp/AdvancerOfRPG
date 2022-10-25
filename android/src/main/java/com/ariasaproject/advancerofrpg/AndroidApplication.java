@@ -596,7 +596,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         		try (FileOutputStream fos = openFileOutput("Outputs.txt", Context.MODE_PRIVATE)) {
         				fos.write(e.getMessage().getBytes());
 						    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        		} catch (Exception e) {
+        		} catch (Exception exceptM1) {
         				//ignore
         		}
             error(TAG, "error", e);
