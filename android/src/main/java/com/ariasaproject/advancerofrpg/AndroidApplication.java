@@ -68,7 +68,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         }
     }
 
-    final int uiHide = 5382;//hide all system ui as possible
     protected final Array<Runnable> runnables = new Array<Runnable>();
     protected final SnapshotArray<LifecycleListener> lifecycleListeners = new SnapshotArray<LifecycleListener>(LifecycleListener.class);
     private final List<AndroidMusic> musics = new ArrayList<AndroidMusic>();
@@ -95,6 +94,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         // SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
         final View d = getWindow().getDecorView();
+  			final int uiHide = 5382;
         d.setSystemUiVisibility(uiHide);
         d.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
             @Override
@@ -148,20 +148,11 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     @Override
     public synchronized void restart() {
     	restart = true;
-      runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          finish();
-          try {
-            while(!mExited)
-              wait();
-          } catch(Throwable ignore) {}
-        }
-      });
+      exit();
     }
 
     @Override
-    public synchronized void exit() {
+    public void exit() {
         runOnUiThread(new Runnable() {
           @Override
           public void run() {
@@ -220,7 +211,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     Thread.currentThread().interrupt();
                 }
             }
-
         }
         super.onPause();
     }
