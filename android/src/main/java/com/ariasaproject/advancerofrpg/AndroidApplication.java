@@ -476,7 +476,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     }
                   }
 	                if (newContext) {
-	                	final int[] ctxAttr = new int[]{EGL14.EGL_CONTEXT_MAJOR_VERSION, majorV, EGL14.EGL_CONTEXT_MINOR_VERSION, minorV, EGL_NONE};
+	                	final int[] ctxAttr = new int[]{EGL14.EGL_CONTEXT_CLIENT_VERSION, majorV, EGL14.EGL_NONE};
                     mEglContext = EGL14.eglCreateContext(mEglDisplay, mEglConfig, EGL14.EGL_NO_CONTEXT, ctxAttr, 0);
                     if (mEglContext == null || mEglContext == EGL14.EGL_NO_CONTEXT) {
                       mEglContext = null;
