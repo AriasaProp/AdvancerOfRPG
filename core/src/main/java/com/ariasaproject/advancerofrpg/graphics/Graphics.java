@@ -10,6 +10,4 @@ public interface Graphics {
     float getDeltaTime();
 
     int getFramesPerSecond();
-
-    void setVSync(boolean vsync);
 }

@@ -75,9 +75,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
     protected AndroidFiles files;
     protected AndroidNet net;
     protected AndroidClipboard clipboard;
-    int mayorV, minorV;
+    int majorV, minorV;
     volatile boolean resume = false, pause = false, destroy = false, resize = false, rendered = false, hasFocus = true,
             hasSurface = false, mExited = false;
+    volatile boolean restart = false;
     long frameStart = System.currentTimeMillis(), lastFrameTime = System.currentTimeMillis();
     int frames, fps, width = 0, height = 0;
     float deltaTime = 0;
@@ -108,7 +109,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
-        this.mayorV = (short) (configurationInfo.reqGlEsVersion >> 16);
+        this.majorV = (short) (configurationInfo.reqGlEsVersion >> 16);
         this.minorV = (short) (configurationInfo.reqGlEsVersion & 0x0000ffff);
         
         this.input = new AndroidInput(this, view);
@@ -144,7 +145,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         notifyAll();
         input.onResume();
     }
-    boolean restart = false;
     @Override
     public synchronized void restart() {
     	restart = true;
@@ -191,16 +191,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         }
         soundPool.autoPause();
         // graphics
-        pause = true;
-        rendered = true;
-        notifyAll();
-        while (!mExited && rendered) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }
         if (isFinishing()) {
             destroy = true;
             notifyAll();
@@ -211,6 +201,18 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     Thread.currentThread().interrupt();
                 }
             }
+            mExited = false;
+        } else {
+	        pause = true;
+	        rendered = true;
+	        notifyAll();
+	        while (!mExited && rendered) {
+	            try {
+	                wait();
+	            } catch (InterruptedException ex) {
+	                Thread.currentThread().interrupt();
+	            }
+	        }
         }
         super.onPause();
     }
@@ -369,11 +371,6 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         notifyAll();
     }
 
-    @Override
-    public void setVSync(boolean vsync) {
-        // ignored cause android gles doesn't support VSync
-    }
-
     // main loop
     @Override
     public void run() {
@@ -424,9 +421,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     lpause = pause;
                     if (pause)
                         pause = false;
-                    lresume = resume;
                     if (resume) {
                         resume = false;
+                        lresume = true;
                         lrunning = true;
                     }
                     // Ready to draw?
@@ -450,7 +447,14 @@ public class AndroidApplication extends Activity implements Application, Runnabl
 	                }
 	                if (mEglConfig == null) {
                     // choose best config
-                    final int[] configAttr = new int[]{EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER, EGL14.EGL_NONE};
+                    final int[] configAttr = new int[]{
+									    EGL14.EGL_SURFACE_TYPE, EGL14.EGL_WINDOW_BIT,
+									    EGL14.EGL_COLOR_BUFFER_TYPE, EGL14.EGL_RGB_BUFFER,
+									    EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+									    EGL14.EGL_CONFORMANT, EGL14.EGL_OPENGL_ES2_BIT,
+									    EGL14.EGL_ALPHA_SIZE, 0,
+									    EGL14.EGL_NONE
+									  };
                     EGL14.eglChooseConfig(mEglDisplay, configAttr, 0, null, 0, 0, temp, 0);
                     if (temp[0] <= 0)
                         throw new IllegalArgumentException("No configs match with configSpec");
@@ -472,7 +476,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                     }
                   }
 	                if (newContext) {
-	                	final int[] ctxAttr = new int[]{EGL14.EGL_CONTEXT_CLIENT_VERSION, mayorV, EGL14.EGL_NONE}
+	                	final int[] ctxAttr = new int[]{EGL14.EGL_CONTEXT_MAJOR_VERSION, majorV, EGL14.EGL_CONTEXT_MINOR_VERSION, minorV, EGL_NONE};
                     mEglContext = EGL14.eglCreateContext(mEglDisplay, mEglConfig, EGL14.EGL_NO_CONTEXT, ctxAttr, 0);
                     if (mEglContext == null || mEglContext == EGL14.EGL_NO_CONTEXT) {
                       mEglContext = null;
@@ -507,6 +511,7 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 }
                 long time = System.currentTimeMillis();
                 if (lresume) {
+                		lresume = false;
                     synchronized (lifecycleListeners) {
                         LifecycleListener[] listeners = lifecycleListeners.begin();
                         for (int i = 0, n = lifecycleListeners.size; i < n; i++) {
