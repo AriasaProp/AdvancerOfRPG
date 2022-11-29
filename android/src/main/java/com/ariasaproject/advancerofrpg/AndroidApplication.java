@@ -42,7 +42,6 @@ import com.ariasaproject.advancerofrpg.input.Input;
 import com.ariasaproject.advancerofrpg.utils.Array;
 import com.ariasaproject.advancerofrpg.utils.SnapshotArray;
 
-import com.ariasaproject.advancerofrpg.AppV2;
 import com.ariasaproject.advancerofrpg.ApplicationListener;
 
 import java.io.FileDescriptor;
@@ -378,8 +377,9 @@ public class AndroidApplication extends Activity implements Application, Runnabl
         EGLSurface mEglSurface = null;
         EGLConfig mEglConfig = null;
         EGLContext mEglContext = null;
-        //ApplicationListener appl = new ApplicationListener();
-        AppV2 appl = new AppV2();
+        ApplicationListener appl = new ApplicationListener();
+        //AppV2 appl = new AppV2();
+        Toast.makeText(getApplicationContext(), "Ending", Toast.LENGTH_SHORT).show();
         try {
             byte eglDestroyRequest = 0;// to destroy egl surface, egl contex, egl display, ?....
             boolean wantRender = false,// indicator
@@ -568,8 +568,10 @@ public class AndroidApplication extends Activity implements Application, Runnabl
                 frames++;
             }
         } catch (Throwable e) { 
+        		Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             error(TAG, "error", e);
         }
+    		Toast.makeText(getApplicationContext(), "Ending", Toast.LENGTH_SHORT).show();
         // dispose all resources
         appl.destroy();
         tgf.clear();
